@@ -620,7 +620,19 @@ function tdDetailView() {
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
-  return `<div id="teardowns-root">${teardownIndexView()}</div>`;
+  // Check for deep link: #/teardowns/<app>
+  var hash = location.hash || "";
+  var m = hash.match(/^#\/teardowns\/([a-z]+)/);
+  var html;
+  if (m && TEARDOWNS[m[1]]) {
+    teardownState = { app: m[1], selected: null, bounds: false };
+    html = `<div id="teardowns-root">${tdDetailView()}</div>`;
+  } else {
+    html = `<div id="teardowns-root">${teardownIndexView()}</div>`;
+  }
+  // Prepare the detail view after render
+  setTimeout(function(){ if (teardownState.app) tdPrepare(); }, 0);
+  return html;
 }
 views.teardowns = teardownsView;
 function tdPrepare() {
@@ -638,8 +650,8 @@ function tdPrepare() {
   document.body.classList.toggle("td-sheet-open",!!teardownState.selected && window.matchMedia("(max-width: 860px)").matches);
 }
 function tdRender() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); }
-function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
-function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); tdRender(); window.scrollTo({top:0}); }
+function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; try{ history.replaceState(null,"","#/teardowns/"+key); }catch(e){} tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
+function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); try{ history.replaceState(null,"","#/teardowns"); }catch(e){} tdRender(); window.scrollTo({top:0}); }
 function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownState.app]).map[id])return; teardownState.selected=id; tdRender(); }
 function tdClose() { teardownState.selected=null; document.body.classList.remove("td-sheet-open"); tdRender(); }
 function tdToggleBounds() { teardownState.bounds=!teardownState.bounds; tdRender(); }
@@ -1224,6 +1236,11 @@ initTeardowns = function(){
     onViewCleanup(()=>{document.removeEventListener("keydown",onKey);tdCloseInspector(true);});
   };
 })();
+
+// Re-route if page loaded directly on #/teardowns (app.js ran before this file loaded)
+if ((location.hash||"").startsWith("#/teardowns") && typeof route === "function") {
+  setTimeout(function(){ try{ route(); }catch(e){} }, 0);
+}
 
 // Init teardown click handlers when the view is shown
 (function(){
