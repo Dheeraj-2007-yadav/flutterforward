@@ -1099,6 +1099,8 @@ initTeardowns = function(){
       samples: [], frameOne:null, final:null
     };
     tdDismissRuns.push(run);
+    // Prevent memory leak: keep only last 5 runs
+    if (tdDismissRuns.length > 5) tdDismissRuns.splice(0, tdDismissRuns.length - 5);
     const startedAt = performance.now();
     const thresholds = [0,1/6,2/6,3/6,4/6,5/6,1];
     let nextSample = 0;
