@@ -925,20 +925,6 @@ initTeardowns = function(){
     clone.style.wordBreak = cs.wordBreak; clone.style.overflowWrap = cs.overflowWrap;
     clone.style.padding = cs.padding; clone.style.border = cs.border;
     clone.style.transform = "translate3d(0,0,0) scale(1)";
-    // Dark theme: improve text readability only (don't touch icons/buttons)
-    if (document.documentElement.getAttribute("data-theme") === "dark") {
-      clone.querySelectorAll("*").forEach(function(el){
-        var tag = el.tagName.toLowerCase();
-        if (tag === "button" || tag === "svg" || el.closest("button")) return;
-        var hasText = Array.from(el.childNodes).some(function(n){
-          return n.nodeType === 3 && n.textContent.trim().length > 0;
-        });
-        if (hasText) {
-          el.style.color = "#ffffff";
-          el.style.textShadow = "0 1px 3px rgba(0,0,0,.8)";
-        }
-      });
-    }
 
     return clone;
   }
