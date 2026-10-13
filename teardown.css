@@ -409,6 +409,11 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
   content: ""; position: absolute; inset: 0; z-index: 20; border: 0;
   border-radius: 15px; background: rgba(37,99,235,.10); box-shadow: none; pointer-events: none;
 }
+/* Dark theme: remove the blue wash overlay that dims popped content */
+[data-theme="dark"] .td-pop-clone::after {
+  background: transparent;
+}
+
 /* Ensure popped element text stays fully readable */
 .td-pop-clone, .td-pop-clone * {
   opacity: 1 !important;
