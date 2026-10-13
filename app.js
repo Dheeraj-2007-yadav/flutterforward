@@ -612,7 +612,21 @@ function tdPrepare() {
 }
 function tdRender() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); }
 function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
-function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); tdRender(); window.scrollTo({top:0}); }
+function tdBack() {
+  try {
+    teardownState={app:null,selected:null,bounds:false};
+    document.body.classList.remove("td-sheet-open");
+    var root = document.getElementById("teardowns-root");
+    if (root) {
+      // Use requestAnimationFrame to avoid blocking the UI
+      requestAnimationFrame(function(){ tdRender(); });
+    }
+    window.scrollTo({top:0});
+  } catch(e) {
+    // Fallback: reload the list via router
+    try { location.hash = "#/teardowns"; } catch(e2){}
+  }
+}
 function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownState.app]).map[id])return; teardownState.selected=id; tdRender(); }
 function tdClose() { teardownState.selected=null; document.body.classList.remove("td-sheet-open"); tdRender(); }
 function tdToggleBounds() { teardownState.bounds=!teardownState.bounds; tdRender(); }
