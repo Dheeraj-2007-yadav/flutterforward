@@ -1243,10 +1243,7 @@ initTeardowns = function(){
   };
 })();
 
-// Re-route if page loaded directly on #/teardowns (app.js ran before this file loaded)
-if ((location.hash||"").startsWith("#/teardowns") && typeof route === "function") {
-  setTimeout(function(){ try{ route(); }catch(e){} }, 0);
-}
+// Re-route handled by inline script in index.html
 // Guard against hashchange re-render when we update hash programmatically
 (function(){
   var origRoute = typeof route === "function" ? route : null;
