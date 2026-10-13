@@ -1224,30 +1224,20 @@ initTeardowns = function(){
   };
 })();
 
-// Hook into view binding so clicks work (bindView is defined in app.js)
+// Init teardown click handlers when the view is shown
 (function(){
-  function hookBind(){
-    if (typeof bindView === "function" && !bindView.__tdHooked) {
-      const orig = bindView;
-      bindView = function(name, arg){
-        orig(name, arg);
-        if (name === "teardowns" && typeof initTeardowns === "function") {
-          initTeardowns();
-        }
-      };
-      bindView.__tdHooked = true;
-    } else if (typeof bindView !== "function") {
-      setTimeout(hookBind, 100);
+  function tryInit(){
+    if (typeof initTeardowns === "function" && document.getElementById("teardowns-root")) {
+      initTeardowns();
     }
   }
-  hookBind();
-  // Also try on hash change as fallback
-  window.addEventListener("hashchange", function(){
-    setTimeout(function(){
-      if ((location.hash||"").startsWith("#/teardowns") && typeof initTeardowns === "function") {
-        initTeardowns();
-      }
-    }, 50);
-  });
+  // Try now (in case view already rendered)
+  tryInit();
+  // Try on hash change
+  window.addEventListener("hashchange", function(){ setTimeout(tryInit, 100); });
+  // Try on DOM mutations (view renders async)
+  if (typeof MutationObserver !== "undefined") {
+    new MutationObserver(function(){ tryInit(); }).observe(document.body, { childList: true, subtree: true });
+  }
 })();
 
