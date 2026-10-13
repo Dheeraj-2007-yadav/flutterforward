@@ -610,7 +610,15 @@ function tdPrepare() {
   const active = root.querySelector(`[data-node="${teardownState.selected||''}"]`); if (active) requestAnimationFrame(()=>active.classList.add("td-active"));
   document.body.classList.toggle("td-sheet-open",!!teardownState.selected && window.matchMedia("(max-width: 860px)").matches);
 }
-function tdRender() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); }
+function tdRender() {
+  const root=$("#teardowns-root"); if(!root)return;
+  // Force cleanup: remove all children explicitly to break references
+  while (root.firstChild) { root.removeChild(root.firstChild); }
+  // Force style recalc to flush pending animations
+  void root.offsetHeight;
+  root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
+  tdPrepare();
+}
 function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
 function tdBack() {
   try {
