@@ -604,12 +604,7 @@ function tdPath(key, id) {
 let teardownState = { app: null, selected: null, bounds: false };
 function tdSelectedNode() { return teardownState.app && teardownState.selected ? tdIndex(TEARDOWNS[teardownState.app]).map[teardownState.selected] : null; }
 function teardownIndexView() {
-  var dbg = "";
-  try {
-    var ss = sessionStorage.getItem("ff_teardown_open");
-    dbg = `<div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:8px 12px;margin:12px 0;font-size:12px;font-family:monospace;">DEBUG: hash=${location.hash} | session=${ss} | v=4106</div>`;
-  } catch(e){}
-  return dbg + `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}" onclick="if(typeof tdOpen==='function')tdOpen('${key}')"><span class="teardown-glyph ${item.glyphClass}" style="--glyph:${item.accent}">${item.glyph}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div><p class="teardown-note">Each teardown is hand-built from a familiar interface so the widget choices, hierarchy, and code stay dependable for learning.</p>`;
+  return `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}" onclick="if(typeof tdOpen==='function')tdOpen('${key}')"><span class="teardown-glyph ${item.glyphClass}" style="--glyph:${item.accent}">${item.glyph}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div><p class="teardown-note">Each teardown is hand-built from a familiar interface so the widget choices, hierarchy, and code stay dependable for learning.</p>`;
 }
 function tdPanel() {
   const node = tdSelectedNode();
@@ -625,24 +620,7 @@ function tdDetailView() {
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
-  // Check sessionStorage first (most reliable), then hash
-  var openKey = null;
-  try { openKey = sessionStorage.getItem("ff_teardown_open"); } catch(e){}
-  if (!openKey) {
-    var hash = location.hash || "";
-    var m = hash.match(/^#\/teardowns\/([a-z]+)/);
-    if (m) openKey = m[1];
-  }
-  var html;
-  if (openKey && TEARDOWNS[openKey]) {
-    teardownState = { app: openKey, selected: null, bounds: false };
-    html = `<div id="teardowns-root">${tdDetailView()}</div>`;
-  } else {
-    html = `<div id="teardowns-root">${teardownIndexView()}</div>`;
-  }
-  // Prepare the detail view after render
-  setTimeout(function(){ if (teardownState.app) tdPrepare(); }, 0);
-  return html;
+  return `<div id="teardowns-root">${teardownIndexView()}</div>`;
 }
 views.teardowns = teardownsView;
 function tdPrepare() {
@@ -660,22 +638,8 @@ function tdPrepare() {
   document.body.classList.toggle("td-sheet-open",!!teardownState.selected && window.matchMedia("(max-width: 860px)").matches);
 }
 function tdRender() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); }
-function tdOpen(key) {
-  if(!TEARDOWNS[key])return;
-  teardownState={app:key,selected:null,bounds:false};
-  try{ sessionStorage.setItem("ff_teardown_open", key); }catch(e){}
-  location.hash = "#/teardowns/"+key;
-  tdRender();
-  window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
-}
-function tdBack() {
-  teardownState={app:null,selected:null,bounds:false};
-  document.body.classList.remove("td-sheet-open");
-  try{ sessionStorage.removeItem("ff_teardown_open"); }catch(e){}
-  location.hash = "#/teardowns";
-  tdRender();
-  window.scrollTo({top:0});
-}
+function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
+function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); tdRender(); window.scrollTo({top:0}); }
 function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownState.app]).map[id])return; teardownState.selected=id; tdRender(); }
 function tdClose() { teardownState.selected=null; document.body.classList.remove("td-sheet-open"); tdRender(); }
 function tdToggleBounds() { teardownState.bounds=!teardownState.bounds; tdRender(); }
@@ -1260,9 +1224,6 @@ initTeardowns = function(){
     onViewCleanup(()=>{document.removeEventListener("keydown",onKey);tdCloseInspector(true);});
   };
 })();
-
-// Re-route handled by inline script in index.html
-
 
 // Init teardown click handlers when the view is shown
 (function(){
