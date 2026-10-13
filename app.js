@@ -1235,6 +1235,12 @@ document.addEventListener("click", function(e){
   if (open && typeof tdOpen === "function") { e.preventDefault(); tdOpen(open.dataset.teardownOpen); return; }
   var sel = t.closest("[data-teardown-select]");
   if (sel && typeof tdSelect === "function") { e.preventDefault(); e.stopPropagation(); tdSelect(sel.dataset.teardownSelect); return; }
+  // Tapping a component region (not just the hotspot number)
+  var region = t.closest(".td-region[data-node]");
+  if (region && typeof tdSelect === "function") {
+    var root = document.getElementById("teardowns-root");
+    if (root && root.contains(region)) { e.preventDefault(); e.stopPropagation(); tdSelect(region.dataset.node); return; }
+  }
   var close = t.closest("[data-teardown-close]");
   if (close && typeof tdClose === "function") { tdClose(); return; }
   var bounds = t.closest("[data-teardown-bounds]");
