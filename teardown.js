@@ -604,7 +604,12 @@ function tdPath(key, id) {
 let teardownState = { app: null, selected: null, bounds: false };
 function tdSelectedNode() { return teardownState.app && teardownState.selected ? tdIndex(TEARDOWNS[teardownState.app]).map[teardownState.selected] : null; }
 function teardownIndexView() {
-  return `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}" onclick="if(typeof tdOpen==='function')tdOpen('${key}')"><span class="teardown-glyph ${item.glyphClass}" style="--glyph:${item.accent}">${item.glyph}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div><p class="teardown-note">Each teardown is hand-built from a familiar interface so the widget choices, hierarchy, and code stay dependable for learning.</p>`;
+  var dbg = "";
+  try {
+    var ss = sessionStorage.getItem("ff_teardown_open");
+    dbg = `<div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:8px 12px;margin:12px 0;font-size:12px;font-family:monospace;">DEBUG: hash=${location.hash} | session=${ss} | v=4106</div>`;
+  } catch(e){}
+  return dbg + `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}" onclick="if(typeof tdOpen==='function')tdOpen('${key}')"><span class="teardown-glyph ${item.glyphClass}" style="--glyph:${item.accent}">${item.glyph}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div><p class="teardown-note">Each teardown is hand-built from a familiar interface so the widget choices, hierarchy, and code stay dependable for learning.</p>`;
 }
 function tdPanel() {
   const node = tdSelectedNode();
