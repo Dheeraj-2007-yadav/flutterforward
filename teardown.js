@@ -925,19 +925,7 @@ initTeardowns = function(){
     clone.style.wordBreak = cs.wordBreak; clone.style.overflowWrap = cs.overflowWrap;
     clone.style.padding = cs.padding; clone.style.border = cs.border;
     clone.style.transform = "translate3d(0,0,0) scale(1)";
-    // Dark theme: force light spotlight styling for readability
-    if (document.documentElement.getAttribute("data-theme") === "dark") {
-      clone.style.backgroundColor = "#ffffff";
-      clone.style.color = "#0f172a";
-      clone.querySelectorAll("*").forEach(function(el){
-        el.style.color = "#0f172a";
-        // Keep transparent backgrounds transparent, otherwise lighten
-        const bg = getComputedStyle(el).backgroundColor;
-        if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
-          el.style.backgroundColor = "#ffffff";
-        }
-      });
-    }
+
     return clone;
   }
 
