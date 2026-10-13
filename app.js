@@ -1221,22 +1221,10 @@ initTeardowns = function(){
   };
 })();
 
-// Init teardown click handlers when the view is shown
-(function(){
-  function tryInit(){
-    if (typeof initTeardowns === "function" && document.getElementById("teardowns-root")) {
-      initTeardowns();
-    }
-  }
-  // Try now (in case view already rendered)
-  tryInit();
-  // Try on hash change
-  window.addEventListener("hashchange", function(){ setTimeout(tryInit, 100); });
-  // Try on DOM mutations (view renders async)
-  if (typeof MutationObserver !== "undefined") {
-    new MutationObserver(function(){ tryInit(); }).observe(document.body, { childList: true, subtree: true });
-  }
-})();
+// Note: teardown clicks are handled by document-level delegation below.
+// (Removed MutationObserver-based initTeardowns which caused exponential
+//  listener growth: every innerHTML render triggered the observer, which
+//  re-added root click listeners, leading to slowdown/freeze after repeats.)
 
 // Failsafe: document-level click delegation for teardown rows
 // (works regardless of initTeardowns timing)
