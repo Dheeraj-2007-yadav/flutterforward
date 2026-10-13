@@ -487,6 +487,22 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
   .td-inspector-panel { height: min(60dvh,570px); max-height: min(60dvh,570px); }
 }
 @media (prefers-reduced-motion: reduce) {
+
+/* Dark theme: make popped element clearly visible */
+[data-theme="dark"] .td-pop-clone::after {
+  background: rgba(147,197,253,.08);
+}
+[data-theme="dark"] .td-pop-clone {
+  outline-color: #60a5fa;
+  filter: brightness(1.15);
+}
+[data-theme="dark"] .td-inspector-layer.is-open .td-pop-clone {
+  filter: brightness(1.15) drop-shadow(0 25px 30px rgba(0,0,0,.5)) drop-shadow(0 5px 10px rgba(0,0,0,.3));
+}
+[data-theme="dark"] .td-selection-caption {
+  color: #93c5fd;
+}
+
   .td-inspector-backdrop,.td-pop-clone,.td-selection-caption,.td-inspector-panel,.td-inspector-connector path { transition-duration: .01ms !important; transition-delay: 0ms !important; }
   .td-panel-switching { animation-duration: .01ms !important; }
 }
