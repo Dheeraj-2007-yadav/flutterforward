@@ -589,7 +589,7 @@ function tdPanel() {
 }
 function tdDetailView() {
   const item = TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail-head"><button class="teardown-back" data-teardown-index>${TD_ICON.back}All teardowns</button><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Tap a numbered region, then follow its child widgets deeper.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div>`;
+  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns">← All teardowns</a><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Tap a numbered region, then follow its child widgets deeper.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div>`;
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
@@ -738,7 +738,7 @@ tdPanel = function() {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail-head"><button class="teardown-back" data-teardown-index>${TD_ICON.back}All teardowns</button><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-tree-layout"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdTreeMarkup()}${tdPanel()}</div>`;
+  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns">← All teardowns</a><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-tree-layout"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdTreeMarkup()}${tdPanel()}</div>`;
 };
 
 function tdApplyView() {
@@ -1188,7 +1188,7 @@ initTeardowns = function(){
 
   tdDetailView = function() {
     const item = TEARDOWNS[teardownState.app];
-    return `<div class="teardown-detail-head"><button class="teardown-back" data-teardown-index>${TD_ICON.back}All teardowns</button><span class="teardown-bounds">Tap a component to inspect it</span></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Select a real interface component. It will lift out of the screen so you can connect the visible UI to its Flutter widget and code.</p></div><div class="teardown-popup-layout"><div class="teardown-phone-stage"><div class="teardown-phone"><span class="teardown-side-button mute" aria-hidden="true"></span><span class="teardown-side-button volume-up" aria-hidden="true"></span><span class="teardown-side-button volume-down" aria-hidden="true"></span><span class="teardown-side-button power" aria-hidden="true"></span><span class="teardown-dynamic-island" aria-hidden="true"></span><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap the top bar, content, cards, fields, or bottom navigation</p></div></div>`;
+    return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns">← All teardowns</a><span class="teardown-bounds">Tap a component to inspect it</span></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Select a real interface component. It will lift out of the screen so you can connect the visible UI to its Flutter widget and code.</p></div><div class="teardown-popup-layout"><div class="teardown-phone-stage"><div class="teardown-phone"><span class="teardown-side-button mute" aria-hidden="true"></span><span class="teardown-side-button volume-up" aria-hidden="true"></span><span class="teardown-side-button volume-down" aria-hidden="true"></span><span class="teardown-side-button power" aria-hidden="true"></span><span class="teardown-dynamic-island" aria-hidden="true"></span><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap the top bar, content, cards, fields, or bottom navigation</p></div></div>`;
   };
 
   tdPrepare = function() {
@@ -1226,17 +1226,22 @@ initTeardowns = function(){
 //  listener growth: every innerHTML render triggered the observer, which
 //  re-added root click listeners, leading to slowdown/freeze after repeats.)
 
-// Failsafe: document-level click delegation for teardown rows
-// (works regardless of initTeardowns timing)
+// Document-level click delegation for all teardown interactions
+// (single handler, no duplicates, works regardless of render timing)
 document.addEventListener("click", function(e){
-  const open = e.target.closest && e.target.closest("[data-teardown-open]");
-  if (open && typeof tdOpen === "function") {
-    // Only handle if we're on the teardowns page
-    if (document.getElementById("teardowns-root")) {
-      e.preventDefault();
-      tdOpen(open.dataset.teardownOpen);
-    }
-  }
+  if (!e.target.closest || !document.getElementById("teardowns-root")) return;
+  var t = e.target;
+  var open = t.closest("[data-teardown-open]");
+  if (open && typeof tdOpen === "function") { e.preventDefault(); tdOpen(open.dataset.teardownOpen); return; }
+  var sel = t.closest("[data-teardown-select]");
+  if (sel && typeof tdSelect === "function") { e.preventDefault(); e.stopPropagation(); tdSelect(sel.dataset.teardownSelect); return; }
+  var close = t.closest("[data-teardown-close]");
+  if (close && typeof tdClose === "function") { tdClose(); return; }
+  var bounds = t.closest("[data-teardown-bounds]");
+  if (bounds && typeof tdToggleBounds === "function") { tdToggleBounds(); return; }
+  var copy = t.closest("[data-teardown-copy]");
+  if (copy && typeof tdCopy === "function") { tdCopy(); return; }
+  // data-teardown-index is now a real <a href="#/teardowns"> link, handled by router
 }, true);
 
 // Re-route for teardowns on direct load (views.teardowns now exists)
