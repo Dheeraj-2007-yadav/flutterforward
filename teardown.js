@@ -1241,3 +1241,16 @@ initTeardowns = function(){
   }
 })();
 
+// Failsafe: document-level click delegation for teardown rows
+// (works regardless of initTeardowns timing)
+document.addEventListener("click", function(e){
+  const open = e.target.closest && e.target.closest("[data-teardown-open]");
+  if (open && typeof tdOpen === "function") {
+    // Only handle if we're on the teardowns page
+    if (document.getElementById("teardowns-root")) {
+      e.preventDefault();
+      tdOpen(open.dataset.teardownOpen);
+    }
+  }
+}, true);
+
