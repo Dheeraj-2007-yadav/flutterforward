@@ -655,9 +655,22 @@ function tdPrepare() {
   document.body.classList.toggle("td-sheet-open",!!teardownState.selected && window.matchMedia("(max-width: 860px)").matches);
 }
 function tdRender() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); }
-var __tdHashLock = false;
-function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; try{ sessionStorage.setItem("ff_teardown_open", key); }catch(e){} __tdHashLock = true; try{ location.hash = "#/teardowns/"+key; }catch(e){} setTimeout(function(){ __tdHashLock = false; }, 100); tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
-function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); try{ sessionStorage.removeItem("ff_teardown_open"); }catch(e){} __tdHashLock = true; try{ location.hash = "#/teardowns"; }catch(e){} setTimeout(function(){ __tdHashLock = false; }, 100); tdRender(); window.scrollTo({top:0}); }
+function tdOpen(key) {
+  if(!TEARDOWNS[key])return;
+  teardownState={app:key,selected:null,bounds:false};
+  try{ sessionStorage.setItem("ff_teardown_open", key); }catch(e){}
+  location.hash = "#/teardowns/"+key;
+  tdRender();
+  window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
+}
+function tdBack() {
+  teardownState={app:null,selected:null,bounds:false};
+  document.body.classList.remove("td-sheet-open");
+  try{ sessionStorage.removeItem("ff_teardown_open"); }catch(e){}
+  location.hash = "#/teardowns";
+  tdRender();
+  window.scrollTo({top:0});
+}
 function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownState.app]).map[id])return; teardownState.selected=id; tdRender(); }
 function tdClose() { teardownState.selected=null; document.body.classList.remove("td-sheet-open"); tdRender(); }
 function tdToggleBounds() { teardownState.bounds=!teardownState.bounds; tdRender(); }
@@ -1244,13 +1257,7 @@ initTeardowns = function(){
 })();
 
 // Re-route handled by inline script in index.html
-// Guard against hashchange re-render when we update hash programmatically
-(function(){
-  var origRoute = typeof route === "function" ? route : null;
-  window.addEventListener("hashchange", function(){
-    if (typeof __tdHashLock !== "undefined" && __tdHashLock) return;
-  }, true);
-})();
+
 
 // Init teardown click handlers when the view is shown
 (function(){
