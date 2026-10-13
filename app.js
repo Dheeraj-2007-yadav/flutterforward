@@ -911,11 +911,19 @@ initTeardowns = function(){
     clone.style.left = `${rect.left}px`; clone.style.top = `${rect.top}px`;
     clone.style.width = `${rect.width}px`; clone.style.height = `${rect.height}px`;
     clone.style.color = cs.color;
-    // If source background is transparent, use white for readability
-    var bg = cs.backgroundColor;
-    if (bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') { bg = '#ffffff'; }
-    clone.style.backgroundColor = bg;
-    clone.style.setProperty('--td-clone-bg', bg);
+    var _bg = cs.backgroundColor;
+    // For text elements with transparent bg, use white for dark-theme readability
+    // Skip for SVG icons (they use currentColor - white bg would hide them)
+    var _hasSvg = clone.querySelector('svg') !== null;
+    if ((_bg === 'rgba(0, 0, 0, 0)' || _bg === 'transparent') && !_hasSvg) {
+      _bg = '#ffffff';
+      // Ensure text is dark on the white bg
+      var _col = cs.color;
+      if (_col === 'rgb(255, 255, 255)' || _col === '#ffffff' || _col === 'white') {
+        clone.style.color = '#1a1d21';
+      }
+    }
+    clone.style.backgroundColor = _bg;
     clone.style.borderRadius = cs.borderRadius; clone.style.overflow = cs.overflow;
     clone.style.fontFamily = cs.fontFamily; clone.style.fontSize = cs.fontSize;
     clone.style.fontWeight = cs.fontWeight; clone.style.fontStyle = cs.fontStyle;
@@ -924,6 +932,12 @@ initTeardowns = function(){
     clone.style.wordBreak = cs.wordBreak; clone.style.overflowWrap = cs.overflowWrap;
     clone.style.padding = cs.padding; clone.style.border = cs.border;
     clone.style.transform = "translate3d(0,0,0) scale(1)";
+    // Ensure SVGs inside are visible (not white-on-white)
+    clone.querySelectorAll('svg').forEach(function(svg){
+      // If SVG uses currentColor and parent color is white-ish, keep it
+      // The SVG will inherit the cloned color which was computed from source
+      svg.style.display = 'block';
+    });
 
     return clone;
   }
