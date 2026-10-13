@@ -372,7 +372,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 @keyframes tdLabelIn { from { opacity:0; transform:translateY(-3px); } to { opacity:1; transform:none; } }
 
 /* WhatsApp chat recreation */
-.wa-screen { height: calc(100% - 24px); display: flex; flex-direction: column; color: #111b21; background: #efeae2; }
+.wa-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: #111b21; background: #efeae2; }
 .wa-bar { height: 60px; display: flex; align-items: center; gap: 8px; padding: 0 9px; color: #fff; background: #075e54; }
 .wa-back { font-size: 27px; font-weight: 300; line-height: 1; }
 .wa-avatar { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color:#fff; background:#7697a0; font-size:11px; font-weight:800; }
@@ -403,7 +403,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .wa-send > .td-hotspot { left:-8px; right:auto; top:-7px; }
 
 /* Instagram profile recreation */
-.ig-screen { height: calc(100% - 24px); display:flex; flex-direction:column; color:#0e0e0e; background:#fff; }
+.ig-screen { height: calc(100% - 28px); display:flex; flex-direction:column; color:#0e0e0e; background:#fff; }
 .ig-bar { min-height:52px; display:flex; align-items:center; gap:10px; padding:0 13px; border-bottom:1px solid #efefef; background:#fff; }
 .ig-bar b { flex:1; font-size:14px; }.ig-bar svg { width:20px;height:20px; }
 .ig-scroll { flex:1; overflow:hidden; }
