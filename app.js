@@ -910,7 +910,12 @@ initTeardowns = function(){
     const cs = getComputedStyle(source);
     clone.style.left = `${rect.left}px`; clone.style.top = `${rect.top}px`;
     clone.style.width = `${rect.width}px`; clone.style.height = `${rect.height}px`;
-    clone.style.color = cs.color; clone.style.backgroundColor = cs.backgroundColor;
+    clone.style.color = cs.color;
+    // If source background is transparent, use white for readability
+    var bg = cs.backgroundColor;
+    if (bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') { bg = '#ffffff'; }
+    clone.style.backgroundColor = bg;
+    clone.style.setProperty('--td-clone-bg', bg);
     clone.style.borderRadius = cs.borderRadius; clone.style.overflow = cs.overflow;
     clone.style.fontFamily = cs.fontFamily; clone.style.fontSize = cs.fontSize;
     clone.style.fontWeight = cs.fontWeight; clone.style.fontStyle = cs.fontStyle;
