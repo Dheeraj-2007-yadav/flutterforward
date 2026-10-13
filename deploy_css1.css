@@ -1228,7 +1228,7 @@ body.home-page { background: #fff; }
 }
 body, body.home-page, [data-theme="dark"] body.home-page { background: var(--bg); }
 body { line-height: 1.55; }
-.view, .stagger > *, .lesson-row, .quiz-q, .rk-card { animation: none; }
+.stagger > *, .lesson-row, .quiz-q, .rk-card { animation: none; }
 .wrap, .wrap.wide { max-width: 900px; padding: 34px 22px 64px; }
 @media (min-width:760px) { .wrap, .wrap.wide { padding: 54px 34px 78px; } }
 .foot { color: var(--text-3); border: 0; }
