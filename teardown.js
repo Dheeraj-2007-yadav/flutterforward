@@ -620,12 +620,17 @@ function tdDetailView() {
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
-  // Check for deep link: #/teardowns/<app>
-  var hash = location.hash || "";
-  var m = hash.match(/^#\/teardowns\/([a-z]+)/);
+  // Check sessionStorage first (most reliable), then hash
+  var openKey = null;
+  try { openKey = sessionStorage.getItem("ff_teardown_open"); } catch(e){}
+  if (!openKey) {
+    var hash = location.hash || "";
+    var m = hash.match(/^#\/teardowns\/([a-z]+)/);
+    if (m) openKey = m[1];
+  }
   var html;
-  if (m && TEARDOWNS[m[1]]) {
-    teardownState = { app: m[1], selected: null, bounds: false };
+  if (openKey && TEARDOWNS[openKey]) {
+    teardownState = { app: openKey, selected: null, bounds: false };
     html = `<div id="teardowns-root">${tdDetailView()}</div>`;
   } else {
     html = `<div id="teardowns-root">${teardownIndexView()}</div>`;
@@ -651,8 +656,8 @@ function tdPrepare() {
 }
 function tdRender() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); }
 var __tdHashLock = false;
-function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; __tdHashLock = true; try{ location.hash = "#/teardowns/"+key; }catch(e){} setTimeout(function(){ __tdHashLock = false; }, 100); tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
-function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); __tdHashLock = true; try{ location.hash = "#/teardowns"; }catch(e){} setTimeout(function(){ __tdHashLock = false; }, 100); tdRender(); window.scrollTo({top:0}); }
+function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; try{ sessionStorage.setItem("ff_teardown_open", key); }catch(e){} __tdHashLock = true; try{ location.hash = "#/teardowns/"+key; }catch(e){} setTimeout(function(){ __tdHashLock = false; }, 100); tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
+function tdBack() { teardownState={app:null,selected:null,bounds:false}; document.body.classList.remove("td-sheet-open"); try{ sessionStorage.removeItem("ff_teardown_open"); }catch(e){} __tdHashLock = true; try{ location.hash = "#/teardowns"; }catch(e){} setTimeout(function(){ __tdHashLock = false; }, 100); tdRender(); window.scrollTo({top:0}); }
 function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownState.app]).map[id])return; teardownState.selected=id; tdRender(); }
 function tdClose() { teardownState.selected=null; document.body.classList.remove("td-sheet-open"); tdRender(); }
 function tdToggleBounds() { teardownState.bounds=!teardownState.bounds; tdRender(); }
