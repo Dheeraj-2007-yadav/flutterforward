@@ -1256,3 +1256,10 @@ document.addEventListener("click", function(e){
   }
 }, true);
 
+// Re-route for teardowns on direct load (views.teardowns now exists)
+(function(){
+  var h = location.hash || "";
+  if (h.indexOf("#/teardowns") === 0 && typeof route === "function" && typeof views !== "undefined" && views.teardowns) {
+    try { route(); } catch(e){}
+  }
+})();
