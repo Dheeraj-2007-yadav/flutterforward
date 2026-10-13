@@ -466,7 +466,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .teardown-code { margin-top:18px;overflow:hidden;border:1px solid #293040;border-radius:14px;background:#171b24; }
 .teardown-code-head { min-height:40px;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;color:#95a0b4;border-bottom:1px solid #293040;font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase; }
 .teardown-copy { min-height:30px;padding:5px 10px;border:1px solid #3b4558;border-radius:999px;color:#dbe3f0;font-size:10px;font-weight:750; }.teardown-copy.ok { color:#9ae0bd;border-color:#4b936e; }
-.teardown-code pre { max-height:245px;overflow:auto;padding:14px;color:#dce5f3;font-family:var(--mono);font-size:10.3px;line-height:1.65;white-space:pre;tab-size:2; }
+.teardown-code pre { max-height:245px;overflow:auto;padding:14px;color:#dce5f3;font-family:var(--mono);font-size:10.3px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:2; }
 
 @media (max-width: 860px) {
   .teardown-workbench { grid-template-columns: 1fr; }
