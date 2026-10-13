@@ -490,14 +490,17 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 
 /* Dark theme: make popped element clearly visible */
 [data-theme="dark"] .td-pop-clone::after {
-  background: rgba(147,197,253,.08);
+  background: transparent;
 }
 [data-theme="dark"] .td-pop-clone {
-  outline-color: #60a5fa;
-  filter: brightness(1.15);
+  outline: 2px solid #60a5fa;
+  outline-offset: 8px;
+  border-radius: 12px;
+  filter: brightness(1.35) contrast(1.1);
+  box-shadow: 0 0 0 1px rgba(96,165,250,.3), 0 25px 50px rgba(0,0,0,.6);
 }
 [data-theme="dark"] .td-inspector-layer.is-open .td-pop-clone {
-  filter: brightness(1.15) drop-shadow(0 25px 30px rgba(0,0,0,.5)) drop-shadow(0 5px 10px rgba(0,0,0,.3));
+  filter: brightness(1.35) contrast(1.1) drop-shadow(0 25px 30px rgba(0,0,0,.5));
 }
 [data-theme="dark"] .td-selection-caption {
   color: #93c5fd;
