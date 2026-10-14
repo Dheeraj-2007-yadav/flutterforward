@@ -705,19 +705,24 @@ function tdEnforceOneFrame() {
     panel.style.setProperty('max-height', '100%', 'important');
     panel.style.setProperty('overflow-y', 'auto', 'important');
   }
-  // Smart phone sizing: fit within workbench height
+  // Smart phone sizing: fit PHONE FRAME within workbench height
   var wb2 = d.querySelector('.teardown-workbench');
+  var phone = d.querySelector('.teardown-phone');
   var screen = d.querySelector('.teardown-screen');
-  if (wb2 && screen) {
+  if (wb2 && phone && screen) {
     var wbH = wb2.getBoundingClientRect().height;
-    var phoneH = Math.max(400, Math.min(690, wbH - 20));
-    var phoneW = Math.round(phoneH * 0.464);
-    screen.style.setProperty('height', phoneH + 'px', 'important');
-    screen.style.setProperty('min-height', phoneH + 'px', 'important');
-    screen.style.setProperty('max-height', phoneH + 'px', 'important');
-    screen.style.setProperty('width', phoneW + 'px', 'important');
-    screen.style.setProperty('min-width', phoneW + 'px', 'important');
-    screen.style.setProperty('max-width', phoneW + 'px', 'important');
+    // Phone frame includes padding/border (~24px), reserve 40px margin
+    var maxPhoneH = wbH - 40;
+    var phoneH = Math.max(380, Math.min(650, maxPhoneH));
+    // Screen is phone minus frame (~24px)
+    var screenH = phoneH - 24;
+    var screenW = Math.round(screenH * 0.47);
+    screen.style.setProperty('height', screenH + 'px', 'important');
+    screen.style.setProperty('min-height', screenH + 'px', 'important');
+    screen.style.setProperty('max-height', screenH + 'px', 'important');
+    screen.style.setProperty('width', screenW + 'px', 'important');
+    screen.style.setProperty('min-width', screenW + 'px', 'important');
+    screen.style.setProperty('max-width', screenW + 'px', 'important');
   }
   document.documentElement.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('overflow', 'hidden', 'important');
