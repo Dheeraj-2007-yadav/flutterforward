@@ -884,7 +884,8 @@ function tdShowPicker(stack, x, y) {
   });
   var layer = document.createElement("div");
   layer.id = "td-popout-layer";
-  layer.innerHTML = '<div class="td-popout-backdrop"></div><div class="td-popout-stage"></div>';
+  layer.innerHTML = '<div class="td-popout-backdrop"></div><div class="td-popout-stage"></div><button class="td-popout-close" aria-label="Close">×</button>';
+  layer.querySelector(".td-popout-close").addEventListener("click", function(e){ e.stopPropagation(); tdDismissPopout(); });
   document.body.appendChild(layer);
   var stage = layer.querySelector(".td-popout-stage");
   var idx = tdIndex(TEARDOWNS[teardownState.app]);
@@ -961,6 +962,16 @@ function tdShowPicker(stack, x, y) {
     });
   });
   layer.querySelector(".td-popout-backdrop").addEventListener("click", tdDismissPopout);
+  // Escape to dismiss
+  var escHandler = function(e) {
+    if (e.key === "Escape") {
+      tdDismissPopout();
+      document.removeEventListener("keydown", escHandler);
+    }
+  };
+  document.addEventListener("keydown", escHandler);
+  // Store handler for cleanup
+  layer._escHandler = escHandler;
 }
 function tdHighlightRegion(nodeId, on) {
   var root = document.getElementById("teardowns-root");

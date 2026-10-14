@@ -2196,6 +2196,9 @@ body.home-page .wrap { padding-top: 12px; }
   font-size: 14px;
   line-height: 1.7;
   color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 /* Mobile */
 @media (max-width: 900px) {
@@ -2230,3 +2233,23 @@ body.home-page .wrap { padding-top: 12px; }
 .td-fi-pdesc {
   line-height: 1.6;
 }
+
+/* Visible close button for pop-out */
+.td-popout-close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.td-popout-close:hover { background: rgba(255,255,255,0.2); }
