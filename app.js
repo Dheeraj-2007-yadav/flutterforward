@@ -859,7 +859,7 @@ tdOpen = function(key) {
   teardownState={app:key,selected:null,bounds:false,collapsed:new Set(),view:null,layout:null,animateFrom:null};
   tdRender(false);window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
 };
-tdBack = function(){teardownState={app:null,selected:null,bounds:false,collapsed:new Set(),view:null};document.body.classList.remove("td-sheet-open");tdRender(false);window.scrollTo({top:0});};
+tdBack = function(){ try { teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
 tdSelect = function(id){if(!teardownState.app||!tdIndex(TEARDOWNS[teardownState.app]).map[id])return;teardownState.selected=id;tdSyncSelection();};
 function tdShowPicker(stack, x, y) {
   // Visual pop-out: each widget lifts out, filtered and uniformly sized
