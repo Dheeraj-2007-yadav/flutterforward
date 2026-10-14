@@ -2365,33 +2365,18 @@ body.home-page .wrap { padding-top: 12px; }
   .teardown-detail{
     width:min(1120px, 100vw - 48px);
     margin-inline:auto;
-    height:calc(100vh - 100px) !important;
-    max-height:calc(100vh - 100px) !important;
-    overflow:hidden !important;
-    display:flex;
-    flex-direction:column;
   }
-  .teardown-detail .teardown-detail-head{ flex:none; }
-  .teardown-detail .teardown-detail-title{ flex:none; margin-bottom:8px; }
-  .teardown-detail .teardown-detail-title h2{ font-size:24px; margin-bottom:4px; }
-  .teardown-detail .teardown-detail-title p{ font-size:13px; margin:0; }
+
   .teardown-detail .teardown-workbench{
     grid-template-columns:minmax(320px, 360px) minmax(0, 1fr);
     gap:48px;
     max-width:none;
     width:100%;
     margin:0;
-    padding:0 0 16px;
-    flex:1;
-    min-height:0;
-    align-items:stretch;
-    overflow:hidden;
+    padding:0 0 48px;
   }
   .teardown-detail .td-fi-desc{ max-width:64ch; }
-  /* Scale phone proportionally to fit viewport height (one frame, no page scroll) */
-  .teardown-detail .teardown-phone{
-    zoom:min(1, calc((100dvh - 320px) / 607px));
-  }
+
 }
 /* Mobile / narrow: full-frame phone + bottom-sheet inspector.
    The phone fills one frame (aspect preserved, sized to the viewport);
@@ -2482,12 +2467,3 @@ body.home-page .wrap { padding-top: 12px; }
 [data-theme=dark] .td-fi-code .tk-type{color:#7dd3fc;}
 [data-theme=dark] .td-fi-code .tk-com{color:#7c8aa0;}
 
-/* === Desktop one-frame: final override (2026-10-14) ===
-   Must come last to win the cascade. */
-@media (min-width:901px){
-  body .teardown-detail{
-    height:calc(100vh - 100px) !important;
-    max-height:calc(100vh - 100px) !important;
-    overflow:hidden !important;
-  }
-}
