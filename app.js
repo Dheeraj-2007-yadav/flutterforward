@@ -749,13 +749,7 @@ function tdTreeMarkup() {
   return `<section class="teardown-tree-shell" aria-label="Complete Flutter widget tree"><div class="teardown-tree-head"><div class="teardown-tree-copy"><b>Complete widget tree</b><span>${item.count} hand-authored widgets · drag to pan · wheel or buttons to zoom</span></div><div class="teardown-tree-tools"><button class="teardown-tree-tool" data-tree-zoom="out" aria-label="Zoom out">−</button><span class="teardown-tree-scale" data-tree-scale>100%</span><button class="teardown-tree-tool" data-tree-zoom="in" aria-label="Zoom in">+</button><button class="teardown-tree-tool fit" data-tree-fit>Fit</button></div></div><div class="teardown-tree-viewport" data-tree-viewport><div class="teardown-tree-world" data-tree-world style="width:${layout.width}px;height:${layout.height}px"><svg class="teardown-tree-links" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" aria-hidden="true">${links}</svg>${nodes}</div></div><div class="teardown-tree-legend"><span><i class="structure"></i>Structure</span><span><i class="layout"></i>Layout</span><span><i class="content"></i>Content</span><span><i class="input"></i>Input / control</span></div></section>`;
 }
 
-tdPanel = function() {
-  const node = tdSelectedNode();
-  if (!node) return `<aside class="teardown-panel is-empty"><div><span class="teardown-empty-icon">${TD_ICON.grid}</span><h3>Select any widget</h3><p>Choose a node in the complete tree or tap a region on the phone. Both views stay in sync.</p></div></aside>`;
-  const item=TEARDOWNS[teardownState.app], path=tdPath(teardownState.app,node.id);
-  const crumbs=path.map((part,i)=>`${i?'<span>›</span>':''}<button data-teardown-select="${part.id}"${part.id===node.id?' aria-current="page"':''}>${esc(part.name)}</button>`).join("");
-  return `<aside class="teardown-panel" aria-live="polite"><div class="teardown-card-top"><span class="teardown-card-kicker">${esc(item.app)} · selected widget</span><button class="teardown-card-close" data-teardown-close aria-label="Close widget card">×</button></div><nav class="teardown-breadcrumb" aria-label="Widget breadcrumb">${crumbs}</nav><div class="teardown-widget-title"><span class="teardown-widget-mark">${esc(node.name.slice(0,3))}</span><span><h3>${esc(node.name)}</h3><p>Depth ${path.length-1} · ${node.children.length} direct child widget${node.children.length===1?'':'s'}</p></span></div><div class="teardown-facts"><div class="teardown-fact"><b>What it does</b><p>${esc(node.what)}</p></div><div class="teardown-fact"><b>Why it's here</b><p>${esc(node.why)}</p></div></div><div class="teardown-code"><div class="teardown-code-head"><span>Real Dart</span><button class="teardown-copy" data-teardown-copy>Copy code</button></div><pre><code>${esc(node.code)}</code></pre></div></aside>`;
-};
+// tdPanel override removed (using new Flutter-inspector version);
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
