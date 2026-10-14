@@ -1915,8 +1915,9 @@ body.home-page .wrap { padding-top: 12px; }
 .td-popout-widget { display: flex; align-items: center; justify-content: center; }
 .td-popout-label { margin-top: 14px; background: rgba(20,24,36,0.95); color: #6aa8ff; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(106,168,255,0.3); white-space: nowrap; }
 @media (max-width: 760px) {
-  .td-popout-box { width: 110px; height: 90px; }
+  .td-popout-box { width: 130px; height: 100px; }
   .td-popout-item { animation: tdPopIn 0.25s ease; }
+  .td-popout-label { font-size: 12px; padding: 7px 16px; }
 }
 
 
@@ -1962,4 +1963,10 @@ body.home-page .wrap { padding-top: 12px; }
 @media (max-width: 760px) {
   .td-popout-stage { overflow-x: auto; overflow-y: hidden; }
   .td-popout-item { flex-shrink: 0; }
+}
+
+/* Vertical stack for crowded mobile */
+@media (max-width: 760px) {
+  .td-popout-stage.td-vertical { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; padding: 60px 20px 40px; }
+  .td-popout-stage.td-vertical .td-popout-item { position: relative !important; left: auto !important; top: auto !important; transform: none !important; margin: 10px 0; animation: tdPopIn 0.3s ease; }
 }

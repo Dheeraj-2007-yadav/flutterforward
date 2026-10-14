@@ -885,6 +885,7 @@ function tdShowPicker(stack, x, y) {
   var stage = layer.querySelector(".td-popout-stage");
   var idx = tdIndex(TEARDOWNS[teardownState.app]);
   var n = filtered.length;
+  if (window.innerWidth < 760 && n > 3) stage.classList.add("td-vertical");
   filtered.forEach(function(r, i){
     var nodeId = r.dataset.node;
     var node = idx.map[nodeId];
@@ -920,21 +921,32 @@ function tdShowPicker(stack, x, y) {
         natBg = '#ffffff';
       }
     }
-    // Uniform scale: fit in 140px box
-    var scale = Math.min(140 / Math.max(rect.width, 1), 100 / Math.max(rect.height, 1), 1);
+    // Uniform scale: fit in box (larger on mobile)
+    var isMob = window.innerWidth < 760;
+    var maxW = isMob ? 120 : 140;
+    var maxH = isMob ? 90 : 100;
+    var scale = Math.min(maxW / Math.max(rect.width, 1), maxH / Math.max(rect.height, 1), 1);
     clone.style.cssText += ";color:" + cs.color + ";background-color:" + cs.backgroundColor + ";font-size:" + cs.fontSize + ";font-family:" + cs.fontFamily + ";border-radius:" + cs.borderRadius + ";transform:scale(" + scale + ");transform-origin:center;";
     var item = document.createElement("div");
     item.className = "td-popout-item";
     item.dataset.popoutNode = nodeId;
-    // Horizontal centered layout (tighter on mobile)
+    // Smart layout: horizontal row, or vertical stack on mobile when crowded
     var isMobile = window.innerWidth < 760;
-    var spacing = isMobile ? 130 : 180;
-    var boxW = isMobile ? 110 : 150;
-    var totalW = n * spacing;
-    var startX = Math.max(boxW/2 + 10, (window.innerWidth - totalW) / 2 + spacing/2);
-    // If overflow, enable scroll by positioning relative to stage
-    item.style.left = (startX + i * spacing) + "px";
-    item.style.top = (window.innerHeight / 2) + "px";
+    var useVertical = isMobile && n > 3;
+    if (useVertical) {
+      // Vertical stack, centered, scrollable
+      item.style.left = "50%";
+      item.style.top = "auto";
+      item.style.position = "relative";
+      item.style.transform = "none";
+      item.style.margin = "8px auto";
+    } else {
+      var spacing = isMobile ? 140 : 180;
+      var totalW = n * spacing;
+      var startX = Math.max(70, (window.innerWidth - totalW) / 2 + spacing/2);
+      item.style.left = (startX + i * spacing) + "px";
+      item.style.top = (window.innerHeight / 2) + "px";
+    }
     item.innerHTML = '<div class="td-popout-box" style="background:' + natBg + '"><div class="td-popout-widget"></div></div><div class="td-popout-label">' + esc(name) + '</div>';
     item.querySelector(".td-popout-widget").appendChild(clone);
     stage.appendChild(item);
