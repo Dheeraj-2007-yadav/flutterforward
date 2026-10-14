@@ -2093,7 +2093,7 @@ body.home-page .wrap { padding-top: 12px; }
   border: none;
 }
 .teardown-phone {
-  width: min(100%, 340px);
+  width: min(100%, 300px);
   background: #0a0c10;
   border-radius: 54px;
   padding: 12px;
@@ -2107,10 +2107,12 @@ body.home-page .wrap { padding-top: 12px; }
 }
 /* Premium panel */
 .teardown-panel {
-  background: none;
-  border: none;
-  padding: 0;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 32px;
   overflow: visible;
+  box-shadow: 0 8px 32px -16px rgba(0,0,0,0.15);
 }
 .td-fi-crumb {
   font-size: 14px;
@@ -2214,14 +2216,17 @@ body.home-page .wrap { padding-top: 12px; }
 
 /* Fix breadcrumb truncation */
 .td-fi-crumb {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  align-items: center;
-  line-height: 1.6;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+  line-height: 1.8;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
   word-break: break-word;
 }
-.td-fi-crumb span { margin: 0 4px; flex-shrink: 0; }
+.td-fi-crumb span { margin: 0 6px; opacity: 0.4; }
 
 .td-fi-pname {
   word-break: break-word;
@@ -2253,3 +2258,59 @@ body.home-page .wrap { padding-top: 12px; }
   justify-content: center;
 }
 .td-popout-close:hover { background: rgba(255,255,255,0.2); }
+
+/* === UI Polish === */
+/* Softer page background for teardown detail */
+.teardown-detail {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-sunken) 100%);
+}
+/* Refined header */
+.teardown-detail-top {
+  padding-top: 28px;
+}
+.teardown-kicker {
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+/* Better phone presentation */
+.teardown-phone-stage {
+  padding: 20px;
+}
+.teardown-phone {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.teardown-phone:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 40px 80px -24px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.1);
+}
+/* Refined panel typography */
+.td-fi-name {
+  margin-bottom: 24px;
+}
+.td-fi-desc {
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+/* Better property styling */
+.td-fi-prop {
+  padding: 14px 0;
+}
+.td-fi-pname {
+  font-size: 16px;
+}
+/* Code block polish */
+.td-fi-code-wrap {
+  box-shadow: 0 4px 16px -8px rgba(0,0,0,0.1);
+}
+/* Pop-out polish */
+.td-popout-box {
+  box-shadow: 0 12px 32px -8px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+.td-popout-item:hover .td-popout-box {
+  transform: scale(1.05);
+}
+.td-popout-label {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
