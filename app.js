@@ -706,24 +706,35 @@ function tdEnforceOneFrame() {
     panel.style.setProperty('overflow-y', 'auto', 'important');
   }
   // Smart phone sizing: fit PHONE FRAME within workbench height
-  var wb2 = d.querySelector('.teardown-workbench');
-  var phone = d.querySelector('.teardown-phone');
-  var screen = d.querySelector('.teardown-screen');
-  if (wb2 && phone && screen) {
-    var wbH = wb2.getBoundingClientRect().height;
-    // Phone frame includes padding/border (~24px), reserve 40px margin
-    var maxPhoneH = wbH - 40;
-    var phoneH = Math.max(380, Math.min(650, maxPhoneH));
-    // Screen is phone minus frame (~24px)
-    var screenH = phoneH - 24;
-    var screenW = Math.round(screenH * 0.47);
-    screen.style.setProperty('height', screenH + 'px', 'important');
-    screen.style.setProperty('min-height', screenH + 'px', 'important');
-    screen.style.setProperty('max-height', screenH + 'px', 'important');
-    screen.style.setProperty('width', screenW + 'px', 'important');
-    screen.style.setProperty('min-width', screenW + 'px', 'important');
-    screen.style.setProperty('max-width', screenW + 'px', 'important');
-  }
+  // Use requestAnimationFrame to ensure layout is complete
+  var doPhoneSize = function() {
+    var wb2 = d.querySelector('.teardown-workbench');
+    var phone = d.querySelector('.teardown-phone');
+    var screen = d.querySelector('.teardown-screen');
+    if (wb2 && phone && screen) {
+      var wbH = wb2.getBoundingClientRect().height;
+      if (wbH < 100) {
+        // Layout not ready, retry
+        requestAnimationFrame(doPhoneSize);
+        return;
+      }
+      // Phone frame includes padding/border (~24px), reserve 60px margin for safety
+      var maxPhoneH = wbH - 60;
+      var phoneH = Math.max(360, Math.min(600, maxPhoneH));
+      // Screen is phone minus frame (~24px)
+      var screenH = phoneH - 24;
+      var screenW = Math.round(screenH * 0.47);
+      screen.style.setProperty('height', screenH + 'px', 'important');
+      screen.style.setProperty('min-height', screenH + 'px', 'important');
+      screen.style.setProperty('max-height', screenH + 'px', 'important');
+      screen.style.setProperty('width', screenW + 'px', 'important');
+      screen.style.setProperty('min-width', screenW + 'px', 'important');
+      screen.style.setProperty('max-width', screenW + 'px', 'important');
+      // Also constrain the phone frame itself
+      phone.style.setProperty('max-height', phoneH + 'px', 'important');
+    }
+  };
+  requestAnimationFrame(doPhoneSize);
   document.documentElement.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('margin', '0', 'important');
