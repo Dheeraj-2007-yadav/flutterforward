@@ -581,27 +581,31 @@ function teardownIndexView() {
 }
 function tdPanel() {
   const node = tdSelectedNode();
-  if (!node) return `<aside class="teardown-panel is-empty"><div><h3>Select a component</h3><p>Tap any part of the app to see the Flutter widget behind it.</p></div></aside>`;
-  // Get the preview HTML (clone of the selected region)
-  var previewHtml = '';
-  var region = document.querySelector('.td-region[data-node="' + node.id + '"]');
-  if (region) {
-    var clone = region.cloneNode(true);
-    clone.removeAttribute('data-node');
-    clone.classList.remove('td-region', 'td-active');
-    // Remove hotspot numbers from preview
-    var hotspots = clone.querySelectorAll('.td-hotspot');
-    for (var i = 0; i < hotspots.length; i++) hotspots[i].remove();
-    previewHtml = clone.outerHTML;
-  }
+  if (!node) return `<aside class="teardown-panel is-empty"><div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div></aside>`;
+  const path = tdPath(teardownState.app, node.id);
+  const crumbs = path.map(p => esc(p.name)).join(' <span>›</span> ');
+  // Parse properties from code (named parameters)
+  var props = [];
+  try {
+    var codeLines = node.code.split('\n');
+    for (var i = 0; i < codeLines.length; i++) {
+      var m = codeLines[i].match(/^\s*(\w+)\s*:/);
+      if (m && ['child','children','builder'].indexOf(m[1]) === -1) props.push(m[1]);
+    }
+  } catch(e) {}
+  props = props.slice(0, 6); // limit
+  var propsHtml = props.length ? '<div class="td-fi-props"><div class="td-fi-sec-t">Properties</div>' + props.map(function(p){
+    return '<div class="td-fi-prop"><span class="td-fi-pname">' + esc(p) + '</span></div>';
+  }).join('') + '</div>' : '';
   return `<aside class="teardown-panel" aria-live="polite">`
-    + `<h2 class="td-inspector-name">${esc(node.name)}</h2>`
-    + `<p class="td-inspector-desc">${esc(node.what)}</p>`
-    + `<div class="td-inspector-preview">${previewHtml}</div>`
-    + `<div class="td-inspector-code-head"><span>Code</span><button class="td-inspector-copy" data-teardown-copy>Copy</button></div>`
-    + `<pre class="td-inspector-code"><code>${esc(node.code)}</code></pre>`
-    + `<h3 class="td-inspector-props-title">Properties</h3>`
-    + `<div class="td-inspector-props"><div class="td-inspector-prop"><span class="td-prop-name">why</span><span class="td-prop-desc">${esc(node.why)}</span></div></div>`
+    + `<div class="td-fi-head"><span class="td-fi-icon">${esc(node.name.slice(0,1))}</span>`
+    + `<div><h2 class="td-fi-name">${esc(node.name)}</h2><div class="td-fi-crumb">${crumbs}</div></div></div>`
+    + `<div class="td-fi-card"><p class="td-fi-desc">${esc(node.what)}</p>`
+    + `<div class="td-fi-div"></div>`
+    + `<div class="td-fi-why"><span class="td-fi-why-k">Why it's here</span><span>${esc(node.why)}</span></div>`
+    + propsHtml + `</div>`
+    + `<div class="td-fi-code-head"><span>Code</span><button class="td-fi-copy" data-teardown-copy>Copy</button></div>`
+    + `<pre class="td-fi-code"><code>${esc(node.code)}</code></pre>`
     + `</aside>`;
 }
 function tdDetailView() {
@@ -755,7 +759,7 @@ tdPanel = function() {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-tree-layout"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdTreeMarkup()}${tdPanel()}</div>`;
+  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdPanel()}</div>`;
 };
 
 function tdApplyView() {
@@ -832,6 +836,99 @@ tdOpen = function(key) {
 };
 tdBack = function(){teardownState={app:null,selected:null,bounds:false,collapsed:new Set(),view:null};document.body.classList.remove("td-sheet-open");tdRender(false);window.scrollTo({top:0});};
 tdSelect = function(id){if(!teardownState.app||!tdIndex(TEARDOWNS[teardownState.app]).map[id])return;teardownState.selected=id;tdSyncSelection();};
+function tdShowPicker(stack, x, y) {
+  // Visual pop-out: each widget lifts out, filtered and uniformly sized
+  tdDismissPopout();
+  // Filter out huge parents (more than 40% of phone area) - not what user wants
+  var phone = document.querySelector(".teardown-phone");
+  var phoneArea = phone ? phone.getBoundingClientRect().width * phone.getBoundingClientRect().height : 100000;
+  var filtered = stack.filter(function(r){
+    var rect = r.getBoundingClientRect();
+    var area = rect.width * rect.height;
+    return area < phoneArea * 0.4;
+  });
+  if (!filtered.length) filtered = stack.slice(0, 3); // fallback to 3 smallest
+  // Sort by size (smallest first)
+  filtered.sort(function(a, b){
+    var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    return (ra.width * ra.height) - (rb.width * rb.height);
+  });
+  var layer = document.createElement("div");
+  layer.id = "td-popout-layer";
+  layer.innerHTML = '<div class="td-popout-backdrop"></div><div class="td-popout-stage"></div>';
+  document.body.appendChild(layer);
+  var stage = layer.querySelector(".td-popout-stage");
+  var idx = tdIndex(TEARDOWNS[teardownState.app]);
+  var n = filtered.length;
+  filtered.forEach(function(r, i){
+    var nodeId = r.dataset.node;
+    var node = idx.map[nodeId];
+    var name = node ? node.name : nodeId;
+    var rect = r.getBoundingClientRect();
+    var clone = r.cloneNode(true);
+    clone.removeAttribute("data-node");
+    clone.classList.remove("td-region", "td-active");
+    clone.querySelectorAll(".td-hotspot, .td-pick-badge").forEach(function(h){ h.remove(); });
+    var cs = window.getComputedStyle(r);
+    // Intelligent background: find natural bg by walking up DOM
+    var natBg = cs.backgroundColor;
+    var p = r.parentElement;
+    var depth = 0;
+    while ((natBg === 'rgba(0, 0, 0, 0)' || natBg === 'transparent') && p && depth < 8) {
+      var pcs = window.getComputedStyle(p);
+      if (pcs.backgroundColor && pcs.backgroundColor !== 'rgba(0, 0, 0, 0)' && pcs.backgroundColor !== 'transparent') {
+        natBg = pcs.backgroundColor;
+        break;
+      }
+      p = p.parentElement;
+      depth++;
+    }
+    // Fallback: contrast-based on text color
+    if (natBg === 'rgba(0, 0, 0, 0)' || natBg === 'transparent') {
+      var tc = cs.color;
+      // Parse rgb to determine lightness
+      var m = tc.match(/\d+/g);
+      if (m && m.length >= 3) {
+        var lum = (0.299 * parseInt(m[0]) + 0.587 * parseInt(m[1]) + 0.114 * parseInt(m[2])) / 255;
+        natBg = lum > 0.6 ? '#1a1d21' : '#ffffff'; // dark text -> light bg, light text -> dark bg
+      } else {
+        natBg = '#ffffff';
+      }
+    }
+    // Uniform scale: fit in 140px box
+    var scale = Math.min(140 / Math.max(rect.width, 1), 100 / Math.max(rect.height, 1), 1);
+    clone.style.cssText += ";color:" + cs.color + ";background-color:" + cs.backgroundColor + ";font-size:" + cs.fontSize + ";font-family:" + cs.fontFamily + ";border-radius:" + cs.borderRadius + ";transform:scale(" + scale + ");transform-origin:center;";
+    var item = document.createElement("div");
+    item.className = "td-popout-item";
+    item.dataset.popoutNode = nodeId;
+    // Horizontal centered layout
+    var totalW = n * 180;
+    var startX = (window.innerWidth - totalW) / 2 + 90;
+    item.style.left = (startX + i * 180) + "px";
+    item.style.top = (window.innerHeight / 2) + "px";
+    item.innerHTML = '<div class="td-popout-box" style="background:' + natBg + '"><div class="td-popout-widget"></div></div><div class="td-popout-label">' + esc(name) + '</div>';
+    item.querySelector(".td-popout-widget").appendChild(clone);
+    stage.appendChild(item);
+    item.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      tdDismissPopout();
+      tdSelect(nodeId);
+    });
+  });
+  layer.querySelector(".td-popout-backdrop").addEventListener("click", tdDismissPopout);
+}
+function tdHighlightRegion(nodeId, on) {
+  var root = document.getElementById("teardowns-root");
+  if (!root) return;
+  var region = root.querySelector('.td-region[data-node="' + nodeId + '"]');
+  if (region) region.classList.toggle("td-highlight", on);
+}
+function tdDismissPopout() {
+  var l = document.getElementById("td-popout-layer");
+  if (l) l.remove();
+  // Remove numbered badges
+  document.querySelectorAll(".td-pick-badge").forEach(function(b){ b.remove(); });
+}
 tdClose = function(){teardownState.selected=null;document.body.classList.remove("td-sheet-open");tdSyncSelection();};
 tdToggleBounds = function(){teardownState.bounds=!teardownState.bounds;const stage=$(".teardown-phone-stage"),btn=$("[data-teardown-bounds]");if(stage)stage.classList.toggle("show-bounds",teardownState.bounds);if(btn)btn.setAttribute("aria-pressed",String(teardownState.bounds));};
 function tdToggleBranch(id){
@@ -874,12 +971,28 @@ document.addEventListener("click", function(e){
   if (open && typeof tdOpen === "function") { e.preventDefault(); tdOpen(open.dataset.teardownOpen); return; }
   var sel = t.closest("[data-teardown-select]");
   if (sel && typeof tdSelect === "function") { e.preventDefault(); e.stopPropagation(); tdSelect(sel.dataset.teardownSelect); return; }
-  // Tapping a component region (not just the hotspot number)
+  // Tapping shows picker with all widgets at that point
   var region = t.closest(".td-region[data-node]");
   if (region && typeof tdSelect === "function") {
     var root = document.getElementById("teardowns-root");
-    if (root && root.contains(region)) { e.preventDefault(); e.stopPropagation(); tdSelect(region.dataset.node); return; }
+    if (root && root.contains(region)) {
+      e.preventDefault(); e.stopPropagation();
+      // Find all regions at tap point, innermost first
+      var stack = [];
+      try {
+        var els = document.elementsFromPoint(e.clientX, e.clientY);
+        for (var i = 0; i < els.length; i++) {
+          var r = els[i].closest ? els[i].closest(".td-region[data-node]") : null;
+          if (r && root.contains(r) && stack.indexOf(r) === -1) stack.push(r);
+        }
+      } catch(err) {}
+      if (!stack.length) stack = [region];
+      // Show pop-out with all widgets at tap point (even if just one)
+      tdShowPicker(stack, e.clientX, e.clientY);
+      return;
+    }
   }
+  // Dismiss pop-out when tapping elsewhere (handled by backdrop)
   var close = t.closest("[data-teardown-close]");
   if (close && typeof tdClose === "function") { tdClose(); return; }
   var bounds = t.closest("[data-teardown-bounds]");
