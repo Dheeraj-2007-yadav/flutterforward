@@ -611,32 +611,33 @@ const TD_PROP_DESCS = {
 function tdPanel() {
   const node = tdSelectedNode();
   if (!node) return `<aside class="teardown-panel is-empty"><div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div></aside>`;
+  const item = TEARDOWNS[teardownState.app];
   const path = tdPath(teardownState.app, node.id);
-  const crumbs = path.map(p => esc(p.name)).join(' <span>›</span> ');
-  // Parse properties from code (named parameters)
+  const crumbs = path.map(p => esc(p.name)).join('<span>›</span>');
+  // Parse properties with values from code
   var props = [];
   try {
     var codeLines = node.code.split('\n');
     for (var i = 0; i < codeLines.length; i++) {
-      var m = codeLines[i].match(/^\s*(\w+)\s*:/);
-      if (m && ['child','children','builder'].indexOf(m[1]) === -1) props.push(m[1]);
+      var m = codeLines[i].match(/^\s*(\w+)\s*:\s*(.+?),?\s*$/);
+      if (m && ['child','children','builder'].indexOf(m[1]) === -1) {
+        props.push({ name: m[1], value: m[2].replace(/,$/, '') });
+      }
     }
   } catch(e) {}
-  props = props.slice(0, 6); // limit
-  var propsHtml = props.length ? '<div class="td-fi-props"><div class="td-fi-sec-t">Properties</div>' + props.map(function(p){
-    var d = TD_PROP_DESCS[p] || '';
-    return '<div class="td-fi-prop"><span class="td-fi-pname">' + esc(p) + '</span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
-  }).join('') + '</div>' : '';
+  props = props.slice(0, 8);
+  var propsHtml = props.length ? '<div class="td-fi-sec-t">Properties</div>' + props.map(function(p){
+    var d = (typeof TD_PROP_DESCS !== 'undefined' && TD_PROP_DESCS[p.name]) || '';
+    return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
+  }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
-    + `<button class="td-fi-close" data-teardown-close aria-label="Close panel">×</button>`
-    + `<div class="td-fi-head"><span class="td-fi-icon">${esc(node.name.slice(0,1))}</span>`
-    + `<div><h2 class="td-fi-name">${esc(node.name)}</h2><div class="td-fi-crumb">${crumbs}</div></div></div>`
-    + `<div class="td-fi-card"><p class="td-fi-desc">${esc(node.what)}</p>`
-    + `<div class="td-fi-div"></div>`
-    + `<div class="td-fi-why"><span class="td-fi-why-k">Why it's here</span><span>${esc(node.why)}</span></div>`
-    + propsHtml + `</div>`
-    + `<div class="td-fi-code-head"><span>Code</span><button class="td-fi-copy" data-teardown-copy>Copy</button></div>`
-    + `<pre class="td-fi-code"><code>${esc(node.code)}</code></pre>`
+    + `<div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div>`
+    + `<div class="td-fi-crumb">${crumbs}</div>`
+    + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
+    + `<p class="td-fi-desc">${esc(node.what)} ${esc(node.why)}</p>`
+    + propsHtml
+    + `<div class="td-fi-code-wrap"><div class="td-fi-code-head"><span>Example</span><button class="td-fi-copy" data-teardown-copy>Copy</button></div>`
+    + `<pre class="td-fi-code"><code>${esc(node.code)}</code></pre></div>`
     + `</aside>`;
 }
 function tdDetailView() {
