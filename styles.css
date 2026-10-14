@@ -2414,13 +2414,13 @@ body.home-page .wrap { padding-top: 12px; }
     flex:none;
   }
   .teardown-detail .teardown-screen{
-    height:600px !important;
-    min-height:600px !important;
-    max-height:600px !important;
-    width:280px !important;
-    min-width:280px !important;
-    max-width:280px !important;
-    aspect-ratio:auto !important;
+    height:min(600px, calc(100dvh - 220px)) !important;
+    min-height:0 !important;
+    max-height:calc(100dvh - 220px) !important;
+    aspect-ratio:9/19.3 !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:100% !important;
   }
   .teardown-detail .teardown-screen{
     height:auto;
@@ -2517,13 +2517,8 @@ body.home-page .wrap { padding-top: 12px; }
     flex:none;
   }
   .teardown-detail .teardown-screen{
-    height:690px !important;
-    min-height:690px !important;
-    max-height:690px !important;
-    width:320px !important;
-    min-width:320px !important;
-    max-width:320px !important;
-    aspect-ratio:auto !important;
+    aspect-ratio:9/19.3 !important;
+    max-height:100% !important;
   }
 }
 /* Desktop: phone fills its column, height-constrained to viewport */
