@@ -621,7 +621,10 @@ function tdPanel() {
     for (var i = 0; i < codeLines.length; i++) {
       var m = codeLines[i].match(/^\s*(\w+)\s*:\s*(.+?),?\s*$/);
       if (m && ['child','children','builder'].indexOf(m[1]) === -1) {
-        props.push({ name: m[1], value: m[2].replace(/,$/, '') });
+        var val = m[2].replace(/,$/, '').trim();
+        // Truncate long values
+        if (val.length > 40) val = val.substring(0, 37) + '...';
+        props.push({ name: m[1], value: val });
       }
     }
   } catch(e) {}
@@ -785,7 +788,7 @@ function tdTreeMarkup() {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdPanel()}</div></div>`;
+  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
 };
 
 function tdApplyView() {
