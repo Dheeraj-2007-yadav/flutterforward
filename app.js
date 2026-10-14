@@ -697,7 +697,8 @@ function tdCopy() {
   else { const ta=document.createElement("textarea");ta.value=node.code;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}ta.remove();done(); }
 }
 function initTeardowns() {
-  const root=$("#teardowns-root"); if(!root)return;
+  const root=$("#teardowns-root"); if(!root||root._tdInit)return;
+  root._tdInit=true;
   root.addEventListener("click",e=>{
     const open=e.target.closest("[data-teardown-open]"); if(open){tdOpen(open.dataset.teardownOpen);return;}
     if(e.target.closest("[data-teardown-index]")){tdBack();return;}
@@ -851,7 +852,7 @@ tdRender = function(keepView) {
   const root=$("#teardowns-root");if(!root)return;
   const previous=keepView?teardownState.view:null;
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
-  teardownState.view=previous;tdPrepare();
+  teardownState.view=previous;tdPrepare();initTeardowns();
   if(teardownState.app&&!previous)requestAnimationFrame(tdFitTree);
 };
 tdOpen = function(key) {
