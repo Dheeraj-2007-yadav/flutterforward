@@ -656,7 +656,7 @@ function tdPanel() {
 }
 function tdDetailView() {
   const item = TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Tap a numbered region, then follow its child widgets deeper.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
+  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><h2>${esc(item.screen)}</h2></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
@@ -799,7 +799,7 @@ function tdTreeMarkup() {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
+  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><h2>${esc(item.screen)}</h2></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
 };
 
 function tdApplyView() {

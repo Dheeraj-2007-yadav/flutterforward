@@ -2467,3 +2467,19 @@ body.home-page .wrap { padding-top: 12px; }
 [data-theme=dark] .td-fi-code .tk-type{color:#7dd3fc;}
 [data-theme=dark] .td-fi-code .tk-com{color:#7c8aa0;}
 
+/* === Teardown detail: compact header + one-frame (2026-10-14) ===
+   Header trimmed to title-only; workbench fits viewport. */
+@media (min-width:901px){
+  .teardown-detail .teardown-detail-head{ padding:12px 0 0; margin-bottom:4px; }
+  .teardown-detail .teardown-detail-title{ margin-bottom:12px; }
+  .teardown-detail .teardown-detail-title h2{ font-size:26px; margin:0; }
+  .teardown-detail .teardown-workbench{
+    padding-bottom:20px;
+  }
+}
+/* Gentle proportional phone scaling only on short desktop viewports */
+@media (min-width:901px) and (max-height:760px){
+  .teardown-detail .teardown-phone{
+    zoom:calc((100vh - 170px) / 607px);
+  }
+}
