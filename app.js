@@ -581,11 +581,28 @@ function teardownIndexView() {
 }
 function tdPanel() {
   const node = tdSelectedNode();
-  if (!node) return `<aside class="teardown-panel is-empty"><div><span class="teardown-empty-icon">${TD_ICON.grid}</span><h3>Choose a numbered area</h3><p>Tap part of the app to see the Flutter widget behind it, why it fits, and how it is written.</p></div></aside>`;
-  const item = TEARDOWNS[teardownState.app], path = tdPath(teardownState.app,node.id);
-  const crumbs = path.map((part,i)=>`${i?'<span>›</span>':''}<button data-teardown-select="${part.id}"${part.id===node.id?' aria-current="page"':''}>${esc(part.name)}</button>`).join("");
-  const children = node.children.map((child,i)=>`<button class="teardown-child-chip" data-teardown-select="${child.id}" style="animation-delay:${i*45}ms">${esc(child.name)}</button>`).join("");
-  return `<aside class="teardown-panel" aria-live="polite"><div class="teardown-card-top"><span class="teardown-card-kicker">${esc(item.app)} · selected widget</span><button class="teardown-card-close" data-teardown-close aria-label="Close widget card">×</button></div><nav class="teardown-breadcrumb" aria-label="Widget breadcrumb">${crumbs}</nav><div class="teardown-widget-title"><span class="teardown-widget-mark">${esc(node.name.slice(0,3))}</span><span><h3>${esc(node.name)}</h3><p>${node.children.length} child widget${node.children.length===1?'':'s'}</p></span></div><div class="teardown-facts"><div class="teardown-fact"><b>What it does</b><p>${esc(node.what)}</p></div><div class="teardown-fact"><b>Why it's here</b><p>${esc(node.why)}</p></div></div>${node.children.length?`<div class="teardown-children"><b>Child widgets</b><div class="teardown-child-chips">${children}</div></div>`:''}<div class="teardown-code"><div class="teardown-code-head"><span>Real Dart</span><button class="teardown-copy" data-teardown-copy>Copy code</button></div><pre><code>${esc(node.code)}</code></pre></div></aside>`;
+  if (!node) return `<aside class="teardown-panel is-empty"><div><h3>Select a component</h3><p>Tap any part of the app to see the Flutter widget behind it.</p></div></aside>`;
+  // Get the preview HTML (clone of the selected region)
+  var previewHtml = '';
+  var region = document.querySelector('.td-region[data-node="' + node.id + '"]');
+  if (region) {
+    var clone = region.cloneNode(true);
+    clone.removeAttribute('data-node');
+    clone.classList.remove('td-region', 'td-active');
+    // Remove hotspot numbers from preview
+    var hotspots = clone.querySelectorAll('.td-hotspot');
+    for (var i = 0; i < hotspots.length; i++) hotspots[i].remove();
+    previewHtml = clone.outerHTML;
+  }
+  return `<aside class="teardown-panel" aria-live="polite">`
+    + `<h2 class="td-inspector-name">${esc(node.name)}</h2>`
+    + `<p class="td-inspector-desc">${esc(node.what)}</p>`
+    + `<div class="td-inspector-preview">${previewHtml}</div>`
+    + `<div class="td-inspector-code-head"><span>Code</span><button class="td-inspector-copy" data-teardown-copy>Copy</button></div>`
+    + `<pre class="td-inspector-code"><code>${esc(node.code)}</code></pre>`
+    + `<h3 class="td-inspector-props-title">Properties</h3>`
+    + `<div class="td-inspector-props"><div class="td-inspector-prop"><span class="td-prop-name">why</span><span class="td-prop-desc">${esc(node.why)}</span></div></div>`
+    + `</aside>`;
 }
 function tdDetailView() {
   const item = TEARDOWNS[teardownState.app];

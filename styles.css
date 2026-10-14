@@ -1870,3 +1870,29 @@ body.home-page .wrap { padding-top: 12px; }
 }
 
 </style>
+
+/* Video-pattern inspector panel */
+.teardown-panel { background: #1a1f2e; border-radius: 16px; padding: 28px; color: #e8edf3; }
+[data-theme="light"] .teardown-panel { background: #f5f7fa; color: #1a2332; border: 1px solid #e8edf2; }
+.td-inspector-name { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.td-inspector-desc { font-size: 15px; color: #9aa8bc; margin-bottom: 20px; line-height: 1.5; }
+[data-theme="light"] .td-inspector-desc { color: #5b6b7f; }
+.td-inspector-preview { background: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 24px; color: #1a2332; overflow: hidden; }
+.td-inspector-code-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.td-inspector-code-head span { font-size: 15px; font-weight: 600; }
+.td-inspector-copy { background: #2a3340; border: 1px solid #3a4454; color: #e8edf3; padding: 6px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+[data-theme="light"] .td-inspector-copy { background: #ffffff; border-color: #e8edf2; color: #1a2332; }
+.td-inspector-code { background: #0d1117; border-radius: 12px; padding: 20px; font-family: 'SF Mono', Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; margin-bottom: 24px; color: #e8edf3; }
+[data-theme="light"] .td-inspector-code { background: #1a2332; }
+.td-inspector-props-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+.td-inspector-props { background: #222839; border-radius: 12px; overflow: hidden; }
+[data-theme="light"] .td-inspector-props { background: #ffffff; border: 1px solid #e8edf2; }
+.td-inspector-prop { display: flex; gap: 16px; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+[data-theme="light"] .td-inspector-prop { border-bottom-color: #f0f2f5; }
+.td-inspector-prop:last-child { border-bottom: none; }
+.td-prop-name { color: #6aa8ff; font-family: monospace; font-size: 13px; min-width: 120px; }
+.td-prop-desc { color: #9aa8bc; font-size: 13px; line-height: 1.5; }
+[data-theme="light"] .td-prop-desc { color: #5b6b7f; }
+.teardown-panel.is-empty { display: flex; align-items: center; justify-content: center; min-height: 400px; text-align: center; }
+.teardown-panel.is-empty h3 { font-size: 20px; margin-bottom: 8px; }
+.teardown-panel.is-empty p { color: #9aa8bc; font-size: 14px; }
