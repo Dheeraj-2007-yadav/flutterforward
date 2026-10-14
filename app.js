@@ -579,6 +579,35 @@ function tdSelectedNode() { return teardownState.app && teardownState.selected ?
 function teardownIndexView() {
   return `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}"><span class="teardown-glyph ${item.glyphClass}" style="--glyph:${item.accent}">${item.glyph}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div><p class="teardown-note">Each teardown is hand-built from a familiar interface so the widget choices, hierarchy, and code stay dependable for learning.</p>`;
 }
+
+const TD_PROP_DESCS = {
+  padding: 'Empty space inside the widget, around its child.',
+  margin: 'Empty space outside the widget.',
+  decoration: 'Visual styling like color, shape, shadows, borders.',
+  color: 'The background color of the widget.',
+  borderRadius: 'Rounds the corners of the widget.',
+  child: 'The single widget placed inside this one.',
+  children: 'The list of widgets placed inside this one.',
+  alignment: 'Where the child sits within available space.',
+  width: 'Fixed horizontal size in logical pixels.',
+  height: 'Fixed vertical size in logical pixels.',
+  mainAxisAlignment: 'How children are spaced along the main axis.',
+  crossAxisAlignment: 'How children align across the main axis.',
+  onPressed: 'Called when the user taps the widget.',
+  icon: 'The icon displayed inside the button.',
+  title: 'The main text shown in the bar.',
+  actions: 'Widgets shown at the end of the bar.',
+  leading: 'Widget shown at the start, often a back button.',
+  pinned: 'Whether the bar stays visible when scrolled.',
+  floating: 'Whether the bar reappears when scrolling up.',
+  expandedHeight: 'Height of the bar when fully expanded.',
+  fit: 'How the image fills its box.',
+  radius: 'Size of the circular avatar.',
+  backgroundImage: 'The image shown inside the circle.',
+  data: 'The text string to display.',
+  style: 'Font, size, color and weight of the text.',
+};
+
 function tdPanel() {
   const node = tdSelectedNode();
   if (!node) return `<aside class="teardown-panel is-empty"><div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div></aside>`;
@@ -595,9 +624,11 @@ function tdPanel() {
   } catch(e) {}
   props = props.slice(0, 6); // limit
   var propsHtml = props.length ? '<div class="td-fi-props"><div class="td-fi-sec-t">Properties</div>' + props.map(function(p){
-    return '<div class="td-fi-prop"><span class="td-fi-pname">' + esc(p) + '</span></div>';
+    var d = TD_PROP_DESCS[p] || '';
+    return '<div class="td-fi-prop"><span class="td-fi-pname">' + esc(p) + '</span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') + '</div>' : '';
   return `<aside class="teardown-panel" aria-live="polite">`
+    + `<button class="td-fi-close" data-teardown-close aria-label="Close panel">×</button>`
     + `<div class="td-fi-head"><span class="td-fi-icon">${esc(node.name.slice(0,1))}</span>`
     + `<div><h2 class="td-fi-name">${esc(node.name)}</h2><div class="td-fi-crumb">${crumbs}</div></div></div>`
     + `<div class="td-fi-card"><p class="td-fi-desc">${esc(node.what)}</p>`
@@ -610,7 +641,7 @@ function tdPanel() {
 }
 function tdDetailView() {
   const item = TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Tap a numbered region, then follow its child widgets deeper.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div>`;
+  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Tap a numbered region, then follow its child widgets deeper.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div>`;
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
@@ -621,13 +652,13 @@ function tdPrepare() {
   const root = $("#teardowns-root"); if (!root || !teardownState.app) return;
   const item = TEARDOWNS[teardownState.app], stage = root.querySelector(".teardown-phone-stage");
   root.querySelectorAll(".td-region").forEach(region => {
-    const id = region.dataset.node, interactive = teardownState.bounds || item.hotspots.includes(id);
+    const id = region.dataset.node, interactive = false || item.hotspots.includes(id);
     if (interactive) { region.setAttribute("role","button"); region.setAttribute("tabindex","0"); region.setAttribute("aria-label",`Inspect ${region.dataset.widget}`); }
     if (item.hotspots.includes(id) && !region.querySelector(":scope > .td-hotspot")) {
       const b = document.createElement("span"); b.className = "td-hotspot"; b.textContent = String(item.hotspots.indexOf(id)+1); b.dataset.teardownSelect = id; b.setAttribute("aria-hidden","true"); region.appendChild(b);
     }
   });
-  if (stage) stage.classList.toggle("show-bounds",teardownState.bounds);
+  if (stage) stage.classList.toggle("show-bounds",false);
   const active = root.querySelector(`[data-node="${teardownState.selected||''}"]`); if (active) requestAnimationFrame(()=>active.classList.add("td-active"));
   document.body.classList.toggle("td-sheet-open",!!teardownState.selected && window.matchMedia("(max-width: 860px)").matches);
 }
@@ -658,7 +689,7 @@ function tdBack() {
 }
 function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownState.app]).map[id])return; teardownState.selected=id; tdRender(); }
 function tdClose() { teardownState.selected=null; document.body.classList.remove("td-sheet-open"); tdRender(); }
-function tdToggleBounds() { teardownState.bounds=!teardownState.bounds; tdRender(); }
+function tdToggleBounds() {}
 function tdCopy() {
   const node=tdSelectedNode(); if(!node)return;
   const done=()=>{const b=$("[data-teardown-copy]");if(b){b.textContent="Copied ✓";b.classList.add("ok");window.setTimeout(()=>{if(document.contains(b)){b.textContent="Copy code";b.classList.remove("ok");}},1300);}};
@@ -674,7 +705,7 @@ function initTeardowns() {
     if(e.target.closest("[data-teardown-bounds]")){tdToggleBounds();return;}
     if(e.target.closest("[data-teardown-copy]")){tdCopy();return;}
     const select=e.target.closest("[data-teardown-select]"); if(select){e.preventDefault();e.stopPropagation();tdSelect(select.dataset.teardownSelect);return;}
-    if(teardownState.app){const hit=e.target.closest(teardownState.bounds?".td-region":".td-region[data-node]");if(hit&&root.contains(hit)&&TEARDOWNS[teardownState.app].hotspots.includes(hit.dataset.node)){e.preventDefault();tdSelect(hit.dataset.node);}}
+    if(teardownState.app){const hit=e.target.closest(false?".td-region":".td-region[data-node]");if(hit&&root.contains(hit)&&TEARDOWNS[teardownState.app].hotspots.includes(hit.dataset.node)){e.preventDefault();tdSelect(hit.dataset.node);}}
   });
   root.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches(".td-region[tabindex]")){e.preventDefault();tdSelect(e.target.dataset.node);}});
   onViewCleanup(()=>document.body.classList.remove("td-sheet-open"));
@@ -753,7 +784,7 @@ function tdTreeMarkup() {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><button class="teardown-bounds" data-teardown-bounds aria-pressed="${teardownState.bounds}"><span>Show all bounds</span><span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span></button></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage${teardownState.bounds?' show-bounds':''}"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdPanel()}</div>`;
+  return `<div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a></div><div class="teardown-detail-title"><span class="teardown-detail-kicker">${esc(item.app)} teardown</span><h2>${esc(item.screen)}</h2><p>Explore the full structural tree. Select any widget to see its role and Dart code; the matching phone region highlights automatically.</p></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div><p class="teardown-phone-hint">Tap a region to find it in the tree</p></div>${tdPanel()}</div>`;
 };
 
 function tdApplyView() {
@@ -813,7 +844,7 @@ tdPrepare = function() {
   root.querySelectorAll(".td-region[data-node]").forEach(region=>{
     region.setAttribute("role","button");region.setAttribute("tabindex","0");region.setAttribute("aria-label",`Find ${region.dataset.widget} in widget tree`);
   });
-  const stage=root.querySelector(".teardown-phone-stage");if(stage)stage.classList.toggle("show-bounds",teardownState.bounds);
+  const stage=root.querySelector(".teardown-phone-stage");if(stage)stage.classList.toggle("show-bounds",false);
   tdBindCanvas();tdApplyView();tdSyncSelection();
 };
 tdRender = function(keepView) {
@@ -924,7 +955,7 @@ function tdDismissPopout() {
   document.querySelectorAll(".td-pick-badge").forEach(function(b){ b.remove(); });
 }
 tdClose = function(){teardownState.selected=null;document.body.classList.remove("td-sheet-open");tdSyncSelection();};
-tdToggleBounds = function(){teardownState.bounds=!teardownState.bounds;const stage=$(".teardown-phone-stage"),btn=$("[data-teardown-bounds]");if(stage)stage.classList.toggle("show-bounds",teardownState.bounds);if(btn)btn.setAttribute("aria-pressed",String(teardownState.bounds));};
+tdToggleBounds = function(){};
 function tdToggleBranch(id){
   const node=tdIndex(TEARDOWNS[teardownState.app]).map[id];if(!node||!node.children.length)return;
   if(teardownState.collapsed.has(id)){teardownState.collapsed.delete(id);teardownState.animateFrom=id;tdRender(true);return;}
@@ -989,7 +1020,7 @@ document.addEventListener("click", function(e){
   // Dismiss pop-out when tapping elsewhere (handled by backdrop)
   var close = t.closest("[data-teardown-close]");
   if (close && typeof tdClose === "function") { tdClose(); return; }
-  var bounds = t.closest("[data-teardown-bounds]");
+  
   if (bounds && typeof tdToggleBounds === "function") { tdToggleBounds(); return; }
   var copy = t.closest("[data-teardown-copy]");
   if (copy && typeof tdCopy === "function") { tdCopy(); return; }
