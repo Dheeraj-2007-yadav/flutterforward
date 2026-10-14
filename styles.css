@@ -2461,7 +2461,7 @@ body.home-page .wrap { padding-top: 12px; }
 [data-theme=dark] .td-fi-code .tk-com{color:#7c8aa0;}
 
 /* === Teardown detail: one-frame layout (2026-10-14) ===
-   Header compact; workbench fills viewport; panel pulled up. */
+   Panel box fits viewport; only panel content scrolls. */
 @media (min-width:901px){
   .teardown-detail{
     height:calc(100vh - 64px);
@@ -2477,18 +2477,33 @@ body.home-page .wrap { padding-top: 12px; }
   .teardown-detail .teardown-workbench{
     flex:1;
     min-height:0;
-    padding-bottom:16px;
-    align-items:start;
-    overflow:hidden;
-  }
-  /* Pull panel up to use header space efficiently */
-  .teardown-detail .teardown-panel{
-    margin-top:-10px;
     max-height:100%;
+    padding-bottom:16px;
+    align-items:stretch;
+    overflow:hidden;
+    display:grid;
+  }
+  /* Panel: box fills workbench height, content scrolls inside */
+  .teardown-detail .teardown-panel{
+    height:100%;
+    max-height:100%;
+    min-height:0;
     overflow-y:auto;
+    overflow-x:hidden;
   }
   .teardown-detail .teardown-phone-stage{
     position:static;
+    height:100%;
+    max-height:100%;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  /* Phone fills vertical space */
+  .teardown-detail .teardown-phone{
+    width:min(100%, 380px, calc((100vh - 220px) * 0.56));
     max-height:100%;
   }
 }
