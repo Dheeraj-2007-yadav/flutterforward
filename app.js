@@ -634,8 +634,7 @@ function tdPanel() {
     return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
-    + `<button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button>`
-    + `<div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div>`
+    + `<div class="td-panel-head"><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
     + `<div class="td-fi-crumb">${crumbs}</div>`
     + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
     + `<p class="td-fi-desc">${esc(node.what)} ${esc(node.why)}</p>`
@@ -891,7 +890,7 @@ function tdShowPicker(stack, x, y) {
   var stage = layer.querySelector(".td-popout-stage");
   var idx = tdIndex(TEARDOWNS[teardownState.app]);
   var n = filtered.length;
-  if (window.innerWidth < 760 && n > 3) stage.classList.add("td-vertical");
+  if (window.innerWidth < 760) stage.classList.add("td-vertical");
   filtered.forEach(function(r, i){
     var nodeId = r.dataset.node;
     var node = idx.map[nodeId];
@@ -936,9 +935,9 @@ function tdShowPicker(stack, x, y) {
     var item = document.createElement("div");
     item.className = "td-popout-item";
     item.dataset.popoutNode = nodeId;
-    // Smart layout: horizontal row, or vertical stack on mobile when crowded
+    // Smart layout: vertical list on mobile, horizontal row on desktop
     var isMobile = window.innerWidth < 760;
-    var useVertical = isMobile && n > 3;
+    var useVertical = isMobile; // vertical list on mobile, horizontal row on desktop
     if (useVertical) {
       // Vertical stack, centered, scrollable
       item.style.left = "50%";

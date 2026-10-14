@@ -2339,22 +2339,47 @@ body.home-page .wrap { padding-top: 12px; }
   max-height:calc(100dvh - var(--nav-h,64px) - 48px);
   scrollbar-width:thin;
 }
-/* Panel close button (wired to the existing tdClose handler).
-   Sticky so it stays reachable while the inspector scrolls. */
-.teardown-detail .teardown-kicker{ padding-right:44px; }
+/* Close button: sits in the panel's header row, vertically centered with
+   the kicker — deliberately placed on the box, never floating. */
+.teardown-detail .td-panel-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  margin-bottom:16px;
+}
+.teardown-detail .teardown-kicker{ margin-bottom:0; padding-right:0; min-width:0; }
 .td-panel-close{
-  position:sticky; top:14px; z-index:3;
-  width:34px; height:34px; border-radius:50%;
+  position:static;
+  flex:none;
+  width:36px; height:36px;
+  margin:0;
   display:grid; place-items:center;
-  margin:0 0 -34px auto;
+  border-radius:50%;
   font-size:20px; line-height:1; color:var(--text-2);
-  background:var(--bg-sunken); border:1px solid var(--line);
+  background:var(--bg-elev);
+  border:1px solid var(--line);
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
   cursor:pointer;
   transition:transform .15s ease, background .15s ease, color .15s ease;
 }
 .td-panel-close:hover{ background:var(--line); color:var(--text); transform:scale(1.07); }
 .td-panel-close:active{ transform:scale(.94); }
 .td-panel-close:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* Desktop / wide: escape the 900px .wrap and use the free space —
+   the inspector gets a proper reading width instead of a thin column. */
+@media (min-width:901px){
+  .teardown-detail{
+    width:min(1120px, 100vw - 48px);
+    margin-inline:auto;
+  }
+  .teardown-detail .teardown-workbench{
+    grid-template-columns:minmax(320px, 360px) minmax(0, 1fr);
+    gap:48px;
+    max-width:none;
+    width:100%;
+    margin:0;
+    padding:0 0 48px;
+  }
+  .teardown-detail .td-fi-desc{ max-width:64ch; }
+}
 /* Mobile / narrow: full-frame phone + bottom-sheet inspector.
    The phone fills one frame (aspect preserved, sized to the viewport);
    selecting a widget slides the inspector up as a bottom sheet with a
@@ -2424,7 +2449,6 @@ body.home-page .wrap { padding-top: 12px; }
   }
   .teardown-detail .td-fi-name{ font-size:32px; }
   .teardown-detail .td-fi-desc{ font-size:15px; }
-  .teardown-detail .td-panel-close{ top:12px; right:12px; }
 }
 @keyframes tdSheetUp{
   from{ transform:translateY(48px); opacity:0; }
