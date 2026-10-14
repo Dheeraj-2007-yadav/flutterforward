@@ -2409,16 +2409,9 @@ body.home-page .wrap { padding-top: 12px; }
     justify-content:center;
   }
   .teardown-detail .teardown-phone{
-    width:min(100%, 300px);
+    width:min(100%, 300px, calc((100dvh - 150px) * 0.52));
     margin-inline:auto;
     flex:none;
-  }
-  /* Scale the 300px phone design as a whole on short viewports
-     (zoom keeps frame + app UI proportional, nothing gets clipped). */
-  @media (max-height:847px){
-    .teardown-detail .teardown-phone{
-      zoom:min(1, calc((100dvh - 250px) / 607px));
-    }
   }
   .teardown-detail .teardown-screen{
     height:auto;
@@ -2477,9 +2470,9 @@ body.home-page .wrap { padding-top: 12px; }
     padding-bottom:20px;
   }
 }
-/* Gentle proportional phone scaling only on short desktop viewports */
-@media (min-width:901px) and (max-height:760px){
+/* Desktop: phone fills its column, height-constrained to viewport */
+@media (min-width:901px){
   .teardown-detail .teardown-phone{
-    zoom:calc((100vh - 170px) / 607px);
+    width:min(100%, 360px, calc((100vh - 200px) * 0.52));
   }
 }
