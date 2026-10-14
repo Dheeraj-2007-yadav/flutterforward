@@ -2409,9 +2409,15 @@ body.home-page .wrap { padding-top: 12px; }
     justify-content:center;
   }
   .teardown-detail .teardown-phone{
-    width:min(100%, 300px, calc((100dvh - 150px) * 0.52));
+    width:min(100%, 280px);
     margin-inline:auto;
     flex:none;
+  }
+  .teardown-detail .teardown-screen{
+    height:600px !important;
+    min-height:600px !important;
+    max-height:600px !important;
+    aspect-ratio:auto !important;
   }
   .teardown-detail .teardown-screen{
     height:auto;
@@ -2501,10 +2507,17 @@ body.home-page .wrap { padding-top: 12px; }
     justify-content:center;
     overflow:hidden;
   }
-  /* Phone fills vertical space */
+  /* Phone: uniform fixed size */
   .teardown-detail .teardown-phone{
-    width:min(100%, 380px, calc((100vh - 220px) * 0.56));
-    max-height:100%;
+    width:320px;
+    max-width:100%;
+    flex:none;
+  }
+  .teardown-detail .teardown-screen{
+    height:690px !important;
+    min-height:690px !important;
+    max-height:690px !important;
+    aspect-ratio:auto !important;
   }
 }
 /* Desktop: phone fills its column, height-constrained to viewport */
