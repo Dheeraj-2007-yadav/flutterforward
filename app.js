@@ -700,7 +700,7 @@ function initTeardowns() {
   const root=$("#teardowns-root"); if(!root)return;
   root.addEventListener("click",e=>{
     const open=e.target.closest("[data-teardown-open]"); if(open){tdOpen(open.dataset.teardownOpen);return;}
-    if(e.target.closest("[data-teardown-index]")){e.preventDefault();tdBack();return;}
+    if(e.target.closest("[data-teardown-index]")){tdBack();return;}
     if(e.target.closest("[data-teardown-close]")){tdClose();return;}
     if(e.target.closest("[data-teardown-bounds]")){tdToggleBounds();return;}
     if(e.target.closest("[data-teardown-copy]")){tdCopy();return;}
@@ -983,7 +983,7 @@ initTeardowns = function(){
   const root=$("#teardowns-root");if(!root)return;
   root.addEventListener("click",e=>{
     const open=e.target.closest("[data-teardown-open]");if(open){tdOpen(open.dataset.teardownOpen);return;}
-    if(e.target.closest("[data-teardown-index]")){e.preventDefault();tdBack();return;}
+    if(e.target.closest("[data-teardown-index]")){tdBack();return;}
     if(e.target.closest("[data-teardown-close]")){tdClose();return;}
     if(e.target.closest("[data-teardown-bounds]")){tdToggleBounds();return;}
     if(e.target.closest("[data-teardown-copy]")){tdCopy();return;}
@@ -1042,8 +1042,6 @@ document.addEventListener("click", function(e){
   if (copy && typeof tdCopy === "function") { tdCopy(); return; }
   var idx = t.closest("[data-teardown-index]");
   if (idx && typeof tdBack === "function") {
-    e.preventDefault();
-    e.stopPropagation();
     tdBack();
     return;
   }
