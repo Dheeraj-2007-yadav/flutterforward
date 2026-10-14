@@ -683,12 +683,16 @@ function tdEnforceOneFrame() {
   var d = document.querySelector('.teardown-detail');
   if (!d) return;
   var vh = window.innerHeight;
-  var targetH = vh - 64;
+  var rect = d.getBoundingClientRect();
+  var top = rect.top;
+  var targetH = vh - top - 40;
   d.style.setProperty('height', targetH + 'px', 'important');
+  d.style.setProperty('min-height', targetH + 'px', 'important');
   d.style.setProperty('max-height', targetH + 'px', 'important');
   d.style.setProperty('overflow', 'hidden', 'important');
   d.style.setProperty('display', 'flex', 'important');
   d.style.setProperty('flex-direction', 'column', 'important');
+  d.style.setProperty('transition', 'none', 'important');
   var wb = d.querySelector('.teardown-workbench');
   if (wb) {
     wb.style.setProperty('flex', '1', 'important');
@@ -703,11 +707,16 @@ function tdEnforceOneFrame() {
   }
   document.documentElement.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('overflow', 'hidden', 'important');
+  document.body.style.setProperty('margin', '0', 'important');
+  document.documentElement.style.setProperty('height', '100vh', 'important');
+  document.body.style.setProperty('height', '100vh', 'important');
+  document.body.style.setProperty('max-height', '100vh', 'important');
 }
 function tdReleaseOneFrame() {
   var d = document.querySelector('.teardown-detail');
   if (d) {
     d.style.removeProperty('height');
+    d.style.removeProperty('min-height');
     d.style.removeProperty('max-height');
     d.style.removeProperty('overflow');
     d.style.removeProperty('display');
@@ -909,6 +918,7 @@ tdRender = function(keepView) {
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
   teardownState.view=previous;tdPrepare();
   if(teardownState.app&&!previous)requestAnimationFrame(tdFitTree);
+  try { if (teardownState.app) { tdEnforceOneFrame(); } else { tdReleaseOneFrame(); } } catch(e) {}
 };
 tdOpen = function(key) {
   if(!TEARDOWNS[key])return;
