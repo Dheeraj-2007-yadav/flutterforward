@@ -1221,9 +1221,9 @@ initTeardowns = function(){
     });
   };
   tdRender = function() { const root=$("#teardowns-root"); if(!root)return; root.innerHTML=teardownState.app?tdDetailView():teardownIndexView(); tdPrepare(); };
-  tdOpen = function(key) { if(!TEARDOWNS[key])return; tdCloseInspector(true); teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); };
-  tdBack = function() { tdCloseInspector(true); teardownState={app:null,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0}); };
-  tdSelect = function(id) { tdOpenInspector(id); };
+  tdOpen = function(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); };
+  tdBack = function() { teardownState={app:null,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0}); };
+  tdSelect = function(id){if(!teardownState.app||!tdIndex(TEARDOWNS[teardownState.app]).map[id])return;teardownState.selected=id;tdSyncSelection();};
   tdClose = function() { tdCloseInspector(false,"close-button"); };
   tdToggleBounds = function() {};
   initTeardowns = function() {
