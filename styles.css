@@ -2260,10 +2260,6 @@ body.home-page .wrap { padding-top: 12px; }
 .td-popout-close:hover { background: rgba(255,255,255,0.2); }
 
 /* === UI Polish === */
-/* Softer page background for teardown detail */
-.teardown-detail {
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-sunken) 100%);
-}
 /* Refined header */
 .teardown-detail-top {
   padding-top: 28px;
@@ -2369,16 +2365,33 @@ body.home-page .wrap { padding-top: 12px; }
   .teardown-detail{
     width:min(1120px, 100vw - 48px);
     margin-inline:auto;
+    height:calc(100vh - 100px) !important;
+    max-height:calc(100vh - 100px) !important;
+    overflow:hidden !important;
+    display:flex;
+    flex-direction:column;
   }
+  .teardown-detail .teardown-detail-head{ flex:none; }
+  .teardown-detail .teardown-detail-title{ flex:none; margin-bottom:8px; }
+  .teardown-detail .teardown-detail-title h2{ font-size:24px; margin-bottom:4px; }
+  .teardown-detail .teardown-detail-title p{ font-size:13px; margin:0; }
   .teardown-detail .teardown-workbench{
     grid-template-columns:minmax(320px, 360px) minmax(0, 1fr);
     gap:48px;
     max-width:none;
     width:100%;
     margin:0;
-    padding:0 0 48px;
+    padding:0 0 16px;
+    flex:1;
+    min-height:0;
+    align-items:stretch;
+    overflow:hidden;
   }
   .teardown-detail .td-fi-desc{ max-width:64ch; }
+  /* Scale phone proportionally to fit viewport height (one frame, no page scroll) */
+  .teardown-detail .teardown-phone{
+    zoom:min(1, calc((100dvh - 320px) / 607px));
+  }
 }
 /* Mobile / narrow: full-frame phone + bottom-sheet inspector.
    The phone fills one frame (aspect preserved, sized to the viewport);
@@ -2411,16 +2424,15 @@ body.home-page .wrap { padding-top: 12px; }
     justify-content:center;
   }
   .teardown-detail .teardown-phone{
-    width:min(100%, 300px, calc((100dvh - 250px) * 0.4737));
+    width:min(100%, 300px);
     margin-inline:auto;
+    flex:none;
   }
-  /* On short viewports the 300px phone design is scaled down as a whole
-     (instead of reflowing it), so the mock never breaks apart. */
+  /* Scale the 300px phone design as a whole on short viewports
+     (zoom keeps frame + app UI proportional, nothing gets clipped). */
   @media (max-height:847px){
     .teardown-detail .teardown-phone{
-      width:min(100%, 300px);
-      flex:none;
-      zoom:calc((100dvh - 250px) / 607px);
+      zoom:min(1, calc((100dvh - 250px) / 607px));
     }
   }
   .teardown-detail .teardown-screen{
@@ -2456,4 +2468,26 @@ body.home-page .wrap { padding-top: 12px; }
 }
 @media (prefers-reduced-motion:reduce){
   .teardown-detail .teardown-panel:not(.is-empty){ animation:none; }
+}
+
+/* Dart syntax highlighting tokens (teardown code examples) */
+.td-fi-code .tk-kw{color:#7c3aed;font-weight:600;}
+.td-fi-code .tk-str{color:#047857;}
+.td-fi-code .tk-num{color:#b45309;}
+.td-fi-code .tk-type{color:#0369a1;}
+.td-fi-code .tk-com{color:#6b7280;font-style:italic;}
+[data-theme=dark] .td-fi-code .tk-kw{color:#c4b5fd;}
+[data-theme=dark] .td-fi-code .tk-str{color:#6ee7b7;}
+[data-theme=dark] .td-fi-code .tk-num{color:#fbbf24;}
+[data-theme=dark] .td-fi-code .tk-type{color:#7dd3fc;}
+[data-theme=dark] .td-fi-code .tk-com{color:#7c8aa0;}
+
+/* === Desktop one-frame: final override (2026-10-14) ===
+   Must come last to win the cascade. */
+@media (min-width:901px){
+  body .teardown-detail{
+    height:calc(100vh - 100px) !important;
+    max-height:calc(100vh - 100px) !important;
+    overflow:hidden !important;
+  }
 }

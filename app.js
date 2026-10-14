@@ -608,6 +608,17 @@ const TD_PROP_DESCS = {
   style: 'Font, size, color and weight of the text.',
 };
 
+function tdHighlight(code) {
+  var s = esc(code);
+  return s.replace(/(&#39;.*?&#39;|\/\/[^\n]*|\b\d+(?:\.\d+)?\b|\b(?:const|final|var|late|required|return|if|else|for|in|while|do|switch|case|default|break|continue|class|extends|implements|with|mixin|enum|import|export|library|part|of|is|as|assert|async|await|yield|sync|get|set|operator|covariant|deferred|hide|show|on|try|catch|finally|throw|rethrow|new|this|super|null|true|false)\b|\b[A-Z][A-Za-z0-9_]*)/g, function(m) {
+    if (m.indexOf('&#39;') === 0) return '<span class="tk-str">' + m + '</span>';
+    if (m.indexOf('//') === 0) return '<span class="tk-com">' + m + '</span>';
+    if (/^\d/.test(m)) return '<span class="tk-num">' + m + '</span>';
+    if (/^[A-Z]/.test(m)) return '<span class="tk-type">' + m + '</span>';
+    return '<span class="tk-kw">' + m + '</span>';
+  });
+}
+
 function tdPanel() {
   const node = tdSelectedNode();
   if (!node) return `<aside class="teardown-panel is-empty"><div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div></aside>`;
@@ -640,7 +651,7 @@ function tdPanel() {
     + `<p class="td-fi-desc">${esc(node.what)} ${esc(node.why)}</p>`
     + propsHtml
     + `<div class="td-fi-code-wrap"><div class="td-fi-code-head"><span>Example</span><button class="td-fi-copy" data-teardown-copy>Copy</button></div>`
-    + `<pre class="td-fi-code"><code>${esc(node.code)}</code></pre></div>`
+    + `<pre class="td-fi-code"><code>${tdHighlight(node.code)}</code></pre></div>`
     + `</aside>`;
 }
 function tdDetailView() {
