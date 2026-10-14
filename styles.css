@@ -2460,14 +2460,36 @@ body.home-page .wrap { padding-top: 12px; }
 [data-theme=dark] .td-fi-code .tk-type{color:#7dd3fc;}
 [data-theme=dark] .td-fi-code .tk-com{color:#7c8aa0;}
 
-/* === Teardown detail: compact header + one-frame (2026-10-14) ===
-   Header trimmed to title-only; workbench fits viewport. */
+/* === Teardown detail: one-frame layout (2026-10-14) ===
+   Header compact; workbench fills viewport; panel pulled up. */
 @media (min-width:901px){
-  .teardown-detail .teardown-detail-head{ padding:12px 0 0; margin-bottom:4px; }
-  .teardown-detail .teardown-detail-title{ margin-bottom:12px; }
-  .teardown-detail .teardown-detail-title h2{ font-size:26px; margin:0; }
+  .teardown-detail{
+    height:calc(100vh - 64px);
+    max-height:calc(100vh - 64px);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .teardown-detail .teardown-detail-head{ padding:10px 0 0; margin-bottom:2px; flex:none; }
+  .teardown-detail .teardown-detail-head .back-link{ font-size:13px; }
+  .teardown-detail .teardown-detail-title{ margin-bottom:8px; flex:none; }
+  .teardown-detail .teardown-detail-title h2{ font-size:24px; margin:0; line-height:1.2; }
   .teardown-detail .teardown-workbench{
-    padding-bottom:20px;
+    flex:1;
+    min-height:0;
+    padding-bottom:16px;
+    align-items:start;
+    overflow:hidden;
+  }
+  /* Pull panel up to use header space efficiently */
+  .teardown-detail .teardown-panel{
+    margin-top:-10px;
+    max-height:100%;
+    overflow-y:auto;
+  }
+  .teardown-detail .teardown-phone-stage{
+    position:static;
+    max-height:100%;
   }
 }
 /* Desktop: phone fills its column, height-constrained to viewport */
