@@ -1037,7 +1037,6 @@ document.addEventListener("click", function(e){
   var close = t.closest("[data-teardown-close]");
   if (close && typeof tdClose === "function") { tdClose(); return; }
   
-  if (bounds && typeof tdToggleBounds === "function") { tdToggleBounds(); return; }
   var copy = t.closest("[data-teardown-copy]");
   if (copy && typeof tdCopy === "function") { tdCopy(); return; }
   var idx = t.closest("[data-teardown-index]");
