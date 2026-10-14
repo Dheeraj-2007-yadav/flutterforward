@@ -2517,8 +2517,17 @@ body.home-page .wrap { padding-top: 12px; }
     flex:none;
   }
   .teardown-detail .teardown-screen{
+    /* Truly responsive: fits viewport, adjusts to any size change */
+    height:min(580px, calc(100dvh - 260px)) !important;
+    min-height:0 !important;
+    max-height:calc(100dvh - 260px) !important;
     aspect-ratio:9/19.3 !important;
-    max-height:100% !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+  .teardown-detail .teardown-phone{
+    max-height:calc(100dvh - 220px) !important;
   }
 }
 /* Desktop: phone fills its column, height-constrained to viewport */

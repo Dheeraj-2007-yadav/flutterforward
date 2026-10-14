@@ -705,36 +705,7 @@ function tdEnforceOneFrame() {
     panel.style.setProperty('max-height', '100%', 'important');
     panel.style.setProperty('overflow-y', 'auto', 'important');
   }
-  // Smart phone sizing: fit PHONE FRAME within workbench height
-  // Use requestAnimationFrame to ensure layout is complete
-  var doPhoneSize = function() {
-    var wb2 = d.querySelector('.teardown-workbench');
-    var phone = d.querySelector('.teardown-phone');
-    var screen = d.querySelector('.teardown-screen');
-    if (wb2 && phone && screen) {
-      var wbH = wb2.getBoundingClientRect().height;
-      if (wbH < 100) {
-        // Layout not ready, retry
-        requestAnimationFrame(doPhoneSize);
-        return;
-      }
-      // Phone frame includes padding/border (~24px), reserve 60px margin for safety
-      var maxPhoneH = wbH - 60;
-      var phoneH = Math.max(360, Math.min(600, maxPhoneH));
-      // Screen is phone minus frame (~24px)
-      var screenH = phoneH - 24;
-      var screenW = Math.round(screenH * 0.47);
-      screen.style.setProperty('height', screenH + 'px', 'important');
-      screen.style.setProperty('min-height', screenH + 'px', 'important');
-      screen.style.setProperty('max-height', screenH + 'px', 'important');
-      screen.style.setProperty('width', screenW + 'px', 'important');
-      screen.style.setProperty('min-width', screenW + 'px', 'important');
-      screen.style.setProperty('max-width', screenW + 'px', 'important');
-      // Also constrain the phone frame itself
-      phone.style.setProperty('max-height', phoneH + 'px', 'important');
-    }
-  };
-  requestAnimationFrame(doPhoneSize);
+  // Phone sizing is now pure CSS (responsive), no JS needed
   document.documentElement.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('margin', '0', 'important');
@@ -960,7 +931,7 @@ tdOpen = function(key) {
   teardownState={app:key,selected:null,bounds:false,collapsed:new Set(),view:null,layout:null,animateFrom:null};
   tdRender(false);window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
 };
-tdBack = function(){ try { teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
+tdBack = function(){ try { teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); try { tdReleaseOneFrame(); } catch(e) {} document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
 tdSelect = function(id){if(!teardownState.app||!tdIndex(TEARDOWNS[teardownState.app]).map[id])return;teardownState.selected=id;tdSyncSelection();};
 function tdShowPicker(stack, x, y) {
   // Visual pop-out: each widget lifts out, filtered and uniformly sized
