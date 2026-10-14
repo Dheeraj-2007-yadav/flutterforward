@@ -332,7 +332,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .teardown-detail-kicker { color: var(--text-3); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .teardown-detail-title h2 { margin-top: 5px; font-family: var(--serif); font-size: clamp(31px,5vw,44px); font-weight: 400; line-height: 1.04; letter-spacing: -.035em; }
 .teardown-detail-title p { margin-top: 8px; color: var(--text-2); font-size: 14px; }
-.teardown-workbench { display: grid; grid-template-columns: minmax(300px,.82fr) minmax(0,1.18fr); gap: 24px; align-items: start; }
+
 .teardown-phone-stage {
   min-width: 0; display: grid; place-items: center; padding: 24px 14px;
   border: 1px solid var(--line); border-radius: 22px; background: var(--bg-sunken);
@@ -1969,4 +1969,83 @@ body.home-page .wrap { padding-top: 12px; }
 @media (max-width: 760px) {
   .td-popout-stage.td-vertical { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; padding: 60px 20px 40px; }
   .td-popout-stage.td-vertical .td-popout-item { position: relative !important; left: auto !important; top: auto !important; transform: none !important; margin: 10px 0; animation: tdPopIn 0.3s ease; }
+}
+
+/* === Teardown app-like layout: phone fits, only panel scrolls === */
+.teardown-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+.teardown-detail-head {
+  flex-shrink: 0;
+  padding: 16px 24px 0;
+  margin-bottom: 12px;
+}
+.teardown-detail-title {
+  flex-shrink: 0;
+  padding: 0 24px;
+  margin-bottom: 16px;
+}
+.teardown-detail-title h2 { font-size: 28px; margin: 4px 0; }
+.teardown-detail-title p { font-size: 14px; margin: 0; }
+.teardown-workbench {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: 20px;
+  padding: 0 24px 20px;
+  align-items: stretch;
+}
+.teardown-phone-stage {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+}
+.teardown-phone {
+  width: min(100%, 300px);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.teardown-screen {
+  height: auto;
+  aspect-ratio: 9 / 18.5;
+  max-height: calc(100dvh - 280px);
+  min-height: 400px;
+}
+.teardown-panel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Mobile: stacked, phone compact on top */
+@media (max-width: 860px) {
+  .teardown-detail-head { padding: 12px 16px 0; }
+  .teardown-detail-title { padding: 0 16px; margin-bottom: 12px; }
+  .teardown-detail-title h2 { font-size: 22px; }
+  .teardown-workbench {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 12px;
+    padding: 0 16px 16px;
+    overflow: hidden;
+  }
+  .teardown-phone-stage { padding: 8px; max-height: 38dvh; }
+  .teardown-phone { width: min(100%, 220px); }
+  .teardown-screen { min-height: 0; aspect-ratio: 9 / 16; max-height: 36dvh; }
+  .teardown-panel:not(.is-empty) {
+    position: static;
+    height: auto;
+    max-height: none;
+    border-radius: 16px;
+    box-shadow: none;
+    animation: none;
+  }
 }
