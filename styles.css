@@ -2314,3 +2314,122 @@ body.home-page .wrap { padding-top: 12px; }
   font-size: 12px;
   letter-spacing: 0.06em;
 }
+
+/* ===== Teardown detail: panel scroll + mobile-width fixes (2026-10-14) =====
+   Root cause of the clipped inspector: the retired viewport-fit block left
+   .teardown-detail{height:100dvh;max-height:100dvh;overflow:hidden} in the
+   cascade, and the premium block set .teardown-panel{overflow:visible},
+   which together clipped the inspector with no way to scroll it.
+   This final block restores exactly one behavior per breakpoint. */
+.teardown-detail{
+  height:auto;          /* was 100dvh from the retired block: clipped the panel */
+  max-height:none;      /* was 100dvh from the retired block */
+  overflow:visible;     /* was hidden: the actual clipper */
+}
+.teardown-detail .teardown-workbench{ align-items:start; }
+.teardown-detail .teardown-phone-stage{
+  position:sticky;
+  top:calc(var(--nav-h,64px) + 16px);
+}
+.teardown-detail .teardown-panel{
+  position:relative;
+  min-height:0;
+  overflow-y:auto;                                  /* the inspector scrolls on its own */
+  overscroll-behavior:contain;
+  max-height:calc(100dvh - var(--nav-h,64px) - 48px);
+  scrollbar-width:thin;
+}
+/* Panel close button (wired to the existing tdClose handler).
+   Sticky so it stays reachable while the inspector scrolls. */
+.teardown-detail .teardown-kicker{ padding-right:44px; }
+.td-panel-close{
+  position:sticky; top:14px; z-index:3;
+  width:34px; height:34px; border-radius:50%;
+  display:grid; place-items:center;
+  margin:0 0 -34px auto;
+  font-size:20px; line-height:1; color:var(--text-2);
+  background:var(--bg-sunken); border:1px solid var(--line);
+  cursor:pointer;
+  transition:transform .15s ease, background .15s ease, color .15s ease;
+}
+.td-panel-close:hover{ background:var(--line); color:var(--text); transform:scale(1.07); }
+.td-panel-close:active{ transform:scale(.94); }
+.td-panel-close:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* Mobile / narrow: full-frame phone + bottom-sheet inspector.
+   The phone fills one frame (aspect preserved, sized to the viewport);
+   selecting a widget slides the inspector up as a bottom sheet with a
+   close button. Desktop keeps the right-side panel. */
+@media (max-width:900px){
+  .teardown-detail{ height:100dvh; max-height:100dvh; overflow:hidden; }
+  .teardown-detail .teardown-detail-head{ padding:10px 16px 0; margin-bottom:6px; }
+  .teardown-detail .teardown-detail-title{ padding:0 16px; margin-bottom:6px; }
+  .teardown-detail .teardown-detail-title h2{ font-size:20px; }
+  .teardown-detail .teardown-detail-title p{ font-size:12.5px; }
+  .teardown-detail .teardown-workbench{
+    flex:1;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 14px 14px;
+    overflow:hidden;
+  }
+  .teardown-detail .teardown-phone-stage{
+    position:static;
+    padding:0;
+    margin:0;
+    max-height:100%;
+    min-height:0;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .teardown-detail .teardown-phone{
+    width:min(100%, 300px, calc((100dvh - 250px) * 0.4737));
+    margin-inline:auto;
+  }
+  /* On short viewports the 300px phone design is scaled down as a whole
+     (instead of reflowing it), so the mock never breaks apart. */
+  @media (max-height:847px){
+    .teardown-detail .teardown-phone{
+      width:min(100%, 300px);
+      flex:none;
+      zoom:calc((100dvh - 250px) / 607px);
+    }
+  }
+  .teardown-detail .teardown-screen{
+    height:auto;
+    min-height:0;
+    aspect-ratio:9/19;
+    max-height:none;
+  }
+  /* placeholder never shows on mobile: the phone owns the frame */
+  .teardown-detail .teardown-panel.is-empty{ display:none; }
+  /* bottom sheet with the full inspector */
+  .teardown-detail .teardown-panel:not(.is-empty){
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:90;
+    max-height:min(72dvh, 620px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid var(--line);
+    border-bottom:none;
+    border-radius:20px 20px 0 0;
+    box-shadow:0 -18px 50px -12px rgba(0,0,0,.35);
+    padding:20px 20px max(20px, env(safe-area-inset-bottom));
+    animation:tdSheetUp .32s cubic-bezier(.22,1,.36,1) both;
+  }
+  .teardown-detail .td-fi-name{ font-size:32px; }
+  .teardown-detail .td-fi-desc{ font-size:15px; }
+  .teardown-detail .td-panel-close{ top:12px; right:12px; }
+}
+@keyframes tdSheetUp{
+  from{ transform:translateY(48px); opacity:0; }
+  to{ transform:none; opacity:1; }
+}
+@media (prefers-reduced-motion:reduce){
+  .teardown-detail .teardown-panel:not(.is-empty){ animation:none; }
+}

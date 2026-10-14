@@ -634,6 +634,7 @@ function tdPanel() {
     return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
+    + `<button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button>`
     + `<div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div>`
     + `<div class="td-fi-crumb">${crumbs}</div>`
     + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
