@@ -1958,3 +1958,8 @@ body.home-page .wrap { padding-top: 12px; }
   .td-fi-close { display: block; position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line); color: var(--ink); font-size: 18px; cursor: pointer; }
   .teardown-panel { position: relative; }
 }
+
+@media (max-width: 760px) {
+  .td-popout-stage { overflow-x: auto; overflow-y: hidden; }
+  .td-popout-item { flex-shrink: 0; }
+}

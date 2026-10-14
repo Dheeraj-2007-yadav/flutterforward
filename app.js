@@ -926,10 +926,14 @@ function tdShowPicker(stack, x, y) {
     var item = document.createElement("div");
     item.className = "td-popout-item";
     item.dataset.popoutNode = nodeId;
-    // Horizontal centered layout
-    var totalW = n * 180;
-    var startX = (window.innerWidth - totalW) / 2 + 90;
-    item.style.left = (startX + i * 180) + "px";
+    // Horizontal centered layout (tighter on mobile)
+    var isMobile = window.innerWidth < 760;
+    var spacing = isMobile ? 130 : 180;
+    var boxW = isMobile ? 110 : 150;
+    var totalW = n * spacing;
+    var startX = Math.max(boxW/2 + 10, (window.innerWidth - totalW) / 2 + spacing/2);
+    // If overflow, enable scroll by positioning relative to stage
+    item.style.left = (startX + i * spacing) + "px";
     item.style.top = (window.innerHeight / 2) + "px";
     item.innerHTML = '<div class="td-popout-box" style="background:' + natBg + '"><div class="td-popout-widget"></div></div><div class="td-popout-label">' + esc(name) + '</div>';
     item.querySelector(".td-popout-widget").appendChild(clone);
@@ -1025,11 +1029,10 @@ document.addEventListener("click", function(e){
   var copy = t.closest("[data-teardown-copy]");
   if (copy && typeof tdCopy === "function") { tdCopy(); return; }
   var idx = t.closest("[data-teardown-index]");
-  if (idx && typeof route === "function") {
-    // Force re-render even if hash already equals #/teardowns
+  if (idx && typeof tdBack === "function") {
     e.preventDefault();
-    if ((location.hash || "") !== "#/teardowns") { location.hash = "#/teardowns"; }
-    try { route(); } catch(err){}
+    e.stopPropagation();
+    tdBack();
     return;
   }
 }, true);
