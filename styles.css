@@ -2746,3 +2746,30 @@ body.home-page .wrap { padding-top: 12px; }
     align-items:center !important;
   }
 }
+
+/* Center phone on all screen sizes */
+.teardown-detail .teardown-workbench{
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 auto !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+.teardown-detail .teardown-phone-stage{
+  margin:0 auto !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+.teardown-detail .teardown-phone{
+  margin:0 auto !important;
+}
+
+/* Force teardown detail to be centered in viewport */
+.teardown-detail{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  max-width:1200px !important;
+  width:100% !important;
+}
