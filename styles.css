@@ -2410,17 +2410,23 @@ body.home-page .wrap { padding-top: 12px; }
   }
   .teardown-detail .teardown-phone{
     width:min(100%, 280px);
+    max-width:calc(100vw - 28px);
     margin-inline:auto;
     flex:none;
+    overflow:hidden;
   }
   .teardown-detail .teardown-screen{
+    height:600px;
+    height:min(600px, calc(100vh - 230px));
     height:min(600px, calc(100svh - 230px)) !important;
     min-height:0 !important;
+    max-height:calc(100vh - 230px);
     max-height:calc(100svh - 230px) !important;
     aspect-ratio:9/19.3 !important;
     width:auto !important;
     min-width:0 !important;
     max-width:100% !important;
+    max-width:calc(100vw - 52px) !important;
   }
   .teardown-detail .teardown-phone{
     max-height:calc(100svh - 200px) !important;
@@ -2651,4 +2657,19 @@ body.home-page .wrap { padding-top: 12px; }
 @keyframes tdSheetDownMobile{
   from{ transform:translateY(0); }
   to{ transform:translateY(100%); }
+}
+
+@media (max-width:900px){
+  .teardown-detail, .teardown-detail .teardown-workbench,
+  .teardown-detail .teardown-phone-stage{
+    overflow-x:hidden !important;
+    max-width:100vw !important;
+  }
+  /* Reduce expensive effects on real mobile GPUs */
+  .teardown-detail .teardown-phone{
+    box-shadow:0 8px 24px -8px rgba(0,0,0,.25) !important;
+  }
+  .teardown-detail .teardown-panel:not(.is-empty){
+    box-shadow:0 -8px 24px -8px rgba(0,0,0,.25) !important;
+  }
 }
