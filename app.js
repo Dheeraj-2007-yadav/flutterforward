@@ -680,8 +680,7 @@ function tdPrepare() {
 
 function tdEnforceOneFrame() {
   var isMobile = window.innerWidth < 901;
-  // Always lock page scroll on teardown detail (both desktop and mobile)
-  document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+  // Lock body scroll (html stays scrollable for pull-to-refresh)
   document.body.style.setProperty('overflow', 'hidden', 'important');
   var d = document.querySelector('.teardown-detail');
   if (!d) return;

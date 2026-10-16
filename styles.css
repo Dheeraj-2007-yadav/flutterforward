@@ -2673,3 +2673,19 @@ body.home-page .wrap { padding-top: 12px; }
     box-shadow:0 -8px 24px -8px rgba(0,0,0,.25) !important;
   }
 }
+
+/* Narrow phone: scale down mock content to fit */
+@media (max-width:900px){
+  /* Instagram: smaller avatar and tighter stats */
+  .ig-top{ gap:12px !important; }
+  .ig-ring{ width:64px !important; height:64px !important; }
+  .ig-avatar{ width:57px !important; height:57px !important; font-size:15px !important; }
+  .ig-stat{ min-width:0 !important; }
+  .ig-stat b{ font-size:12px !important; }
+  .ig-stat span{ font-size:7px !important; }
+  /* Swiggy: smaller categories to fit 4 across */
+  .sw-categories{ gap:8px !important; }
+  .sw-category{ width:46px !important; }
+  .sw-food{ width:42px !important; height:42px !important; font-size:9px !important; }
+  .sw-category{ font-size:7px !important; }
+}
