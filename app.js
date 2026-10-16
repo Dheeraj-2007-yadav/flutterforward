@@ -970,7 +970,13 @@ function tdShowPicker(stack, x, y) {
   var stage = layer.querySelector(".td-popout-stage");
   var idx = tdIndex(TEARDOWNS[teardownState.app]);
   var n = filtered.length;
-  if (window.innerWidth < 760) stage.classList.add("td-vertical");
+  // Smart layout: use vertical if horizontal cards won't fit comfortably
+  // Each card ~150px + 20px gap; need 85% of viewport for comfortable fit
+  var cardWidth = 170;
+  var needsVertical = (n * cardWidth) > (window.innerWidth * 0.85);
+  // Also use vertical on small screens regardless
+  if (window.innerWidth < 600) needsVertical = true;
+  if (needsVertical) stage.classList.add("td-vertical");
   filtered.forEach(function(r, i){
     var nodeId = r.dataset.node;
     var node = idx.map[nodeId];

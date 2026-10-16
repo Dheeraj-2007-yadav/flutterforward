@@ -2773,3 +2773,24 @@ body.home-page .wrap { padding-top: 12px; }
   max-width:1200px !important;
   width:100% !important;
 }
+
+/* Vertical widget picker: clean stacked cards */
+.td-popout-stage.td-vertical{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:16px !important;
+  padding:20px !important;
+  overflow-y:auto !important;
+  max-height:90vh !important;
+  max-height:90dvh !important;
+}
+.td-popout-stage.td-vertical .td-popout-item{
+  position:relative !important;
+  left:auto !important;
+  top:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  flex:none !important;
+}
