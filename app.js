@@ -679,8 +679,23 @@ function tdPrepare() {
 }
 
 function tdEnforceOneFrame() {
-  if (window.innerWidth < 901) return;
+  var isMobile = window.innerWidth < 901;
+  // Always lock page scroll on teardown detail (both desktop and mobile)
+  document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+  document.body.style.setProperty('overflow', 'hidden', 'important');
   var d = document.querySelector('.teardown-detail');
+  if (!d) return;
+  if (isMobile) {
+    // Mobile: size detail to fit viewport accounting for top offset
+    var rect = d.getBoundingClientRect();
+    var top = rect.top;
+    var targetH = window.innerHeight - top - 8;
+    d.style.setProperty('height', targetH + 'px', 'important');
+    d.style.setProperty('min-height', targetH + 'px', 'important');
+    d.style.setProperty('max-height', targetH + 'px', 'important');
+    d.style.setProperty('overflow', 'hidden', 'important');
+    return;
+  }
   if (!d) return;
   var vh = window.innerHeight;
   var rect = d.getBoundingClientRect();
@@ -706,8 +721,6 @@ function tdEnforceOneFrame() {
     panel.style.setProperty('overflow-y', 'auto', 'important');
   }
   // Phone sizing is now pure CSS (responsive), no JS needed
-  document.documentElement.style.setProperty('overflow', 'hidden', 'important');
-  document.body.style.setProperty('overflow', 'hidden', 'important');
   document.body.style.setProperty('margin', '0', 'important');
   document.documentElement.style.setProperty('height', '100vh', 'important');
   document.body.style.setProperty('height', '100vh', 'important');
