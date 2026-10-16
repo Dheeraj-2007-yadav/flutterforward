@@ -577,7 +577,7 @@ function tdPath(key, id) {
 let teardownState = { app: null, selected: null, bounds: false };
 function tdSelectedNode() { return teardownState.app && teardownState.selected ? tdIndex(TEARDOWNS[teardownState.app]).map[teardownState.selected] : null; }
 function teardownIndexView() {
-  return `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}"><span class="teardown-glyph ${item.glyphClass}" style="--glyph:${item.accent}">${item.glyph}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div>`;
+  return `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}"><span class="teardown-num">${String(Object.keys(TEARDOWNS).indexOf(key)+1).padStart(2,"0")}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div>`;
 }
 
 const TD_PROP_DESCS = {

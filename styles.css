@@ -2837,3 +2837,6 @@ body.home-page .wrap { padding-top: 12px; }
 .teardown-row-count{flex:none;font-size:13px;font-weight:600;color:var(--text-2);background:var(--bg-elev);border:1px solid var(--line);padding:6px 12px;border-radius:999px;white-space:nowrap;}
 .teardown-row-chevron{flex:none;color:var(--text-3);font-size:20px;}
 .teardown-glyph{width:56px;height:56px;flex:none;display:grid;place-items:center;border-radius:16px;font-size:28px;background:var(--bg-elev);border:1px solid var(--line);}
+
+/* Teardown numbers match lessons style */
+.teardown-num{width:52px;height:52px;border-radius:16px;flex:none;display:grid;place-items:center;font-weight:800;font-size:19px;color:var(--accent);background:var(--bg-elev);border:1px solid var(--line);}
