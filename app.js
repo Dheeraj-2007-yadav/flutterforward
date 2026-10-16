@@ -1048,6 +1048,10 @@ function tdShowPicker(stack, x, y) {
     });
   });
   layer.querySelector(".td-popout-backdrop").addEventListener("click", tdDismissPopout);
+  // Close when clicking empty space on the stage (not on a card)
+  stage.addEventListener("click", function(e){
+    if (e.target === stage) tdDismissPopout();
+  });
   // Escape to dismiss
   var escHandler = function(e) {
     if (e.key === "Escape") {
