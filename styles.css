@@ -2467,14 +2467,14 @@ body.home-page .wrap { padding-top: 12px; }
 }
 
 /* Dart syntax highlighting tokens (teardown code examples) */
-.td-fi-code .tk-kw{color:#7c3aed;font-weight:600;}
-.td-fi-code .tk-str{color:#047857;}
-.td-fi-code .tk-num{color:#b45309;}
-.td-fi-code .tk-type{color:#0369a1;}
-.td-fi-code .tk-com{color:#6b7280;font-style:italic;}
-[data-theme=dark] .td-fi-code .tk-kw{color:#c4b5fd;}
-[data-theme=dark] .td-fi-code .tk-str{color:#6ee7b7;}
-[data-theme=dark] .td-fi-code .tk-num{color:#fbbf24;}
+.td-fi-code .tk-kw{color:#66d9ff;font-weight:700;}
+.td-fi-code .tk-str{color:#ffcc44;}
+.td-fi-code .tk-num{color:#ff9e64;}
+.td-fi-code .tk-type{color:#7dd3fc;}
+.td-fi-code .tk-com{color:#7c8aa0;font-style:italic;}
+[data-theme=dark] .td-fi-code .tk-kw{color:#66d9ff;}
+[data-theme=dark] .td-fi-code .tk-str{color:#ffcc44;}
+[data-theme=dark] .td-fi-code .tk-num{color:#ff9e64;}
 [data-theme=dark] .td-fi-code .tk-type{color:#7dd3fc;}
 [data-theme=dark] .td-fi-code .tk-com{color:#7c8aa0;}
 
