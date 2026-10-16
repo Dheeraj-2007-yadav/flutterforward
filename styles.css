@@ -2176,10 +2176,10 @@ body.home-page .wrap { padding-top: 12px; }
 .td-fi-pdesc { color: var(--ink-soft); font-size: 14px; }
 .td-fi-code-wrap {
   margin-top: 32px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 24px;
-  background: var(--bg-elev);
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: none;
 }
 .td-fi-code-head {
   font-size: 11px;
@@ -2192,16 +2192,7 @@ body.home-page .wrap { padding-top: 12px; }
   justify-content: space-between;
   align-items: center;
 }
-.td-fi-code {
-  background: none;
-  padding: 0;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--ink);
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
+
 /* Mobile */
 @media (max-width: 900px) {
   .teardown-workbench { grid-template-columns: 1fr; gap: 32px; padding: 0 20px 32px; }
