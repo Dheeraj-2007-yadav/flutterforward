@@ -2873,8 +2873,9 @@ body.home-page .wrap { padding-top: 12px; }
 
 .lg-screen{height:calc(100% - 28px);display:flex;flex-direction:column;color:#0a1828;background:#fff;}
 .lg-safe{flex:1;display:flex;min-height:0;}
-.lg-center{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:12px 0;}
-.lg-form-pad{width:100%;padding:0 22px;}
+.lg-center{flex:1;display:flex;flex-direction:column;min-height:0;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:24px 0 12px;}
+.lg-center::-webkit-scrollbar{display:none;width:0;}
+.lg-form-pad{width:100%;padding:0 22px;flex:none;}
 .lg-col{display:flex;flex-direction:column;}
 .lg-title{font-size:19px;font-weight:800;text-align:center;letter-spacing:-.02em;}
 .lg-subtitle{display:block;text-align:center;margin-top:4px;color:#5f7089;font-size:11px;}
