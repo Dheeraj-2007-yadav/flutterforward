@@ -2803,3 +2803,13 @@ body.home-page .wrap { padding-top: 12px; }
   margin:0 !important;
   flex:none !important;
 }
+
+/* Hide scrollbar on bottom sheet (keep scroll functionality) */
+.teardown-detail .teardown-panel:not(.is-empty){
+  scrollbar-width:none !important;
+  -ms-overflow-style:none !important;
+}
+.teardown-detail .teardown-panel:not(.is-empty)::-webkit-scrollbar{
+  display:none !important;
+  width:0 !important;
+}
