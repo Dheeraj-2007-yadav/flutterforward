@@ -236,6 +236,218 @@ const TEARDOWNS = {
 )`)
     ])
   }
+,
+settings: {
+    app: "Settings", screen: "App settings", count: 51, glyph: "04", glyphClass: "", accent: "#5b5bd6",
+    hotspots: ["st-appbar","st-profile-card","st-tile-profile","st-notif-switch","st-tile-lang","st-tile-about"],
+    root: tdNode("st-scaffold","Scaffold","Gives the settings page its frame: app bar on top, scrollable body below.","It keeps the Settings header pinned while the option groups scroll underneath.",`Scaffold(
+  appBar: AppBar(title: const Text('Settings')),
+  body: const SettingsBody(),
+)`,[
+      tdNode("st-appbar","AppBar","Builds the top bar with a title and a leading back action.","It tells the user where they are and offers one-tap exit back to the previous screen.",`AppBar(
+  leading: const BackButton(),
+  title: const Text('Settings'),
+)`,[
+        tdNode("st-back","IconButton","A tappable icon that runs an action.","The back chevron pops this route off the navigation stack.",`IconButton(
+  icon: const Icon(Icons.arrow_back),
+  onPressed: () => Navigator.pop(context),
+)`),
+        tdNode("st-appbar-title","Text","Renders a styled string on screen.","It labels the screen so the user knows these are app settings.",`const Text(
+  'Settings',
+  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+)`)
+      ]),
+      tdNode("st-body","ListView","Lays children out in a scrollable vertical list.","Settings has more rows than fit on screen, so the list scrolls while the app bar stays put.",`ListView(
+  padding: const EdgeInsets.all(16),
+  children: const [
+    ProfileCard(),
+    AccountGroup(),
+    PreferencesGroup(),
+    SupportGroup(),
+  ],
+)`,[
+        tdNode("st-profile-card","Card","A Material surface with elevation and rounded corners.","It lifts the identity block off the background so the user spots their account first.",`Card(
+  elevation: 1,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16),
+  ),
+  child: const ProfileRow(),
+)`,[
+          tdNode("st-profile-row","Row","Places children side by side horizontally.","It lines the avatar, name column, and edit action up in one row.",`Row(
+  children: [
+    const CircleAvatar(radius: 28, child: Text('DK')),
+    const SizedBox(width: 12),
+    const Expanded(child: NameColumn()),
+    TextButton(onPressed: edit, child: const Text('Edit')),
+  ],
+)`,[
+            tdNode("st-avatar","CircleAvatar","Clips its child into a circle, usually for profile pictures.","The round avatar is the visual anchor of the identity row.",`const CircleAvatar(
+  radius: 28,
+  backgroundColor: Color(0xFF5B5BD6),
+  child: Text('DK', style: TextStyle(color: Colors.white)),
+)`),
+            tdNode("st-profile-col","Column","Stacks children vertically.","It puts the display name above the email address.",`const Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text('Dheeraj Kumar', style: TextStyle(fontWeight: FontWeight.w700)),
+    Text('dheeraj@example.com', style: TextStyle(color: Colors.grey)),
+  ],
+)`,[
+              tdNode("st-name","Text","Renders a styled string on screen.","The name identifies whose settings these are.",`const Text(
+  'Dheeraj Kumar',
+  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+)`),
+              tdNode("st-email","Text","Renders a styled string on screen.","The muted email confirms which account is signed in.",`const Text(
+  'dheeraj@example.com',
+  style: TextStyle(fontSize: 12, color: Colors.grey),
+)`)
+            ]),
+            tdNode("st-edit","TextButton","A text-only button with a tap handler.","Edit jumps to the profile editor without leaving the settings flow.",`TextButton(
+  onPressed: editProfile,
+  child: const Text('Edit'),
+)`)
+          ])
+        ]),
+        tdNode("st-account-header","Text","Renders a styled string on screen.","The small-caps group label scans like a native settings section.",`const Padding(
+  padding: EdgeInsets.only(top: 20, bottom: 8),
+  child: Text('ACCOUNT', style: TextStyle(fontSize: 12, color: Colors.grey)),
+)`),
+        tdNode("st-account-group","Container","A box that can hold padding, color, and decoration.","It groups the account rows into one rounded white section.",`Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+  ),
+  child: const Column(
+    children: [ProfileTile(), Divider(), PrivacyTile()],
+  ),
+)`,[
+          tdNode("st-tile-profile","ListTile","A ready-made settings row: leading icon, title, subtitle, trailing.","ListTile is the workhorse of settings screens — one widget builds the whole row.",`ListTile(
+  leading: const Icon(Icons.person_outline),
+  title: const Text('Profile'),
+  subtitle: const Text('Name, email, avatar'),
+  trailing: const Icon(Icons.chevron_right),
+  onTap: openProfile,
+)`,[
+            tdNode("st-tile-profile-icon","Icon","Draws a Material icon glyph.","The person icon hints at the row's purpose before reading.",`const Icon(Icons.person_outline, color: Color(0xFF5B5BD6))`),
+            tdNode("st-tile-profile-title","Text","Renders a styled string on screen.","'Profile' names the destination screen.",`const Text('Profile')`),
+            tdNode("st-tile-profile-sub","Text","Renders a styled string on screen.","The subtitle previews what can be changed inside.",`const Text(
+  'Name, email, avatar',
+  style: TextStyle(fontSize: 12, color: Colors.grey),
+)`),
+            tdNode("st-tile-profile-chev","Icon","Draws a Material icon glyph.","The chevron promises another screen on tap.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
+          ]),
+          tdNode("st-div1","Divider","A thin horizontal line.","It separates rows inside the group so each option reads on its own.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-tile-privacy","ListTile","A ready-made settings row: leading icon, title, trailing.","Tapping it opens privacy controls for the account.",`ListTile(
+  leading: const Icon(Icons.lock_outline),
+  title: const Text('Privacy'),
+  trailing: const Icon(Icons.chevron_right),
+  onTap: openPrivacy,
+)`,[
+            tdNode("st-tile-privacy-icon","Icon","Draws a Material icon glyph.","The lock signals this row is about data protection.",`const Icon(Icons.lock_outline, color: Color(0xFF5B5BD6))`),
+            tdNode("st-tile-privacy-title","Text","Renders a styled string on screen.","'Privacy' is the whole point of the destination.",`const Text('Privacy')`),
+            tdNode("st-tile-privacy-chev","Icon","Draws a Material icon glyph.","The chevron shows the row is tappable.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
+          ])
+        ]),
+        tdNode("st-pref-header","Text","Renders a styled string on screen.","The group label separates preferences from account rows.",`const Padding(
+  padding: EdgeInsets.only(top: 20, bottom: 8),
+  child: Text('PREFERENCES', style: TextStyle(fontSize: 12, color: Colors.grey)),
+)`),
+        tdNode("st-pref-group","Container","A box that can hold padding, color, and decoration.","It wraps the toggle rows in the same rounded card style.",`Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+  ),
+  child: const Column(
+    children: [NotificationsTile(), Divider(), DarkModeTile(), Divider(), LanguageTile()],
+  ),
+)`,[
+          tdNode("st-tile-notif","ListTile","A ready-made settings row with a trailing switch.","The trailing Switch turns the row into an inline toggle.",`ListTile(
+  leading: const Icon(Icons.notifications_outlined),
+  title: const Text('Notifications'),
+  trailing: Switch(value: true, onChanged: toggleNotifications),
+)`,[
+            tdNode("st-tile-notif-icon","Icon","Draws a Material icon glyph.","The bell identifies this as the alerts setting.",`const Icon(Icons.notifications_outlined, color: Color(0xFF5B5BD6))`),
+            tdNode("st-tile-notif-title","Text","Renders a styled string on screen.","'Notifications' labels the toggle.",`const Text('Notifications')`),
+            tdNode("st-notif-switch","Switch","A Material on/off toggle.","It flips the preference in place — no new screen needed.",`Switch(
+  value: true,
+  onChanged: (v) => setState(() => notifications = v),
+)`)
+          ]),
+          tdNode("st-div2","Divider","A thin horizontal line.","It keeps the toggle rows visually distinct.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-tile-dark","ListTile","A ready-made settings row with a trailing switch.","Dark mode previews instantly, so a switch beats a new screen.",`ListTile(
+  leading: const Icon(Icons.dark_mode_outlined),
+  title: const Text('Dark mode'),
+  trailing: Switch(value: false, onChanged: toggleDarkMode),
+)`,[
+            tdNode("st-tile-dark-icon","Icon","Draws a Material icon glyph.","The moon reads as 'night theme' at a glance.",`const Icon(Icons.dark_mode_outlined, color: Color(0xFF5B5BD6))`),
+            tdNode("st-tile-dark-title","Text","Renders a styled string on screen.","'Dark mode' names the theme toggle.",`const Text('Dark mode')`),
+            tdNode("st-dark-switch","Switch","A Material on/off toggle.","Flipping it rebuilds the app with the dark color scheme.",`Switch(
+  value: false,
+  onChanged: (v) => setState(() => darkMode = v),
+)`)
+          ]),
+          tdNode("st-div3","Divider","A thin horizontal line.","The last divider before the language row.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-tile-lang","ListTile","A ready-made settings row with a trailing value.","The trailing text shows the current choice; tapping opens the picker.",`ListTile(
+  leading: const Icon(Icons.language_outlined),
+  title: const Text('Language'),
+  trailing: const Text('English'),
+  onTap: pickLanguage,
+)`,[
+            tdNode("st-lang-icon","Icon","Draws a Material icon glyph.","The globe marks this as the locale setting.",`const Icon(Icons.language_outlined, color: Color(0xFF5B5BD6))`),
+            tdNode("st-lang-title","Text","Renders a styled string on screen.","'Language' labels the locale row.",`const Text('Language')`),
+            tdNode("st-lang-value","Text","Renders a styled string on screen.","'English' shows the active language without opening the picker.",`const Text(
+  'English',
+  style: TextStyle(color: Colors.grey),
+)`)
+          ])
+        ]),
+        tdNode("st-support-header","Text","Renders a styled string on screen.","The final group label for help and info rows.",`const Padding(
+  padding: EdgeInsets.only(top: 20, bottom: 8),
+  child: Text('SUPPORT', style: TextStyle(fontSize: 12, color: Colors.grey)),
+)`),
+        tdNode("st-support-group","Container","A box that can hold padding, color, and decoration.","It gives the support rows the same grouped-card treatment.",`Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(16),
+  ),
+  child: const Column(
+    children: [HelpTile(), Divider(), AboutTile()],
+  ),
+)`,[
+          tdNode("st-tile-help","ListTile","A ready-made settings row: leading icon, title, trailing.","Help opens FAQs and contact options.",`ListTile(
+  leading: const Icon(Icons.help_outline),
+  title: const Text('Help & feedback'),
+  trailing: const Icon(Icons.chevron_right),
+  onTap: openHelp,
+)`,[
+            tdNode("st-tile-help-icon","Icon","Draws a Material icon glyph.","The question mark marks this as the help entry.",`const Icon(Icons.help_outline, color: Color(0xFF5B5BD6))`),
+            tdNode("st-tile-help-title","Text","Renders a styled string on screen.","'Help & feedback' invites the user to get support.",`const Text('Help & feedback')`),
+            tdNode("st-tile-help-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
+          ]),
+          tdNode("st-div4","Divider","A thin horizontal line.","It separates the two support rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-tile-about","ListTile","A ready-made settings row: leading icon, title, trailing.","About shows the app version and legal info.",`ListTile(
+  leading: const Icon(Icons.info_outline),
+  title: const Text('About'),
+  trailing: const Icon(Icons.chevron_right),
+  onTap: openAbout,
+)`,[
+            tdNode("st-tile-about-icon","Icon","Draws a Material icon glyph.","The info mark signals app metadata lives here.",`const Icon(Icons.info_outline, color: Color(0xFF5B5BD6))`),
+            tdNode("st-tile-about-title","Text","Renders a styled string on screen.","'About' labels the app-info screen.",`const Text('About')`),
+            tdNode("st-tile-about-chev","Icon","Draws a Material icon glyph.","The chevron shows the row is tappable.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
+          ])
+        ])
+      ])
+    ])
+  }
+,
+login: {
+    app: "Login", screen: "Sign in", count: 39, glyph: "L", glyphClass: "", accent: "#02569B",
+    hotspots: ["lg-email-field","lg-pass-field","lg-eye","lg-forgot","lg-login-btn","lg-signup-row"],
+    root: tdNode("lg-scaffold","Scaffold","Holds the sign-in form and its actions on one screen.","It keeps the brand header, email and password fields, and sign-in actions together.",`Scaffold(\n  body: const SignInForm(),\n)`,[
+      tdNode("lg-form","Form","Groups the fields so they can be validated together.","It wraps the email and password fields under one GlobalKey.",`Form(\n  key: _formKey,\n  child: const SignInFields(),\n)`),
+      tdNode("lg-login-btn","ElevatedButton","Submits the form and attempts sign-in.","It is the primary filled action on the screen.",`ElevatedButton(\n  onPressed: _submit,\n  child: const Text('Log in'),\n)`)
+    ])
+  },
 };
 
 /* Full, hand-authored structural trees used by the interactive teardown canvas. */
@@ -494,6 +706,66 @@ TEARDOWNS.swiggy.root = T("sw-material","MaterialApp","The food home screen inhe
   ])
 ]);
 
+TEARDOWNS.login.root = T("lg-material","MaterialApp","The sign-in screen inherits one Material theme and navigation context.",[
+  T("lg-theme","Theme","A focused auth palette supplies brand color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF02569B)),\n  child: const SignInScreen(),\n)`),
+  T("lg-scaffold","Scaffold","The brand header, sign-in form, and its actions share one stable page frame.",[
+    T("lg-safe","SafeArea","Form content stays clear of notches, the status bar, and system gestures.",[
+      T("lg-scroll","SingleChildScrollView","The form scrolls when the keyboard shrinks the visible area.",[
+        T("lg-center","Center","The sign-in form stays centered on tall screens.",[
+          T("lg-form-padding","Padding","The form keeps one consistent inset from the screen edges.",[
+            T("lg-form","Form","Groups the fields so they can be validated together with a GlobalKey.",[
+              T("lg-col","Column","Logo, fields, and actions follow from top to bottom.",[
+                T("lg-header","Column","Brand mark, title, and subtitle form the sign-in header.",[
+                  T("lg-logo-ring","Container","A gradient ring gives the brand mark its badge shape.",[
+                    T("lg-logo","Text","Shows the app monogram inside the badge.",[],`const Text(\n  'FF',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`)
+                  ],`Container(\n  width: 64,\n  height: 64,\n  decoration: const BoxDecoration(\n    borderRadius: BorderRadius.all(Radius.circular(22)),\n    gradient: LinearGradient(colors: [Color(0xFF02569B), Color(0xFF13B9FD)]),\n  ),\n  child: const Center(child: Text('FF')),\n)`),
+                  T("lg-title","Text","Greets the returning user.",[],`const Text(\n  'Welcome back',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`),
+                  T("lg-subtitle","Text","Explains what signing in unlocks.",[],`const Text(\n  'Sign in to your account',\n  style: TextStyle(color: Colors.grey),\n)`)
+                ]),
+                T("lg-email-field","TextField","Collects the account email address.",[
+                  T("lg-email-icon","Icon","Hints that this field expects an email address.",[],`const Icon(Icons.mail_outlined)`),
+                  T("lg-email-decoration","InputDecoration","Labels, hints, and borders describe the email field's state.",[],`const InputDecoration(\n  labelText: 'Email',\n  hintText: 'you@example.com',\n  prefixIcon: Icon(Icons.mail_outlined),\n  border: OutlineInputBorder(),\n)`)
+                ],`TextField(\n  controller: _emailController,\n  keyboardType: TextInputType.emailAddress,\n  decoration: const InputDecoration(\n    labelText: 'Email',\n    prefixIcon: Icon(Icons.mail_outlined),\n    border: OutlineInputBorder(),\n  ),\n  validator: (value) => value!.contains('@') ? null : 'Enter a valid email',\n)`),
+                T("lg-field-gap","SizedBox","Keeps a steady rhythm between the two fields.",[],`const SizedBox(height: 12)`),
+                T("lg-pass-field","TextField","Collects the password without showing it.",[
+                  T("lg-pass-icon","Icon","Hints that this field expects a secret.",[],`const Icon(Icons.lock_outlined)`),
+                  T("lg-pass-decoration","InputDecoration","Labels the password field and reserves the suffix slot.",[],`const InputDecoration(\n  labelText: 'Password',\n  prefixIcon: Icon(Icons.lock_outlined),\n  border: OutlineInputBorder(),\n)`),
+                  T("lg-eye","IconButton","Toggles password visibility without leaving the field.",[],`IconButton(\n  onPressed: _toggleObscure,\n  icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),\n)`)
+                ],`TextField(\n  controller: _passwordController,\n  obscureText: _obscure,\n  decoration: InputDecoration(\n    labelText: 'Password',\n    prefixIcon: const Icon(Icons.lock_outlined),\n    suffixIcon: IconButton(\n      onPressed: _toggleObscure,\n      icon: const Icon(Icons.visibility_outlined),\n    ),\n    border: const OutlineInputBorder(),\n  ),\n  validator: (value) => value!.length >= 6 ? null : 'Minimum 6 characters',\n)`),
+                T("lg-forgot-align","Align","Pins the recovery link to the trailing edge.",[
+                  T("lg-forgot","TextButton","Starts the password recovery flow.",[],`TextButton(\n  onPressed: _recoverPassword,\n  child: const Text('Forgot password?'),\n)`)
+                ],`const Align(\n  alignment: Alignment.centerRight,\n  child: TextButton(\n    onPressed: _recoverPassword,\n    child: Text('Forgot password?'),\n  ),\n)`),
+                T("lg-btn-gap","SizedBox","Separates the form from its primary action.",[],`const SizedBox(height: 16)`),
+                T("lg-login-btn","ElevatedButton","Submits the form and attempts sign-in.",[],`ElevatedButton(\n  onPressed: () {\n    if (_formKey.currentState!.validate()) _signIn();\n  },\n  child: const Text('Log in'),\n)`),
+                T("lg-or-gap","SizedBox","Breathing room before the alternative sign-in row.",[],`const SizedBox(height: 18)`),
+                T("lg-or-row","Row","The divider row centers the 'or' label between two rules.",[
+                  T("lg-or-line","Divider","A hairline rule balances each side of the 'or' label.",[],`const Divider()`),
+                  T("lg-or-text","Text","Separates password sign-in from social options.",[],`const Text('or')`)
+                ]),
+                T("lg-social-row","Row","Social sign-in options sit side by side.",[
+                  T("lg-google-btn","OutlinedButton","Starts Google sign-in as a secondary action.",[],`OutlinedButton(\n  onPressed: _signInWithGoogle,\n  child: const Text('G'),\n)`),
+                  T("lg-apple-btn","OutlinedButton","Starts Apple sign-in as a secondary action.",[],`OutlinedButton(\n  onPressed: _signInWithApple,\n  child: const Text(''),\n)`)
+                ]),
+                T("lg-signup-gap","SizedBox","Lifts the sign-up prompt away from the social row.",[],`const SizedBox(height: 20)`),
+                T("lg-signup-row","Row","The prompt and its link share one centered line.",[
+                  T("lg-signup-text","Text","Invites new users without a link style.",[],`const Text("Don't have an account?")`),
+                  T("lg-signup-space","SizedBox","A fixed gap keeps the link from touching the prompt.",[],`const SizedBox(width: 6)`),
+                  T("lg-signup-link","GestureDetector","Makes the 'Sign up' text tappable.",[
+                    T("lg-signup-link-text","Text","Routes new users to registration.",[],`const Text(\n  'Sign up',\n  style: TextStyle(color: Color(0xFF02569B), fontWeight: FontWeight.w700),\n)`)
+                  ],`GestureDetector(\n  onTap: _goToSignUp,\n  child: const Text(\n    'Sign up',\n    style: TextStyle(color: Color(0xFF02569B)),\n  ),\n)`)
+                ],`Row(\n  mainAxisAlignment: MainAxisAlignment.center,\n  children: [\n    const Text("Don't have an account?"),\n    const SizedBox(width: 6),\n    GestureDetector(onTap: _goToSignUp, child: const Text('Sign up')),\n  ],\n)`)
+              ])
+            ],`Form(\n  key: _formKey,\n  child: const SignInFields(),\n)`)
+          ],`const Padding(\n  padding: EdgeInsets.symmetric(horizontal: 22),\n  child: SignInForm(),\n)`)
+        ],`const Center(child: SignInCard())`)
+      ],`const SingleChildScrollView(child: SignInCard())`)
+    ],`const SafeArea(child: SignInBody())`)
+  ],`Scaffold(\n  body: const SafeArea(child: SignInBody()),\n)`)
+]);
+
+
+/*
+
 /* Keep the teaching tree aligned with the visible mockups. Every selectable node below has a complete, contextual snippet. */
 (function refineTeardownContent(){
   const wa = tdIndex(TEARDOWNS.whatsapp).map;
@@ -562,7 +834,77 @@ function tdPhoneSwiggy() {
   const restaurant=(name,meta,color)=>`<article class="sw-card td-region" data-node="sw-card-one" data-widget="Card"><div class="td-region" data-node="sw-card-column" data-widget="Column"><div class="sw-card-pic td-region" data-node="sw-card-image" data-widget="Image" style="--food:${color}"></div><div class="sw-card-body td-region" data-node="sw-card-detail-padding" data-widget="Padding"><span class="td-region" data-node="sw-card-details" data-widget="Column"><b class="td-region" data-node="sw-card-name" data-widget="Text">${name}</b><span class="td-region" data-node="sw-card-meta" data-widget="Text">${meta}</span></span></div></div></article>`;
   return `${tdStatus(false)}<div class="sw-screen td-region" data-node="sw-scaffold" data-widget="Scaffold"><main class="sw-scroll td-region" data-node="sw-scroll-view" data-widget="CustomScrollView"><header class="sw-head td-region" data-node="sw-appbar" data-widget="SliverAppBar"><div class="sw-location td-region" data-node="sw-location-row" data-widget="Row"><span class="td-region" data-node="sw-pin" data-widget="Icon">${TD_ICON.pin}</span><span class="sw-location-copy td-region" data-node="sw-location" data-widget="Column"><b class="td-region" data-node="sw-home-text" data-widget="Text">Home⌄</b><span class="td-region" data-node="sw-address-text" data-widget="Text">MG Road, Bengaluru</span></span><span class="sw-profile td-region" data-node="sw-profile-avatar" data-widget="CircleAvatar">DK</span></div><div class="sw-search td-region" data-node="sw-search" data-widget="TextField"><span>Search for dishes and restaurants</span><span style="margin-left:auto">${TD_ICON.search}</span></div></header><section class="sw-section"><h3 class="td-region" data-node="sw-category-title" data-widget="Text">What's on your mind?</h3><div class="sw-categories td-region" data-node="sw-categories" data-widget="ListView">${category('Biryani','#f4d4a5')}${category('Pizza','#f0c48d')}${category('Dosa','#ead39e')}${category('Rolls','#f2b3a0')}</div><div class="sw-offer td-region" data-node="sw-offer" data-widget="Card"><span class="td-region" data-node="sw-offer-copy" data-widget="Column"><b class="td-region" data-node="sw-offer-title" data-widget="Text">40% OFF</b><span class="td-region" data-node="sw-offer-detail" data-widget="Text">On your first order - use WELCOME</span></span></div></section><section class="sw-section"><h3 class="td-region" data-node="sw-restaurants-title" data-widget="Text">Top restaurants near you</h3><p class="sw-sub td-region" data-node="sw-restaurants-subtitle" data-widget="Text">Fast delivery and great ratings</p><div class="sw-restaurants td-region" data-node="sw-restaurants" data-widget="ListView">${restaurant('Spice Kitchen','4.5 · 25–30 min','#c87a4c')}${restaurant('South Bowl','4.3 · 20–25 min','#d6a56f')}</div></section></main><nav class="sw-bottom td-region" data-node="sw-bottom" data-widget="BottomNavigationBar"><span class="sw-nav td-region" data-node="sw-food-nav" data-widget="Icon">${TD_ICON.home}<span>Food</span></span><span class="sw-nav td-region" data-node="sw-search-nav" data-widget="Icon">${TD_ICON.search}<span>Search</span></span><span class="sw-nav td-region" data-node="sw-cart-nav" data-widget="Icon">${TD_ICON.bag}<span>Cart</span></span><span class="sw-nav td-region" data-node="sw-account-nav" data-widget="Icon">${TD_ICON.person}<span>Account</span></span></nav></div>`;
 }
-function tdPhone(key) { return key === "whatsapp" ? tdPhoneWhatsApp() : key === "instagram" ? tdPhoneInstagram() : tdPhoneSwiggy(); }
+function tdPhoneSettings() {
+  const ic = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+  const ICON = {
+    person: ic('<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/>'),
+    lock: ic('<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'),
+    bell: ic('<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2.5h-15Z"/><path d="M10 21a2 2 0 0 0 4 0"/>'),
+    moon: ic('<path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z"/>'),
+    globe: ic('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/>'),
+    help: ic('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.1.9-1.1 1.8"/>'),
+    info: ic('<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/>')
+  };
+  const row = (id, icon, title, sub, trail) =>
+    `<div class="st-row td-region" data-node="${id}" data-widget="ListTile">` +
+    `<span class="st-ic td-region" data-node="${id}-icon" data-widget="Icon">${icon}</span>` +
+    `<span class="st-txcol"><b class="td-region" data-node="${id}-title" data-widget="Text">${title}</b>` +
+    (sub ? `<span class="td-region" data-node="${id}-sub" data-widget="Text">${sub}</span>` : ``) + `</span>` +
+    trail + `</div>`;
+  const chev = (id) => `<span class="st-chev td-region" data-node="${id}-chev" data-widget="Icon">›</span>`;
+  const sw = (id, on) => `<span class="st-switch${on ? " on" : ""} td-region" data-node="${id}-switch" data-widget="Switch"><i></i></span>`;
+  const div = (id) => `<div class="st-div td-region" data-node="${id}" data-widget="Divider"></div>`;
+  return `<div class="st-screen td-region" data-node="st-scaffold" data-widget="Scaffold">` +
+  `<header class="st-bar td-region" data-node="st-appbar" data-widget="AppBar">` +
+    `<span class="st-back td-region" data-node="st-back" data-widget="IconButton">‹</span>` +
+    `<b class="td-region" data-node="st-appbar-title" data-widget="Text">Settings</b>` +
+  `</header>` +
+  `<main class="st-body td-region" data-node="st-body" data-widget="ListView">` +
+    `<section class="st-card td-region" data-node="st-profile-card" data-widget="Card">` +
+      `<div class="st-profile-row td-region" data-node="st-profile-row" data-widget="Row">` +
+        `<span class="st-avatar td-region" data-node="st-avatar" data-widget="CircleAvatar">DK</span>` +
+        `<span class="st-idcol td-region" data-node="st-profile-col" data-widget="Column">` +
+          `<b class="td-region" data-node="st-name" data-widget="Text">Dheeraj Kumar</b>` +
+          `<span class="td-region" data-node="st-email" data-widget="Text">dheeraj@example.com</span>` +
+        `</span>` +
+        `<span class="st-edit td-region" data-node="st-edit" data-widget="TextButton">Edit</span>` +
+      `</div>` +
+    `</section>` +
+    `<div class="st-group-label td-region" data-node="st-account-header" data-widget="Text">Account</div>` +
+    `<section class="st-group td-region" data-node="st-account-group" data-widget="Container">` +
+      row("st-tile-profile", ICON.person, "Profile", "Name, email, avatar", chev("st-tile-profile")) +
+      div("st-div1") +
+      row("st-tile-privacy", ICON.lock, "Privacy", null, chev("st-tile-privacy")) +
+    `</section>` +
+    `<div class="st-group-label td-region" data-node="st-pref-header" data-widget="Text">Preferences</div>` +
+    `<section class="st-group td-region" data-node="st-pref-group" data-widget="Container">` +
+      row("st-tile-notif", ICON.bell, "Notifications", null, sw("st-notif", true)) +
+      div("st-div2") +
+      row("st-tile-dark", ICON.moon, "Dark mode", null, sw("st-dark", false)) +
+      div("st-div3") +
+      `<div class="st-row td-region" data-node="st-tile-lang" data-widget="ListTile">` +
+        `<span class="st-ic td-region" data-node="st-lang-icon" data-widget="Icon">${ICON.globe}</span>` +
+        `<span class="st-txcol"><b class="td-region" data-node="st-lang-title" data-widget="Text">Language</b></span>` +
+        `<span class="st-lang-val td-region" data-node="st-lang-value" data-widget="Text">English</span>` +
+      `</div>` +
+    `</section>` +
+    `<div class="st-group-label td-region" data-node="st-support-header" data-widget="Text">Support</div>` +
+    `<section class="st-group td-region" data-node="st-support-group" data-widget="Container">` +
+      row("st-tile-help", ICON.help, "Help & feedback", null, chev("st-tile-help")) +
+      div("st-div4") +
+      row("st-tile-about", ICON.info, "About", null, chev("st-tile-about")) +
+    `</section>` +
+  `</main></div>`;
+}
+
+function tdPhoneLogin() {
+  const eye = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const mail = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
+  const lock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+  return `${tdStatus(false)}<div class="lg-screen td-region" data-node="lg-scaffold" data-widget="Scaffold"><div class="lg-safe td-region" data-node="lg-safe" data-widget="SafeArea"><div class="lg-scroll td-region" data-node="lg-scroll" data-widget="SingleChildScrollView"><div class="lg-center td-region" data-node="lg-center" data-widget="Center"><div class="lg-form-pad td-region" data-node="lg-form-padding" data-widget="Padding"><div class="td-region" data-node="lg-form" data-widget="Form"><div class="lg-col td-region" data-node="lg-col" data-widget="Column"><div class="lg-header td-region" data-node="lg-header" data-widget="Column"><div class="lg-logo-ring td-region" data-node="lg-logo-ring" data-widget="Container"><span class="td-region" data-node="lg-logo" data-widget="Text">FF</span></div><b class="td-region" data-node="lg-title" data-widget="Text">Welcome back</b><span class="td-region" data-node="lg-subtitle" data-widget="Text">Sign in to your account</span></div><div class="lg-field td-region" data-node="lg-email-field" data-widget="TextField"><span class="td-region" data-node="lg-email-icon" data-widget="Icon">${mail}</span><span class="td-region" data-node="lg-email-decoration" data-widget="InputDecoration">Email</span></div><div class="lg-field td-region" data-node="lg-pass-field" data-widget="TextField"><span class="td-region" data-node="lg-pass-icon" data-widget="Icon">${lock}</span><span class="td-region" data-node="lg-pass-decoration" data-widget="InputDecoration">Password</span><span class="lg-eye td-region" data-node="lg-eye" data-widget="IconButton">${eye}</span></div><div class="lg-forgot-align td-region" data-node="lg-forgot-align" data-widget="Align"><span class="td-region" data-node="lg-forgot" data-widget="TextButton">Forgot password?</span></div><div class="lg-login td-region" data-node="lg-login-btn" data-widget="ElevatedButton"><span>Log in</span></div><div class="lg-or-row td-region" data-node="lg-or-row" data-widget="Row"><i class="lg-or-line td-region" data-node="lg-or-line" data-widget="Divider"></i><span class="td-region" data-node="lg-or-text" data-widget="Text">or</span><i class="lg-or-line td-region" data-node="lg-or-line" data-widget="Divider"></i></div><div class="lg-social-row td-region" data-node="lg-social-row" data-widget="Row"><span class="lg-social td-region" data-node="lg-google-btn" data-widget="OutlinedButton">G</span><span class="lg-social td-region" data-node="lg-apple-btn" data-widget="OutlinedButton"></span></div><div class="lg-signup-row td-region" data-node="lg-signup-row" data-widget="Row"><span class="td-region" data-node="lg-signup-text" data-widget="Text">Don't have an account?</span><span class="td-region" data-node="lg-signup-link" data-widget="GestureDetector"><b class="td-region" data-node="lg-signup-link-text" data-widget="Text">Sign up</b></span></div></div></div></div></div></div></div></div>`;
+}
+
+function tdPhone(key) { return key === "whatsapp" ? tdPhoneWhatsApp() : key === "instagram" ? tdPhoneInstagram() : key === "settings" ? tdPhoneSettings() : key === "login" ? tdPhoneLogin() : tdPhoneSwiggy(); }
 function tdIndex(teardown) {
   const map = {}, parents = {};
   (function walk(node, parent) { map[node.id] = node; if (parent) parents[node.id] = parent.id; node.children.forEach(child => walk(child, node)); })(teardown.root, null);
