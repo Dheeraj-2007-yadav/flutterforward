@@ -2677,15 +2677,101 @@ body.home-page .wrap { padding-top: 12px; }
 /* Narrow phone: scale down mock content to fit */
 @media (max-width:900px){
   /* Instagram: smaller avatar and tighter stats */
-  .ig-top{ gap:12px !important; }
-  .ig-ring{ width:64px !important; height:64px !important; }
-  .ig-avatar{ width:57px !important; height:57px !important; font-size:15px !important; }
-  .ig-stat{ min-width:0 !important; }
-  .ig-stat b{ font-size:12px !important; }
-  .ig-stat span{ font-size:7px !important; }
+  .ig-top{ gap:10px !important; }
+  .ig-ring{ width:58px !important; height:58px !important; flex:none !important; }
+  .ig-avatar{ width:51px !important; height:51px !important; font-size:14px !important; }
+  .ig-stats{ gap:4px !important; min-width:0 !important; }
+  .ig-stat{ min-width:0 !important; flex:1 !important; }
+  .ig-stat b{ font-size:11px !important; white-space:nowrap !important; }
+  .ig-stat span{ font-size:6.5px !important; white-space:nowrap !important; }
   /* Swiggy: smaller categories to fit 4 across */
   .sw-categories{ gap:8px !important; }
   .sw-category{ width:46px !important; }
   .sw-food{ width:42px !important; height:42px !important; font-size:9px !important; }
   .sw-category{ font-size:7px !important; }
+}
+
+/* Tablet (901-1250px): stacked layout — phone on top, panel below.
+   Truly responsive: works at any width, no cutoff possible. */
+@media (min-width:901px) and (max-width:1250px){
+  .teardown-detail{
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+  .teardown-detail .teardown-workbench{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    gap:24px !important;
+    padding:0 24px 40px !important;
+    overflow:visible !important;
+  }
+  .teardown-detail .teardown-phone-stage{
+    flex:none !important;
+  }
+  .teardown-detail .teardown-panel{
+    position:static !important;
+    width:100% !important;
+    max-width:640px !important;
+    min-width:0 !important;
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+  .teardown-detail .teardown-panel .td-fi-code{
+    overflow-x:auto !important;
+    max-width:100% !important;
+  }
+}
+
+/* Prevent code blocks from pushing panel wider than viewport */
+@media (min-width:901px){
+  .teardown-detail .teardown-panel{
+    min-width:0 !important;
+    overflow-x:hidden !important;
+  }
+  .teardown-detail .teardown-panel pre,
+  .teardown-detail .teardown-panel code{
+    white-space:pre-wrap !important;
+    word-break:break-word !important;
+    overflow-wrap:break-word !important;
+    max-width:100% !important;
+  }
+}
+
+/* Smart responsive mock UI: scales fluidly with phone width, no cutouts */
+.teardown-screen{
+  /* Base size scales with viewport — all mock content uses em/rem relative to this */
+  --mock-scale: clamp(0.82, calc(100vw / 420), 1);
+}
+/* Instagram: fluid sizes */
+.ig-top{ gap:calc(14px * var(--mock-scale, 1)) !important; }
+.ig-ring{
+  width:calc(76px * var(--mock-scale, 1)) !important;
+  height:calc(76px * var(--mock-scale, 1)) !important;
+}
+.ig-avatar{
+  width:calc(69px * var(--mock-scale, 1)) !important;
+  height:calc(69px * var(--mock-scale, 1)) !important;
+  font-size:calc(17px * var(--mock-scale, 1)) !important;
+}
+.ig-stats{ min-width:0 !important; flex:1 !important; }
+.ig-stat{ min-width:0 !important; flex:1 1 0 !important; }
+.ig-stat b{ font-size:calc(13px * var(--mock-scale, 1)) !important; white-space:nowrap !important; }
+.ig-stat span{ font-size:calc(8px * var(--mock-scale, 1)) !important; white-space:nowrap !important; }
+/* Swiggy: fluid categories */
+.sw-categories{ gap:calc(11px * var(--mock-scale, 1)) !important; }
+.sw-category{ width:calc(52px * var(--mock-scale, 1)) !important; flex:none !important; }
+.sw-food{
+  width:calc(48px * var(--mock-scale, 1)) !important;
+  height:calc(48px * var(--mock-scale, 1)) !important;
+  font-size:calc(10px * var(--mock-scale, 1)) !important;
+}
+/* Never allow horizontal overflow in mock content */
+.teardown-screen *{
+  max-width:100%;
+}
+.ig-scroll, .sw-scroll{
+  overflow-x:hidden !important;
 }
