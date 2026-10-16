@@ -2368,7 +2368,7 @@ body.home-page .wrap { padding-top: 12px; }
   }
 
   .teardown-detail .teardown-workbench{
-    grid-template-columns:minmax(320px, 360px) minmax(0, 1fr);
+    display:flex;justify-content:center;align-items:center;
     gap:48px;
     max-width:none;
     width:100%;
@@ -2459,8 +2459,8 @@ body.home-page .wrap { padding-top: 12px; }
   .teardown-detail .td-fi-desc{ font-size:15px; }
 }
 @keyframes tdSheetUp{
-  from{ transform:translateY(48px); opacity:0; }
-  to{ transform:none; opacity:1; }
+  from{ transform:translateX(-50%) translateY(48px); opacity:0; }
+  to{ transform:translateX(-50%) translateY(0); opacity:1; }
 }
 @media (prefers-reduced-motion:reduce){
   .teardown-detail .teardown-panel:not(.is-empty){ animation:none; }
@@ -2608,8 +2608,8 @@ body.home-page .wrap { padding-top: 12px; }
   animation:tdSheetDown .28s cubic-bezier(.4,0,.2,1) both !important;
 }
 @keyframes tdSheetDown{
-  from{ transform:none; opacity:1; }
-  to{ transform:translateY(60px); opacity:0; }
+  from{ transform:translateX(-50%) translateY(0); opacity:1; }
+  to{ transform:translateX(-50%) translateY(60px); opacity:0; }
 }
 /* Selection highlight smooth */
 .td-region{
@@ -2651,12 +2651,12 @@ body.home-page .wrap { padding-top: 12px; }
   }
 }
 @keyframes tdSheetUpMobile{
-  from{ transform:translateY(100%); }
-  to{ transform:translateY(0); }
+  from{ transform:translateX(-50%) translateY(100%); }
+  to{ transform:translateX(-50%) translateY(0); }
 }
 @keyframes tdSheetDownMobile{
-  from{ transform:translateY(0); }
-  to{ transform:translateY(100%); }
+  from{ transform:translateX(-50%) translateY(0); }
+  to{ transform:translateX(-50%) translateY(100%); }
 }
 
 @media (max-width:900px){
@@ -2714,4 +2714,35 @@ body.home-page .wrap { padding-top: 12px; }
   }
 }
 
-
+/* Bottom sheet inspector for ALL screen sizes (user request 2026-10-16) */
+.teardown-detail .teardown-panel:not(.is-empty){
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  right:auto;
+  bottom:0;
+  z-index:90;
+  width:min(720px, calc(100vw - 32px));
+  max-height:min(70vh, 600px);
+  max-height:min(70dvh, 600px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  border:1px solid var(--line);
+  border-bottom:none;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -18px 50px -12px rgba(0,0,0,.35);
+  padding:20px 24px max(20px, env(safe-area-inset-bottom));
+  animation:tdSheetUp .32s cubic-bezier(.22,1,.36,1) both;
+}
+/* Desktop: hide the empty placeholder panel (phone is the hero) */
+@media (min-width:901px){
+  .teardown-detail .teardown-panel.is-empty{
+    display:none;
+  }
+  .teardown-detail .teardown-workbench{
+    display:flex !important;
+    justify-content:center !important;
+    align-items:center !important;
+  }
+}
