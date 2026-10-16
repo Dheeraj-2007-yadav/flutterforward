@@ -2580,3 +2580,49 @@ body.home-page .wrap { padding-top: 12px; }
 .td-back-link:hover{color:var(--accent);}
 .td-back-pill:hover{border-color:var(--accent); color:var(--accent);}
 .teardown-detail{position:relative !important;}
+
+/* Smooth open/close for popup and bottom sheet */
+.td-popout-backdrop{
+  animation:tdFadeIn .25s ease both;
+}
+.td-popout-layer-closing .td-popout-backdrop{
+  animation:tdFadeOut .2s ease both;
+}
+.td-popout-layer-closing .td-popout-item{
+  animation:tdPopOut .2s ease both !important;
+}
+@keyframes tdFadeIn{ from{opacity:0;} to{opacity:1;} }
+@keyframes tdFadeOut{ from{opacity:1;} to{opacity:0;} }
+@keyframes tdPopOut{
+  from{ transform:translate(-50%,-50%) scale(1); opacity:1; }
+  to{ transform:translate(-50%,-50%) scale(.7); opacity:0; }
+}
+/* Bottom sheet smooth close */
+.td-sheet-closing{
+  animation:tdSheetDown .28s cubic-bezier(.4,0,.2,1) both !important;
+}
+@keyframes tdSheetDown{
+  from{ transform:none; opacity:1; }
+  to{ transform:translateY(60px); opacity:0; }
+}
+/* Selection highlight smooth */
+.td-region{
+  transition:outline-color .2s ease, outline-width .2s ease;
+}
+.td-region.td-highlight{
+  transition:outline-color .25s ease;
+}
+@media (prefers-reduced-motion:reduce){
+  .td-popout-backdrop, .td-popout-layer-closing .td-popout-backdrop,
+  .td-popout-layer-closing .td-popout-item, .td-sheet-closing{
+    animation:none !important;
+  }
+}
+
+@media (max-width:900px){
+  .td-back-link{
+    top:68px;
+    left:12px;
+    font-size:13px;
+  }
+}

@@ -1049,11 +1049,34 @@ function tdHighlightRegion(nodeId, on) {
 }
 function tdDismissPopout() {
   var l = document.getElementById("td-popout-layer");
-  if (l) l.remove();
-  // Remove numbered badges
-  document.querySelectorAll(".td-pick-badge").forEach(function(b){ b.remove(); });
+  if (!l) {
+    document.querySelectorAll(".td-pick-badge").forEach(function(b){ b.remove(); });
+    return;
+  }
+  if (l.classList.contains("td-popout-layer-closing")) return;
+  l.classList.add("td-popout-layer-closing");
+  setTimeout(function(){
+    var el = document.getElementById("td-popout-layer");
+    if (el) el.remove();
+    document.querySelectorAll(".td-pick-badge").forEach(function(b){ b.remove(); });
+  }, 200);
 }
-tdClose = function(){teardownState.selected=null;document.body.classList.remove("td-sheet-open");tdSyncSelection();};
+tdClose = function(){
+  var panel = document.querySelector(".teardown-detail .teardown-panel:not(.is-empty)");
+  var isMobileSheet = panel && window.innerWidth < 901;
+  if (isMobileSheet && panel && !panel.classList.contains("td-sheet-closing")) {
+    panel.classList.add("td-sheet-closing");
+    setTimeout(function(){
+      teardownState.selected=null;
+      document.body.classList.remove("td-sheet-open");
+      tdSyncSelection();
+    }, 280);
+  } else {
+    teardownState.selected=null;
+    document.body.classList.remove("td-sheet-open");
+    tdSyncSelection();
+  }
+};
 tdToggleBounds = function(){};
 function tdToggleBranch(id){
   const node=tdIndex(TEARDOWNS[teardownState.app]).map[id];if(!node||!node.children.length)return;
