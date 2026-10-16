@@ -2414,13 +2414,16 @@ body.home-page .wrap { padding-top: 12px; }
     flex:none;
   }
   .teardown-detail .teardown-screen{
-    height:min(600px, calc(100dvh - 220px)) !important;
+    height:min(600px, calc(100svh - 230px)) !important;
     min-height:0 !important;
-    max-height:calc(100dvh - 220px) !important;
+    max-height:calc(100svh - 230px) !important;
     aspect-ratio:9/19.3 !important;
     width:auto !important;
     min-width:0 !important;
     max-width:100% !important;
+  }
+  .teardown-detail .teardown-phone{
+    max-height:calc(100svh - 200px) !important;
   }
   .teardown-detail .teardown-screen{
     height:auto;
@@ -2518,16 +2521,16 @@ body.home-page .wrap { padding-top: 12px; }
   }
   .teardown-detail .teardown-screen{
     /* Truly responsive: fits viewport, adjusts to any size change */
-    height:min(580px, calc(100dvh - 260px)) !important;
+    height:min(650px, calc(100svh - 180px)) !important;
     min-height:0 !important;
-    max-height:calc(100dvh - 260px) !important;
+    max-height:calc(100svh - 180px) !important;
     aspect-ratio:9/19.3 !important;
     width:auto !important;
     min-width:0 !important;
     max-width:100% !important;
   }
   .teardown-detail .teardown-phone{
-    max-height:calc(100dvh - 220px) !important;
+    max-height:calc(100svh - 160px) !important;
   }
 }
 /* Desktop: phone fills its column, height-constrained to viewport */

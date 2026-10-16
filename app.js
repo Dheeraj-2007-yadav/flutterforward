@@ -685,7 +685,7 @@ function tdEnforceOneFrame() {
   var vh = window.innerHeight;
   var rect = d.getBoundingClientRect();
   var top = rect.top;
-  var targetH = vh - top - 40;
+  var targetH = vh - top - 20;
   d.style.setProperty('height', targetH + 'px', 'important');
   d.style.setProperty('min-height', targetH + 'px', 'important');
   d.style.setProperty('max-height', targetH + 'px', 'important');
