@@ -656,7 +656,7 @@ function tdPanel() {
 }
 function tdDetailView() {
   const item = TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><span class="teardown-detail-title-inline">${esc(item.screen)}</span></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
+  return `<div class="teardown-detail"><a class="td-back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
 }
 function teardownsView() {
   teardownState = { app: null, selected: null, bounds: false };
@@ -855,7 +855,7 @@ function tdTreeMarkup() {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail"><div class="teardown-detail-head"><a class="back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><span class="teardown-detail-title-inline">${esc(item.screen)}</span></div><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
+  return `<div class="teardown-detail"><a class="td-back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
 };
 
 function tdApplyView() {
