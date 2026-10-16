@@ -2774,17 +2774,30 @@ body.home-page .wrap { padding-top: 12px; }
   width:100% !important;
 }
 
-/* Vertical widget picker: clean stacked cards */
+/* Vertical widget picker: clean stacked cards, scrollable */
 .td-popout-stage.td-vertical{
   display:flex !important;
   flex-direction:column !important;
   align-items:center !important;
-  justify-content:center !important;
-  gap:16px !important;
-  padding:20px !important;
+  justify-content:flex-start !important;
+  gap:14px !important;
+  padding:24px 20px !important;
   overflow-y:auto !important;
-  max-height:90vh !important;
-  max-height:90dvh !important;
+  overflow-x:hidden !important;
+  max-height:92vh !important;
+  max-height:92dvh !important;
+  /* Ensure top isn't cut when scrolling */
+  margin:auto 0 !important;
+}
+/* Smaller cards in vertical mode to fit more */
+.td-popout-stage.td-vertical .td-popout-box{
+  width:120px !important;
+  height:88px !important;
+}
+.td-popout-stage.td-vertical .td-popout-label{
+  font-size:10px !important;
+  padding:5px 12px !important;
+  margin-top:10px !important;
 }
 .td-popout-stage.td-vertical .td-popout-item{
   position:relative !important;
