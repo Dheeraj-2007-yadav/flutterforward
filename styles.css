@@ -2520,17 +2520,25 @@ body.home-page .wrap { padding-top: 12px; }
     flex:none;
   }
   .teardown-detail .teardown-screen{
-    /* Truly responsive: fits viewport, adjusts to any size change */
-    height:min(650px, calc(100svh - 180px)) !important;
+    /* Truly responsive: fits viewport AND parent container */
+    height:min(600px, calc(100svh - 200px)) !important;
     min-height:0 !important;
-    max-height:calc(100svh - 180px) !important;
+    max-height:100% !important;
     aspect-ratio:9/19.3 !important;
     width:auto !important;
     min-width:0 !important;
     max-width:100% !important;
   }
   .teardown-detail .teardown-phone{
-    max-height:calc(100svh - 160px) !important;
+    max-height:100% !important;
+    height:auto !important;
+  }
+  .teardown-detail .teardown-phone-stage{
+    max-height:100% !important;
+    overflow:hidden !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
   }
 }
 /* Desktop: phone fills its column, height-constrained to viewport */
