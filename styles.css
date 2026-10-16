@@ -2521,7 +2521,7 @@ body.home-page .wrap { padding-top: 12px; }
   }
   .teardown-detail .teardown-screen{
     /* Truly responsive: fits viewport AND parent container */
-    height:min(600px, calc(100svh - 200px)) !important;
+    height:min(640px, calc(100svh - 160px)) !important;
     min-height:0 !important;
     max-height:100% !important;
     aspect-ratio:9/19.3 !important;
@@ -2547,3 +2547,24 @@ body.home-page .wrap { padding-top: 12px; }
     width:min(100%, 360px, calc((100vh - 200px) * 0.52));
   }
 }
+
+/* Compact detail header: back link + title on one row */
+.teardown-detail-head{
+  display:flex !important;
+  align-items:baseline !important;
+  justify-content:flex-start !important;
+  gap:12px !important;
+  margin-bottom:8px !important;
+}
+.teardown-detail-head .teardown-detail-title-inline{
+  margin-left:0 !important;
+  margin-right:auto !important;
+}
+.teardown-detail-title-inline{
+  font-family:var(--font-display, Georgia, serif);
+  font-size:20px;
+  font-weight:600;
+  color:var(--text);
+}
+/* Hide the old stacked title div (no longer in markup, safety) */
+.teardown-detail-title{display:none !important;}
