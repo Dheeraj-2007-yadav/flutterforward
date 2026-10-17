@@ -3054,8 +3054,3 @@ html{scroll-behavior:smooth}
 @keyframes viewZoom{from{transform:scale(.985)}to{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.view-anim{animation:none}}
 
-/* Desktop: phone height matches content like on mobile */
-@media(min-width:901px){
-.teardown-screen{height:auto;min-height:600px}
-}
-

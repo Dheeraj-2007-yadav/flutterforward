@@ -1079,10 +1079,8 @@ function tdEnforceOneFrame() {
     return;
   }
   if (!d) return;
-  var vh = window.innerHeight;
-  var rect = d.getBoundingClientRect();
-  var top = rect.top;
-  var targetH = vh - top - 20;
+  // Use fixed header offset instead of measuring (avoids race with header layout)
+  var targetH = window.innerHeight - 64 - 20;
   d.style.setProperty('height', targetH + 'px', 'important');
   d.style.setProperty('min-height', targetH + 'px', 'important');
   d.style.setProperty('max-height', targetH + 'px', 'important');
@@ -1141,16 +1139,6 @@ function tdRender() {
   // Force style recalc to flush pending animations
   void root.offsetHeight;
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
-// Force re-layout after paint for correct phone sizing
-if(teardownState.app){
-requestAnimationFrame(function(){requestAnimationFrame(function(){
-try{
-var p=document.querySelector(".teardown-phone");
-if(p){p.style.height="auto";void p.offsetHeight;}
-tdEnforceOneFrame();
-}catch(e){}
-});});
-}
   tdPrepare();
 
   try { if (teardownState.app) { requestAnimationFrame(function(){requestAnimationFrame(function(){try{tdEnforceOneFrame()}catch(x){}})}); } else { tdReleaseOneFrame(); } } catch(e) {}}
