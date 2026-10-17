@@ -610,6 +610,7 @@ TEARDOWNS.whatsapp.root = T("wa-material","MaterialApp","The chat screen inherit
                   T("wa-out-text","Text","Displays the sent message body.",[],`Text(message.text)`),
                   T("wa-ticks","Stack","Two offset check icons form the read receipt.",[],`Stack(children: const [\n  Icon(Icons.check, size: 13),\n  Positioned(left: 4, child: Icon(Icons.check, size: 13)),\n])`)
                 ])
+              
               ])
             ])
           ],`ListView.builder(\n  reverse: true,\n  padding: const EdgeInsets.all(12),\n  itemCount: messages.length,\n  itemBuilder: (_, index) => MessageBubble(messages[index]),\n)`)
@@ -1300,7 +1301,7 @@ tdOpen = function(key) {
   tdRender(false);window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
 };
 tdBack = function(){ try { teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); try { tdReleaseOneFrame(); } catch(e) {} document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
-tdSelect = function(id){if(!teardownState.app||!tdIndex(TEARDOWNS[teardownState.app]).map[id])return;teardownState.selected=id;tdSyncSelection();};
+tdSelect = function(id){if(!teardownState.app)return;teardownState.selected=id;tdSyncSelection();};
 function tdShowPicker(stack, x, y) {
   // Visual pop-out: each widget lifts out, filtered and uniformly sized
   tdDismissPopout();
