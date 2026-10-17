@@ -152,6 +152,7 @@
 .resb-card{padding:26px;display:flex;flex-direction:column;border-radius:20px;min-height:280px}
 
 .resb-card.hidden{display:none}
+.res-card.hidden{display:none}
 .resb-kicker{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
 [data-theme=dark] .resb-kicker{color:var(--accent)}
 .resb-free-text{color:#16a34a}
