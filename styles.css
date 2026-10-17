@@ -3030,3 +3030,17 @@ html{scroll-behavior:smooth}
 
 @media (prefers-reduced-motion:reduce){.view-exit-left,.view-exit-right,.view-enter-right,}
 
+/* Homepage features - editorial grid */
+.min-features{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:36px}
+.min-feature{background:var(--bg-elev);padding:32px 28px;transition:background .2s}
+.min-feature:hover{background:var(--bg)}
+.min-feature-icon{font-size:22px;color:var(--primary);margin-bottom:16px}
+.min-feature-title{font-family:Georgia,serif;font-size:20px;color:var(--text);margin-bottom:8px}
+.min-feature-desc{font-size:14px;color:var(--text-3);line-height:1.6;margin-bottom:16px}
+.min-feature-link{font-size:14px;font-weight:700;color:var(--primary);text-decoration:none}
+.min-feature-link:hover{text-decoration:underline}
+@media(max-width:600px){
+.min-features{grid-template-columns:1fr}
+.min-feature{padding:24px 20px}
+}
+

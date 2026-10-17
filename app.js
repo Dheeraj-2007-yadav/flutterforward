@@ -4,10 +4,39 @@
 <p class="min-tagline"><strong>Everything you need,</strong> Nothing you don't.</p>
 <a class="min-btn" href="#/lessons">Begin →</a>
 </section>
-<div class="min-ticker min-fade"><div class="min-ticker-track">
-<span>18 Lessons</span><i>·</i><span>5 App Teardowns</span><i>·</i><span>Interactive Quizzes</span><i>·</i><span>7 Ranks</span><i>·</i><span>100% Free</span><i>·</i>
-<span>18 Lessons</span><i>·</i><span>5 App Teardowns</span><i>·</i><span>Interactive Quizzes</span><i>·</i><span>7 Ranks</span><i>·</i><span>100% Free</span><i>·</i>
-</div></div>
+
+<section class="min-sections">
+<div class="min-section-head">
+<h2>Built for learning</h2>
+<p>Everything you need to go from zero to Flutter Master.</p>
+</div>
+<div class="min-features">
+<div class="min-feature">
+<div class="min-feature-icon">◈</div>
+<div class="min-feature-title">Interactive playground</div>
+<div class="min-feature-desc">Write and run Dart code right in your browser. No setup, no installs.</div>
+<a class="min-feature-link" href="#/playground">Try it →</a>
+</div>
+<div class="min-feature">
+<div class="min-feature-icon">⬣</div>
+<div class="min-feature-title">App teardowns</div>
+<div class="min-feature-desc">WhatsApp, Instagram, Swiggy — taken apart widget by widget. Learn from real production UI.</div>
+<a class="min-feature-link" href="#/teardowns">Explore →</a>
+</div>
+<div class="min-feature">
+<div class="min-feature-icon">◎</div>
+<div class="min-feature-title">Smart quizzes</div>
+<div class="min-feature-desc">Not just scores — see exactly which topics need work, then fix them.</div>
+<a class="min-feature-link" href="#/quizzes">Test yourself →</a>
+</div>
+<div class="min-feature">
+<div class="min-feature-icon">⬔</div>
+<div class="min-feature-title">PDF lesson downloads</div>
+<div class="min-feature-desc">Every lesson as a clean PDF. Study offline, on any device.</div>
+<a class="min-feature-link" href="#/lessons">Browse lessons →</a>
+</div>
+</div>
+</section>
 </div>`};
 const lessonRow=e=>{const n=!!S.lessonsDone[e.id];return`<a class="lesson-row${n?" done":""}" href="#/lesson/${e.num}">
 <span class="lesson-num">${e.num}</span>
