@@ -3007,7 +3007,7 @@ body.home-page .wrap { padding-top: 12px; }
 .min-hero h1 em{font-style:italic;color:var(--accent)}
 .min-tagline{font-family:var(--font);font-size:17px;color:var(--text-2);margin-bottom:40px}
 .min-tagline strong{color:var(--accent)}
-.min-btn{display:inline-block;background:var(--text);color:var(--bg);font-family:var(--font);font-size:15px;font-weight:600;padding:16px 44px;border-radius:100px;text-decoration:none;transition:transform .2s,opacity .2s}
+.min-btn{display:inline-block;background:var(--text);color:var(--bg);font-family:var(--font);font-size:15px;font-weight:600;padding:14px 32px;border-radius:100px;text-decoration:none;transition:transform .2s,opacity .2s}
 .min-btn:hover{transform:translateY(-2px);opacity:.9}
 .min-ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;overflow:hidden;white-space:nowrap}
 .min-ticker-track{display:inline-flex;align-items:center;gap:32px;animation:minScroll 28s linear infinite;font-family:var(--font);font-size:13px;color:var(--text-3)}
