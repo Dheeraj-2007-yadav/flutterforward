@@ -3044,21 +3044,8 @@ html{scroll-behavior:smooth}
 .min-feature{padding:24px 20px}
 }
 
-/* Begin button flight animation */
-.min-btn{position:relative;overflow:visible}
-.min-btn-text{display:inline-block}
-.min-btn-arrow{display:inline-block;transition:none}
-.min-btn.flight-launched .min-btn-arrow{opacity:0}
-.flight-arrow{position:fixed;z-index:9999;color:#fff;font-size:20px;font-weight:700;pointer-events:none;line-height:1}
-.flight-trail{position:fixed;z-index:9998;pointer-events:none;height:2px;
-background:linear-gradient(to right,transparent,rgba(255,255,255,.35));
-border-radius:2px}
-@media(prefers-reduced-motion:reduce){
-.flight-arrow,.flight-trail{display:none}
-}
-
-/* Page enter during flight - slides in from right following the arrow */
-.view-enter-flight{animation:flightEnter .75s cubic-bezier(.25,.8,.3,1) both}
-@keyframes flightEnter{from{opacity:0;transform:translateX(120px)}to{opacity:1;transform:translateX(0)}}
-@media(prefers-reduced-motion:reduce){.view-enter-flight{animation:none}}
+/* Subtle press effect on Begin button */
+.min-btn{transition:transform .15s cubic-bezier(.22,1,.36,1)}
+.min-btn:active{transform:scale(.97)}
+@media(prefers-reduced-motion:reduce){.min-btn{transition:none}}
 
