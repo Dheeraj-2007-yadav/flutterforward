@@ -1076,6 +1076,13 @@ function tdEnforceOneFrame() {
   document.body.style.setProperty('height', '100vh', 'important');
   document.body.style.setProperty('max-height', '100vh', 'important');
 }
+// Re-enforce teardown sizing after fonts load (fixes first-load stretch)
+if(document.fonts&&document.fonts.ready){
+  document.fonts.ready.then(function(){
+    try{if(teardownState&&teardownState.app){tdEnforceOneFrame();}}catch(e){}
+  });
+}
+
 function tdReleaseOneFrame() {
   var d = document.querySelector('.teardown-detail');
   if (d) {
@@ -1104,7 +1111,7 @@ function tdRender() {
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
   tdPrepare();
 
-  try { if (teardownState.app) { tdEnforceOneFrame(); } else { tdReleaseOneFrame(); } } catch(e) {}}
+  try { if (teardownState.app) { requestAnimationFrame(function(){requestAnimationFrame(function(){try{tdEnforceOneFrame()}catch(x){}})}); } else { tdReleaseOneFrame(); } } catch(e) {}}
 function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
 function tdBack() {
   try {
@@ -1287,7 +1294,7 @@ tdRender = function(keepView) {
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
   teardownState.view=previous;tdPrepare();
   if(teardownState.app&&!previous)requestAnimationFrame(tdFitTree);
-  try { if (teardownState.app) { tdEnforceOneFrame(); } else { tdReleaseOneFrame(); } } catch(e) {}
+  try { if (teardownState.app) { requestAnimationFrame(function(){requestAnimationFrame(function(){try{tdEnforceOneFrame()}catch(x){}})}); } else { tdReleaseOneFrame(); } } catch(e) {}
 };
 tdOpen = function(key) {
   if(!TEARDOWNS[key])return;
