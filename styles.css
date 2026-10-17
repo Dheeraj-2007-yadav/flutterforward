@@ -3056,16 +3056,7 @@ html{scroll-behavior:smooth}
 
 /* Panel close animations - synced with open */
 .teardown-panel.td-closing{
-  animation:tdPanelSideOut .3s cubic-bezier(.22,1,.36,1) both !important;
-}
-@keyframes tdPanelSideOut{
-  from{opacity:1;transform:none}
-  to{opacity:0;transform:translateX(24px)}
-}
-@media(max-width:900px){
-  .teardown-panel.td-closing{
-    animation:tdSheetDownMobile .3s cubic-bezier(.22,1,.36,1) both !important;
-  }
+  animation:tdSheetDownMobile .3s cubic-bezier(.22,1,.36,1) both !important;
 }
 @media(prefers-reduced-motion:reduce){
   .teardown-panel.td-closing{animation:none !important}
