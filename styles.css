@@ -227,13 +227,13 @@
 .codeblock .tok-c{color:#8a9bb0;font-style:italic}
 .codeblock .tok-f{color:#9ecbff}
 .codeblock .tok-a{color:#4fe3c1}
-.view-anim{}
+.view-anim{animation:viewEnter .3s cubic-bezier(.22,1,.36,1)}
 
 
 
 
 }
-@keyframes viewEnter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}}
+@keyframes viewEnter{from{opacity:0;transform:translateX(28px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}}
 @media (prefers-reduced-motion:reduce){.view-anim{animation:none}}
 .lesson-row,.quiz-row,.feature-row,.continue-card{content-visibility:auto;contain-intrinsic-size:auto 80px}
 .stat{contain:layout style}
@@ -3020,13 +3020,13 @@ body.home-page .wrap { padding-top: 12px; }
 html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-@keyframes pageLeaveLeft{to{opacity:0;transform:translateX(-32px)}}
-@keyframes pageLeaveRight{to{opacity:0;transform:translateX(32px)}}
-@keyframes pageEnterRight{from{opacity:0;transform:translateX(38px)}to{opacity:1;transform:translateX(0)}}
-@keyframes pageEnterLeft{from{opacity:0;transform:translateX(-38px)}to{opacity:1;transform:translateX(0)}}
-.view-exit-left{animation:pageLeaveLeft .2s cubic-bezier(.4,0,1,1) both}
-.view-exit-right{animation:pageLeaveRight .2s cubic-bezier(.4,0,1,1) both}
-.view-enter-right{animation:pageEnterRight .28s cubic-bezier(.22,1,.36,1) both}
-.view-enter-left{animation:pageEnterLeft .28s cubic-bezier(.22,1,.36,1) both}
-@media (prefers-reduced-motion:reduce){.view-exit-left,.view-exit-right,.view-enter-right,.view-enter-left{animation:none}}
+
+
+}
+}
+
+
+
+
+@media (prefers-reduced-motion:reduce){.view-exit-left,.view-exit-right,.view-enter-right,}
 
