@@ -3050,7 +3050,7 @@ html{scroll-behavior:smooth}
 @media(prefers-reduced-motion:reduce){.min-btn{transition:none}}
 
 /* Minimal page transition - subtle fade */
-.view-anim{animation:viewSlide .3s cubic-bezier(.22,1,.36,1)}
-@keyframes viewSlide{from{transform:translateY(16px)}to{transform:translateY(0)}}
+.view-anim{animation:viewZoom .32s cubic-bezier(.22,1,.36,1)}
+@keyframes viewZoom{from{transform:scale(.985)}to{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.view-anim{animation:none}}
 
