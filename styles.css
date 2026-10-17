@@ -227,7 +227,7 @@
 .codeblock .tok-c{color:#8a9bb0;font-style:italic}
 .codeblock .tok-f{color:#9ecbff}
 .codeblock .tok-a{color:#4fe3c1}
-.view-anim{}
+
 
 
 
@@ -3048,4 +3048,9 @@ html{scroll-behavior:smooth}
 .min-btn{transition:transform .15s cubic-bezier(.22,1,.36,1)}
 .min-btn:active{transform:scale(.97)}
 @media(prefers-reduced-motion:reduce){.min-btn{transition:none}}
+
+/* Minimal page transition - subtle fade */
+.view-anim{animation:viewFade .18s ease-out}
+@keyframes viewFade{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.view-anim{animation:none}}
 
