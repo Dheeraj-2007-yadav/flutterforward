@@ -2905,3 +2905,42 @@ body.home-page .wrap { padding-top: 12px; }
   .lp-hero-new h1{font-size:38px}
   .lp-cards-new{grid-template-columns:1fr;padding:24px 24px 48px}
 }
+
+/* DYNAMIC HOME - Red Bull/Nike style, theme-aware */
+.dyn-home{background:var(--bg);color:var(--text);overflow:hidden}
+.dyn-hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:120px 24px 60px;background:radial-gradient(ellipse 80% 60% at 50% 40%,var(--accent-soft),transparent)}
+.dyn-hero h1{font-size:clamp(48px,8vw,110px);font-weight:900;letter-spacing:-.04em;line-height:1.02;margin-bottom:24px;font-family:var(--font)}
+.dyn-word{display:inline-block;opacity:0;transform:translateY(50px);animation:dynRise .8s cubic-bezier(.22,1,.36,1) forwards}
+.dyn-word:nth-child(1){animation-delay:.1s}.dyn-word:nth-child(2){animation-delay:.25s}.dyn-word:nth-child(3){animation-delay:.4s}
+.dyn-accent{color:var(--accent)}
+@keyframes dynRise{to{opacity:1;transform:translateY(0)}}
+.dyn-tagline{font-size:20px;color:var(--text-2);margin-bottom:44px;opacity:0;animation:dynFade 1s .6s forwards}
+.dyn-tagline strong{color:var(--accent)}
+@keyframes dynFade{to{opacity:1}}
+.dyn-cta{display:flex;gap:16px;opacity:0;animation:dynFade 1s .8s forwards;flex-wrap:wrap;justify-content:center}
+.dyn-scroll{position:absolute;bottom:28px;font-size:11px;letter-spacing:.25em;color:var(--text-3);animation:dynBounce 2s infinite}
+@keyframes dynBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.dyn-marquee{background:var(--accent);color:#fff;padding:18px 0;overflow:hidden;white-space:nowrap;font-weight:800;font-size:18px}
+.dyn-marquee-track{display:inline-flex;animation:dynScroll 22s linear infinite}
+@keyframes dynScroll{to{transform:translateX(-50%)}}
+.dyn-feature{padding:100px 48px}
+.dyn-feature:nth-child(even){background:var(--bg-sunken)}
+.dyn-fgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.dyn-fgrid.dyn-rev{direction:rtl}.dyn-fgrid.dyn-rev>*{direction:ltr}
+.dyn-kicker{font-size:13px;font-weight:700;letter-spacing:.2em;color:var(--accent);margin-bottom:20px}
+.dyn-ftext h2{font-size:clamp(32px,4vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:24px;font-family:var(--font)}
+.dyn-ftext p{font-size:17px;color:var(--text-2);line-height:1.7;margin-bottom:32px}
+.dyn-fvisual{background:var(--bg-elev);border:1px solid var(--line);border-radius:24px;aspect-ratio:4/3;display:grid;place-items:center;position:relative;overflow:hidden}
+.dyn-fvisual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--accent-soft),transparent 70%)}
+.dyn-fbig{font-size:120px;font-weight:900;color:var(--accent);opacity:.25;position:relative;font-family:var(--font)}
+.dyn-stats{padding:100px 48px;text-align:center;background:var(--bg-sunken)}
+.dyn-stats h2{font-size:clamp(28px,4vw,48px);font-weight:800;margin-bottom:60px;letter-spacing:-.02em;font-family:var(--font)}
+.dyn-statgrid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+.dyn-num{font-size:56px;font-weight:900;color:var(--accent);margin-bottom:8px;font-family:var(--font)}
+.dyn-lbl{font-size:14px;color:var(--text-2)}
+.dyn-final{min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px;background:radial-gradient(ellipse 60% 50% at 50% 60%,var(--accent-soft),transparent)}
+.dyn-final h2{font-size:clamp(36px,5vw,72px);font-weight:900;letter-spacing:-.03em;margin-bottom:36px;font-family:var(--font)}
+.dyn-reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.dyn-reveal.dyn-visible{opacity:1;transform:translateY(0)}
+@media(max-width:760px){.dyn-fgrid{grid-template-columns:1fr;gap:40px}.dyn-statgrid{grid-template-columns:repeat(2,1fr)}.dyn-feature{padding:60px 24px}}
+@media(prefers-reduced-motion:reduce){.dyn-word,.dyn-tagline,.dyn-cta{animation:none;opacity:1;transform:none}.dyn-reveal{transition:none;opacity:1;transform:none}.dyn-marquee-track{animation:none}}
