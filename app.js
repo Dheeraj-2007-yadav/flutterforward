@@ -99,12 +99,29 @@ const TEARDOWNS = {
           tdNode("wa-in-bubble","Column","Stacks related content vertically.","It keeps message text and timestamp together inside the incoming bubble.",`Column(
   crossAxisAlignment: CrossAxisAlignment.end,
   children: [Text(message.text), Text(message.time)],
-)`)
+)`),
+          tdNode("wa-incoming-bubble","Container","A white rounded box for received messages.","Distinguishes incoming messages from sent ones.",`Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+  ),
+)`),
+          tdNode("wa-incoming-text","Text","Displays the received message body.",`Text(message.text)`)
         ]),
         tdNode("wa-outgoing","Row","Places children horizontally on one line.","This reversed alignment pushes the user's bubble to the right.",`Row(
   mainAxisAlignment: MainAxisAlignment.end,
   children: [OutgoingBubble(message: message)],
 )`,[
+          tdNode("wa-outgoing-bubble","Container","A colored box with rounded corners.","The green bubble distinguishes sent messages from received ones.",`Container(
+  padding: const EdgeInsets.all(10),
+  decoration: BoxDecoration(
+    color: const Color(0xFFD9FDD3),
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Text(message.text),
+)`,[
+            tdNode("wa-outgoing-text","Text","Displays a short string with styling.","The sent message body inside the bubble.",`Text(message.text)`)
+          ]),
           tdNode("wa-ticks","Stack","Layers children on top of one another.","Two small check marks overlap to form WhatsApp's delivered/read tick indicator.",`Stack(
   children: const [
     Icon(Icons.check, size: 13),
@@ -922,7 +939,18 @@ function tdPath(key, id) {
   return path;
 }
 let teardownState = { app: null, selected: null, bounds: false };
-function tdSelectedNode() { return teardownState.app && teardownState.selected ? tdIndex(TEARDOWNS[teardownState.app]).map[teardownState.selected] : null; }
+function tdSelectedNode() {
+  if(!teardownState.app || !teardownState.selected) return null;
+  var node = tdIndex(TEARDOWNS[teardownState.app]).map[teardownState.selected];
+  if(node) return node;
+  // Fallback: create synthetic node from HTML data-widget
+  var el = document.querySelector('[data-node="' + teardownState.selected + '"]');
+  if(el){
+    var widget = el.getAttribute('data-widget') || 'Widget';
+    return { id: teardownState.selected, name: widget, what: 'A ' + widget + ' widget in the ' + TEARDOWNS[teardownState.app].screen + '.', why: 'Part of the ' + widget + ' layout.', code: widget + '()' };
+  }
+  return null;
+}
 function teardownIndexView() {
   return `<div class="teardown-intro">${pageHead(null,"App Teardowns","Real apps, taken apart widget by widget.")}</div><div class="teardown-index">${Object.entries(TEARDOWNS).map(([key,item])=>`<button class="teardown-row" data-teardown-open="${key}"><span class="teardown-num">${String(Object.keys(TEARDOWNS).indexOf(key)+1).padStart(2,"0")}</span><span class="teardown-row-copy"><span class="teardown-row-title">${item.app}</span><span class="teardown-row-screen">${item.screen}</span></span><span class="teardown-row-count">${item.count} widgets</span><span class="teardown-row-chevron" aria-hidden="true">›</span></button>`).join("")}</div>`;
 }
