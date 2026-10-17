@@ -663,7 +663,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 }
 .teardown-phone-hint { margin-top: 12px; }
 .teardown-popup-layout .td-region[data-node] { cursor: pointer; }
-.teardown-popup-layout .td-region[data-node]:hover { outline: 2px solid rgba(49,88,181,.58); outline-offset: 1px; }
+
 .teardown-popup-layout .td-region[data-node]:focus-visible { outline: 3px solid rgba(49,88,181,.52); outline-offset: 2px; }
 .teardown-popup-layout .td-hotspot { display: none !important; }
 .teardown-popup-layout .td-source-hidden { visibility: hidden !important; }
