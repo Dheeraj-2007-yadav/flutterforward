@@ -86,7 +86,7 @@ trail.style.width=(x-tx)+"px";
 trail.style.opacity=String(0.9*(1-p*0.3));
 fly.style.left=x+"px";
 // Mid-flight page switch at 45%
-if(!switched&&p>0.45){switched=true;window.__flightNav=true;location.hash="#/lessons";}
+if(!switched&&p>0.15){switched=true;window.__flightNav=true;location.hash="#/lessons";}
 if(p<1){requestAnimationFrame(frame);}
 else{fly.remove();trail.remove();}
 }
