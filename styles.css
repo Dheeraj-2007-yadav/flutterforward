@@ -227,7 +227,7 @@
 .codeblock .tok-c{color:#8a9bb0;font-style:italic}
 .codeblock .tok-f{color:#9ecbff}
 .codeblock .tok-a{color:#4fe3c1}
-.view-anim{animation:viewEnter .3s cubic-bezier(.22,1,.36,1)}
+.view-anim{}
 .view-anim .wrap>*{opacity:0;animation:staggerIn .45s cubic-bezier(.22,1,.36,1) forwards}
 .view-anim .wrap>*:nth-child(1){animation-delay:.02s}
 .view-anim .wrap>*:nth-child(2){animation-delay:.08s}
