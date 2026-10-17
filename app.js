@@ -1408,20 +1408,32 @@ function tdDismissPopout() {
 }
 function tdClose(){
   var panel = document.querySelector(".teardown-detail .teardown-panel:not(.is-empty)");
-  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var isMobile = window.innerWidth < 901;
-  if (panel && !reduced && !panel.classList.contains("td-closing") && !panel.classList.contains("td-sheet-closing")) {
-    // Animate close: mobile uses sheet-down, desktop uses panel-side-out
-    panel.classList.add(isMobile ? "td-sheet-closing" : "td-closing");
+  var reduced = mqMatches("(prefers-reduced-motion: reduce)");
+  if (panel && !reduced && !panel.classList.contains("td-closing")) {
+    panel.classList.add("td-closing");
     setTimeout(function(){
       teardownState.selected=null;
       document.body.classList.remove("td-sheet-open");
-      tdRender();
+      // Surgical: replace panel with empty state, don't re-render phone
+      var empty = document.createElement('aside');
+      empty.className = 'teardown-panel is-empty';
+      empty.innerHTML = '<div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div>';
+      panel.replaceWith(empty);
+      // Clear active highlight
+      document.querySelectorAll('.td-active').forEach(function(el){ el.classList.remove('td-active'); });
     }, 280);
   } else {
     teardownState.selected=null;
     document.body.classList.remove("td-sheet-open");
-    tdSyncSelection();
+    // Surgical: replace panel with empty state
+    var p2 = document.querySelector(".teardown-detail .teardown-panel:not(.is-empty)");
+    if(p2){
+      var e2 = document.createElement('aside');
+      e2.className = 'teardown-panel is-empty';
+      e2.innerHTML = '<div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div>';
+      p2.replaceWith(e2);
+    }
+    document.querySelectorAll('.td-active').forEach(function(el){ el.classList.remove('td-active'); });
   }
 };
 tdToggleBounds = function(){};
