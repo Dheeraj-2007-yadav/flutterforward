@@ -2262,10 +2262,7 @@ body.home-page .wrap { padding-top: 12px; }
 .teardown-phone {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.teardown-phone:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 40px 80px -24px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,0,0,0.1);
-}
+
 /* Refined panel typography */
 .td-fi-name {
   margin-bottom: 24px;
