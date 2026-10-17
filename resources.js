@@ -495,7 +495,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     const q = ((document.getElementById("res-search-input")||{}).value||"").toLowerCase().trim();
     const active = document.querySelector(".res-filter.active");
     const filter = active ? active.dataset.filter : "all";
-    document.querySelectorAll(".resb-card").forEach(function(card){
+    document.querySelectorAll(".res-card").forEach(function(card){
       const title = (card.dataset.title||"").toLowerCase();
       const paid = card.dataset.paid;
       const matchQ = !q || title.includes(q);

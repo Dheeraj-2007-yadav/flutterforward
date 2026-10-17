@@ -149,8 +149,8 @@
 /* ---- Resources: Option B — Serif Feature ---- */
 @media(min-width:1400px){}
 @media(max-width:640px){.resb-card{padding:22px}.resb-title{font-size:20px}.resb-foot{flex-wrap:wrap;gap:10px}}
-.resb-card{padding:26px;display:flex;flex-direction:column;border-radius:20px;transition:box-shadow .25s;min-height:280px}
-.resb-card:hover{box-shadow:var(--card-shadow-hover)}
+.resb-card{padding:26px;display:flex;flex-direction:column;border-radius:20px;min-height:280px}
+
 .resb-card.hidden{display:none}
 .resb-kicker{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
 [data-theme=dark] .resb-kicker{color:var(--accent)}
@@ -240,7 +240,7 @@
 
 .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:20px;align-items:start}
 .res-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:16px;padding:20px;cursor:pointer;transition:border-color .2s,transform .2s var(--ease)}
-.res-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+
 .res-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .res-file-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:var(--bg-sunken);color:var(--text-2)}
 .res-file-icon svg{width:18px;height:18px}
