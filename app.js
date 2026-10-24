@@ -29,6 +29,12 @@
 <div class="min-feature-desc">Every lesson as a clean PDF. Study offline, anytime.</div>
 <a class="min-feature-link" href="#/lessons">Browse lessons →</a>
 </div>
+<div class="min-feature">
+<div class="min-feature-icon">▦</div>
+<div class="min-feature-title">Resources</div>
+<div class="min-feature-desc">Hand-picked guides, cheat sheets and references to go deeper on every topic.</div>
+<a class="min-feature-link" href="#/resources">Browse resources →</a>
+</div>
 </section>
 </div>`};
 const lessonRow=e=>{const n=!!S.lessonsDone[e.id];return`<a class="lesson-row${n?" done":""}" href="#/lesson/${e.num}">
