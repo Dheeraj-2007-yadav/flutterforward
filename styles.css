@@ -315,10 +315,10 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .teardown-glyph.instagram { background: linear-gradient(145deg,#6c3bc4,#d83282 58%,#f09a32); }
 .teardown-glyph.swiggy { background: #fc8019; }
 .teardown-row-copy { min-width: 0; }
-.teardown-row-title { display: block; font-family: var(--serif); font-size: 24px; font-weight: 400; line-height: 1.08; transition: color .18s ease; }
+.teardown-row-title { display: block; font-size: 24px; font-weight: 400; line-height: 1.08; transition: color .18s ease; }
 .teardown-row-screen { display: block; margin-top: 6px; color: var(--text-2); font-size: 13px; }
 .teardown-row-count { color: var(--text-3); font-size: 12px; font-weight: 650; white-space: nowrap; }
-.teardown-row-chevron { color: var(--text-3); font-family: var(--serif); font-size: 29px; line-height: 1; }
+.teardown-row-chevron { color: var(--text-3); font-size: 29px; line-height: 1; }
 .teardown-note { margin-top: 20px; color: var(--text-3); font-size: 12.5px; line-height: 1.55; }
 
 .teardown-detail-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
