@@ -3076,3 +3076,11 @@ html{scroll-behavior:smooth}
 /* Perf: offscreen list cards skip rendering until scrolled into view (big win on low-end hardware for long lists). Intrinsic-size estimates keep the scrollbar stable. */
 .lesson-row,.quiz-row{content-visibility:auto;contain-intrinsic-size:auto 90px}
 .res-card{content-visibility:auto;contain-intrinsic-size:auto 280px}
+
+/* UI wins 2026-10-29: current-lesson highlight, clearer done badge, save confirmation */
+.lesson-row.current{border-color:var(--primary);}
+.lesson-row .row-tag.done-tag{background:rgba(10,155,88,.14);color:#0a9b58;border-color:rgba(10,155,88,.35);}
+.lesson-row .row-tag.current-tag{background:#eff3ff;border-color:#d2daf0;color:#3158a8;}
+.ff-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,16px);background:var(--text);color:var(--bg);padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:var(--card-shadow);opacity:0;pointer-events:none;transition:opacity .25s var(--ease),transform .25s var(--ease);z-index:9999;}
+.ff-toast.show{opacity:1;transform:translate(-50%,0);}
+.saved-note{margin:14px 0 0;font-size:13px;color:var(--text-2);}
