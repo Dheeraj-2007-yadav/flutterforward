@@ -218,9 +218,9 @@
 .auth-logout:hover,.side-foot .auth-logout:hover,.profile-actions .auth-logout:hover,.logout-confirm:hover{color:#fff!important;background:#e54852!important;border-color:#e54852!important;transform:none}
 [data-theme=dark] .auth-logout:hover,[data-theme=dark] .side-foot .auth-logout:hover,[data-theme=dark] .profile-actions .auth-logout:hover,[data-theme=dark] .logout-confirm:hover{color:#fff!important;background:#e54852!important;border-color:#e54852!important;transform:none}
 /* Theme sunrise/sunset circular reveal */
-::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
-::view-transition-old(root){z-index:1}
-::view-transition-new(root){z-index:2147483646}
+::view-transition-old(root){animation:none;mix-blend-mode:normal;z-index:1}
+::view-transition-new(root){animation:ff-theme-reveal 550ms cubic-bezier(.65,0,.35,1) both;mix-blend-mode:normal;z-index:2147483646}
+@keyframes ff-theme-reveal{from{clip-path:circle(0px at var(--theme-x,50vw) var(--theme-y,50vh))}to{clip-path:circle(var(--theme-r,150vmax) at var(--theme-x,50vw) var(--theme-y,50vh))}}
 .codeblock pre,.codeblock pre code{color:#f0f6ff!important}
 .codeblock .tok-k{color:#66d9ff;font-weight:700}
 .codeblock .tok-s{color:#ffcc44}
