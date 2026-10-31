@@ -3172,3 +3172,10 @@ html{scroll-behavior:smooth}
 /* Current lesson highlight 2026-10-31 - replaces single blue bottom line with proper left bar (quiet, no fill) */
 .lesson-row.current{position:relative;border-color:var(--line)}
 .lesson-row.current::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:2px;background:var(--primary)}
+
+/* Option D elevated card 2026-10-31 - current lesson as a rounded card (replaces left bar) */
+.lesson-row.current{position:relative;background:var(--bg-elev);border:1px solid var(--line);border-radius:16px;box-shadow:var(--card-shadow);padding:24px 20px;margin:12px 0}
+.lesson-row.current::before{display:none}
+@media (max-width:520px){
+  .lesson-row.current .lesson-meta{margin-left:82px}
+}
