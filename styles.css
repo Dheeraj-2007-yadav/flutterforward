@@ -3135,3 +3135,35 @@ html{scroll-behavior:smooth}
   .lesson-row .lesson-meta{flex:0 1 calc(100% - 64px);margin-left:64px;}
   .lesson-row .row-tag{margin-left:0;}
 }
+
+/* Resources row layout 2026-10-31 - replaces card grid with rows (target screenshot); revert by deleting this block + resources.js row render */
+.res-list{margin-top:8px}
+.res-item{display:flex;gap:20px;align-items:flex-start;padding:20px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.res-item:last-child{border-bottom:none}
+.res-item.hidden{display:none}
+.res-item-thumb{width:96px;height:116px;flex:none;background:#262b3a;border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px;box-sizing:border-box}
+.res-item-thumb-dash{width:22px;height:4px;border-radius:2px;background:var(--accent);flex:none}
+.res-item-thumb-title{font-size:11px;line-height:1.35;color:#e8edf5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.res-item-thumb-line{height:6px;border-radius:3px;background:#4a5268;flex:none}
+.res-item-thumb-line:nth-child(3){width:100%}
+.res-item-thumb-line:nth-child(4){width:85%}
+.res-item-thumb-line:nth-child(5){width:70%}
+.res-item-main{flex:1;min-width:0}
+.res-item-kicker{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.res-item-title{font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:700;line-height:1.25;color:var(--text);margin:6px 0}
+.res-item-desc{font-size:14.5px;line-height:1.6;color:var(--text-2);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.res-item-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:2px}
+.res-item-price{font-weight:800;font-size:16px;color:var(--text)}
+.res-item-price.free{color:#15803d}
+[data-theme=dark] .res-item-price.free{color:#4ade80}
+.res-item-go{font-size:14.5px;font-weight:700;color:var(--primary)}
+[data-theme=dark] .res-item-go{color:var(--accent)}
+.res-filter.active{background:transparent;border-color:var(--text);color:var(--text)}
+@media (max-width:520px){
+  .res-item{flex-wrap:wrap;gap:14px;padding:18px 2px}
+  .res-item-thumb{width:72px;height:88px;padding:8px}
+  .res-item-main{flex:1 1 calc(100% - 86px)}
+  .res-item-title{font-size:19px}
+  .res-item-desc{font-size:14px}
+  .res-item-side{flex:0 1 calc(100% - 86px);margin-left:86px;align-items:flex-start}
+}

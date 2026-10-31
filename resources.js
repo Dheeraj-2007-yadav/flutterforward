@@ -274,7 +274,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     <div class="wrap">
       <div class="page-head">
         <h1 class="res-page-title">Student Resources</h1>
-        <p class="page-sub res-page-sub">Cheat sheets, notes, and guides to accelerate your Flutter progress. Choose free downloads or premium content.</p>
+        <p class="page-sub res-page-sub">Cheat sheets, notes, and guides to accelerate your Flutter progress.</p>
       </div>
       <div class="res-toolbar">
         <div class="res-search">
@@ -495,13 +495,20 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     const q = ((document.getElementById("res-search-input")||{}).value||"").toLowerCase().trim();
     const active = document.querySelector(".res-filter.active");
     const filter = active ? active.dataset.filter : "all";
-    document.querySelectorAll(".res-card").forEach(function(card){
-      const title = (card.dataset.title||"").toLowerCase();
-      const paid = card.dataset.paid;
+    document.querySelectorAll(".res-item").forEach(function(row){
+      const title = (row.dataset.title||"").toLowerCase();
+      const paid = row.dataset.paid;
       const matchQ = !q || title.includes(q);
       const matchF = filter === "all" || (filter === "free" && paid === "free") || (filter === "paid" && paid === "paid");
-      card.classList.toggle("hidden", !(matchQ && matchF));
+      row.classList.toggle("hidden", !(matchQ && matchF));
     });
+    let n = 0;
+    document.querySelectorAll(".res-item:not(.hidden)").forEach(function(row){
+      const num = row.querySelector(".res-item-num");
+      if(num) num.textContent = String(++n).padStart(2, "0");
+    });
+    const empty = document.querySelector(".res-empty");
+    if(empty) empty.style.display = n === 0 ? "" : "none";
   };
 
   // 4. Load and render resource list
@@ -526,6 +533,20 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       setCount("res-count-all", nAll);
       setCount("res-count-free", nFree);
       setCount("res-count-paid", nPaid);
+      if(window.applyResFilter) window.applyResFilter();
+      list.querySelectorAll("[data-paid-note]").forEach(function(b){
+        b.addEventListener("click", function(){
+          alert("This is a paid resource. Please contact the admin to purchase access.");
+        });
+      });
+      list.querySelectorAll(".res-item").forEach(function(row){
+        row.addEventListener("keydown", function(e){
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            row.click();
+          }
+        });
+      });
       return;
     }
     db.collection("resources").orderBy("uploadedAt","desc").get().then(function(snap){
@@ -533,7 +554,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         list.innerHTML = '<div class="card"><p class="muted">No resources yet. Check back soon!</p></div>';
         return;
       }
-      let html = '<div class="res-grid">';
+      let html = '<div class="res-list">';
       let idx = 0;
       window.__resData = window.__resData || {};
       snap.forEach(function(doc){
@@ -546,25 +567,29 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         const fileType = escHtml((r.fileType||(r.type==="link"?"PDF":r.type)||"PDF").toUpperCase());
         const priceLabel = paid ? escHtml(fmtPrice(r.price)) : "Free";
         const clickAction = paid ? `data-paid-note` : `onclick="window.__resPreview(window.__resData['${key}'].title, window.__resData['${key}'].url)"`;
+        const num = String(idx).padStart(2, "0");
         html += `
-        <div class="res-card" data-title="${escHtml((r.title||"").toLowerCase())}" data-paid="${paid?"paid":"free"}" ${clickAction} role="button" tabindex="0">
-          <div class="res-card-top">
-            <span class="res-file-icon">${fileIcon(r.fileType||r.type)}</span>
-            <span style="display:flex;gap:8px;align-items:center">
-              <span class="res-price ${paid?"paid":"free"}">${priceLabel}</span>
-              <button class="res-edit-btn" data-admin-only style="display:none" onclick="event.stopPropagation();window.__resEdit('${key}')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
-            </span>
+        <div class="res-item" data-title="${escHtml((r.title||"").toLowerCase())}" data-paid="${paid?"paid":"free"}" ${clickAction} role="button" tabindex="0">
+          <div class="res-item-thumb" aria-hidden="true">
+            <span class="res-item-thumb-dash"></span>
+            <span class="res-item-thumb-title">${escHtml(r.title)}</span>
+            <span class="res-item-thumb-line"></span>
+            <span class="res-item-thumb-line"></span>
+            <span class="res-item-thumb-line"></span>
           </div>
-          <h3>${escHtml(r.title)}</h3>
-          ${r.description ? `<p>${escHtml(r.description)}</p>` : ``}
-          <div class="res-card-foot">
-            <span class="res-type">${fileType}</span>
-            <span class="res-go">${paid ? "Get access" : "View"} <span>→</span></span>
+          <div class="res-item-main">
+            <span class="res-item-kicker"><span class="res-item-num">${num}</span> · ${fileType}</span>
+            <h3 class="res-item-title">${escHtml(r.title)}</h3>
+            ${r.description ? `<p class="res-item-desc">${escHtml(r.description)}</p>` : ``}
+          </div>
+          <div class="res-item-side">
+            <span class="res-item-price ${paid?"paid":"free"}">${priceLabel}</span>
+            <span class="res-item-go">${paid ? "Get access" : "View"} →</span>
+            <button class="res-edit-btn" data-admin-only style="display:none" onclick="event.stopPropagation();window.__resEdit('${key}')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
           </div>
         </div>`;
       });
       html += '</div>';
-      // Empty state for filtered views
       html += '<div class="res-empty" style="display:none"><p class="muted">No resources found. Try a different search.</p></div>';
       list.innerHTML = html;
       // Cache for instant repeat visits
@@ -587,6 +612,14 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       list.querySelectorAll("[data-paid-note]").forEach(function(b){
         b.addEventListener("click", function(){
           alert("This is a paid resource. Please contact the admin to purchase access.");
+        });
+      });
+      list.querySelectorAll(".res-item").forEach(function(row){
+        row.addEventListener("keydown", function(e){
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            row.click();
+          }
         });
       });
     }).catch(function(){
