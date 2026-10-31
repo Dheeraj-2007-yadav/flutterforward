@@ -3179,3 +3179,7 @@ html{scroll-behavior:smooth}
 @media (max-width:520px){
   .lesson-row.current .lesson-meta{margin-left:82px}
 }
+
+/* Icon-only search 2026-10-31 - FAB always visible, no scroll show/hide (replaces dual in-flow + FAB system) */
+.lesson-search-fab{opacity:1;transform:scale(1);pointer-events:auto}
+.lessons-search{display:none}
