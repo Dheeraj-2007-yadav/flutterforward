@@ -3190,3 +3190,7 @@ html{scroll-behavior:smooth}
 .topnav .nav-link{position:relative;z-index:1}
 .topnav .nav-links .nav-link.active{background:transparent}
 .topnav .nav-links .nav-link:hover{background:transparent}
+
+/* Navbar pill darken (2026-10-31): same blue, just a little deeper so it does not look dull in light theme. No border, no solid, no shape change. */
+.topnav .nav-pill{background:rgba(19,185,253,.20)}
+[data-theme="dark"] .topnav .nav-pill{background:rgba(19,185,253,.24)}
