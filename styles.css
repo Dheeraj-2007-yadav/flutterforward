@@ -3113,3 +3113,17 @@ html{scroll-behavior:smooth}
 @media (max-width:680px){
   .lesson-meta .chev{display:inline;font-size:22px;}
 }
+
+/* Lessons search scroll FAB 2026-10-31 */
+.lessons-search{max-height:60px;transition:max-height .35s var(--ease),opacity .3s,margin-bottom .35s;overflow:hidden;}
+.lessons-search.collapsed{max-height:0;opacity:0;margin-bottom:0;}
+.lesson-search-fab{position:fixed;top:calc(var(--nav-h) + 14px);right:16px;z-index:40;display:flex;align-items:center;height:48px;width:48px;border-radius:50%;background:var(--bg-elev);border:1px solid var(--line);box-shadow:var(--card-shadow);overflow:hidden;opacity:0;transform:scale(.85);pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease),width .35s var(--ease),border-radius .35s var(--ease);}
+.lesson-search-fab.show{opacity:1;transform:scale(1);pointer-events:auto;}
+.lesson-search-fab.expanded{width:min(320px,calc(100vw - 32px));border-radius:14px;}
+.lesson-search-fab-icon{width:48px;height:48px;flex:none;display:grid;place-items:center;color:var(--text-2);}
+.lesson-search-fab-icon svg{width:20px;height:20px;display:block;}
+#lesson-search-fab-input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--text);font:inherit;font-size:15px;padding:0 4px;opacity:0;transition:opacity .25s;}
+.lesson-search-fab.expanded #lesson-search-fab-input{opacity:1;transition-delay:.08s;}
+#lesson-search-fab-input::placeholder{color:var(--text-3);}
+.lesson-search-fab-close{width:40px;height:40px;flex:none;display:grid;place-items:center;font-size:22px;line-height:1;color:var(--text-3);opacity:0;transition:opacity .25s;}
+.lesson-search-fab.expanded .lesson-search-fab-close{opacity:1;transition-delay:.08s;}
