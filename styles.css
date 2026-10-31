@@ -3133,4 +3133,5 @@ html{scroll-behavior:smooth}
   .lesson-row{flex-wrap:wrap;}
   .lesson-row .t{flex:1 1 calc(100% - 64px);}
   .lesson-row .lesson-meta{flex:0 1 calc(100% - 64px);margin-left:64px;}
+  .lesson-row .row-tag{margin-left:0;}
 }
