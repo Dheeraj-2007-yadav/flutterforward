@@ -3127,3 +3127,10 @@ html{scroll-behavior:smooth}
 #lesson-search-fab-input::placeholder{color:var(--text-3);}
 .lesson-search-fab-close{width:40px;height:40px;flex:none;display:grid;place-items:center;font-size:22px;line-height:1;color:var(--text-3);opacity:0;transition:opacity .25s;}
 .lesson-search-fab.expanded .lesson-search-fab-close{opacity:1;transition-delay:.08s;}
+
+/* Lessons mobile row stacking 2026-10-31 - fixes crushed text column: meta moves to its own line below title */
+@media (max-width:520px){
+  .lesson-row{flex-wrap:wrap;}
+  .lesson-row .t{flex:1 1 calc(100% - 64px);}
+  .lesson-row .lesson-meta{flex:0 1 calc(100% - 64px);margin-left:64px;}
+}
