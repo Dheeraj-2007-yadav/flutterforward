@@ -568,6 +568,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         const priceLabel = paid ? escHtml(fmtPrice(r.price)) : "Free";
         const clickAction = paid ? `data-paid-note` : `onclick="window.__resPreview(window.__resData['${key}'].title, window.__resData['${key}'].url)"`;
         const num = String(idx).padStart(2, "0");
+        const thumbUrl = driveThumb(r.storageUrl);
         html += `
         <div class="res-item" data-title="${escHtml((r.title||"").toLowerCase())}" data-paid="${paid?"paid":"free"}" ${clickAction} role="button" tabindex="0">
           <div class="res-item-thumb" aria-hidden="true">
@@ -576,6 +577,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
             <span class="res-item-thumb-line"></span>
             <span class="res-item-thumb-line"></span>
             <span class="res-item-thumb-line"></span>
+            ${thumbUrl ? `<img class="res-item-thumb-img" src="${escHtml(thumbUrl)}" alt="" loading="lazy" onerror="this.style.display='none'" />` : ``}
           </div>
           <div class="res-item-main">
             <span class="res-item-kicker"><span class="res-item-num">${num}</span> · ${fileType}</span>
