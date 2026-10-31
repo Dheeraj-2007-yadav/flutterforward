@@ -3168,3 +3168,7 @@ html{scroll-behavior:smooth}
   .res-item-desc{font-size:14px}
   .res-item-side{flex:0 1 calc(100% - 86px);margin-left:86px;align-items:flex-start}
 }
+
+/* Current lesson highlight 2026-10-31 - replaces single blue bottom line with proper left bar (quiet, no fill) */
+.lesson-row.current{position:relative;border-color:var(--line)}
+.lesson-row.current::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:2px;background:var(--primary)}
