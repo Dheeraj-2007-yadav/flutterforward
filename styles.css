@@ -3232,3 +3232,6 @@ html{scroll-behavior:smooth}
 .nav-search-input::placeholder{color:var(--text-3)}
 .nav-search.expanded .nav-search-box:focus-within{border-color:var(--primary)}
 [data-theme="dark"] .nav-search.expanded .nav-search-box:focus-within{border-color:var(--accent)}
+
+/* Search design fix v2 (2026-11-01): input must be clean, no inner box, even if native appearance is ignored. Type=text in app.js is the primary fix; this reset guarantees it. */
+.nav-search .nav-search-box .nav-search-input{background:transparent!important;border:0!important;box-shadow:none!important;outline:0!important;-webkit-appearance:none!important;appearance:none!important}
