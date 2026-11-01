@@ -3207,8 +3207,8 @@ html{scroll-behavior:smooth}
 .res-search{display:none}
 /* Navbar search (desktop + mobile) */
 .nav-search{position:relative;display:flex;align-items:center}
-.nav-search-btn{width:36px;height:36px;flex:none;border-radius:999px;border:1px solid var(--line);background:var(--bg-elev);color:var(--text);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.nav-search-btn svg{width:20px;height:20px}
+.nav-search-btn{width:36px;height:36px;flex:none;border-radius:999px;border:1px solid var(--line);background:var(--bg-sunken);color:var(--text-2);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-search-btn svg{width:18px;height:18px}
 .nav-search-box{position:absolute;right:48px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;width:0;opacity:0;pointer-events:none;overflow:hidden;background:var(--bg-elev);border:1px solid transparent;border-radius:999px;height:40px;padding:0;box-shadow:var(--card-shadow);z-index:60;transition:width .3s var(--ease),opacity .2s,padding .3s var(--ease),border-color .2s}
 .nav-search.expanded .nav-search-box{width:280px;opacity:1;pointer-events:auto;padding:0 12px;border-color:var(--line)}
 .nav-search-input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font-size:14px}
@@ -3225,3 +3225,10 @@ html{scroll-behavior:smooth}
 .mobile-top .nav-search-box{position:fixed;left:16px;right:16px;top:58px;width:auto;transform:none}
 .mobile-top .nav-search.expanded .nav-search-box{width:auto}
 .mobile-top .nav-search-results{position:fixed;left:16px;right:16px;top:106px;width:auto;max-height:60vh}
+
+/* Searchbar fix (2026-11-01): remove native searchfield box, match theme button, muted placeholder, focus border. */
+.nav-search-input{appearance:none;-webkit-appearance:none}
+.nav-search-input::-webkit-search-cancel-button,.nav-search-input::-webkit-search-decoration,.nav-search-input::-webkit-search-results-button,.nav-search-input::-webkit-search-results-decoration{display:none}
+.nav-search-input::placeholder{color:var(--text-3)}
+.nav-search.expanded .nav-search-box:focus-within{border-color:var(--primary)}
+[data-theme="dark"] .nav-search.expanded .nav-search-box:focus-within{border-color:var(--accent)}
