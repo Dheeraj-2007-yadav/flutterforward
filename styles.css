@@ -3196,7 +3196,7 @@ html{scroll-behavior:smooth}
 
 
 /* Navbar pill follows Login (2026-11-01): blue bg + white text in light, off-white bg + dark text in dark. Same shape, same slide. */
-.topnav .nav-pill{background:#02569B}
+.topnav .nav-pill{background:var(--primary)}
 .topnav .nav-links .nav-link.active{color:#fff}
 .topnav .nav-links .nav-link.active:hover{color:#fff}
 [data-theme="dark"] .topnav .nav-pill{background:#e9ecf5}
