@@ -3235,3 +3235,7 @@ html{scroll-behavior:smooth}
 
 /* Search design fix v2 (2026-11-01): input must be clean, no inner box, even if native appearance is ignored. Type=text in app.js is the primary fix; this reset guarantees it. */
 .nav-search .nav-search-box .nav-search-input{background:transparent!important;border:0!important;box-shadow:none!important;outline:0!important;-webkit-appearance:none!important;appearance:none!important}
+
+/* Lessons list: status lives only in the number circle (2026-11-01) */
+[data-theme=dark] .lesson-row.done .lesson-num{background:rgba(52,211,153,.16);color:#34d399}
+@media (max-width:520px){.lesson-row{flex-wrap:nowrap}.lesson-row .t{flex:1 1 auto}.lesson-row .lesson-meta{flex:0 0 auto;margin-left:0}.lesson-row.current .lesson-meta{margin-left:0}}
