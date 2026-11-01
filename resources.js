@@ -492,7 +492,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
   }).observe(document.body, { childList: true, subtree: true });
 
   window.applyResFilter = function(){
-    const q = ((document.getElementById("res-search-input")||{}).value||"").toLowerCase().trim();
+    const q = (window.__navSearchQuery||"").toLowerCase().trim();
     const active = document.querySelector(".res-filter.active");
     const filter = active ? active.dataset.filter : "all";
     document.querySelectorAll(".res-item").forEach(function(row){

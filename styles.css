@@ -3191,6 +3191,37 @@ html{scroll-behavior:smooth}
 .topnav .nav-links .nav-link.active{background:transparent}
 .topnav .nav-links .nav-link:hover{background:transparent}
 
-/* Navbar pill darken (2026-10-31): same blue, just a little deeper so it does not look dull in light theme. No border, no solid, no shape change. */
-.topnav .nav-pill{background:rgba(19,185,253,.20)}
-[data-theme="dark"] .topnav .nav-pill{background:rgba(19,185,253,.24)}
+
+
+
+
+/* Navbar pill follows Login (2026-11-01): blue bg + white text in light, off-white bg + dark text in dark. Same shape, same slide. */
+.topnav .nav-pill{background:#02569B}
+.topnav .nav-links .nav-link.active{color:#fff}
+.topnav .nav-links .nav-link.active:hover{color:#fff}
+[data-theme="dark"] .topnav .nav-pill{background:#e9ecf5}
+[data-theme="dark"] .topnav .nav-links .nav-link.active{color:#1c2746}
+[data-theme="dark"] .topnav .nav-links .nav-link.active:hover{color:#1c2746}
+/* Navbar search replaces Lessons FAB + Resources in-page search box (2026-11-01): old UIs hidden, not deleted. */
+.lesson-search-fab{display:none}
+.res-search{display:none}
+/* Navbar search (desktop + mobile) */
+.nav-search{position:relative;display:flex;align-items:center}
+.nav-search-btn{width:36px;height:36px;flex:none;border-radius:999px;border:1px solid var(--line);background:var(--bg-elev);color:var(--text);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.nav-search-btn svg{width:20px;height:20px}
+.nav-search-box{position:absolute;right:48px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;width:0;opacity:0;pointer-events:none;overflow:hidden;background:var(--bg-elev);border:1px solid transparent;border-radius:999px;height:40px;padding:0;box-shadow:var(--card-shadow);z-index:60;transition:width .3s var(--ease),opacity .2s,padding .3s var(--ease),border-color .2s}
+.nav-search.expanded .nav-search-box{width:280px;opacity:1;pointer-events:auto;padding:0 12px;border-color:var(--line)}
+.nav-search-input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font-size:14px}
+.nav-search-close{width:28px;height:28px;flex:none;border:0;background:transparent;color:var(--text-2);font-size:20px;line-height:1;cursor:pointer}
+.nav-search-results{position:absolute;right:0;top:calc(100% + 22px);width:min(400px,100vw - 32px);max-height:60vh;overflow:auto;background:var(--bg-elev);border:1px solid var(--line);border-radius:16px;box-shadow:var(--card-shadow);z-index:61;display:none}
+.nav-search-result{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;width:100%;text-align:left;padding:12px 16px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.nav-search-result:last-child{border-bottom:0}
+.nav-search-result-main{flex:1;min-width:0}
+.nav-search-result-title{display:block;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-search-result-sub{display:block;font-size:13px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-search-result-type{flex:none;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);padding-top:2px}
+.nav-search-results-empty{padding:16px;color:var(--text-2)}
+/* Mobile top bar search: input + results go full-width below the bar */
+.mobile-top .nav-search-box{position:fixed;left:16px;right:16px;top:58px;width:auto;transform:none}
+.mobile-top .nav-search.expanded .nav-search-box{width:auto}
+.mobile-top .nav-search-results{position:fixed;left:16px;right:16px;top:106px;width:auto;max-height:60vh}
