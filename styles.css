@@ -3287,7 +3287,7 @@ html{scroll-behavior:smooth}
 /* Bento v2: Resources chip + home uses full width (side space) */
 .bento-chip.blue{background:#dbeafe;color:#1d4ed8}
 [data-theme=dark] .bento-chip.blue{background:rgba(59,130,246,.16);color:#93c5fd}
-body.home-page .wrap{max-width:none;padding-left:32px;padding-right:32px}
+body.home-page .wrap{max-width:1280px;padding-left:32px;padding-right:32px}
 @media (max-width:760px){
 body.home-page .wrap{padding-left:16px;padding-right:16px}
 }
