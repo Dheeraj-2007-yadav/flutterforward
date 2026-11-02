@@ -3244,3 +3244,42 @@ html{scroll-behavior:smooth}
 [data-theme=dark] .lesson-row.done .lesson-num{background:var(--bg-sunken);color:var(--primary)}
 .status-pill.pass{background:#d5ead9;color:#1d6b44}
 [data-theme=dark] .status-pill.pass{background:rgba(52,211,153,.20);color:#4ade80}
+
+/* Home bento dashboard (logged-in home) */
+.bento-home .bento-head{padding:56px 0 28px}
+.bento-head h1{font-family:var(--serif);font-size:clamp(34px,5vw,56px);line-height:1.1;font-weight:400;letter-spacing:-.01em;margin-bottom:10px}
+.bento-tagline{font-size:16px;color:var(--text-2)}
+.bento-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.bento-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:20px;padding:24px}
+.bento-upnext{display:flex;gap:24px;align-items:center;justify-content:space-between}
+.bento-upnext-main{flex:1;min-width:0}
+.bento-label{font-size:11px;letter-spacing:.14em;color:var(--text-3);font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.bento-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);display:inline-block;flex:none}
+.bento-next-title{font-family:var(--serif);font-size:clamp(24px,3vw,32px);line-height:1.2;margin-bottom:6px}
+.bento-next-sub{font-size:14px;color:var(--text-2);margin-bottom:20px}
+.bento-ring{position:relative;width:88px;height:88px;flex:none}
+.bento-ring svg{width:88px;height:88px;transform:rotate(-90deg)}
+.bento-ring-track{fill:none;stroke:var(--line);stroke-width:6}
+.bento-ring-arc{fill:none;stroke:var(--primary);stroke-width:6;stroke-linecap:round}
+.bento-ring-pct{position:absolute;inset:0;display:grid;place-items:center;font-size:16px;font-weight:700}
+.bento-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;font-size:15px}
+.bento-row+.bento-row{border-top:1px solid var(--line)}
+.bento-row span{color:var(--text-2)}
+.bento-row strong{font-weight:700;text-align:right}
+.bento-cards3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.bento-chip{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:17px;margin-bottom:18px}
+.bento-chip.green{background:#dcfce7;color:#15803d}
+.bento-chip.purple{background:#ede9fe;color:#7c3aed}
+.bento-chip.orange{background:#ffedd5;color:#ea580c}
+[data-theme=dark] .bento-chip.green{background:rgba(34,197,94,.16);color:#4ade80}
+[data-theme=dark] .bento-chip.purple{background:rgba(167,139,250,.16);color:#c4b5fd}
+[data-theme=dark] .bento-chip.orange{background:rgba(251,146,60,.16);color:#fdba74}
+.bento-feat-title{font-family:var(--serif);font-size:19px;margin-bottom:8px}
+.bento-feat-desc{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:16px}
+.bento-feat-link{font-size:14px;font-weight:700;color:var(--primary);text-decoration:none}
+@media (max-width:760px){
+.bento-home .bento-head{padding:40px 0 24px}
+.bento-grid{grid-template-columns:1fr}
+.bento-cards3{grid-template-columns:1fr}
+.bento-upnext{flex-direction:column;align-items:flex-start}
+}
