@@ -3239,3 +3239,8 @@ html{scroll-behavior:smooth}
 /* Lessons list: status lives only in the number circle (2026-11-01) */
 [data-theme=dark] .lesson-row.done .lesson-num{background:rgba(52,211,153,.16);color:#34d399}
 @media (max-width:520px){.lesson-row{flex-wrap:nowrap}.lesson-row .t{flex:1 1 auto}.lesson-row .lesson-meta{flex:0 0 auto;margin-left:0}.lesson-row.current .lesson-meta{margin-left:0}}
+
+.lesson-row.done .lesson-num{color:#3158a8;background:#e9effc;box-shadow:none}
+[data-theme=dark] .lesson-row.done .lesson-num{background:var(--bg-sunken);color:var(--primary)}
+.status-pill.pass{background:#d5ead9;color:#1d6b44}
+[data-theme=dark] .status-pill.pass{background:rgba(52,211,153,.20);color:#4ade80}
