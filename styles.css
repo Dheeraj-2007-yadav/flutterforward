@@ -2842,7 +2842,7 @@ body.home-page .wrap { padding-top: 12px; }
 .teardown-glyph{width:56px;height:56px;flex:none;display:grid;place-items:center;border-radius:16px;font-size:28px;background:var(--bg-elev);border:1px solid var(--line);}
 
 /* Teardown numbers match lessons style */
-.teardown-num{width:52px;height:52px;border-radius:16px;flex:none;display:grid;place-items:center;font-weight:800;font-size:19px;color:var(--accent);background:var(--bg-elev);border:1px solid var(--line);}
+
 
 .st-screen{height:calc(100% - 28px);display:flex;flex-direction:column;color:#1c1c1e;background:#f2f2f7;}
 .st-bar{flex:none;display:flex;align-items:center;gap:8px;padding:8px 14px;background:#fff;border-bottom:1px solid #e5e5ea;}
@@ -3291,3 +3291,6 @@ body.home-page .wrap{max-width:1280px;padding-left:32px;padding-right:32px}
 @media (max-width:760px){
 body.home-page .wrap{padding-left:16px;padding-right:16px}
 }
+.bento-ring-arc{stroke-dashoffset:var(--ring-off)}
+.bento-ring-arc.ring-anim{animation:bento-ring-fill 1s var(--ease)}
+@keyframes bento-ring-fill{from{stroke-dashoffset:175.93}}
