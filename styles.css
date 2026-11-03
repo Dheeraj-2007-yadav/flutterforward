@@ -256,8 +256,8 @@
 .res-go{font-size:13px;font-weight:700;color:var(--accent)}
 .res-go span{transition:transform .2s}
 .res-card:hover .res-go span{display:inline-block;transform:translateX(3px)}
-.res-edit-btn{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;border:1px solid var(--line);background:var(--bg-elev);color:var(--text-2);cursor:pointer;flex:none}
-.res-edit-btn:hover{color:var(--accent);border-color:var(--accent)}
+.res-edit-btn{width:24px;height:24px;display:grid;place-items:center;border-radius:8px;border:none;background:transparent;color:var(--text-3);cursor:pointer;flex:none}
+.res-edit-btn:hover{color:var(--text-2)}
 .res-delete-btn{color:#e54852;border-color:#e54852}
 .res-delete-btn:hover{background:#e54852;color:#fff}
 .res-edit-actions{display:flex;gap:10px;align-items:center;margin-top:16px}
@@ -3153,10 +3153,10 @@ html{scroll-behavior:smooth}
 .res-item-kicker{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
 .res-item-title{font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:700;line-height:1.25;color:var(--text);margin:6px 0}
 .res-item-desc{font-size:14.5px;line-height:1.6;color:var(--text-2);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.res-item-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:2px;align-self:center}
-.res-item-price{font-weight:800;font-size:16px;color:var(--text)}
-.res-item-price.free{color:#15803d}
-[data-theme=dark] .res-item-price.free{color:#4ade80}
+.res-item-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:2px;align-self:flex-start}
+.res-item-price{display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;font-weight:800;font-size:13px;background:color-mix(in srgb,var(--primary) 12%,var(--bg-elev));color:var(--primary)}
+.res-item-price.free{background:#d5ead9;color:#1d6b44}
+[data-theme=dark] .res-item-price.free{background:rgba(52,211,153,.20);color:#4ade80}
 .res-item-go{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;background:var(--primary);color:#fff;font-size:13.5px;font-weight:800;white-space:nowrap}
 [data-theme=dark] .res-item-go{background:#e9ecf5;color:#1c2746}
 .res-filter.active{background:var(--primary);border-color:var(--primary);color:#fff} [data-theme=dark] .res-filter.active{background:#e9ecf5;border-color:#e9ecf5;color:#1c2746}
@@ -3166,7 +3166,7 @@ html{scroll-behavior:smooth}
   .res-item-main{flex:1 1 calc(100% - 86px)}
   .res-item-title{font-size:19px}
   .res-item-desc{font-size:14px}
-  .res-item-side{flex:0 1 calc(100% - 86px);margin-left:86px;align-items:flex-start}
+  .res-item-side{flex:0 1 calc(100% - 86px);margin-left:86px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}
 }
 
 /* Current lesson highlight 2026-10-31 - replaces single blue bottom line with proper left bar (quiet, no fill) */
