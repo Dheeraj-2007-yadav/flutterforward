@@ -3306,3 +3306,18 @@ body.home-page .wrap{padding-left:16px;padding-right:16px}
 /* Unified card background, site-wide (2026-11-03): every page-flow card shares one intensity */
 .bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card,.stat,.progress-main>.stat-grid .stat{background:color-mix(in srgb,var(--bg-sunken) 54%,var(--bg-elev))}
 [data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card,[data-theme=dark] .stat,[data-theme=dark] .progress-main>.stat-grid .stat{background:color-mix(in srgb,var(--bg) 65%,var(--bg-elev))}
+
+/* Polish (2026-11-03): one corner radius + one soft shadow for all content cards (stat tiles stay flat 12px for their small scale; qh/res/lesson-current already 16px so radius skips them) */
+.bento-card,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{border-radius:16px}
+.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{box-shadow:0 8px 24px rgba(25,31,42,.035)}
+[data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card{box-shadow:0 10px 26px rgba(0,0,0,.12)}
+
+/* Quiz icons colourful like home bento chips (2026-11-03): cycle green -> purple -> orange -> blue down the list, both themes. Rows are direct children of .learning-list, so 4n+1 starts at row 1. Beats the dark flatten rule (same specificity, later wins). */
+.quiz-row:nth-child(4n+1) .quiz-icon{background:#dcfce7;color:#15803d}
+.quiz-row:nth-child(4n+2) .quiz-icon{background:#ede9fe;color:#7c3aed}
+.quiz-row:nth-child(4n+3) .quiz-icon{background:#ffedd5;color:#ea580c}
+.quiz-row:nth-child(4n+4) .quiz-icon{background:#dbeafe;color:#1d4ed8}
+[data-theme=dark] .quiz-row:nth-child(4n+1) .quiz-icon{background:rgba(34,197,94,.16);color:#4ade80}
+[data-theme=dark] .quiz-row:nth-child(4n+2) .quiz-icon{background:rgba(167,139,250,.16);color:#c4b5fd}
+[data-theme=dark] .quiz-row:nth-child(4n+3) .quiz-icon{background:rgba(251,146,60,.16);color:#fdba74}
+[data-theme=dark] .quiz-row:nth-child(4n+4) .quiz-icon{background:rgba(59,130,246,.16);color:#93c5fd}
