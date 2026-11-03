@@ -3294,3 +3294,10 @@ body.home-page .wrap{padding-left:16px;padding-right:16px}
 .bento-ring-arc{stroke-dashoffset:var(--ring-off)}
 .bento-ring-arc.ring-anim{animation:bento-ring-fill 1s var(--ease)}
 @keyframes bento-ring-fill{from{stroke-dashoffset:175.93}}
+.res-list{display:grid;gap:14px}
+.res-item{background:color-mix(in srgb,var(--bg-sunken) 54%,var(--bg-elev));border:1px solid var(--line);border-radius:16px;padding:20px 22px;overflow:hidden;width:100%;min-width:0;max-width:100%;box-shadow:0 8px 24px rgba(25,31,42,.035)}
+.res-item:last-child{border-bottom:1px solid var(--line)}
+[data-theme="dark"] .res-item{background:color-mix(in srgb,var(--bg-sunken) 58%,var(--bg-elev));box-shadow:0 10px 26px rgba(0,0,0,.12)}
+@media (max-width:680px){.res-list{gap:12px}.res-item{padding:18px;border-radius:14px}}
+@media (max-width:390px){.res-item{padding:16px}}
+.cloud-status{display:block;margin-top:6px;font-size:13px;color:var(--text-2)}
