@@ -3153,11 +3153,11 @@ html{scroll-behavior:smooth}
 .res-item-kicker{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
 .res-item-title{font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:700;line-height:1.25;color:var(--text);margin:6px 0}
 .res-item-desc{font-size:14.5px;line-height:1.6;color:var(--text-2);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.res-item-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:2px;align-self:flex-start}
+.res-item-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:2px;align-self:stretch}
 .res-item-price{display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;font-weight:800;font-size:13px;background:color-mix(in srgb,var(--primary) 12%,var(--bg-elev));color:var(--primary)}
 .res-item-price.free{background:#d5ead9;color:#1d6b44}
 [data-theme=dark] .res-item-price.free{background:rgba(52,211,153,.20);color:#4ade80}
-.res-item-go{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;background:var(--primary);color:#fff;font-size:13.5px;font-weight:800;white-space:nowrap}
+.res-item-go{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;background:var(--primary);color:#fff;font-size:13.5px;font-weight:800;white-space:nowrap;margin-top:auto}
 [data-theme=dark] .res-item-go{background:#e9ecf5;color:#1c2746}
 .res-filter.active{background:var(--primary);border-color:var(--primary);color:#fff} [data-theme=dark] .res-filter.active{background:#e9ecf5;border-color:#e9ecf5;color:#1c2746}
 @media (max-width:520px){
@@ -3166,7 +3166,8 @@ html{scroll-behavior:smooth}
   .res-item-main{flex:1 1 calc(100% - 86px)}
   .res-item-title{font-size:19px}
   .res-item-desc{font-size:14px}
-  .res-item-side{flex:0 1 calc(100% - 86px);margin-left:86px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}
+  .res-item-side{flex:0 1 calc(100% - 86px);margin-left:86px;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px;align-self:auto}
+  .res-item-go{margin-top:0}
 }
 
 /* Current lesson highlight 2026-10-31 - replaces single blue bottom line with proper left bar (quiet, no fill) */
@@ -3301,3 +3302,7 @@ body.home-page .wrap{padding-left:16px;padding-right:16px}
 @media (max-width:680px){.res-list{gap:12px}.res-item{padding:18px;border-radius:14px}}
 @media (max-width:390px){.res-item{padding:16px}}
 .cloud-status{display:block;margin-top:6px;font-size:13px;color:var(--text-2)}
+
+/* Unified card background, site-wide (2026-11-03): every page-flow card shares one intensity */
+.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card,.stat,.progress-main>.stat-grid .stat{background:color-mix(in srgb,var(--bg-sunken) 54%,var(--bg-elev))}
+[data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card,[data-theme=dark] .stat,[data-theme=dark] .progress-main>.stat-grid .stat{background:color-mix(in srgb,var(--bg) 65%,var(--bg-elev))}
