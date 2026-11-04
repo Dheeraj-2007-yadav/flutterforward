@@ -2,7 +2,7 @@
 const wasLoading=homeWasLoading;homeWasLoading=!1;
 if(!authReady&&!authUnavailable&&!authStuck||currentUser&&cloudReadyUid!==currentUser.uid&&!cloudFailed){homeWasLoading=!0;return `<div class="min-home bento-home">
 <section class="bento-head">
-<h1>Welcome to FlutterForward.</h1>
+<h1>Welcome to <span class="bento-brand">FlutterForward.</span></h1>
 <p class="bento-tagline">Everything you need, nothing you don't.</p>
 </section>
 <div class="bento-card">
@@ -10,7 +10,7 @@ if(!authReady&&!authUnavailable&&!authStuck||currentUser&&cloudReadyUid!==curren
 <div class="bento-row"><span>Loading your progress…</span></div>
 </div>
 </div>`}
-if(currentUser&&cloudFailed)return `<div class="min-home bento-home"> <section class="bento-head"> <h1>Welcome to FlutterForward.</h1> <p class="bento-tagline">Everything you need, nothing you don't.</p> </section> <div class="bento-card"> <div class="bento-label">YOUR PROGRESS</div> <div class="bento-row"><span>Couldn't load your progress — check your connection. Retrying automatically…</span></div> </div> </div>`; const freshHome=!document.body.classList.contains("home-page")||wasLoading;
+if(currentUser&&cloudFailed)return `<div class="min-home bento-home"> <section class="bento-head"> <h1>Welcome to <span class="bento-brand">FlutterForward.</span></h1> <p class="bento-tagline">Everything you need, nothing you don't.</p> </section> <div class="bento-card"> <div class="bento-label">YOUR PROGRESS</div> <div class="bento-row"><span>Couldn't load your progress — check your connection. Retrying automatically…</span></div> </div> </div>`; const freshHome=!document.body.classList.contains("home-page")||wasLoading;
 const nx=LESSON_META.find(l=>!S.lessonsDone[l.id]);
 const nxTitle=nx?esc(nx.title):"All lessons complete";
 const nxSub=nx?`Lesson ${nx.num} of 18`:"18 of 18";
@@ -23,7 +23,7 @@ const rankName=RANKS[rankIndexFor(doneCount())].name;
 const CIRC=175.93,off=CIRC*(1-doneN/18);
 return `<div class="min-home bento-home">
 <section class="bento-head">
-<h1>Welcome to FlutterForward.</h1>
+<h1>Welcome to <span class="bento-brand">FlutterForward.</span></h1>
 <p class="bento-tagline">Everything you need, nothing you don't.</p>
 </section>
 <section class="bento-grid">
@@ -52,7 +52,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson markdown (~330KB across 18 files) loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1793761785',
+const FF_V='1793762347',
 LESSON_META=[{"id":"lesson-1","num":1,"quizId":"quiz-1","title":"Setup & Your First App","description":"Install Flutter and understand the skeleton every app is built on: main(), runApp(), MaterialApp, Scaffold."},{"id":"lesson-2","num":2,"quizId":"quiz-2","title":"Everything Is a Widget","description":"The core mental model: everything is a widget. Build your first StatelessWidget."},{"id":"lesson-3","num":3,"quizId":"quiz-3","title":"Layout: Row, Column & Container","description":"Arrange UI with Row, Column and Container. Alignment, padding, and the classic overflow bug."},{"id":"lesson-4","num":4,"quizId":"quiz-4","title":"State & Interactivity","description":"Make UI interactive with StatefulWidget and setState(). Build a working counter."},{"id":"lesson-5","num":5,"quizId":"quiz-5","title":"Navigation & Routes","description":"Move between screens with Navigator. Push, pop, and pass data."},{"id":"lesson-6","num":6,"quizId":"quiz-6","title":"Theming Your App","description":"Give your app a consistent look with ThemeData, colors, and fonts."},{"id":"lesson-7","num":7,"quizId":"quiz-7","title":"Lists & Grids","description":"Show scrolling lists and grids with ListView and GridView builders."},{"id":"lesson-8","num":8,"quizId":"quiz-8","title":"Forms & User Input","description":"Collect text input with TextField, controllers, and validation."},{"id":"lesson-9","num":9,"quizId":"quiz-9","title":"Working with JSON Data","description":"Turn JSON into Dart models and show it with FutureBuilder."},{"id":"lesson-10","num":10,"quizId":"quiz-10","title":"Async in Dart","description":"Wait for slow work without freezing the app, using Futures and async/await."},{"id":"lesson-11","num":11,"quizId":"quiz-11","title":"Fetching from APIs","description":"Get real data from the internet with the http package."},{"id":"lesson-12","num":12,"quizId":"quiz-12","title":"Streams & Real-time Data","description":"Listen to data that keeps changing with Streams and StreamBuilder."},{"id":"lesson-13","num":13,"quizId":"quiz-13","title":"Managing State at Scale","description":"Share state across widgets by lifting it up \u2014 and see where it breaks."},{"id":"lesson-14","num":14,"quizId":"quiz-14","title":"Provider Essentials","description":"Clean state management with ChangeNotifier and the Provider package."},{"id":"lesson-15","num":15,"quizId":"quiz-15","title":"Saving Data Locally","description":"Remember user data between sessions with SharedPreferences."},{"id":"lesson-16","num":16,"quizId":"quiz-16","title":"Firebase Integration","description":"Add sign-in and a cloud database with Firebase Auth and Firestore."},{"id":"lesson-17","num":17,"quizId":"quiz-17","title":"Animations","description":"Make your UI feel alive with implicit animations and Hero transitions."},{"id":"lesson-18","num":18,"quizId":"quiz-18","title":"Ship It","description":"Debug like a pro, build a release APK, and publish your app."}],
 _lessonPending={},_lessonFailed={},
 lessonFull=n=>(DATA.lessons||[]).find(l=>l.num===n&&l.markdown),
