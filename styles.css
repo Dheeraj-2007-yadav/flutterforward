@@ -3249,7 +3249,7 @@ html{scroll-behavior:smooth}
 /* Home bento dashboard (logged-in home) */
 .bento-home .bento-head{padding:56px 0 28px}
 .bento-head h1{font-family:var(--serif);font-size:clamp(34px,5vw,56px);line-height:1.1;font-weight:400;letter-spacing:-.01em;margin-bottom:10px}
-.bento-tagline{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--text-2);padding-left:10px}
+.bento-tagline{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.5;color:var(--text);padding-left:10px}
 .bento-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
 .bento-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:20px;padding:24px}
 .bento-upnext{display:flex;gap:24px;align-items:center;justify-content:space-between}
