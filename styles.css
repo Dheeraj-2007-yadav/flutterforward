@@ -1858,7 +1858,6 @@ body.home-page .wrap { padding-top: 12px; }
   .mobile-home .brand-logo { width: 18px; height: 17px; }
 }
 
-</style>
 
 
 /* Larger tap targets for small nested widgets (invisible) */
@@ -3334,3 +3333,9 @@ body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32p
 
 /* Tagline mobile alignment (2026-11-04): desktop 10px indent overshoots on phones, where the headline is smaller */
 @media (max-width:680px){.bento-tagline{padding-left:4px}}
+
+/* Teardown short-viewport mode (2026-11-04): on short desktop screens (e.g. Windows 125%/150% scale on laptop displays) the height-capped phone shrinks below the app UI fit width and content clips. Keep the phone full-size and let the page scroll instead. Desktop only; mobile untouched. */
+@media (min-width:901px) and (max-height:800px){
+  .teardown-detail .teardown-phone{width:min(100%,320px) !important;}
+  .teardown-detail .teardown-screen{height:640px !important;max-height:none !important;}
+}

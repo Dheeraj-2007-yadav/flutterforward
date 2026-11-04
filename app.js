@@ -52,7 +52,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson markdown (~330KB across 18 files) loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1793773864',
+const FF_V='1793774953',
 LESSON_META=[{"id":"lesson-1","num":1,"quizId":"quiz-1","title":"Setup & Your First App","description":"Install Flutter and understand the skeleton every app is built on: main(), runApp(), MaterialApp, Scaffold."},{"id":"lesson-2","num":2,"quizId":"quiz-2","title":"Everything Is a Widget","description":"The core mental model: everything is a widget. Build your first StatelessWidget."},{"id":"lesson-3","num":3,"quizId":"quiz-3","title":"Layout: Row, Column & Container","description":"Arrange UI with Row, Column and Container. Alignment, padding, and the classic overflow bug."},{"id":"lesson-4","num":4,"quizId":"quiz-4","title":"State & Interactivity","description":"Make UI interactive with StatefulWidget and setState(). Build a working counter."},{"id":"lesson-5","num":5,"quizId":"quiz-5","title":"Navigation & Routes","description":"Move between screens with Navigator. Push, pop, and pass data."},{"id":"lesson-6","num":6,"quizId":"quiz-6","title":"Theming Your App","description":"Give your app a consistent look with ThemeData, colors, and fonts."},{"id":"lesson-7","num":7,"quizId":"quiz-7","title":"Lists & Grids","description":"Show scrolling lists and grids with ListView and GridView builders."},{"id":"lesson-8","num":8,"quizId":"quiz-8","title":"Forms & User Input","description":"Collect text input with TextField, controllers, and validation."},{"id":"lesson-9","num":9,"quizId":"quiz-9","title":"Working with JSON Data","description":"Turn JSON into Dart models and show it with FutureBuilder."},{"id":"lesson-10","num":10,"quizId":"quiz-10","title":"Async in Dart","description":"Wait for slow work without freezing the app, using Futures and async/await."},{"id":"lesson-11","num":11,"quizId":"quiz-11","title":"Fetching from APIs","description":"Get real data from the internet with the http package."},{"id":"lesson-12","num":12,"quizId":"quiz-12","title":"Streams & Real-time Data","description":"Listen to data that keeps changing with Streams and StreamBuilder."},{"id":"lesson-13","num":13,"quizId":"quiz-13","title":"Managing State at Scale","description":"Share state across widgets by lifting it up \u2014 and see where it breaks."},{"id":"lesson-14","num":14,"quizId":"quiz-14","title":"Provider Essentials","description":"Clean state management with ChangeNotifier and the Provider package."},{"id":"lesson-15","num":15,"quizId":"quiz-15","title":"Saving Data Locally","description":"Remember user data between sessions with SharedPreferences."},{"id":"lesson-16","num":16,"quizId":"quiz-16","title":"Firebase Integration","description":"Add sign-in and a cloud database with Firebase Auth and Firestore."},{"id":"lesson-17","num":17,"quizId":"quiz-17","title":"Animations","description":"Make your UI feel alive with implicit animations and Hero transitions."},{"id":"lesson-18","num":18,"quizId":"quiz-18","title":"Ship It","description":"Debug like a pro, build a release APK, and publish your app."}],
 _lessonPending={},_lessonFailed={},
 lessonFull=n=>(DATA.lessons||[]).find(l=>l.num===n&&l.markdown),
@@ -1495,6 +1495,7 @@ function tdPrepare() {
 
 function mqMatches(q){return window.matchMedia&&window.matchMedia(q).matches;}
 function tdEnforceOneFrame() {
+  if (window.addEventListener) { window.addEventListener('resize', tdOnResize); }
   var isMobile = window.innerWidth < 901;
   // Lock body scroll (html stays scrollable for pull-to-refresh)
   document.body.style.setProperty('overflow', 'hidden', 'important');
@@ -1512,6 +1513,26 @@ function tdEnforceOneFrame() {
     return;
   }
   if (!d) return;
+  // Short desktop viewports (e.g. Windows 125%/150% scale): the height-capped phone would shrink below the app UI fit width and clip content. Keep the phone full-size and let the page scroll instead.
+  if (window.innerHeight <= 800) {
+    d.style.removeProperty('height');
+    d.style.removeProperty('min-height');
+    d.style.removeProperty('max-height');
+    d.style.removeProperty('overflow');
+    d.style.removeProperty('display');
+    d.style.removeProperty('flex-direction');
+    d.style.removeProperty('transition');
+    var wb0 = d.querySelector('.teardown-workbench');
+    if (wb0) { wb0.style.removeProperty('flex'); wb0.style.removeProperty('min-height'); wb0.style.removeProperty('overflow'); }
+    var pn0 = d.querySelector('.teardown-panel');
+    if (pn0) { pn0.style.removeProperty('height'); pn0.style.removeProperty('max-height'); pn0.style.removeProperty('overflow-y'); }
+    document.documentElement.style.removeProperty('height');
+    document.body.style.removeProperty('overflow');
+    document.body.style.removeProperty('height');
+    document.body.style.removeProperty('max-height');
+    document.body.style.removeProperty('margin');
+    return;
+  }
   // Use fixed header offset instead of measuring (avoids race with header layout)
   var targetH = window.innerHeight - 64 - 20;
   d.style.setProperty('height', targetH + 'px', 'important');
@@ -1546,6 +1567,9 @@ if(document.fonts&&document.fonts.ready){
   });
 }
 
+var tdResizeTimer = null;
+function tdOnResize() { if (tdResizeTimer) { clearTimeout(tdResizeTimer); } tdResizeTimer = setTimeout(function() { try { if (teardownState && teardownState.app) { tdEnforceOneFrame(); } } catch (e) {} }, 150); }
+
 function tdReleaseOneFrame() {
   var d = document.querySelector('.teardown-detail');
   if (d) {
@@ -1563,6 +1587,7 @@ function tdReleaseOneFrame() {
   document.body.style.removeProperty('height');
   document.body.style.removeProperty('max-height');
   document.body.style.removeProperty('margin');
+  if (window.removeEventListener) { window.removeEventListener('resize', tdOnResize); }
 }
 
 function tdRender() {
