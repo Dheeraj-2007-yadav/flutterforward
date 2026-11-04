@@ -3321,3 +3321,12 @@ body.home-page .wrap{padding-left:16px;padding-right:16px}
 [data-theme=dark] .quiz-row:nth-child(4n+2) .quiz-icon{background:rgba(167,139,250,.16);color:#c4b5fd}
 [data-theme=dark] .quiz-row:nth-child(4n+3) .quiz-icon{background:rgba(251,146,60,.16);color:#fdba74}
 [data-theme=dark] .quiz-row:nth-child(4n+4) .quiz-icon{background:rgba(59,130,246,.16);color:#93c5fd}
+
+/* Polish fix (2026-11-04): one inner spacing for all content cards + consistent phone spacing + site footer */
+.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{padding:20px 22px}
+@media (max-width:680px){.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{padding:18px}}
+@media (max-width:390px){.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{padding:16px}}
+.site-footer{max-width:920px;margin:0 auto;padding:28px 28px 40px;text-align:center;border-top:1px solid var(--line);color:var(--text-3);font-size:13px;line-height:1.6}
+.site-footer b{display:block;color:var(--text-2);font-size:14px;margin-bottom:4px}
+body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32px}
+@media (max-width:680px){.site-footer{padding:22px 16px 30px}}
