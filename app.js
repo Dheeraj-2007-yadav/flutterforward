@@ -55,7 +55,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1793877436',
+const FF_V='1793881024',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -123,7 +123,7 @@ views.lessons=()=>pageHead(null,"Lessons","From your first app to real apps — 
     <div class="lesson-kicker">${phaseNameFor(t.num)} · Lesson ${t.num}</div>
     <h1 style="font-size:clamp(26px,5vw,36px);letter-spacing:-.03em;line-height:1.15;margin-bottom:6px">${esc(t.title)}</h1>
     <p style="color:var(--text-2);margin-bottom:6px">${esc(t.description)}</p>
-    ${(t.html_en||t.html_hi)?'<div class="lesson-lang" role="group" aria-label="Lesson language"><button type="button" class="lesson-lang-btn'+(lang==="en"?" on":"")+'" onclick="if(window.setLang){setLang(\'en\');route()}">English</button><button type="button" class="lesson-lang-btn'+(lang==="hi"?" on":"")+'" onclick="if(window.setLang){setLang(\'hi\');route()}">Hinglish</button></div>':""}
+    ${(t.html_en||t.html_hi)?'<div class="lesson-lang" data-lang="${lang}" role="group" aria-label="Lesson language"><button type="button" class="lesson-lang-btn'+(lang==="en"?" on":"")+'" onclick="if(window.setLang){setLang(\'en\');route()}">English</button><button type="button" class="lesson-lang-btn'+(lang==="hi"?" on":"")+'" onclick="if(window.setLang){setLang(\'hi\');route()}">Hinglish</button></div>':""}
     <div class="lesson-body">
     ${body}
     </div>
@@ -144,7 +144,7 @@ views.lessons=()=>pageHead(null,"Lessons","From your first app to real apps — 
   </div>
   <script>void 0<\/script>`;window.__bookActive=1;return`<div class="book-top">
   <div class="book-title-row"><a class="book-back" href="#/lessons" aria-label="All lessons" title="All lessons">←</a><h1>${esc(t.title)}</h1>
-    <div class="lesson-lang" id="bookLangToggle" role="group" aria-label="Lesson language"><button type="button" class="lesson-lang-btn${lang==="en"?" on":""}" data-lang="en" onclick="if(window.bookLang){bookLang('en')}">English</button><button type="button" class="lesson-lang-btn${lang==="hi"?" on":""}" data-lang="hi" onclick="if(window.bookLang){bookLang('hi')}">Hinglish</button></div>
+    <div class="lesson-lang" id="bookLangToggle" data-lang="${lang}" role="group" aria-label="Lesson language"><button type="button" class="lesson-lang-btn${lang==="en"?" on":""}" data-lang="en" onclick="if(window.bookLang){bookLang('en')}">English</button><button type="button" class="lesson-lang-btn${lang==="hi"?" on":""}" data-lang="hi" onclick="if(window.bookLang){bookLang('hi')}">Hinglish</button></div>
   </div>
 </div>
 <div class="book-area" id="bookArea">
@@ -800,7 +800,7 @@ function bookLang(l){
   var anchorPart=pg0?(pg0.headingParts.length?pg0.headingParts[0]:pg0.anchorPart):1;
   setLang(l);
   var tg=document.getElementById("bookLangToggle");
-  if(tg){var bs=tg.querySelectorAll(".lesson-lang-btn");bs.forEach(function(b){b.classList.toggle("on",b.dataset.lang===l);});}
+  if(tg){tg.dataset.lang=l;var bs=tg.querySelectorAll(".lesson-lang-btn");bs.forEach(function(b){b.classList.toggle("on",b.dataset.lang===l);});}
   _book.lang=l;
   var t=_book.lesson;
   var body=(l==="hi"&&t.html_hi)?t.html_hi:(t.html_en||t.html_hi);

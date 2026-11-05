@@ -3340,9 +3340,12 @@ body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32p
   .teardown-detail .teardown-screen{height:640px !important;max-height:none !important;}
 }
 /* LESSON-BODY (40-lesson ship) */
-.lesson-lang{display:flex;gap:8px;margin:4px 0 18px}
-.lesson-lang-btn{border:1px solid var(--line);background:var(--bg-elev);color:var(--text-2);border-radius:999px;padding:7px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
-.lesson-lang-btn.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.lesson-lang{position:relative;isolation:isolate;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--bg-sunken);margin:4px 0 18px}
+.lesson-lang::before{content:"";position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc(50% - 6px);border-radius:999px;background:var(--bg-elev);box-shadow:0 2px 8px rgba(15,31,51,.08);transform:translateX(0);transition:transform .38s var(--ease)}
+.lesson-lang[data-lang="hi"]::before{transform:translateX(calc(100% + 4px))}
+.lesson-lang-btn{position:relative;z-index:1;min-height:38px;border:0;background:transparent;color:var(--text-2);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:color .28s ease;white-space:nowrap}
+.lesson-lang-btn.on{color:var(--primary);background:transparent;border-color:transparent}
+@media (prefers-reduced-motion:reduce){.lesson-lang::before{transition:none}}
 .lesson-body{color:var(--text)}
 .lesson-body h2{margin:28px 0 8px;font-size:22px;line-height:1.3;letter-spacing:-.01em}
 .lesson-body h2 .n{color:var(--primary)}
@@ -3428,7 +3431,7 @@ body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32p
 [data-theme=light] .codeblock .tok-c{color:#6b7280}
 [data-theme=light] .codeblock .tok-f{color:#0e7490}
 [data-theme=light] .codeblock .tok-a{color:#7c3aed}
-[data-theme=dark] .lesson-lang-btn.on{background:#e9ecf5;border-color:#e9ecf5;color:#1c2746}
+[data-theme=dark] .lesson-lang-btn.on{color:var(--accent);background:transparent;border-color:transparent}
 
 /* ===== Book lesson pages (integrated v4 design) ===== */
 /* All selectors are prefixed .book- or scoped under body.book-page, so no other
@@ -3445,10 +3448,10 @@ body.book-page #app{flex:1 1 auto;min-height:0;display:flex;flex-direction:colum
 body.book-page .view{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;animation:none}
 body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;max-width:888px;padding:14px 18px 10px}
 .book-top{flex:none}
-.book-back{flex:none;align-self:center;font-size:22px;line-height:1;color:var(--text-2);text-decoration:none;padding:4px 4px 4px 0;margin-right:6px}
+.book-back{flex:none;align-self:center;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--bg-elev);border:1px solid var(--line);color:var(--text);font-size:20px;line-height:1;text-decoration:none;box-shadow:var(--card-shadow);cursor:pointer}
 .book-back:hover{color:var(--primary)}
 .book-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
-.book-top h1{flex:1 1 auto;min-width:0;font-size:clamp(26px,5vw,36px);letter-spacing:-.03em;line-height:1.15;margin:0}
+.book-top h1{flex:1 1 auto;min-width:0;font-family:var(--serif);font-weight:400;font-size:clamp(26px,5vw,36px);letter-spacing:-.03em;line-height:1.15;margin:0}
 .book-top .lesson-lang{margin:0;flex:none}
 .book-area{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:14px}
 .book-frame{flex:1 1 auto;min-height:0;display:flex;position:relative;padding:0 56px}
