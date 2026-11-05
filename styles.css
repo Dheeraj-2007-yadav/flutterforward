@@ -3434,22 +3434,22 @@ body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32p
 /* All selectors are prefixed .book- or scoped under body.book-page, so no other
    view is affected. Content styles mirror the site's .lesson-body rules so book
    pages read exactly like the site's lesson content; furniture (sheet, spine,
-   leaf, shade, dots, arrows, footer, progress) follows the approved v4 design. */
+   leaf, shade, dots, arrows, footer) follows the approved v4 design. The top
+   progress bar, lesson description, kicker row and site footer were removed
+   from the book view (2026-11-05): dots below already show progress, and the
+   freed space goes to the book area. Code blocks scroll inside the page. */
 html.book-page,body.book-page{overscroll-behavior:none}
 body.book-page{height:100dvh;overflow:hidden}
+body.book-page .site-footer{display:none}
 body.book-page #app{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
 body.book-page .view{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;animation:none}
 body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;max-width:888px;padding:14px 18px 10px}
 .book-top{flex:none}
-.book-kicker{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-.book-kicker .back-link{margin:0}
-.book-kicker-main{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--primary)}
-.book-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-top:8px}
-.book-top h1{font-size:clamp(26px,5vw,36px);letter-spacing:-.03em;line-height:1.15;margin:0}
+.book-back{flex:none;align-self:center;font-size:22px;line-height:1;color:var(--text-2);text-decoration:none;padding:4px 4px 4px 0;margin-right:6px}
+.book-back:hover{color:var(--primary)}
+.book-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.book-top h1{flex:1 1 auto;min-width:0;font-size:clamp(26px,5vw,36px);letter-spacing:-.03em;line-height:1.15;margin:0}
 .book-top .lesson-lang{margin:0;flex:none}
-.book-desc{color:var(--text-2);font-size:16px;line-height:1.55;margin:8px 0 0}
-.book-progress{height:3px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
-.book-progress i{display:block;height:100%;background:var(--primary);border-radius:99px;transition:width .3s ease}
 .book-area{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:14px}
 .book-frame{flex:1 1 auto;min-height:0;display:flex;position:relative;padding:0 56px}
 .book-sheet-wrap{flex:1 1 auto;min-height:0;position:relative;perspective:2200px}
@@ -3471,6 +3471,14 @@ body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:colu
 .book-sheet-inner li{line-height:1.65;margin-bottom:6px}
 .book-sheet-inner li::marker{color:var(--primary)}
 .book-sheet-inner code{font-family:var(--mono);font-size:.88em;background:var(--bg-sunken);border-radius:6px;padding:1px 6px}
+/* Code blocks stay scrollable inside the page: lines never wrap, the pre scrolls
+   horizontally, and tall code scrolls vertically under a cap so one long block
+   never forces the whole page to scale down. The header (dots + dart label +
+   Copy) sits above the pre and never scrolls away. The measurer shares
+   .book-sheet-inner, so DP packing measures the same capped height. Cap 300px
+   is ~13 lines at 13px/1.65 — most lesson blocks fit whole, only long ones scroll. */
+.book-sheet-inner .codeblock{margin:0 0 14px}
+.book-sheet-inner .codeblock pre{white-space:pre;overflow:auto;max-height:300px;margin:0}
 .book-sheet-inner .box{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius-s);padding:14px 16px;margin:0 0 14px;box-shadow:var(--card-shadow)}
 .book-sheet-inner .box.warn{border-color:var(--line);background:var(--bg-sunken)}
 .book-sheet-inner .box p:last-child{margin-bottom:0}
@@ -3513,6 +3521,8 @@ body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:colu
 @media (max-width:767px){
   body.book-page .wrap{padding:10px 12px 8px}
   .book-frame{padding:0}
+  .book-title-row{flex-wrap:wrap}
+  .book-top .lesson-lang{margin-left:auto}
   .book-sheet-inner{padding:22px 20px 22px 28px}
   .book-sheet-inner h2{font-size:20px}
   .book-sheet-inner .box{padding:12px}
@@ -3520,8 +3530,8 @@ body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:colu
   .book-dots{gap:6px}
   .book-dot{width:8px;height:8px}
   .book-footer{padding:10px 0 2px}
+  .book-sheet-inner .codeblock pre{max-height:240px}
 }
 @media (prefers-reduced-motion: reduce){
   .book-leaf{transition:none}
-  .book-progress i{transition:none}
 }
