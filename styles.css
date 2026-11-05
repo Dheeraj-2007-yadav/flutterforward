@@ -3442,18 +3442,18 @@ body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32p
    from the book view (2026-11-05): dots below already show progress, and the
    freed space goes to the book area. Code blocks scroll inside the page. */
 html.book-page,body.book-page{overscroll-behavior:none}
-body.book-page{height:100dvh;overflow:hidden}
+body.book-page{min-height:100dvh}
 body.book-page .site-footer{display:none}
-body.book-page #app{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+body.book-page #app{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:visible}
 body.book-page .view{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;animation:none}
 body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;max-width:888px;padding:14px 18px 10px}
-.book-top{flex:none}
-.book-back{flex:none;align-self:center;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--bg-elev);border:1px solid var(--line);color:var(--text);font-size:20px;line-height:1;text-decoration:none;box-shadow:var(--card-shadow);cursor:pointer}
-.book-back:hover{color:var(--primary)}
+.book-top{flex:none;padding-top:28px}
+
+
 .book-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .book-top h1{flex:1 1 auto;min-width:0;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.6vw,58px);letter-spacing:-.045em;line-height:1;margin:0}@media (max-width:680px){.book-top h1{font-size:clamp(36px,10.5vw,48px)}}@media (max-width:390px){.book-top h1{font-size:36px}}
 .book-top .lesson-lang{margin:0;flex:none}
-.book-area{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:14px}
+.book-area{flex:none;height:calc(100dvh - 190px);display:flex;flex-direction:column;margin-top:32px}@media (max-width:767px){.book-area{height:calc(100dvh - 260px)}}
 .book-frame{flex:1 1 auto;min-height:0;display:flex;position:relative;padding:0 56px}
 .book-sheet-wrap{flex:1 1 auto;min-height:0;position:relative;perspective:2200px}
 .book-sheet{height:100%;background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(23,23,23,.06),0 12px 32px rgba(23,23,23,.10);position:relative;overflow:hidden}

@@ -55,7 +55,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1793884066',
+const FF_V='1793884700',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -143,7 +143,8 @@ views.lessons=()=>pageHead(null,"Lessons","From your first app to real apps — 
     ${r?`<a class="next"href="#/lesson/${r.num}"><span class="pager-label">Next →</span><strong class="pager-title">${esc(r.title)}</strong></a>`:"<a></a>"}
   </div>
   <script>void 0<\/script>`;window.__bookActive=1;return`<div class="book-top">
-  <div class="book-title-row"><a class="book-back" href="#/lessons" aria-label="All lessons" title="All lessons">←</a><h1>${esc(t.title)}</h1>
+  <a class="back-link" href="#/lessons" aria-label="All lessons">← All lessons</a>
+  <div class="book-title-row"><h1>${esc(t.title)}</h1>
     <div class="lesson-lang" id="bookLangToggle" data-lang="${lang}" role="group" aria-label="Lesson language"><button type="button" class="lesson-lang-btn${lang==="en"?" on":""}" data-lang="en" onclick="if(window.bookLang){bookLang('en')}">English</button><button type="button" class="lesson-lang-btn${lang==="hi"?" on":""}" data-lang="hi" onclick="if(window.bookLang){bookLang('hi')}">Hinglish</button></div>
   </div>
 </div>
