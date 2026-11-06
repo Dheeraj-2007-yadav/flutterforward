@@ -3441,7 +3441,15 @@ body.home-page .site-footer{max-width:1280px;padding-left:32px;padding-right:32p
    progress bar, lesson description, kicker row and site footer were removed
    from the book view (2026-11-05): dots below already show progress, and the
    freed space goes to the book area. Code blocks scroll inside the page. */
-html.book-page,body.book-page{overscroll-behavior:none}
+/* Book page MUST scroll with wheel/touch: overscroll-behavior:none on html/body
+   broke scroll chaining (wheel/touch died at body, scrollTo still worked). */
+html.book-page,body.book-page{overscroll-behavior:auto}
+/* Book page is ONE fixed size: margin:auto + stretch made .wrap shrink-to-fit the
+   page content (longest line), so pages changed width (740 vs 573 vs 483). */
+body.book-page .wrap{width:100%}
+/* Long code tokens must wrap inside the page instead of clipping (phone). */
+.book-sheet-inner{overflow-wrap:break-word}
+.book-sheet-inner code{overflow-wrap:anywhere}
 body.book-page{min-height:100dvh}
 body.book-page .site-footer{display:none}
 body.book-page #app{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;overflow:visible}
@@ -3453,11 +3461,11 @@ body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:colu
 .book-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
 .book-top h1{flex:1 1 auto;min-width:0;font-family:var(--serif);font-weight:400;font-size:clamp(40px,6.6vw,58px);letter-spacing:-.045em;line-height:1;margin:0}@media (max-width:680px){.book-top h1{font-size:clamp(36px,10.5vw,48px)}}@media (max-width:390px){.book-top h1{font-size:36px}}
 .book-top .lesson-lang{margin:0;flex:none}
-.book-area{flex:none;height:calc(100dvh - 190px);display:flex;flex-direction:column;margin-top:32px}@media (max-width:767px){.book-area{height:calc(100dvh - 260px)}}
-.book-frame{flex:1 1 auto;min-height:0;display:flex;position:relative;padding:0 56px}
-.book-sheet-wrap{flex:1 1 auto;min-height:0;position:relative;perspective:2200px}
-.book-sheet{height:100%;background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;box-shadow:0 1px 2px rgba(23,23,23,.06),0 12px 32px rgba(23,23,23,.10);position:relative;overflow:hidden}
-[data-theme="dark"] .book-sheet{box-shadow:0 1px 2px rgba(0,0,0,.30),0 12px 32px rgba(0,0,0,.35)}
+.book-area{flex:none;height:calc(100dvh - 190px);display:flex;flex-direction:column;margin-top:32px;min-width:0}@media (max-width:767px){.book-area{height:calc(100dvh - 200px)}}
+.book-frame{flex:1 1 auto;min-height:0;min-width:0;display:flex;position:relative;padding:0 56px}
+.book-sheet-wrap{flex:1 1 auto;min-height:0;min-width:0;position:relative;perspective:2200px;overflow:hidden;box-shadow:0 1px 2px rgba(23,23,23,.06),0 12px 32px rgba(23,23,23,.10)}
+.book-sheet{height:100%;background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;position:relative;overflow:hidden}
+[data-theme="dark"] .book-sheet-wrap{box-shadow:0 1px 2px rgba(0,0,0,.30),0 12px 32px rgba(0,0,0,.35)}
 .book-sheet::before,.book-leaf::before{content:"";position:absolute;left:0;top:0;bottom:0;width:26px;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.09),rgba(0,0,0,0));z-index:2}
 [data-theme="dark"] .book-sheet::before,[data-theme="dark"] .book-leaf::before{background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,0))}
 .book-sheet-inner{height:100%;overflow:hidden;padding:30px 34px 30px 44px;position:relative;z-index:0;color:var(--text)}
@@ -3513,13 +3521,13 @@ body.book-page .wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:colu
    the new page shows instead of a mirrored old page. */
 .book-leaf{position:absolute;top:0;left:0;right:0;z-index:5;background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 18px 40px rgba(23,23,23,.22);will-change:transform;backface-visibility:hidden;pointer-events:none}
 [data-theme="dark"] .book-leaf{box-shadow:0 18px 40px rgba(0,0,0,.50)}
-.book-leaf.fwd{transform-origin:left center;transition:transform .45s ease-in-out}
-.book-leaf.back{transform-origin:right center;transition:transform .45s ease-in-out}
+.book-leaf.fwd{transform-origin:left center;transition:transform .25s ease-in-out}
+.book-leaf.back{transform-origin:right center;transition:transform .25s ease-in-out}
 .book-leaf.turn.fwd{transform:rotateY(-180deg)}
 .book-leaf.turn.back{transform:rotateY(180deg)}
 .book-leaf .book-shade{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:3}
-.book-leaf.fwd .book-shade{background:linear-gradient(90deg,rgba(0,0,0,.38),rgba(0,0,0,0) 55%);animation:bookShade .45s ease-in-out}
-.book-leaf.back .book-shade{background:linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 55%);animation:bookShade .45s ease-in-out}
+.book-leaf.fwd .book-shade{background:linear-gradient(90deg,rgba(0,0,0,.38),rgba(0,0,0,0) 55%);animation:bookShade .25s ease-in-out}
+.book-leaf.back .book-shade{background:linear-gradient(270deg,rgba(0,0,0,.38),rgba(0,0,0,0) 55%);animation:bookShade .25s ease-in-out}
 @keyframes bookShade{0%{opacity:0}50%{opacity:.55}100%{opacity:0}}
 @media (max-width:767px){
   body.book-page .wrap{padding:10px 12px 8px}

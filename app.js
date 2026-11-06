@@ -55,7 +55,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1793884700',
+const FF_V='1793885677',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -764,9 +764,11 @@ function bookRender(){
   }
   bookSyncNav();bookFit();
 }
-var _bookFlip=false;
+var _bookFlip=false,_bookFlipTimer=null;
+function bookFlipEnd(){if(_bookFlipTimer){clearTimeout(_bookFlipTimer);_bookFlipTimer=null;}var lf=document.querySelector(".book-leaf");if(lf)lf.remove();_bookFlip=false;}
 function bookGoTo(j){
-  if(_bookFlip||j===_book.page||j<0||j>=_book.pages.length)return;
+  if(j===_book.page||j<0||j>=_book.pages.length)return;
+  if(_bookFlip)bookFlipEnd();
   var si=bookEl("bookSheetInner"),sw=bookEl("bookSheetWrap");
   if(!si||!sw)return;
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){_book.page=j;bookRender();return;}
@@ -790,7 +792,7 @@ function bookGoTo(j){
   sw.appendChild(leaf);
   void leaf.offsetWidth;
   leaf.classList.add("turn");
-  setTimeout(function(){leaf.remove();_bookFlip=false;},480);
+  _bookFlipTimer=setTimeout(function(){leaf.remove();_bookFlip=false;_bookFlipTimer=null;},280);
 }
 function bookNav(d){bookGoTo(_book.page+d);}
 /* Language switch: repaginate in place and land on the page containing the same part's
