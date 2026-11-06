@@ -55,7 +55,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1793885677',
+const FF_V='1793935431',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -635,6 +635,40 @@ function bookEndMatter(){
   h+='<div class="pager">'+(prev?'<a href="#/lesson/'+prev.num+'"><span class="pager-label">← Previous</span><strong class="pager-title">'+esc(prev.title)+'</strong></a>':"<a></a>")+(next?'<a class="next" href="#/lesson/'+next.num+'"><span class="pager-label">Next →</span><strong class="pager-title">'+esc(next.title)+'</strong></a>':"<a></a>")+'</div>';
   return h;
 }
+/* Lesson cover page (design C — Big type): the first page of every lesson's book.
+   Ghost lesson number behind a huge title (first part ink, second part blue),
+   phase kicker, description, and a "turn the page" line at the bottom. The title
+   and description are the lesson's English meta (same as the lessons list). */
+var COVER_SPLIT={14:["Managing State","at Scale"],20:["Working with","JSON Data"],23:["Saving","Data Locally"],37:["","Ship It"]};
+function bookCoverTitleParts(title,num){
+  var o=COVER_SPLIT[num];if(o)return o;
+  var ci=title.indexOf(":");
+  if(ci>=0)return [title.slice(0,ci+1).trim(),title.slice(ci+1).trim()];
+  var seps=[" & "," / "," + "],bi=-1,bl=0;
+  seps.forEach(function(s){var i=title.lastIndexOf(s);if(i>bi){bi=i;bl=s.length;}});
+  if(bi>=0)return [title.slice(0,bi+bl).trim(),title.slice(bi+bl).trim()];
+  var w=title.split(/\s+/);
+  if(w.length<=1)return ["",title];
+  return [w.slice(0,-1).join(" "),w[w.length-1]];
+}
+function bookCoverHTML(){
+  var m=_book.meta;if(!m)return"";
+  var num=m.num,parts=bookCoverTitleParts(m.title,num);
+  var ghost=String(num).padStart(2,"0");
+  var ph=phaseNameFor(num);
+  var foot=_book.lang==="hi"?"Page palto aur shuru karo →":"Turn the page to begin →";
+  var titleHtml="";
+  if(parts[0]&&parts[1])titleHtml=esc(parts[0])+" <em>"+esc(parts[1])+"</em>";
+  else if(parts[1])titleHtml="<em>"+esc(parts[1])+"</em>";
+  else titleHtml=esc(parts[0]||m.title);
+  return '<div class="book-cover">'
+    +'<div class="book-cover-ghost" aria-hidden="true">'+ghost+'</div>'
+    +'<div class="book-cover-kicker">Lesson '+ghost+' · '+esc(ph)+'</div>'
+    +'<h1 class="book-cover-title">'+titleHtml+'</h1>'
+    +'<p class="book-cover-desc">'+esc(m.description)+'</p>'
+    +'<div class="book-cover-foot">'+foot+'</div>'
+    +'</div>';
+}
 /* DP-optimal continuous flow: units = blocks with ul split per <li>; maximise the minimum
    fill over non-last pages (tie-break: fewer pages, then longer pages). Diagrams, code
    blocks and boxes move whole, never split; a page never ends on a part heading (no orphan
@@ -723,7 +757,7 @@ function bookBuildFlow(){
     lp.fill=(lp.h/avail)*100;
     pages.push({segs:[],html:"",anchorPart:lp.anchorPart,headingParts:[],h:endH,fill:(endH/avail)*100,endOnly:true});
   }
-  _book.pages=pages;
+  _book.pages=[{cover:true,segs:[],html:"",anchorPart:0,headingParts:[],h:0,fill:100}].concat(pages);
   var t1=(typeof performance!=="undefined"&&performance.now)?performance.now():Date.now();
   _book.buildMs=t1-t0;
 }
@@ -757,15 +791,108 @@ function bookSyncNav(){
 function bookRender(){
   var si=bookEl("bookSheetInner");if(!si||!_book.pages.length)return;
   var pg=_book.pages[_book.page];
-  si.innerHTML=pg.html;
+  si.innerHTML=pg.cover?bookCoverHTML():pg.html;
   if(_book.page===_book.pages.length-1){
     var w=document.createElement("div");w.className="book-endmatter";w.innerHTML=bookEndMatter();si.appendChild(w);
     var cb=si.querySelector("#complete-lesson");if(cb)wireCompleteLesson(cb,_book.num);
   }
+  document.body.classList.toggle("book-cover-on",!!pg.cover);
   bookSyncNav();bookFit();
 }
-var _bookFlip=false,_bookFlipTimer=null;
-function bookFlipEnd(){if(_bookFlipTimer){clearTimeout(_bookFlipTimer);_bookFlipTimer=null;}var lf=document.querySelector(".book-leaf");if(lf)lf.remove();_bookFlip=false;}
+var _bookFlip=false,_bookFoldRaf=0,_bookRestorePage=null;
+function bookFlipEnd(){
+  if(_bookFoldRaf){cancelAnimationFrame(_bookFoldRaf);_bookFoldRaf=0;}
+  if(_bookRestorePage!==null){_book.page=_bookRestorePage;bookRender();_bookRestorePage=null;}
+  var lf=document.querySelector(".book-leaf");if(lf)lf.remove();_bookFlip=false;
+}
+/* Real page-curl physics: the crease is the perpendicular bisector of the grab
+   point G and the drag point D, so the fold is different for every grab point
+   (corner = diagonal crease, middle edge = vertical crease). The paper wraps
+   around a cylinder along the crease (radius R): the turned part is split into
+   strips, each placed on the cylinder by its arc position, so the page bends
+   instead of rotating flat. */
+function bookClipHalf(poly,px,py,nx,ny,keepPos){
+  var out=[];
+  for(var i=0;i<poly.length;i++){
+    var a=poly[i],b=poly[(i+1)%poly.length];
+    var da=(a[0]-px)*nx+(a[1]-py)*ny,db=(b[0]-px)*nx+(b[1]-py)*ny;
+    var ai=keepPos?da>=0:da<=0,bi=keepPos?db>=0:db<=0;
+    if(ai)out.push(a);
+    if(ai!==bi){var t=da/(da-db);out.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]);}
+  }
+  return out;
+}
+function bookPoly(poly){return "polygon("+poly.map(function(p){return p[0].toFixed(1)+"px "+p[1].toFixed(1)+"px";}).join(",")+")";}
+function bookFoldAnimate(setFold,fromD,toD,dur,done,easeFn){
+  var t0=performance.now();
+  var ease=easeFn||function(k){return k<0.5?2*k*k:1-Math.pow(-2*k+2,2)/2;};
+  function step(t){
+    var k=Math.min(1,(t-t0)/dur);
+    var e=ease(k);
+    setFold({x:fromD.x+(toD.x-fromD.x)*e,y:fromD.y+(toD.y-fromD.y)*e});
+    if(k<1){_bookFoldRaf=requestAnimationFrame(step);}else{_bookFoldRaf=0;if(done)done();}
+  }
+  _bookFoldRaf=requestAnimationFrame(step);
+}
+function bookMakeLeaf(dir,oldHTML,oldScale,oldH,W,H,G){
+  var leaf=document.createElement("div");
+  leaf.className="book-leaf"+(dir>0?" fwd":" back");
+  leaf.style.height=oldH+"px";
+  var rect=[[0,0],[W,0],[W,H],[0,H]];
+  function pageCopy(){
+    var inner=document.createElement("div");
+    inner.className="book-sheet-inner";
+    inner.style.transform="scale("+oldScale+")";
+    inner.style.transformOrigin="top center";
+    inner.innerHTML=oldHTML;
+    return inner;
+  }
+  /* No shadows anywhere in the fold — the user asked for them gone. The turn
+     reads from the motion and the foreshortening alone. */
+  var main=document.createElement("div");main.className="book-leaf-main";main.appendChild(pageCopy());
+  var wrap=document.createElement("div");wrap.className="book-leaf-wrap";
+  var tip=document.createElement("div");tip.className="book-leaf-tip";tip.appendChild(pageCopy());
+  wrap.appendChild(tip);
+  leaf.appendChild(main);leaf.appendChild(wrap);
+  var spineX=dir>0?0:W;
+  var grabDist=Math.max(40,dir>0?G.x:(W-G.x));
+  /* The bend line is VERTICAL and FIXED for the whole turn (computed once from
+     the grab point, never from the moving finger). A diagonal bend line twists
+     the page (top and bottom at different angles) and a bend line that slides
+     with the finger tears the page apart along the fold — both are gone now.
+     The grab sets where the bend sits: 20% of the page left of the grab point,
+     clamped so the tip is always a sensible outer strip. */
+  var bendX=dir>0?Math.max(0.55*W,Math.min(0.8*W,G.x-0.2*W)):Math.min(0.45*W,Math.max(0.2*W,G.x+0.2*W));
+  var bendY=G.y;
+  var npx=dir>0?1:-1,npy=0;
+  var sG=(G.x-bendX)*npx;
+  var keepTip=sG>=0;
+  function setFold(D){
+    var ratio=dir>0?D.x/grabDist:(W-D.x)/grabDist;
+    ratio=Math.max(-1,Math.min(1,ratio));
+    var th=Math.acos(ratio),deg=th*180/Math.PI;
+    var rot=dir>0?-deg:deg,origin=spineX+"px center";
+    main.style.transformOrigin=origin;main.style.transform="rotateY("+rot+"deg)";
+    wrap.style.transformOrigin=origin;wrap.style.transform="rotateY("+rot+"deg)";
+    var mainPoly=bookClipHalf(rect,bendX,bendY,npx,npy,!keepTip);
+    var tipPoly=bookClipHalf(rect,bendX,bendY,npx,npy,keepTip);
+    main.style.clipPath=mainPoly.length>=3?bookPoly(mainPoly):"polygon(0 0,0 0,0 0)";
+    tip.style.clipPath=tipPoly.length>=3?bookPoly(tipPoly):"polygon(0 0,0 0,0 0)";
+    /* Gentle bend only (8deg): a stiff sheet, not a creased fold. The bend is
+       a pure extra turn around the same vertical axis as the spine, so the
+       page never twists or shears. */
+    var psi=8*Math.PI/180*Math.sin(th);
+    tip.style.transformOrigin=bendX.toFixed(1)+"px "+bendY.toFixed(1)+"px";
+    tip.style.transform="rotateY("+(-psi*180/Math.PI).toFixed(1)+"deg)";
+    /* clip-path + backface-visibility:hidden hides the sheet in Chrome, so the
+       past-vertical hide is done here instead: the sheet is edge-on at 90deg,
+       so the switch is invisible. */
+    main.style.visibility=th>Math.PI/2?"hidden":"visible";
+    tip.style.visibility=(th+psi)>Math.PI/2?"hidden":"visible";
+  }
+  setFold(G);
+  return {leaf:leaf,setFold:setFold};
+}
 function bookGoTo(j){
   if(j===_book.page||j<0||j>=_book.pages.length)return;
   if(_bookFlip)bookFlipEnd();
@@ -773,28 +900,87 @@ function bookGoTo(j){
   if(!si||!sw)return;
   if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){_book.page=j;bookRender();return;}
   var dir=j>_book.page?1:-1;
-  /* Flip leaf inner uses class book-sheet-inner (same scope as the real page) so
-     diagrams keep theme-correct colours mid-flip. The Mark-complete id is stripped
-     from the leaf copy so it never shadows the live button. */
+  /* The Mark-complete id is stripped from the leaf copy so it never shadows
+     the live button. */
   var oldHTML=si.innerHTML.replace('id="complete-lesson"','');
   var oldScale=_book.scale||1,oldH=sw.clientHeight;
+  var W=sw.clientWidth,H=sw.clientHeight;
+  /* Click turns grab the bottom corner, like a real page turn. */
+  var G=dir>0?{x:W-8,y:H-8}:{x:8,y:H-8};
+  var toD=dir>0?{x:-G.x,y:H*0.5}:{x:W+(W-G.x),y:H*0.5};
   _bookFlip=true;_book.page=j;bookRender();
-  var leaf=document.createElement("div");
-  leaf.className="book-leaf"+(dir>0?" fwd":" back");
-  leaf.style.height=oldH+"px";
-  var inner=document.createElement("div");
-  inner.className="book-sheet-inner";
-  inner.style.transform="scale("+oldScale+")";
-  inner.style.transformOrigin="top center";
-  inner.innerHTML=oldHTML;
-  leaf.appendChild(inner);
-  var shade=document.createElement("div");shade.className="book-shade";leaf.appendChild(shade);
-  sw.appendChild(leaf);
-  void leaf.offsetWidth;
-  leaf.classList.add("turn");
-  _bookFlipTimer=setTimeout(function(){leaf.remove();_bookFlip=false;_bookFlipTimer=null;},280);
+  var made=bookMakeLeaf(dir,oldHTML,oldScale,oldH,W,H,G);
+  sw.appendChild(made.leaf);
+  bookFoldAnimate(made.setFold,G,toD,650,function(){made.leaf.remove();_bookFlip=false;},function(k){return k*k;});
 }
 function bookNav(d){bookGoTo(_book.page+d);}
+/* Real page turn: drag the page itself. A small drag lifts the page and shows a
+   glimpse of the next page underneath; let go and it springs back, drag far (or
+   flick) and the turn completes. Vertical drags stay a page scroll. */
+var _bookDrag=null;
+function bookDragStart(e){
+  if(_bookFlip||_bookDrag)return;
+  if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  /* Desktop: no swipe. A mouse drag is how you select text — turning the page
+     on it would fight text selection. Touch (and pen) keep the swipe. */
+  if(e.pointerType==="mouse")return;
+  if(e.target&&e.target.closest&&e.target.closest("a,button,input,textarea,select"))return;
+  if(e.button!==undefined&&e.button!==0)return;
+  var sw=bookEl("bookSheetWrap");
+  _bookDrag={pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,lastX:e.clientX,lastT:Date.now(),vel:0,started:false,dir:0,fromPage:_book.page,toPage:-1,leaf:null,setFold:null,p:0,D:null,G:null,rect:sw?sw.getBoundingClientRect():null,W:sw?sw.clientWidth:0,sw:sw};
+}
+function bookDragMove(e){
+  var d=_bookDrag;if(!d||e.pointerId!==d.pointerId)return;
+  var dx=e.clientX-d.startX,dy=e.clientY-d.startY,now=Date.now();
+  var dt=Math.max(1,now-d.lastT);d.vel=(e.clientX-d.lastX)/dt;d.lastX=e.clientX;d.lastT=now;
+  if(!d.started){
+    if(Math.abs(dy)>14&&Math.abs(dy)>Math.abs(dx)){_bookDrag=null;return;}
+    if(Math.abs(dx)<10)return;
+    var dir=dx<0?1:-1,toPage=d.fromPage+dir;
+    var si=bookEl("bookSheetInner"),sw=d.sw;if(!si||!sw||!d.rect){_bookDrag=null;return;}
+    /* G is the exact point the finger grabbed on the page — it sets the fold.
+       Never start a turn from a grab near the spine (the joint): a real page
+       cannot turn from its binding, and here a tiny drag there whips the page
+       around so violently it looks torn. The grab must be on the free edge. */
+    var G={x:d.startX-d.rect.left,y:d.startY-d.rect.top};
+    if(dir>0&&G.x<0.6*d.W){_bookDrag=null;return;}
+    if(dir<0&&G.x>0.4*d.W){_bookDrag=null;return;}
+    var oldHTML=si.innerHTML.replace('id="complete-lesson"','');
+    var oldScale=_book.scale||1,oldH=sw.clientHeight;
+    if(toPage>=0&&toPage<_book.pages.length){_book.page=toPage;bookRender();}
+    var made=bookMakeLeaf(dir,oldHTML,oldScale,oldH,d.W,sw.clientHeight,G);
+    d.leaf=made.leaf;d.setFold=made.setFold;d.G=G;d.dir=dir;d.toPage=(toPage>=0&&toPage<_book.pages.length)?toPage:-1;d.started=true;_bookFlip=true;
+    sw.appendChild(d.leaf);
+    try{sw.setPointerCapture(e.pointerId);}catch(err){}
+    document.body.style.userSelect="none";sw.classList.add("book-dragging");
+  }
+  var D={x:e.clientX-d.rect.left,y:e.clientY-d.rect.top};
+  if(d.toPage<0){D={x:d.G.x+(D.x-d.G.x)*0.35,y:d.G.y+(D.y-d.G.y)*0.35};}
+  d.D=D;
+  d.p=Math.min(1,Math.abs(D.x-d.G.x)/Math.max(1,d.W));
+  bookDragApply(d,D);
+}
+function bookDragApply(d,D){
+  if(!d.setFold)return;
+  d.setFold(D);
+}
+function bookDragEnd(e){
+  var d=_bookDrag;if(!d||(e.pointerId!==undefined&&e.pointerId!==d.pointerId))return;
+  _bookDrag=null;
+  if(!d.started||!d.leaf||!d.D)return;
+  var complete=d.toPage>=0&&(d.p>=0.3||(Math.abs(d.vel)>0.6&&d.p>=0.08));
+  var leaf=d.leaf,sw=d.sw,fromPage=d.fromPage,toPage=d.toPage,dir=d.dir;
+  if(!complete&&toPage>=0)_bookRestorePage=fromPage;
+  document.body.style.userSelect="";if(sw)sw.classList.remove("book-dragging");
+  var toD=complete?{x:dir>0?-d.G.x:d.W+(d.W-d.G.x),y:d.D.y}:{x:d.G.x,y:d.G.y};
+  /* The release lands softly (ease-out): the page decelerates as it settles
+     instead of stopping dead. */
+  bookFoldAnimate(d.setFold,d.D,toD,350,function(){
+    leaf.remove();
+    if(_bookRestorePage!==null){_book.page=_bookRestorePage;bookRender();_bookRestorePage=null;}
+    _bookFlip=false;
+  },function(k){return 1-Math.pow(1-k,3);});
+}
 /* Language switch: repaginate in place and land on the page containing the same part's
    heading if possible, else clamp (v4 behaviour). Preference storage unchanged (setLang). */
 function bookLang(l){
@@ -824,19 +1010,21 @@ function bookInit(num){
   var pv=bookEl("bookSidePrev"),nx=bookEl("bookSideNext");
   if(pv)pv.onclick=function(){bookNav(-1);};
   if(nx)nx.onclick=function(){bookNav(1);};
-  var ba=bookEl("bookArea");
-  if(ba&&!ba.dataset.swipe){
-    ba.dataset.swipe="1";
-    var tx=null;
-    ba.addEventListener("touchstart",function(e){if(e.touches.length===1)tx={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
-    ba.addEventListener("touchend",function(e){if(!tx)return;var dx=e.changedTouches[0].clientX-tx.x,dy=e.changedTouches[0].clientY-tx.y;tx=null;if(Math.abs(dx)>48&&Math.abs(dy)<80){if(dx<0)bookNav(1);else bookNav(-1);}},{passive:true});
+  var sw=bookEl("bookSheetWrap");
+  if(sw&&!sw.dataset.pagedrag){
+    sw.dataset.pagedrag="1";
+    sw.addEventListener("pointerdown",bookDragStart);
+    sw.addEventListener("pointermove",bookDragMove);
+    sw.addEventListener("pointerup",bookDragEnd);
+    sw.addEventListener("pointercancel",bookDragEnd);
   }
-  onViewCleanup(function(){if(_bookMeasurer){_bookMeasurer.remove();_bookMeasurer=null;}});
+  onViewCleanup(function(){if(_bookMeasurer){_bookMeasurer.remove();_bookMeasurer=null;}document.body.classList.remove("book-cover-on");});
 }
 function bookCurrentAnchorSeg(){
-  var pg=_book.pages[_book.page];return pg&&pg.segs.length?pg.segs[0]:0;
+  var pg=_book.pages[_book.page];if(pg&&pg.cover)return -1;return pg&&pg.segs.length?pg.segs[0]:0;
 }
 function bookRestoreAnchor(seg){
+  if(seg===-1)return 0;
   for(var i=0;i<_book.pages.length;i++){if(_book.pages[i].segs.indexOf(seg)>=0)return i;}
   return Math.min(_book.page,_book.pages.length-1);
 }
