@@ -3612,3 +3612,8 @@ body.book-cover-on .book-top h1{visibility:hidden}
 
 /* B8 (fix) — .section-head sets flex-wrap:wrap; the phase header must not wrap. */
 .phase-head{flex-wrap:nowrap !important;}
+
+/* Freemium gating (2026-11-07): lock indicator on locked rows + progress layout without the rank sidebar for guests. */
+.row-lock{display:inline-flex;align-items:center;justify-content:center;flex:none;width:16px;height:16px;color:var(--text-3);}
+.row-lock svg{width:16px;height:16px;display:block;}
+.progress-layout.no-side{grid-template-columns:minmax(0,1fr);}
