@@ -54,7 +54,7 @@ ${currentUser?`<div class="bento-card bento-progress">\n<div class="bento-label"
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794048265',
+const FF_V='1794049543',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -2587,9 +2587,22 @@ function tdApplyLayout(){
   var d = document.querySelector(".teardown-detail"); if(!d) return;
   var isDesktop = window.innerWidth > 900;
   var hasSel = !!(typeof teardownState!=="undefined" && teardownState && teardownState.app && teardownState.selected);
-  d.classList.toggle("td-split", isDesktop && hasSel);
-  d.classList.toggle("td-stack-open", !isDesktop && hasSel);
+  var wasSplit = d.classList.contains("td-split");
+  var willSplit = isDesktop && hasSel;
   var stage = d.querySelector(".teardown-phone-stage");
+  /* FLIP the phone slide (desktop only): the split layout is a centred flex
+     row now, so the phone's new position is measured, not guessed. When the
+     split state changes, record where the phone is, flip the layout, then
+     animate the phone from its old spot to its new spot. This keeps the slide
+     smooth AND the phone+panel group centred at every viewport width. */
+  var flipFrom = null;
+  var reduceMotion = false;
+  try{ reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){}
+  if(isDesktop && stage && wasSplit !== willSplit && !reduceMotion){
+    try{ flipFrom = stage.getBoundingClientRect(); }catch(e){ flipFrom = null; }
+  }
+  d.classList.toggle("td-split", willSplit);
+  d.classList.toggle("td-stack-open", !isDesktop && hasSel);
   var panel = d.querySelector(".teardown-panel:not(.is-empty)");
   if(!isDesktop && stage && panel && hasSel){
     // A (new) selection always brings the description to front first.
@@ -2599,6 +2612,20 @@ function tdApplyLayout(){
   } else if(stage || panel){
     if(stage) stage.classList.remove("is-front","is-back");
     if(panel) panel.classList.remove("is-front","is-back");
+  }
+  if(flipFrom && stage){
+    try{
+      var flipTo = stage.getBoundingClientRect();
+      var dx = flipFrom.left - flipTo.left;
+      if(Math.abs(dx) > 2){
+        stage.style.transition = "none";
+        stage.style.transform = "translateX(" + dx + "px)";
+        void stage.offsetWidth;
+        stage.style.transition = "";
+        stage.style.transform = "";
+        setTimeout(function(){ if(stage) stage.style.transform = ""; }, 600);
+      }
+    }catch(e){}
   }
 }
 function tdStackFront(which){

@@ -3653,19 +3653,60 @@ body.book-cover-on .book-top h1{visibility:hidden}
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset 0 0 0 3px rgba(0,0,0,.76),0 0 24px rgba(19,185,253,.25),0 30px 42px -28px rgba(0,0,0,.82),0 12px 24px -18px rgba(0,0,0,.82) !important;
 }
 
+/* --- Teardown detail: break out of the narrow 900px .wrap so the phone +
+   description group can use the page width (up to 1400px). Only matches the
+   detail page (the list has no .teardown-detail). --- */
+.wrap:has(.teardown-detail){ max-width:1400px; }
+
+/* --- Selection: unmistakable on the phone (2026-11-07 refinement) ---
+   Solid outline + glow + name label + stronger tint. The label reads the
+   widget's name from data-widget (same name the panel shows). It is
+   pointer-events:none so it never blocks tapping another widget. --- */
+.teardown-detail .td-region.td-active{
+  outline:3px solid #2563eb; outline-offset:2px;
+  box-shadow:0 0 0 6px rgba(37,99,235,.20), 0 0 18px rgba(37,99,235,.55);
+}
+.teardown-detail .td-region.td-active::before{
+  background:rgba(37,99,235,.14);
+}
+.teardown-detail .td-region.td-active::after{
+  display:block; content:attr(data-widget);
+  position:absolute; top:0; right:auto; bottom:auto; left:8px;
+  transform:translateY(-50%);
+  z-index:10; pointer-events:none;
+  background:#2563eb; color:#fff;
+  font-size:11px; font-weight:700; line-height:1; letter-spacing:.01em;
+  padding:5px 9px; border-radius:999px; white-space:nowrap;
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+  animation:tdLabelIn .2s ease both;
+}
+
 /* --- Desktop (>900px): phone slides left, panel opens on the right --- */
 @media (min-width:901px){
-  .teardown-detail .teardown-workbench{ position:relative; }
+  /* Flex row, group centred: phone + panel sit side by side as flex items,
+     so the group is always centred and the panel is always adjacent to the
+     phone (no dead gap on one side, no matter the viewport width). */
+  .teardown-detail .teardown-workbench{
+    position:relative; display:flex; justify-content:center; align-items:flex-start; gap:48px;
+  }
   .teardown-detail .teardown-phone-stage{
+    flex:none;
+    /* Override the older `margin:0 auto !important` (line ~2755): auto margins
+       on a flex item absorb ALL free space and push the panel to the far
+       right edge, breaking the centred group. In this flex row the group is
+       centred by justify-content:center, so the stage needs no margins. */
+    margin:0 !important;
     transition:transform .45s cubic-bezier(.2,.88,.22,1);
     will-change:transform;
   }
-  .teardown-detail.td-split .teardown-phone-stage{ transform:translateX(-230px); }
-  /* Panel: in-flow on the right (NOT a bottom sheet) when a widget is selected. */
+  /* Panel: in-flow flex item (NOT absolute), fluid width — wider on wide
+     screens (up to 640px, so text lines stay readable), ~420px on narrower
+     desktops. The slide is done by FLIP in tdApplyLayout (JS), which measures
+     the real phone/panel sizes, so it stays balanced at every width. */
   .teardown-detail.td-split .teardown-panel:not(.is-empty){
-    position:absolute; top:0; right:clamp(18px,3vw,44px);
-    left:auto; bottom:auto; transform:none;
-    width:min(420px,38vw); height:auto;
+    position:relative; top:auto; right:auto; left:auto; bottom:auto; transform:none;
+    flex:none;
+    width:clamp(420px, 32vw, 640px); height:auto;
     max-height:calc(100dvh - var(--nav-h,64px) - 48px);
     overflow-y:auto; overscroll-behavior:contain;
     border-radius:20px; border-bottom:1px solid var(--line);
