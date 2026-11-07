@@ -3306,13 +3306,13 @@ body.home-page .wrap{padding-left:16px;padding-right:16px}
 .cloud-status{display:block;margin-top:6px;font-size:13px;color:var(--text-2)}
 
 /* Unified card background, site-wide (2026-11-03): every page-flow card shares one intensity */
-.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card,.stat,.progress-main>.stat-grid .stat{background:color-mix(in srgb,var(--bg-sunken) 54%,var(--bg-elev))}
-[data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card,[data-theme=dark] .stat,[data-theme=dark] .progress-main>.stat-grid .stat{background:color-mix(in srgb,var(--bg) 65%,var(--bg-elev))}
+.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card,.stat,.progress-main>.stat-grid .stat,.teardown-row{background:color-mix(in srgb,var(--bg-sunken) 54%,var(--bg-elev))}
+[data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card,[data-theme=dark] .stat,[data-theme=dark] .progress-main>.stat-grid .stat,[data-theme=dark] .teardown-row{background:color-mix(in srgb,var(--bg) 65%,var(--bg-elev))}
 
 /* Polish (2026-11-03): one corner radius + one soft shadow for all content cards (stat tiles stay flat 12px for their small scale; qh/res/lesson-current already 16px so radius skips them) */
 .bento-card,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{border-radius:16px}
-.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card{box-shadow:0 1px 3px rgba(25,31,42,.08), 0 12px 32px rgba(25,31,42,.12)}
-[data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card{box-shadow:0 10px 26px rgba(0,0,0,.12)}
+.bento-card,.qh-card,.res-item,.lesson-row.current,.card,.weak-card,.review-card,.profile-summary,.rk-card,.progress-side .rk-card,.teardown-row{box-shadow:0 1px 3px rgba(25,31,42,.08), 0 12px 32px rgba(25,31,42,.12)}
+[data-theme=dark] .bento-card,[data-theme=dark] .qh-card,[data-theme=dark] .res-item,[data-theme=dark] .lesson-row.current,[data-theme=dark] .card,[data-theme=dark] .weak-card,[data-theme=dark] .review-card,[data-theme=dark] .profile-summary,[data-theme=dark] .rk-card,[data-theme=dark] .progress-side .rk-card,[data-theme=dark] .teardown-row{box-shadow:0 10px 26px rgba(0,0,0,.12)}
 
 /* Quiz icons colourful like home bento chips (2026-11-03): cycle green -> purple -> orange -> blue down the list, both themes. Rows are direct children of .learning-list, so 4n+1 starts at row 1. Beats the dark flatten rule (same specificity, later wins). */
 .quiz-row:nth-child(4n+1) .quiz-icon{background:#dcfce7;color:#15803d}
