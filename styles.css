@@ -378,7 +378,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .wa-person span { display: block; margin-top: -2px; font-size: 9px; opacity:.86; }
 .wa-actions { display:flex; gap:13px; align-items:center; }
 .wa-actions svg { width:18px; height:18px; }
-.wa-chat { flex: 1; overflow: hidden; padding: 13px 9px; background-color:#efeae2; background-image: radial-gradient(circle at 18% 20%,rgba(128,117,101,.07) 0 2px,transparent 2.5px),radial-gradient(circle at 76% 72%,rgba(128,117,101,.06) 0 2px,transparent 2.5px); background-size:34px 34px,42px 42px; }
+.wa-chat { flex: 1; overflow: hidden; padding: 13px 9px; display:flex; flex-direction:column; justify-content:flex-end; background-color:#efeae2; background-image: radial-gradient(circle at 18% 20%,rgba(128,117,101,.07) 0 2px,transparent 2.5px),radial-gradient(circle at 76% 72%,rgba(128,117,101,.06) 0 2px,transparent 2.5px); background-size:34px 34px,42px 42px; }
 .wa-day-align { display:grid;place-items:center;margin-bottom:12px; }
 .wa-day { width:max-content; margin:0; padding:4px 8px; border-radius:6px; color:#53636b; background:#fff; box-shadow:0 1px 1px rgba(0,0,0,.08); font-size:8px; }
 .wa-message-row { display:flex; margin:8px 0; }
@@ -402,8 +402,9 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .ig-screen { height: calc(100% - 28px); display:flex; flex-direction:column; color:#0e0e0e; background:#fff; }
 .ig-bar { min-height:52px; display:flex; align-items:center; gap:10px; padding:0 13px; border-bottom:1px solid #efefef; background:#fff; }
 .ig-bar b { flex:1; font-size:14px; }.ig-bar svg { width:20px;height:20px; }
-.ig-scroll { flex:1; overflow:hidden; }
-.ig-profile { padding:13px 14px 9px; }
+.ig-scroll { flex:1; overflow-y:auto; scrollbar-width:none; -ms-overflow-style:none; background:#eceff3; }
+.ig-scroll::-webkit-scrollbar { display:none; width:0; }
+.ig-profile { padding:13px 14px 9px; background:#fff; }
 .ig-top { display:flex; align-items:center; gap:18px; }
 .ig-top > [data-node="ig-stats-expanded"] { min-width:0; flex:1; }
 .ig-ring { width:76px;height:76px;display:grid;place-items:center;flex:none;border-radius:50%;background:linear-gradient(145deg,#ffc14d,#df386e 57%,#6c43c0); }
@@ -424,7 +425,8 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 
 /* Swiggy-style home recreation */
 .sw-screen { height:calc(100% - 24px);display:flex;flex-direction:column;color:#282c3f;background:#f7f7f7; }
-.sw-scroll { flex:1;overflow:hidden; }
+.sw-scroll { flex:1;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none; }
+.sw-scroll::-webkit-scrollbar { display:none; width:0; }
 .sw-head { padding:13px 14px 10px;background:#fff; }
 .sw-location { display:flex;align-items:flex-start;gap:7px; }.sw-location svg { width:18px;height:18px;color:#fc8019; }.sw-location > span:first-child { display:grid;place-items:center;color:#fc8019; }.sw-location-copy { flex:1;min-width:0; }.sw-location b { display:block;font-size:12px; }.sw-location span { display:block;color:#7e808c;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .sw-profile { width:28px;height:28px;display:grid;place-items:center;border-radius:50%;color:#fff;background:#34384d;font-size:9px;font-weight:800; }
@@ -2879,7 +2881,7 @@ body.home-page .wrap { padding-top: 12px; }
 .lg-safe{flex:1;display:flex;min-height:0;}
 .lg-center{flex:1;display:flex;flex-direction:column;min-height:0;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:24px 0 12px;}
 .lg-center::-webkit-scrollbar{display:none;width:0;}
-.lg-form-pad{width:100%;padding:0 22px;flex:none;}
+.lg-form-pad{width:100%;padding:0 22px;flex:none;margin-top:auto;margin-bottom:auto;}
 .lg-col{display:flex;flex-direction:column;}
 .lg-title{font-size:19px;font-weight:800;text-align:center;letter-spacing:-.02em;}
 .lg-subtitle{display:block;text-align:center;margin-top:4px;color:#5f7089;font-size:11px;}
@@ -3754,13 +3756,15 @@ body.book-cover-on .book-top h1{visibility:hidden}
 @keyframes tdSplitPanelIn{ from{ opacity:0; transform:translateX(30px); } to{ opacity:1; transform:none; } }
 @keyframes tdSplitPanelOut{ from{ opacity:1; transform:translateX(0); } to{ opacity:0; transform:translateX(30px); } }
 
-/* --- Mobile (<=900px): full-screen push description (replaces the stack) ---
-   The layered stack is REMOVED (2026-11-07, user verdict: it did not look
-   good). Tapping a widget now opens the description as a FULL-SCREEN view
-   that slides in from the right; closing slides it out the same way. No
-   layering, no peek, no overlap. The phone, when no description is open,
-   fills the viewport: the workbench is flex:1 of the detail (no more 560px
-   cap), so the phone grows to use the available height. */
+/* --- Mobile (<=900px): bottom-sheet description + shrinking phone ---
+   (2026-11-07, user's solution — replaces the full-screen push.) Tapping a
+   widget shrinks the phone (scale .5, origin top center) and slides it to
+   the top; the description slides up from the bottom as a sheet (44dvh), so
+   both stay visible. Tapping the phone grows it back and the sheet drops to
+   a 64px peek strip (widget name + drag handle + X); tap/drag the peek up
+   to reopen, swipe down / X to close fully. All motion uses the same .45s
+   cubic-bezier(.2,.88,.22,1) easing as the desktop slide. The phone, when
+   no description is open, fills the viewport (flex:1 workbench). */
 @media (max-width:900px){
   .teardown-detail .teardown-workbench{
     position:relative; display:flex !important; flex:1; min-height:0;
@@ -3779,21 +3783,84 @@ body.book-cover-on .book-top h1{visibility:hidden}
     height:100%; flex:1 1 auto !important; min-width:0;
     flex-direction:column !important;
   }
-  /* Open: the description is a full-screen fixed view over the phone. */
+  /* Sheet: fixed to the bottom, 44dvh tall. Its position is driven by the
+     state classes on .teardown-detail (open = fully up, peek = only the
+     64px peek bar visible). transform transitions .45s, same easing.
+     animation:none kills the pre-existing tdSheetUp/tdSheetUpMobile
+     keyframes (their `to` state carries a stray translateX(-50%) that
+     shoves this full-width sheet 195px left); the sheet's motion is now
+     the transform transition, not a keyframe. */
   .teardown-detail .teardown-panel:not(.is-empty){
-    position:fixed; inset:0; z-index:80;
-    width:100%; height:100dvh; max-height:none;
-    border-radius:0; border:none;
+    position:fixed; left:0; right:0; bottom:0; z-index:80;
+    width:100%; height:min(44dvh, 520px); max-height:none;
+    border-radius:22px 22px 0 0; border:none;
+    border-top:1px solid var(--line);
+    box-shadow:0 -12px 40px rgba(15,23,42,.18);
     overflow-y:auto; overscroll-behavior:contain;
     background:var(--bg);
-    padding:max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
-    animation:tdPushIn .45s cubic-bezier(.2,.88,.22,1) both;
+    padding:0 20px max(20px, env(safe-area-inset-bottom));
+    animation:none !important;
+    transition:transform .45s cubic-bezier(.2,.88,.22,1);
+    transform:translateY(0);
   }
-  /* Close: the exact reverse of the push-in, same .45s easing. */
+  /* Open: sheet fully up. Peek: sheet down so only its 64px peek bar shows. */
+  .teardown-detail.td-sheet-open .teardown-panel:not(.is-empty){ transform:translateY(0); }
+  .teardown-detail.td-sheet-peek .teardown-panel:not(.is-empty){ transform:translateY(calc(100% - 64px)); }
+  /* Close: slide down off-screen from wherever it is (open or peek) — the
+     panel's transform transitions .45s, so the start is its current
+     position (open = 0, peek = 100%-64px); no jump, same easing. */
   .teardown-detail .teardown-panel.td-closing{
-    animation:tdPushOut .45s cubic-bezier(.2,.88,.22,1) both;
+    transform:translateY(105%);
   }
   .teardown-detail .teardown-panel.is-empty{ display:none; }
+  /* Phone shrinks to half size, top-anchored, when the sheet is open. It
+     grows back (same .45s) when the sheet drops to peek or closes. */
+  .teardown-detail .teardown-phone{
+    transition:transform .45s cubic-bezier(.2,.88,.22,1);
+  }
+  .teardown-detail.td-sheet-open .teardown-phone{
+    transform:scale(.5); transform-origin:top center;
+  }
+  /* Peek bar: the sheet's top 64px — drag handle + widget name + X. Sticky
+     so it stays on top while the sheet scrolls. Desktop hides it. */
+  .teardown-detail .td-sheet-peekbar{
+    display:flex; flex-direction:column; align-items:stretch;
+    position:sticky; top:0; z-index:2;
+    height:64px; flex:none;
+    background:var(--bg);
+    cursor:grab; touch-action:none;
+    border-bottom:1px solid var(--line);
+  }
+  .teardown-detail .td-sheet-peekbar:active{ cursor:grabbing; }
+  .teardown-detail .td-sheet-handle{
+    width:40px; height:4px; border-radius:2px;
+    background:currentColor; opacity:.35;
+    color:var(--text-dim);
+    margin:8px auto 6px; flex:none;
+  }
+  .teardown-detail .td-sheet-peekrow{
+    display:flex; align-items:center; gap:10px; flex:1; min-height:0;
+  }
+  .teardown-detail .td-sheet-peekname{
+    flex:1; min-width:0;
+    font-size:16px; font-weight:700; color:var(--text);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .teardown-detail .td-sheet-peekclose{
+    display:grid; place-items:center; flex:none;
+    width:44px; height:44px; border-radius:50%;
+    border:1px solid var(--line); background:var(--bg-elev);
+    color:var(--text); font-size:20px; line-height:1; cursor:pointer;
+  }
+  /* Peek hint: the handle gently bobs, signalling "slide me back up". */
+  .teardown-detail.td-sheet-peek .td-sheet-handle{
+    animation:tdPeekHint 1.8s ease-in-out infinite;
+  }
+  /* Mobile sheet shows the widget name in the peek bar, so the duplicate
+     h2 is hidden; the head's X is hidden too (the peek bar has the X). The
+     back button (←) stays — it drops the sheet to the peek. */
+  .teardown-detail .td-fi-name{ display:none; }
+  .teardown-detail .td-panel-close{ display:none; }
   /* Back button: mobile only (desktop keeps just the X). */
   .teardown-detail .td-panel-back{
     display:grid; place-items:center; flex:none;
@@ -3804,7 +3871,7 @@ body.book-cover-on .book-top h1{visibility:hidden}
   /* Phone fills its stage, screen flexes to fit (content is flex-based).
      max-height:none beats the old 100svh-200px cap (line 2422, a leftover
      from the bottom-sheet layout that left room for the sheet) — with the
-     panel now a full-screen push, the phone may use the whole workbench. */
+     panel now a bottom sheet, the phone may use the whole workbench. */
   .teardown-detail .teardown-phone{
     width:min(100%,316px); padding:7px; border-radius:42px;
     flex:1 1 auto !important; height:auto; max-height:none !important;
@@ -3815,8 +3882,9 @@ body.book-cover-on .book-top h1{visibility:hidden}
     border-radius:34px;
   }
 }
-@keyframes tdPushIn{ from{ opacity:0; transform:translateX(100%); } to{ opacity:1; transform:translateX(0); } }
-@keyframes tdPushOut{ from{ opacity:1; transform:translateX(0); } to{ opacity:0; transform:translateX(100%); } }
+@keyframes tdPeekHint{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+/* Desktop: the sheet peek bar is mobile-only. */
+.td-sheet-peekbar{ display:none; }
 @media (prefers-reduced-motion:reduce){
   .teardown-detail .teardown-phone-stage,
   .teardown-detail .teardown-panel:not(.is-empty),

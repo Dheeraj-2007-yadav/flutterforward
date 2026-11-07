@@ -54,7 +54,7 @@ ${currentUser?`<div class="bento-card bento-progress">\n<div class="bento-label"
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794051596',
+const FF_V='1794053624',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -1932,17 +1932,17 @@ const TD_ICON = {
 };
 function tdStatus(dark) { return `<div class="app-status${dark?' dark':''}" aria-hidden="true"><span>9:41</span><span class="app-status-icons"><span>▮▮▮</span><i></i></span></div>`; }
 function tdPhoneWhatsApp() {
-  return `${tdStatus(true)}<div class="wa-screen td-region" data-node="wa-scaffold" data-widget="Scaffold"><header class="wa-bar td-region" data-node="wa-appbar" data-widget="AppBar"><span class="wa-back td-region" data-node="wa-back" data-widget="IconButton">‹</span><span class="wa-title-row td-region" data-node="wa-title-row" data-widget="Row"><span class="wa-avatar td-region" data-node="wa-avatar" data-widget="CircleAvatar">A</span><span class="wa-person td-region" data-node="wa-title" data-widget="Column"><b class="td-region" data-node="wa-name" data-widget="Text">Alex</b><span class="td-region" data-node="wa-online" data-widget="Text">online</span></span></span><span class="wa-actions"><span class="td-region" data-node="wa-video" data-widget="IconButton">${TD_ICON.video}</span><span class="td-region" data-node="wa-call" data-widget="IconButton">${TD_ICON.call}</span><b class="td-region" data-node="wa-menu" data-widget="PopupMenuButton" style="font-size:17px;letter-spacing:2px">⋮</b></span></header><main class="wa-chat td-region" data-node="wa-list" data-widget="ListView"><div class="wa-day-align td-region" data-node="wa-day-align" data-widget="Center"><div class="wa-day td-region" data-node="wa-day-box" data-widget="Container"><span class="td-region" data-node="wa-day-text" data-widget="Text">TODAY</span></div></div><div class="wa-message-row td-region" data-node="wa-incoming" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-text" data-widget="Text">Are you joining the Flutter session?<span class="wa-time">9:38</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-text" data-widget="Text">Yes — just finished the widget tree.<span class="wa-time">9:39 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-reply" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-reply-bubble" data-widget="Container"><span class="td-region" data-node="wa-reply-text" data-widget="Text">Perfect. See you there!<span class="wa-time">9:40</span></span></div></div></main><footer class="wa-composer-wrap td-region" data-node="wa-composer" data-widget="Row"><div class="wa-composer td-region" data-node="wa-field" data-widget="TextField">${TD_ICON.smile}<span>Message</span><span style="margin-left:auto">⌕</span></div><div class="wa-send td-region" data-node="wa-send" data-widget="IconButton">${TD_ICON.send}</div></footer></div>`;
+  return `${tdStatus(true)}<div class="wa-screen td-region" data-node="wa-scaffold" data-widget="Scaffold"><header class="wa-bar td-region" data-node="wa-appbar" data-widget="AppBar"><span class="wa-back td-region" data-node="wa-back" data-widget="IconButton">‹</span><span class="wa-title-row td-region" data-node="wa-title-row" data-widget="Row"><span class="wa-avatar td-region" data-node="wa-avatar" data-widget="CircleAvatar">A</span><span class="wa-person td-region" data-node="wa-title" data-widget="Column"><b class="td-region" data-node="wa-name" data-widget="Text">Alex</b><span class="td-region" data-node="wa-online" data-widget="Text">online</span></span></span><span class="wa-actions"><span class="td-region" data-node="wa-video" data-widget="IconButton">${TD_ICON.video}</span><span class="td-region" data-node="wa-call" data-widget="IconButton">${TD_ICON.call}</span><b class="td-region" data-node="wa-menu" data-widget="PopupMenuButton" style="font-size:17px;letter-spacing:2px">⋮</b></span></header><main class="wa-chat td-region" data-node="wa-list" data-widget="ListView"><div class="wa-day-align td-region" data-node="wa-day-align" data-widget="Center"><div class="wa-day td-region" data-node="wa-day-box" data-widget="Container"><span class="td-region" data-node="wa-day-text" data-widget="Text">TODAY</span></div></div><div class="wa-message-row td-region" data-node="wa-incoming" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-text" data-widget="Text">Are you joining the Flutter session?<span class="wa-time">9:38</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-text" data-widget="Text">Yes — just finished the widget tree.<span class="wa-time">9:39 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-reply" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-reply-bubble" data-widget="Container"><span class="td-region" data-node="wa-reply-text" data-widget="Text">Perfect. See you there!<span class="wa-time">9:40</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-2" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-2-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-2-text" data-widget="Text">By the way, it is at 4 pm.<span class="wa-time">9:41 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-2" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-2-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-2-text" data-widget="Text">Noted — I will bring my laptop.<span class="wa-time">9:42</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-3" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-3-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-3-text" data-widget="Text">We will build the profile screen together.<span class="wa-time">9:43 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-3" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-3-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-3-text" data-widget="Text">Sounds good. See you then!<span class="wa-time">9:44</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-4" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-4-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-4-text" data-widget="Text">Do not forget the widget tree notes.<span class="wa-time">9:45 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-4" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-4-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-4-text" data-widget="Text">Already saved them. See you at 4!<span class="wa-time">9:46</span></span></div></div></main><footer class="wa-composer-wrap td-region" data-node="wa-composer" data-widget="Row"><div class="wa-composer td-region" data-node="wa-field" data-widget="TextField">${TD_ICON.smile}<span>Message</span><span style="margin-left:auto">⌕</span></div><div class="wa-send td-region" data-node="wa-send" data-widget="IconButton">${TD_ICON.send}</div></footer></div>`;
 }
 function tdPhoneInstagram() {
-  const photos = ["#7b8b9c","#b78363","#4e6d64","#a88767","#6d7e98","#986f78","#556c7e","#8f8068","#66765d"];
+  const photos = ["#7b8b9c","#b78363","#4e6d64","#a88767","#6d7e98","#986f78","#556c7e","#8f8068","#66765d","#9c7b8b","#7a9c6d","#8a7a9c","#c08a5e","#5e8a9c","#a05e6d","#6d8a7a","#b09c5e","#7e6d8a"];
   const stat=(id,value,label)=>`<span class="ig-stat td-region" data-node="ig-${id}-stat" data-widget="Column"><b class="td-region" data-node="ig-${id}-value" data-widget="Text">${value}</b><span class="td-region" data-node="ig-${id}-label" data-widget="Text">${label}</span></span>`;
   return `${tdStatus(false)}<div class="ig-screen td-region" data-node="ig-scaffold" data-widget="Scaffold"><main class="ig-scroll td-region" data-node="ig-scroll" data-widget="CustomScrollView"><header class="ig-bar td-region" data-node="ig-sliver" data-widget="SliverAppBar"><b class="td-region" data-node="ig-title" data-widget="Text">flutterforward⌄</b><span class="td-region" data-node="ig-create" data-widget="IconButton">${TD_ICON.plus}</span><span class="td-region" data-node="ig-menu" data-widget="IconButton" style="font-size:20px">☰</span></header><section class="ig-profile td-region" data-node="ig-profile-padding" data-widget="Padding"><div class="td-region" data-node="ig-profile" data-widget="Column"><div class="ig-top td-region" data-node="ig-top" data-widget="Row"><div class="ig-ring td-region" data-node="ig-avatar" data-widget="CircleAvatar"><div class="ig-avatar">FF</div></div><div class="td-region" data-node="ig-stats-expanded" data-widget="Expanded"><div class="ig-stats td-region" data-node="ig-stats" data-widget="Row">${stat('posts','24','posts')}${stat('followers','1,248','followers')}${stat('following','186','following')}</div></div></div><div class="ig-bio td-region" data-node="ig-bio-column" data-widget="Column"><b class="td-region" data-node="ig-bio-name" data-widget="Text">FlutterForward</b><span class="td-region" data-node="ig-bio-copy" data-widget="Text">Learn Flutter through practical screens.</span><span class="td-region" data-node="ig-bio-link" data-widget="Text" style="color:#00376b">flutter.dev</span></div><div class="ig-actions td-region" data-node="ig-actions" data-widget="Row"><span class="td-region" data-node="ig-edit" data-widget="Expanded"><span class="td-region" data-node="ig-edit-button" data-widget="OutlinedButton">Edit profile</span></span><span class="td-region" data-node="ig-share" data-widget="Expanded"><span class="td-region" data-node="ig-share-button" data-widget="OutlinedButton">Share profile</span></span><span class="td-region" data-node="ig-person-add" data-widget="IconButton">＋</span></div></div></section><div class="ig-tabs td-region" data-node="ig-tabs" data-widget="TabBar"><span class="ig-tab td-region" data-node="ig-grid-tab" data-widget="Tab">${TD_ICON.grid}</span><span class="ig-tab td-region" data-node="ig-reels-tab" data-widget="Tab">${TD_ICON.reels}</span><span class="ig-tab td-region" data-node="ig-tagged-tab" data-widget="Tab">${TD_ICON.person}</span></div><div class="ig-grid td-region" data-node="ig-grid" data-widget="SliverGrid">${photos.map((p,i)=>`<div class="ig-photo td-region" data-node="ig-photo" data-widget="Image" style="--photo:${p};--rot:${i%2?'-10deg':'8deg'}"></div>`).join('')}</div></main><nav class="ig-bottom td-region" data-node="ig-bottom" data-widget="BottomNavigationBar"><span class="td-region" data-node="ig-home-item" data-widget="Icon">${TD_ICON.home}</span><span class="td-region" data-node="ig-search-item" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="ig-create-item" data-widget="Icon">${TD_ICON.plus}</span><span class="td-region" data-node="ig-reels-item" data-widget="Icon">${TD_ICON.reels}</span><span class="mini-avatar td-region" data-node="ig-profile-item" data-widget="CircleAvatar"></span></nav></div>`;
 }
 function tdPhoneSwiggy() {
   const category=(name,color)=>`<span class="sw-category td-region" data-node="sw-category-item" data-widget="Column"><i class="sw-food td-region" data-node="sw-category-image" data-widget="CircleAvatar" style="--food:${color}">${name}</i><span class="td-region" data-node="sw-category-label" data-widget="Text">${name}</span></span>`;
   const restaurant=(name,meta,color)=>`<article class="sw-card td-region" data-node="sw-card-one" data-widget="Card"><div class="td-region" data-node="sw-card-column" data-widget="Column"><div class="sw-card-pic td-region" data-node="sw-card-image" data-widget="Image" style="--food:${color}"></div><div class="sw-card-body td-region" data-node="sw-card-detail-padding" data-widget="Padding"><span class="td-region" data-node="sw-card-details" data-widget="Column"><b class="td-region" data-node="sw-card-name" data-widget="Text">${name}</b><span class="td-region" data-node="sw-card-meta" data-widget="Text">${meta}</span></span></div></div></article>`;
-  return `${tdStatus(false)}<div class="sw-screen td-region" data-node="sw-scaffold" data-widget="Scaffold"><main class="sw-scroll td-region" data-node="sw-scroll-view" data-widget="CustomScrollView"><header class="sw-head td-region" data-node="sw-appbar" data-widget="SliverAppBar"><div class="sw-location td-region" data-node="sw-location-row" data-widget="Row"><span class="td-region" data-node="sw-pin" data-widget="Icon">${TD_ICON.pin}</span><span class="sw-location-copy td-region" data-node="sw-location" data-widget="Column"><b class="td-region" data-node="sw-home-text" data-widget="Text">Home⌄</b><span class="td-region" data-node="sw-address-text" data-widget="Text">MG Road, Bengaluru</span></span><span class="sw-profile td-region" data-node="sw-profile-avatar" data-widget="CircleAvatar">DK</span></div><div class="sw-search td-region" data-node="sw-search" data-widget="TextField"><span>Search for dishes and restaurants</span><span style="margin-left:auto">${TD_ICON.search}</span></div></header><section class="sw-section"><h3 class="td-region" data-node="sw-category-title" data-widget="Text">What's on your mind?</h3><div class="sw-categories td-region" data-node="sw-categories" data-widget="ListView">${category('Biryani','#f4d4a5')}${category('Pizza','#f0c48d')}${category('Dosa','#ead39e')}${category('Rolls','#f2b3a0')}</div><div class="sw-offer td-region" data-node="sw-offer" data-widget="Card"><span class="td-region" data-node="sw-offer-copy" data-widget="Column"><b class="td-region" data-node="sw-offer-title" data-widget="Text">40% OFF</b><span class="td-region" data-node="sw-offer-detail" data-widget="Text">On your first order - use WELCOME</span></span></div></section><section class="sw-section"><h3 class="td-region" data-node="sw-restaurants-title" data-widget="Text">Top restaurants near you</h3><p class="sw-sub td-region" data-node="sw-restaurants-subtitle" data-widget="Text">Fast delivery and great ratings</p><div class="sw-restaurants td-region" data-node="sw-restaurants" data-widget="ListView">${restaurant('Spice Kitchen','4.5 · 25–30 min','#c87a4c')}${restaurant('South Bowl','4.3 · 20–25 min','#d6a56f')}</div></section></main><nav class="sw-bottom td-region" data-node="sw-bottom" data-widget="BottomNavigationBar"><span class="sw-nav td-region" data-node="sw-food-nav" data-widget="Icon">${TD_ICON.home}<span>Food</span></span><span class="sw-nav td-region" data-node="sw-search-nav" data-widget="Icon">${TD_ICON.search}<span>Search</span></span><span class="sw-nav td-region" data-node="sw-cart-nav" data-widget="Icon">${TD_ICON.bag}<span>Cart</span></span><span class="sw-nav td-region" data-node="sw-account-nav" data-widget="Icon">${TD_ICON.person}<span>Account</span></span></nav></div>`;
+  return `${tdStatus(false)}<div class="sw-screen td-region" data-node="sw-scaffold" data-widget="Scaffold"><main class="sw-scroll td-region" data-node="sw-scroll-view" data-widget="CustomScrollView"><header class="sw-head td-region" data-node="sw-appbar" data-widget="SliverAppBar"><div class="sw-location td-region" data-node="sw-location-row" data-widget="Row"><span class="td-region" data-node="sw-pin" data-widget="Icon">${TD_ICON.pin}</span><span class="sw-location-copy td-region" data-node="sw-location" data-widget="Column"><b class="td-region" data-node="sw-home-text" data-widget="Text">Home⌄</b><span class="td-region" data-node="sw-address-text" data-widget="Text">MG Road, Bengaluru</span></span><span class="sw-profile td-region" data-node="sw-profile-avatar" data-widget="CircleAvatar">DK</span></div><div class="sw-search td-region" data-node="sw-search" data-widget="TextField"><span>Search for dishes and restaurants</span><span style="margin-left:auto">${TD_ICON.search}</span></div></header><section class="sw-section"><h3 class="td-region" data-node="sw-category-title" data-widget="Text">What's on your mind?</h3><div class="sw-categories td-region" data-node="sw-categories" data-widget="ListView">${category('Biryani','#f4d4a5')}${category('Pizza','#f0c48d')}${category('Dosa','#ead39e')}${category('Rolls','#f2b3a0')}</div><div class="sw-offer td-region" data-node="sw-offer" data-widget="Card"><span class="td-region" data-node="sw-offer-copy" data-widget="Column"><b class="td-region" data-node="sw-offer-title" data-widget="Text">40% OFF</b><span class="td-region" data-node="sw-offer-detail" data-widget="Text">On your first order - use WELCOME</span></span></div></section><section class="sw-section"><h3 class="td-region" data-node="sw-restaurants-title" data-widget="Text">Top restaurants near you</h3><p class="sw-sub td-region" data-node="sw-restaurants-subtitle" data-widget="Text">Fast delivery and great ratings</p><div class="sw-restaurants td-region" data-node="sw-restaurants" data-widget="ListView">${restaurant('Spice Kitchen','4.5 · 25–30 min','#c87a4c')}${restaurant('South Bowl','4.3 · 20–25 min','#d6a56f')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-2" data-widget="ListView">${restaurant('Burger Barn','4.6 · 15–20 min','#b5654a')}${restaurant('Taco Town','4.2 · 20–25 min','#c99a4a')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-3" data-widget="ListView">${restaurant('Pizza Place','4.4 · 30–35 min','#c98a4a')}${restaurant('Dessert Den','4.7 · 15–20 min','#b07a8a')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-4" data-widget="ListView">${restaurant('Noodle House','4.5 · 20–25 min','#7a9c6d')}${restaurant('Salad Stop','4.3 · 10–15 min','#8a9c5e')}</div></section></main><nav class="sw-bottom td-region" data-node="sw-bottom" data-widget="BottomNavigationBar"><span class="sw-nav td-region" data-node="sw-food-nav" data-widget="Icon">${TD_ICON.home}<span>Food</span></span><span class="sw-nav td-region" data-node="sw-search-nav" data-widget="Icon">${TD_ICON.search}<span>Search</span></span><span class="sw-nav td-region" data-node="sw-cart-nav" data-widget="Icon">${TD_ICON.bag}<span>Cart</span></span><span class="sw-nav td-region" data-node="sw-account-nav" data-widget="Icon">${TD_ICON.person}<span>Account</span></span></nav></div>`;
 }
 function tdPhoneSettings() {
   const ic = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1998,11 +1998,29 @@ function tdPhoneSettings() {
         `<span class="st-lang-val td-region" data-node="st-lang-value" data-widget="Text">English</span>` +
       `</div>` +
     `</section>` +
+    `<div class="st-group-label td-region" data-node="st-app-header" data-widget="Text">App</div>` +
+    `<section class="st-group td-region" data-node="st-app-group" data-widget="Container">` +
+      row("st-tile-appearance", ICON.moon, "Appearance", "System default", chev("st-tile-appearance")) +
+      div("st-div5") +
+      row("st-tile-storage", ICON.info, "Storage", "Manage downloads", chev("st-tile-storage")) +
+      div("st-div6") +
+      row("st-tile-access", ICON.person, "Accessibility", "Text size, contrast", chev("st-tile-access")) +
+      div("st-div7") +
+      row("st-tile-data", ICON.globe, "Data usage", "Wi-Fi only", sw("st-data", false)) +
+      div("st-div9") +
+      row("st-tile-language", ICON.globe, "Language", "English", chev("st-tile-language")) +
+    `</section>` +
     `<div class="st-group-label td-region" data-node="st-support-header" data-widget="Text">Support</div>` +
     `<section class="st-group td-region" data-node="st-support-group" data-widget="Container">` +
       row("st-tile-help", ICON.help, "Help & feedback", null, chev("st-tile-help")) +
       div("st-div4") +
+      row("st-tile-rate", ICON.help, "Rate the app", null, chev("st-tile-rate")) +
+      div("st-div8") +
       row("st-tile-about", ICON.info, "About", null, chev("st-tile-about")) +
+      div("st-div10") +
+      row("st-tile-privacy", ICON.lock, "Privacy policy", null, chev("st-tile-privacy")) +
+      div("st-div11") +
+      row("st-tile-terms", ICON.info, "Terms of service", null, chev("st-tile-terms")) +
     `</section>` +
   `</main></div>`;
 }
@@ -2025,7 +2043,7 @@ function tdPath(key, id) {
   while (node) { path.unshift(node); node = indexed.parents[node.id] ? indexed.map[indexed.parents[node.id]] : null; }
   return path;
 }
-let teardownState = { app: null, selected: null, bounds: false };
+let teardownState = { app: null, selected: null, bounds: false, sheet: null };
 function tdSelectedNode() {
   if(!teardownState.app || !teardownState.selected) return null;
   var node = tdIndex(TEARDOWNS[teardownState.app]).map[teardownState.selected];
@@ -2107,7 +2125,8 @@ function tdPanel() {
     return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
-    + `<div class="td-panel-head"><button class="td-panel-back" data-teardown-close aria-label="Back to screen">←</button><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
+    + `<div class="td-sheet-peekbar" data-teardown-peekbar><span class="td-sheet-handle"></span><span class="td-sheet-peekrow"><span class="td-sheet-peekname">${esc(node.name)}</span><button class="td-sheet-peekclose" data-teardown-close aria-label="Close description">×</button></span></div>`
+    + `<div class="td-panel-head"><button class="td-panel-back" data-teardown-peek aria-label="Back to screen">←</button><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
     + `<div class="td-fi-crumb">${crumbs}</div>`
     + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
     + `<p class="td-fi-desc">${esc(node.what)} ${esc(node.why)}</p>`
@@ -2425,7 +2444,7 @@ tdOpen = function(key) {
   tdRender(false);window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
 };
 tdBack = function(){ try { teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); try { tdReleaseOneFrame(); } catch(e) {} document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
-tdSelect = function(id){if(!teardownState.app)return;teardownState.selected=id;tdSyncSelection();};
+tdSelect = function(id){if(!teardownState.app)return;teardownState.selected=id;if(window.innerWidth<=900)teardownState.sheet="open";tdSyncSelection();};
 function tdShowPicker(stack, x, y) {
   // Visual pop-out: each widget lifts out, filtered and uniformly sized
   tdDismissPopout();
@@ -2575,7 +2594,9 @@ function tdClose(){
        an absolute overlay (so it leaves the flex flow and the phone's natural
        position becomes centred) while it plays its exit animation; the phone
        is FLIPped from its split position to centre over the same .45s. On
-       mobile the panel is already fixed/full-screen, so it just slides out. */
+       mobile the panel is a fixed bottom sheet, so it slides down (its
+       transform transitions to 105%) while the phone grows back — the sheet
+       classes are removed here so both run together over the same .45s. */
     var stage = detail ? detail.querySelector(".teardown-phone-stage") : null;
     var workbench = detail ? detail.querySelector(".teardown-workbench") : null;
     var isDesktop = window.innerWidth > 900;
@@ -2592,8 +2613,9 @@ function tdClose(){
     }
     panel.classList.add("td-closing");
     teardownState.selected = null;
+    teardownState.sheet = null;
     document.body.classList.remove("td-sheet-open");
-    if (detail) detail.classList.remove("td-split");
+    if (detail) { detail.classList.remove("td-split"); detail.classList.remove("td-sheet-open"); detail.classList.remove("td-sheet-peek"); }
     if (isDesktop && stage && flipFrom) {
       var flipTo = stage.getBoundingClientRect();
       var dx = flipFrom.left - flipTo.left;
@@ -2621,7 +2643,10 @@ function tdClose(){
     }, 450);
   } else {
     teardownState.selected=null;
+    teardownState.sheet=null;
     document.body.classList.remove("td-sheet-open");
+    var d2 = document.querySelector(".teardown-detail");
+    if (d2) { d2.classList.remove("td-split"); d2.classList.remove("td-sheet-open"); d2.classList.remove("td-sheet-peek"); }
     // Surgical: replace panel with empty state
     var p2 = document.querySelector(".teardown-detail .teardown-panel:not(.is-empty)");
     if(p2){
@@ -2636,8 +2661,8 @@ function tdClose(){
 };
 /* Teardown inspector layout (2026-11-07, approved solution):
    Desktop (>900px): phone slides left, description opens on the right (td-split).
-   Mobile (<=900px): the description is a full-screen push view (the layered
-   stack was removed 2026-11-07 — user verdict: it did not look good).
+   Mobile (<=900px): the description is a bottom sheet + the phone shrinks
+   (user's solution 2026-11-07 — replaces the full-screen push).
    Selection logic is untouched — this only arranges the phone and the panel. */
 function tdApplyLayout(){
   var d = document.querySelector(".teardown-detail"); if(!d) return;
@@ -2658,9 +2683,30 @@ function tdApplyLayout(){
     try{ flipFrom = stage.getBoundingClientRect(); }catch(e){ flipFrom = null; }
   }
   d.classList.toggle("td-split", willSplit);
-  /* No mobile stack anymore: on mobile the panel is a fixed full-screen view
-     whenever a widget is selected (CSS handles it), so there is nothing to
-     arrange here. */
+  /* Mobile sheet (<=900px, user's solution 2026-11-07): the description is a
+     bottom sheet; open = fully up + phone shrunk, peek = only the 64px peek
+     bar visible + phone full size. The classes drive the CSS transforms
+     (.45s, same easing as the desktop slide). */
+  var sheet = (!isDesktop && hasSel) ? (teardownState.sheet || "open") : null;
+  var wasOpen = d.classList.contains("td-sheet-open");
+  var wasPeek = d.classList.contains("td-sheet-peek");
+  d.classList.toggle("td-sheet-open", sheet === "open");
+  d.classList.toggle("td-sheet-peek", sheet === "peek");
+  /* Fresh open (was closed, now open): slide the sheet up from the bottom.
+     The panel is re-rendered on every selection, so a plain CSS enter
+     animation would replay on re-select; instead, start it off-screen and
+     let the .45s transform transition carry it up. Re-select (already open)
+     and peek->open (class change) animate via the transition, no JS needed. */
+  if (!isDesktop && sheet === "open" && !wasOpen && !wasPeek) {
+    var sheetPanel = d.querySelector(".teardown-panel:not(.is-empty)");
+    if (sheetPanel) {
+      sheetPanel.style.transition = "none";
+      sheetPanel.style.transform = "translateY(105%)";
+      void sheetPanel.offsetWidth;
+      sheetPanel.style.transition = "";
+      sheetPanel.style.transform = "";
+    }
+  }
   if(flipFrom && stage){
     try{
       var flipTo = stage.getBoundingClientRect();
@@ -2676,9 +2722,14 @@ function tdApplyLayout(){
     }catch(e){}
   }
 }
+/* Mobile sheet state (2026-11-07): peek = phone grows big, sheet drops to the
+   64px peek strip; open = phone shrinks to the top, sheet slides fully up.
+   Desktop is untouched (no sheet there). */
+function tdSheetPeek(){ if(window.innerWidth>900)return; if(!teardownState.selected)return; teardownState.sheet="peek"; tdApplyLayout(); }
+function tdSheetOpen(){ if(window.innerWidth>900)return; if(!teardownState.selected)return; teardownState.sheet="open"; tdApplyLayout(); }
 /* tdStackFront removed (2026-11-07): the mobile stack is gone; the
-   description is a full-screen push view now, so there is no front/back
-   layer to swap. */
+   description is a bottom sheet + shrinking phone now, so there is no
+   front/back layer to swap. */
 if(!window.__ffTdLayoutResize){
   window.__ffTdLayoutResize = 1;
   window.addEventListener("resize", function(){
@@ -2722,6 +2773,12 @@ initTeardowns = function(){
 document.addEventListener("click", function(e){
   if (!e.target.closest || !document.getElementById("teardowns-root")) return;
   var t = e.target;
+  // Ignore the click that follows a sheet drag (the drag already snapped the
+  // sheet to its state); only for clicks inside the teardown detail.
+  if (window.__tdSheetSuppressClick && window.__tdSheetSuppressClick()) {
+    var inTd = t.closest ? (t.closest(".teardown-detail") || t.closest(".teardown-panel")) : null;
+    if (inTd) return;
+  }
   var open = t.closest("[data-teardown-open]");
   if (open && typeof tdOpen === "function") { e.preventDefault(); tdOpen(open.dataset.teardownOpen); return; }
   var sel = t.closest("[data-teardown-select]");
@@ -2751,7 +2808,13 @@ document.addEventListener("click", function(e){
   // Dismiss pop-out when tapping elsewhere (handled by backdrop)
   var close = t.closest("[data-teardown-close]");
   if (close && typeof tdClose === "function") { tdClose(); return; }
-  
+  // Mobile sheet: back button (←) drops the sheet to the peek strip.
+  var peekBtn = t.closest("[data-teardown-peek]");
+  if (peekBtn && typeof tdSheetPeek === "function") { tdSheetPeek(); return; }
+  // Mobile sheet: tapping the peek bar reopens the sheet fully.
+  var peekbar = t.closest("[data-teardown-peekbar]");
+  if (peekbar && typeof tdSheetOpen === "function") { tdSheetOpen(); return; }
+
   var copy = t.closest("[data-teardown-copy]");
   if (copy && typeof tdCopy === "function") { tdCopy(); return; }
   var idx = t.closest("[data-teardown-index]");
@@ -2759,7 +2822,91 @@ document.addEventListener("click", function(e){
     tdBack();
     return;
   }
+  // Mobile sheet: tapping the phone (not a widget region — those open the
+  // picker above) while the sheet is open drops the sheet to the peek strip,
+  // growing the phone big again.
+  if (window.innerWidth <= 900) {
+    var openDetail = document.querySelector(".teardown-detail.td-sheet-open");
+    if (openDetail && typeof tdSheetPeek === "function") {
+      var phoneTap = t.closest ? t.closest(".teardown-phone-stage") : null;
+      if (phoneTap && openDetail.contains(phoneTap)) { tdSheetPeek(); return; }
+    }
+  }
 }, true);
+
+/* Mobile sheet drag (2026-11-07): drag the sheet's peek bar up/down to slide
+   it between open, peek and closed (Pointer Events, touch + mouse). A tap on
+   the peek bar (no drag) is left to the click handler, which reopens it.
+   The drag reads the sheet's CURRENT rendered position, so grabbing it
+   mid-animation does not jump. */
+(function(){
+  if (window.__ffTdSheetDrag) return;
+  window.__ffTdSheetDrag = 1;
+  var drag = null;
+  var suppressClickUntil = 0;
+  window.__tdSheetSuppressClick = function(){ return Date.now() < suppressClickUntil; };
+  document.addEventListener("pointerdown", function(e){
+    if (window.innerWidth > 900) return;
+    if (!e.target.closest) return;
+    var bar = e.target.closest("[data-teardown-peekbar]");
+    if (!bar) return;
+    if (e.target.closest("[data-teardown-close]")) return; // X closes, not drag
+    var detail = document.querySelector(".teardown-detail");
+    var panel = detail ? detail.querySelector(".teardown-panel:not(.is-empty)") : null;
+    if (!detail || !panel) return;
+    var isOpen = detail.classList.contains("td-sheet-open");
+    var isPeek = detail.classList.contains("td-sheet-peek");
+    if (!isOpen && !isPeek) return;
+    var H = panel.getBoundingClientRect().height;
+    if (!H) return;
+    var rect = panel.getBoundingClientRect();
+    var curY = Math.max(0, Math.min(H, rect.top - (window.innerHeight - H)));
+    drag = {
+      startY: e.clientY, startTime: Date.now(),
+      panel: panel, H: H,
+      baseY: curY,
+      state: curY < (H - 64) / 2 ? "open" : "peek",
+      moved: false, curY: null
+    };
+    panel.style.transition = "none";
+  });
+  document.addEventListener("pointermove", function(e){
+    if (!drag) return;
+    var dy = e.clientY - drag.startY;
+    if (Math.abs(dy) > 6) drag.moved = true;
+    var newY = drag.baseY + dy;
+    newY = Math.max(0, Math.min(drag.H, newY));
+    drag.curY = newY;
+    drag.panel.style.transform = "translateY(" + newY + "px)";
+  });
+  function endDrag(e, cancelled){
+    if (!drag) return;
+    var d = drag; drag = null;
+    var panel = d.panel, H = d.H;
+    panel.style.transition = "";
+    panel.style.transform = "";
+    if (cancelled || !d.moved) return; // tap: let the click handler reopen
+    suppressClickUntil = Date.now() + 300;
+    var endY = (typeof d.curY === "number") ? d.curY : d.baseY;
+    var totalDy = e.clientY - d.startY;
+    var totalDt = Math.max(1, Date.now() - d.startTime);
+    var vel = totalDy / totalDt; // px/ms, positive = down
+    var peekY = H - 64;
+    if (d.state === "open") {
+      if (endY > peekY / 2 || vel > 0.3) { if (typeof tdSheetPeek === "function") tdSheetPeek(); }
+      else if (typeof tdSheetOpen === "function") tdSheetOpen();
+    } else { // peek
+      if (endY < peekY / 2 || vel < -0.3) { if (typeof tdSheetOpen === "function") tdSheetOpen(); }
+      /* Close from peek: only 16px down (or a flick) — the peek bar sits
+         ~31px from the screen edge, so a 40px drag is unreachable by a real
+         finger; a short deliberate drag or a downward flick closes it. */
+      else if (endY > peekY + 16 || vel > 0.25) { if (typeof tdClose === "function") tdClose(); }
+      else if (typeof tdSheetPeek === "function") tdSheetPeek();
+    }
+  }
+  document.addEventListener("pointerup", function(e){ endDrag(e, false); });
+  document.addEventListener("pointercancel", function(e){ endDrag(e, true); });
+})();
 
 // Re-route for teardowns on direct load (views.teardowns now exists)
 (function(){
