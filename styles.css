@@ -3060,10 +3060,11 @@ html{scroll-behavior:smooth}
 @keyframes viewZoom{from{transform:scale(.985)}to{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.view-anim{animation:none}}
 
-/* Panel close animations - synced with open */
-.teardown-panel.td-closing{
-  animation:tdSheetDownMobile .3s cubic-bezier(.22,1,.36,1) both !important;
-}
+/* Panel close animations are defined per-breakpoint in the teardown port block
+   at the end of this file (desktop: reverse of the open slide; mobile: reverse
+   of the full-screen push). The old global rule that used the mobile
+   sheet-down animation on every viewport is deleted — it jumped the panel
+   left 50% and dropped it off the bottom on desktop. */
 @media(prefers-reduced-motion:reduce){
   .teardown-panel.td-closing{animation:none !important}
 }
@@ -3620,10 +3621,11 @@ body.book-cover-on .book-top h1{visibility:hidden}
 .row-lock svg{width:16px;height:16px;display:block;}
 .progress-layout.no-side{grid-template-columns:minmax(0,1fr);}
 
-/* === Teardown inspector: slide (desktop) + stack (mobile) — 2026-11-07 ===
+/* === Teardown inspector: slide (desktop) + full-screen push (mobile) — 2026-11-07 ===
    Approved solution (user's own): desktop phone slides left, description opens
-   on the right; mobile phone + description stack, tap the behind layer to bring
-   it to front. Phone frame copied EXACTLY from the approved preview
+   on the right; mobile description is a full-screen push view (the layered
+   stack was removed 2026-11-07 — user verdict: it did not look good). Phone
+   frame copied EXACTLY from the approved preview
    (teardown-stack-preview.html). This block is intentionally LAST so it wins
    over the older conflicting teardown rules above. Selection logic is untouched
    (picker, tdSelect, tdSyncSelection, tdClose all work as before). */
@@ -3656,7 +3658,15 @@ body.book-cover-on .book-top h1{visibility:hidden}
 /* --- Teardown detail: break out of the narrow 900px .wrap so the phone +
    description group can use the page width (up to 1400px). Only matches the
    detail page (the list has no .teardown-detail). --- */
-.wrap:has(.teardown-detail){ max-width:1400px; }
+.wrap:has(.teardown-detail){ max-width:1400px; padding-top:20px; }
+
+/* Back link: compact inline element (Fix 2) — only as wide as its text, not a
+   full-width block flex item, so it never overlaps the panel or pushes it
+   down. Small gap below it, then the workbench starts immediately. */
+.teardown-detail .td-back-link{
+  display:inline-flex; align-self:flex-start; width:auto;
+  margin-bottom:8px;
+}
 
 /* --- Selection: unmistakable on the phone (2026-11-07 refinement) ---
    Solid outline + glow + name label + stronger tint. The label reads the
@@ -3687,7 +3697,13 @@ body.book-cover-on .book-top h1{visibility:hidden}
      so the group is always centred and the panel is always adjacent to the
      phone (no dead gap on one side, no matter the viewport width). */
   .teardown-detail .teardown-workbench{
-    position:relative; display:flex; justify-content:center; align-items:flex-start; gap:48px;
+    position:relative; display:flex; justify-content:center; gap:48px;
+    /* flex-start + !important: the older "Center phone" block sets
+       align-items:center !important, which vertically centres the panel and
+       makes a too-tall panel overflow above AND below the workbench (its top
+       border ends up above the workbench, its bottom border below the
+       viewport). The panel must start at the workbench top. */
+    align-items:flex-start !important;
   }
   .teardown-detail .teardown-phone-stage{
     flex:none;
@@ -3699,90 +3715,99 @@ body.book-cover-on .book-top h1{visibility:hidden}
     transition:transform .45s cubic-bezier(.2,.88,.22,1);
     will-change:transform;
   }
-  /* Panel: in-flow flex item (NOT absolute), fluid width — wider on wide
-     screens (up to 640px, so text lines stay readable), ~420px on narrower
-     desktops. The slide is done by FLIP in tdApplyLayout (JS), which measures
-     the real phone/panel sizes, so it stays balanced at every width. */
-  .teardown-detail.td-split .teardown-panel:not(.is-empty){
+  /* Panel layout (applies whenever a widget is selected, NOT only under
+     td-split — so removing td-split at close-start never restyles the panel
+     mid-exit). In-flow flex item, fluid width — wider on wide screens (up
+     to 640px, so text lines stay readable), ~420px on narrower desktops.
+     align-self:stretch makes it exactly the workbench's height, so it always
+     fits the viewport: top border at the workbench top, bottom border above
+     the viewport bottom, content scrolling inside. The slide is done by FLIP
+     in tdApplyLayout (JS), which measures the real phone/panel sizes, so it
+     stays balanced at every width. */
+  .teardown-detail .teardown-panel:not(.is-empty){
     position:relative; top:auto; right:auto; left:auto; bottom:auto; transform:none;
-    flex:none;
+    flex:none; align-self:stretch;
     width:clamp(420px, 32vw, 640px); height:auto;
-    max-height:calc(100dvh - var(--nav-h,64px) - 48px);
+    max-height:100%;
     overflow-y:auto; overscroll-behavior:contain;
     border-radius:20px; border-bottom:1px solid var(--line);
     box-shadow:0 8px 32px -16px rgba(0,0,0,.15);
+  }
+  /* Enter: slide in from the right + fade, .45s (the open animation). */
+  .teardown-detail.td-split .teardown-panel:not(.is-empty){
     animation:tdSplitPanelIn .45s cubic-bezier(.2,.88,.22,1) both;
   }
+  /* Exit: the EXACT reverse of the enter animation — slide out to the right
+     + fade, same .45s easing. The first selector beats the enter rule when
+     both classes are present; the second covers the moment after td-split is
+     removed at close-start. */
+  .teardown-detail.td-split .teardown-panel:not(.is-empty).td-closing,
+  .teardown-detail .teardown-panel.td-closing{
+    animation:tdSplitPanelOut .45s cubic-bezier(.2,.88,.22,1) both;
+  }
   .teardown-detail .teardown-panel.is-empty{ display:none; }
+  /* Back button (mobile push view): hidden on desktop. */
+  .teardown-detail .td-panel-back{ display:none; }
+  /* Dark theme: the panel border was too low-contrast to see. */
+  [data-theme=dark] .teardown-detail .teardown-panel{ border-color:#2e4a6b; }
 }
 @keyframes tdSplitPanelIn{ from{ opacity:0; transform:translateX(30px); } to{ opacity:1; transform:none; } }
+@keyframes tdSplitPanelOut{ from{ opacity:1; transform:translateX(0); } to{ opacity:0; transform:translateX(30px); } }
 
-/* --- Mobile (<=900px): phone + description stack, tap to bring one to front --- */
+/* --- Mobile (<=900px): full-screen push description (replaces the stack) ---
+   The layered stack is REMOVED (2026-11-07, user verdict: it did not look
+   good). Tapping a widget now opens the description as a FULL-SCREEN view
+   that slides in from the right; closing slides it out the same way. No
+   layering, no peek, no overlap. The phone, when no description is open,
+   fills the viewport: the workbench is flex:1 of the detail (no more 560px
+   cap), so the phone grows to use the available height. */
 @media (max-width:900px){
-  /* Stack container. Closed = phone height only; open = +64px peek. */
   .teardown-detail .teardown-workbench{
-    position:relative; display:block !important; flex:none;
-    height:min(560px, calc(100dvh - 204px));
-    padding:0 14px; overflow:visible;
+    position:relative; display:flex !important; flex:1; min-height:0;
+    align-items:center; justify-content:center;
+    padding:0 14px 14px; overflow:hidden;
   }
-  .teardown-detail.td-stack-open .teardown-workbench{
-    height:min(624px, calc(100dvh - 140px));
+  /* Closed: phone-stage fills the workbench (width AND height), and the phone
+     stretches to fill it — the old stack CSS left the stage shrink-wrapped to
+     the phone's content width (242px) with the phone centred in a 735px stage,
+     leaving 188px of dead space below it. flex:1 makes the stage take the
+     full workbench width; the stage is a COLUMN flex container and the phone
+     is flex:1 (beating the base flex:none), so it fills the stage height
+     instead of sitting at its content height. align-items:center (port block)
+     keeps the 316px phone centred horizontally. */
+  .teardown-detail .teardown-phone-stage{
+    height:100%; flex:1 1 auto !important; min-width:0;
+    flex-direction:column !important;
   }
-  /* Closed: phone-stage fills the workbench. */
-  .teardown-detail .teardown-phone-stage{ height:100%; }
-  /* Open: the two layers, absolutely positioned. */
-  .teardown-detail.td-stack-open .teardown-phone-stage,
-  .teardown-detail.td-stack-open .teardown-panel:not(.is-empty){
-    position:absolute; left:0; right:0; top:0;
-    height:calc(100% - 64px);
-    transform-origin:50% 0;
-    transition:transform .4s cubic-bezier(.2,.88,.22,1), opacity .3s ease, box-shadow .4s ease, z-index 0s linear .2s;
-  }
-  .teardown-detail .teardown-phone-stage.is-front,
-  .teardown-detail .teardown-panel.is-front{
-    transform:translateY(64px) scale(1); opacity:1; z-index:2;
-    box-shadow:0 18px 40px -18px rgba(0,0,0,.35);
-  }
-  .teardown-detail .teardown-phone-stage.is-back,
-  .teardown-detail .teardown-panel.is-back{
-    transform:translateY(0) scale(.97); opacity:.55; z-index:1;
-    box-shadow:0 4px 14px rgba(0,0,0,.18); cursor:pointer;
-  }
-  /* Peek labels on the behind layer's visible 64px strip (whole strip is the tap target). */
-  .teardown-detail .teardown-phone-stage.is-back::before{
-    content:"\1F4F1  Phone \2014 tap to view screen";
-    position:absolute; top:10px; left:50%; transform:translateX(-50%); z-index:5;
-    display:flex; align-items:center; justify-content:center;
-    min-height:44px; padding:10px 18px; white-space:nowrap;
-    border-radius:999px; background:var(--bg-elev); border:1px solid var(--line);
-    box-shadow:0 6px 18px rgba(0,0,0,.18); font-size:14px; font-weight:700; color:var(--text);
-    pointer-events:none;
-  }
-  .teardown-detail .teardown-panel.is-back::before{
-    content:"\1F4DD  Description \2014 tap to read details";
-    position:absolute; top:10px; left:50%; transform:translateX(-50%); z-index:5;
-    display:flex; align-items:center; justify-content:center;
-    min-height:44px; padding:10px 18px; white-space:nowrap;
-    border-radius:999px; background:var(--bg-elev); border:1px solid var(--line);
-    box-shadow:0 6px 18px rgba(0,0,0,.18); font-size:14px; font-weight:700; color:var(--text);
-    pointer-events:none;
-  }
-  .teardown-detail .teardown-panel.is-back{ overflow:hidden; }
-  /* Panel as a layer: full radius, no bottom-sheet animation. */
+  /* Open: the description is a full-screen fixed view over the phone. */
   .teardown-detail .teardown-panel:not(.is-empty){
-    border-radius:20px; border-bottom:1px solid var(--line);
-    box-shadow:0 8px 32px -16px rgba(0,0,0,.15);
-    animation:none;
+    position:fixed; inset:0; z-index:80;
+    width:100%; height:100dvh; max-height:none;
+    border-radius:0; border:none;
+    overflow-y:auto; overscroll-behavior:contain;
+    background:var(--bg);
+    padding:max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
+    animation:tdPushIn .45s cubic-bezier(.2,.88,.22,1) both;
   }
-  /* Close animation for the stack (slides down + fades, no translateX(-50%)). */
+  /* Close: the exact reverse of the push-in, same .45s easing. */
   .teardown-detail .teardown-panel.td-closing{
-    animation:tdStackClose .28s cubic-bezier(.4,0,.2,1) both;
+    animation:tdPushOut .45s cubic-bezier(.2,.88,.22,1) both;
   }
-  /* Mobile UI optimized for the new screen border: phone fills its layer,
-     screen flexes to fit (content is flex-based, so it adapts). */
+  .teardown-detail .teardown-panel.is-empty{ display:none; }
+  /* Back button: mobile only (desktop keeps just the X). */
+  .teardown-detail .td-panel-back{
+    display:grid; place-items:center; flex:none;
+    width:44px; height:44px; border-radius:50%;
+    border:1px solid var(--line); background:var(--bg-elev);
+    color:var(--text); font-size:20px; line-height:1; cursor:pointer;
+  }
+  /* Phone fills its stage, screen flexes to fit (content is flex-based).
+     max-height:none beats the old 100svh-200px cap (line 2422, a leftover
+     from the bottom-sheet layout that left room for the sheet) — with the
+     panel now a full-screen push, the phone may use the whole workbench. */
   .teardown-detail .teardown-phone{
     width:min(100%,316px); padding:7px; border-radius:42px;
-    height:100%; max-height:100%;
+    flex:1 1 auto !important; height:auto; max-height:none !important;
   }
   .teardown-detail .teardown-screen{
     height:auto !important; flex:1 1 auto !important; min-height:0 !important;
@@ -3790,10 +3815,8 @@ body.book-cover-on .book-top h1{visibility:hidden}
     border-radius:34px;
   }
 }
-@keyframes tdStackClose{
-  from{ opacity:1; }
-  to{ opacity:0; transform:translateY(120px); }
-}
+@keyframes tdPushIn{ from{ opacity:0; transform:translateX(100%); } to{ opacity:1; transform:translateX(0); } }
+@keyframes tdPushOut{ from{ opacity:1; transform:translateX(0); } to{ opacity:0; transform:translateX(100%); } }
 @media (prefers-reduced-motion:reduce){
   .teardown-detail .teardown-phone-stage,
   .teardown-detail .teardown-panel:not(.is-empty),

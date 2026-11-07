@@ -54,7 +54,7 @@ ${currentUser?`<div class="bento-card bento-progress">\n<div class="bento-label"
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794049543',
+const FF_V='1794051596',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -2107,7 +2107,7 @@ function tdPanel() {
     return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
-    + `<div class="td-panel-head"><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
+    + `<div class="td-panel-head"><button class="td-panel-back" data-teardown-close aria-label="Back to screen">←</button><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
     + `<div class="td-fi-crumb">${crumbs}</div>`
     + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
     + `<p class="td-fi-desc">${esc(node.what)} ${esc(node.why)}</p>`
@@ -2160,8 +2160,16 @@ function tdEnforceOneFrame() {
     return;
   }
   if (!d) return;
-  // Short desktop viewports (e.g. Windows 125%/150% scale): the height-capped phone would shrink below the app UI fit width and clip content. Keep the phone full-size and let the page scroll instead.
-  if (window.innerHeight <= 800) {
+  // Short desktop viewports: the height-capped phone would shrink below the
+  // app UI fit width and clip content. Keep the phone full-size and let the
+  // page scroll instead. Threshold is <700px (not <=800): at 1366x768 and
+  // 1280x800 the panel must fit inside the viewport (Fix 1), and the phone
+  // still fits there — at 768 the phone's bottom lands exactly on the
+  // detail's bottom edge (tight but inside the viewport), at 800 it has
+  // room to spare. Only genuinely short screens (<700px, e.g. Windows 150%
+  // scale) keep the scroll fallback, where constraining would badly clip
+  // the fixed 660px phone.
+  if (window.innerHeight < 700) {
     d.style.removeProperty('height');
     d.style.removeProperty('min-height');
     d.style.removeProperty('max-height');
@@ -2180,8 +2188,14 @@ function tdEnforceOneFrame() {
     document.body.style.removeProperty('margin');
     return;
   }
-  // Use fixed header offset instead of measuring (avoids race with header layout)
-  var targetH = window.innerHeight - 64 - 20;
+  // Measure the real top offset instead of a fixed header guess (the old
+  // `innerHeight - 64 - 20` assumed the detail starts 64px below the viewport
+  // top, but the .wrap padding puts it ~96px down — so the detail (and the
+  // panel inside it) ran ~12px past the viewport bottom and the panel's
+  // bottom border was clipped). Fit the detail to the viewport with a 12px
+  // bottom margin.
+  var top = d.getBoundingClientRect().top;
+  var targetH = window.innerHeight - top - 12;
   d.style.setProperty('height', targetH + 'px', 'important');
   d.style.setProperty('min-height', targetH + 'px', 'important');
   d.style.setProperty('max-height', targetH + 'px', 'important');
@@ -2195,12 +2209,10 @@ function tdEnforceOneFrame() {
     wb.style.setProperty('min-height', '0', 'important');
     wb.style.setProperty('overflow', 'hidden', 'important');
   }
-  var panel = d.querySelector('.teardown-panel');
-  if (panel && !panel.classList.contains('is-empty')) {
-    panel.style.setProperty('height', '100%', 'important');
-    panel.style.setProperty('max-height', '100%', 'important');
-    panel.style.setProperty('overflow-y', 'auto', 'important');
-  }
+  // Panel sizing is pure CSS now (align-self:stretch fills the workbench, so
+  // it always fits the viewport and scrolls internally). No inline panel
+  // styles here — they never ran on selection anyway (tdSyncSelection
+  // replaces the panel element), which is part of why the panel was too tall.
   // Phone sizing is now pure CSS (responsive), no JS needed
   document.body.style.setProperty('margin', '0', 'important');
   document.documentElement.style.setProperty('height', '100vh', 'important');
@@ -2548,22 +2560,65 @@ function tdDismissPopout() {
   }, 200);
 }
 function tdClose(){
-  var panel = document.querySelector(".teardown-detail .teardown-panel:not(.is-empty)");
+  var detail = document.querySelector(".teardown-detail");
+  var panel = detail ? detail.querySelector(".teardown-panel:not(.is-empty)") : null;
   var reduced = mqMatches("(prefers-reduced-motion: reduce)");
   if (panel && !reduced && !panel.classList.contains("td-closing")) {
+    /* Symmetric close: the panel exits with the EXACT reverse of the open
+       animation (same .45s easing) AND the phone slides back to centre at the
+       same moment — the two run together, like the open. The old code waited
+       280ms with no exit animation (the panel just sat there, then the phone
+       snapped back) and the panel's exit used the mobile sheet-down animation
+       on desktop, which jumped it left 50% and dropped it off the bottom —
+       that was the glitch.
+       How the concurrency works on desktop: the panel is pinned in place as
+       an absolute overlay (so it leaves the flex flow and the phone's natural
+       position becomes centred) while it plays its exit animation; the phone
+       is FLIPped from its split position to centre over the same .45s. On
+       mobile the panel is already fixed/full-screen, so it just slides out. */
+    var stage = detail ? detail.querySelector(".teardown-phone-stage") : null;
+    var workbench = detail ? detail.querySelector(".teardown-workbench") : null;
+    var isDesktop = window.innerWidth > 900;
+    var flipFrom = (isDesktop && stage) ? stage.getBoundingClientRect() : null;
+    var wbRect = (isDesktop && workbench) ? workbench.getBoundingClientRect() : null;
+    var pRect = panel.getBoundingClientRect();
+    if (isDesktop && wbRect) {
+      panel.style.position = "absolute";
+      panel.style.top = (pRect.top - wbRect.top) + "px";
+      panel.style.left = (pRect.left - wbRect.left) + "px";
+      panel.style.width = pRect.width + "px";
+      panel.style.height = pRect.height + "px";
+      panel.style.margin = "0";
+    }
     panel.classList.add("td-closing");
+    teardownState.selected = null;
+    document.body.classList.remove("td-sheet-open");
+    if (detail) detail.classList.remove("td-split");
+    if (isDesktop && stage && flipFrom) {
+      var flipTo = stage.getBoundingClientRect();
+      var dx = flipFrom.left - flipTo.left;
+      if (Math.abs(dx) > 2) {
+        stage.style.transition = "none";
+        stage.style.transform = "translateX(" + dx + "px)";
+        void stage.offsetWidth;
+        stage.style.transition = "";
+        stage.style.transform = "";
+        setTimeout(function(){ if(stage) stage.style.transform = ""; }, 600);
+      }
+    }
+    // Only touch THIS panel in the timeout: if the user picked another widget
+    // mid-close, tdSyncSelection has already replaced this panel (it is
+    // disconnected), so leave the new one alone.
+    var closingPanel = panel;
     setTimeout(function(){
-      teardownState.selected=null;
-      document.body.classList.remove("td-sheet-open");
-      // Surgical: replace panel with empty state, don't re-render phone
-      var empty = document.createElement('aside');
-      empty.className = 'teardown-panel is-empty';
-      empty.innerHTML = '<div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div>';
-      panel.replaceWith(empty);
-      // Clear active highlight
-      document.querySelectorAll('.td-active').forEach(function(el){ el.classList.remove('td-active'); });
-      try{ if(typeof tdApplyLayout==="function") tdApplyLayout(); }catch(e){}
-    }, 280);
+      if (closingPanel.isConnected && closingPanel.classList.contains("td-closing")) {
+        var empty = document.createElement('aside');
+        empty.className = 'teardown-panel is-empty';
+        empty.innerHTML = '<div><h3>Select a widget</h3><p>Tap any part of the app to inspect it.</p></div>';
+        closingPanel.replaceWith(empty);
+        document.querySelectorAll('.td-active').forEach(function(el){ el.classList.remove('td-active'); });
+      }
+    }, 450);
   } else {
     teardownState.selected=null;
     document.body.classList.remove("td-sheet-open");
@@ -2581,7 +2636,8 @@ function tdClose(){
 };
 /* Teardown inspector layout (2026-11-07, approved solution):
    Desktop (>900px): phone slides left, description opens on the right (td-split).
-   Mobile (<=900px): phone + description stack; tap the behind layer to bring it to front.
+   Mobile (<=900px): the description is a full-screen push view (the layered
+   stack was removed 2026-11-07 — user verdict: it did not look good).
    Selection logic is untouched — this only arranges the phone and the panel. */
 function tdApplyLayout(){
   var d = document.querySelector(".teardown-detail"); if(!d) return;
@@ -2602,17 +2658,9 @@ function tdApplyLayout(){
     try{ flipFrom = stage.getBoundingClientRect(); }catch(e){ flipFrom = null; }
   }
   d.classList.toggle("td-split", willSplit);
-  d.classList.toggle("td-stack-open", !isDesktop && hasSel);
-  var panel = d.querySelector(".teardown-panel:not(.is-empty)");
-  if(!isDesktop && stage && panel && hasSel){
-    // A (new) selection always brings the description to front first.
-    panel.classList.remove("is-back"); panel.classList.add("is-front");
-    stage.classList.remove("is-front"); stage.classList.add("is-back");
-    d.dataset.tdFront = "desc";
-  } else if(stage || panel){
-    if(stage) stage.classList.remove("is-front","is-back");
-    if(panel) panel.classList.remove("is-front","is-back");
-  }
+  /* No mobile stack anymore: on mobile the panel is a fixed full-screen view
+     whenever a widget is selected (CSS handles it), so there is nothing to
+     arrange here. */
   if(flipFrom && stage){
     try{
       var flipTo = stage.getBoundingClientRect();
@@ -2628,20 +2676,9 @@ function tdApplyLayout(){
     }catch(e){}
   }
 }
-function tdStackFront(which){
-  var d = document.querySelector(".teardown-detail"); if(!d) return;
-  var stage = d.querySelector(".teardown-phone-stage");
-  var panel = d.querySelector(".teardown-panel:not(.is-empty)");
-  if(!stage || !panel) return;
-  if(which === "desc"){
-    panel.classList.remove("is-back"); panel.classList.add("is-front");
-    stage.classList.remove("is-front"); stage.classList.add("is-back");
-  } else {
-    stage.classList.remove("is-back"); stage.classList.add("is-front");
-    panel.classList.remove("is-front"); panel.classList.add("is-back");
-  }
-  d.dataset.tdFront = which;
-}
+/* tdStackFront removed (2026-11-07): the mobile stack is gone; the
+   description is a full-screen push view now, so there is no front/back
+   layer to swap. */
 if(!window.__ffTdLayoutResize){
   window.__ffTdLayoutResize = 1;
   window.addEventListener("resize", function(){
@@ -2689,16 +2726,7 @@ document.addEventListener("click", function(e){
   if (open && typeof tdOpen === "function") { e.preventDefault(); tdOpen(open.dataset.teardownOpen); return; }
   var sel = t.closest("[data-teardown-select]");
   if (sel && typeof tdSelect === "function") { e.preventDefault(); e.stopPropagation(); tdSelect(sel.dataset.teardownSelect); return; }
-  // Mobile stack: tap the behind layer (peek strip) to bring it to front.
-  // Close/Copy buttons fall through to their own handlers below.
-  if (window.innerWidth <= 900 && document.querySelector(".teardown-detail.td-stack-open")) {
-    if (!t.closest("[data-teardown-close]") && !t.closest("[data-teardown-copy]")) {
-      var _backPhone = t.closest(".teardown-phone-stage.is-back");
-      var _backPanel = t.closest(".teardown-panel.is-back");
-      if (_backPhone) { e.preventDefault(); e.stopPropagation(); if (typeof tdStackFront === "function") tdStackFront("phone"); return; }
-      if (_backPanel) { e.preventDefault(); e.stopPropagation(); if (typeof tdStackFront === "function") tdStackFront("desc"); return; }
-    }
-  }
+  // (Mobile stack tap-to-front removed 2026-11-07 with the stack itself.)
   // Tapping shows picker with all widgets at that point
   var region = t.closest(".td-region[data-node]");
   if (region && typeof tdSelect === "function") {
