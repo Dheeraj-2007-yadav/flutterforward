@@ -54,7 +54,7 @@ ${currentUser?`<div class="bento-card bento-progress">\n<div class="bento-label"
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794053624',
+const FF_V='1794055435',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -2125,7 +2125,7 @@ function tdPanel() {
     return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
-    + `<div class="td-sheet-peekbar" data-teardown-peekbar><span class="td-sheet-handle"></span><span class="td-sheet-peekrow"><span class="td-sheet-peekname">${esc(node.name)}</span><button class="td-sheet-peekclose" data-teardown-close aria-label="Close description">×</button></span></div>`
+    + `<div class="td-sheet-peekbar" data-teardown-peekbar><span class="td-sheet-peekhint"><span class="td-sheet-handle"></span><span class="td-sheet-peekchev"></span></span><span class="td-sheet-peekrow"><span class="td-sheet-peekname">${esc(node.name)}</span><button class="td-sheet-peekclose" data-teardown-close aria-label="Close description">×</button></span></div>`
     + `<div class="td-panel-head"><button class="td-panel-back" data-teardown-peek aria-label="Back to screen">←</button><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
     + `<div class="td-fi-crumb">${crumbs}</div>`
     + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
@@ -2265,6 +2265,7 @@ function tdReleaseOneFrame() {
   document.body.style.removeProperty('height');
   document.body.style.removeProperty('max-height');
   document.body.style.removeProperty('margin');
+  document.body.classList.remove('td-detail-open');
   if (window.removeEventListener) { window.removeEventListener('resize', tdOnResize); }
 }
 
@@ -2435,6 +2436,9 @@ tdRender = function(keepView) {
   const previous=keepView?teardownState.view:null;
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
   teardownState.view=previous;tdPrepare();
+  // Single-frame detail view: hide the footer + bottom padding on mobile
+  // (body.td-detail-open) so the page does not scroll past the viewport.
+  try { document.body.classList.toggle("td-detail-open", !!teardownState.app); } catch(e) {}
   if(teardownState.app&&!previous)requestAnimationFrame(tdFitTree);
   try { if (teardownState.app) { requestAnimationFrame(function(){requestAnimationFrame(function(){try{tdEnforceOneFrame()}catch(x){}})}); } else { tdReleaseOneFrame(); } } catch(e) {}
 };
@@ -2684,9 +2688,9 @@ function tdApplyLayout(){
   }
   d.classList.toggle("td-split", willSplit);
   /* Mobile sheet (<=900px, user's solution 2026-11-07): the description is a
-     bottom sheet; open = fully up + phone shrunk, peek = only the 64px peek
-     bar visible + phone full size. The classes drive the CSS transforms
-     (.45s, same easing as the desktop slide). */
+     bottom sheet; open = fully up + phone shrunk, peek = only the 28px
+     swipe-up indicator visible + phone full size. The classes drive the CSS
+     transforms (.45s, same easing as the desktop slide). */
   var sheet = (!isDesktop && hasSel) ? (teardownState.sheet || "open") : null;
   var wasOpen = d.classList.contains("td-sheet-open");
   var wasPeek = d.classList.contains("td-sheet-peek");
@@ -2723,7 +2727,7 @@ function tdApplyLayout(){
   }
 }
 /* Mobile sheet state (2026-11-07): peek = phone grows big, sheet drops to the
-   64px peek strip; open = phone shrinks to the top, sheet slides fully up.
+   28px swipe-up indicator; open = phone shrinks to the top, sheet slides fully up.
    Desktop is untouched (no sheet there). */
 function tdSheetPeek(){ if(window.innerWidth>900)return; if(!teardownState.selected)return; teardownState.sheet="peek"; tdApplyLayout(); }
 function tdSheetOpen(){ if(window.innerWidth>900)return; if(!teardownState.selected)return; teardownState.sheet="open"; tdApplyLayout(); }
@@ -2789,6 +2793,17 @@ document.addEventListener("click", function(e){
   if (region && typeof tdSelect === "function") {
     var root = document.getElementById("teardowns-root");
     if (root && root.contains(region)) {
+      // Tapping the SHRUNK phone (sheet fully open, mobile) restores it to
+      // full size (peek) instead of selecting a widget. Widget selection
+      // only works when the phone is full size (closed or peek state).
+      if (window.innerWidth <= 900) {
+        var openDetail = document.querySelector(".teardown-detail.td-sheet-open");
+        if (openDetail && openDetail.contains(region)) {
+          e.preventDefault(); e.stopPropagation();
+          if (typeof tdSheetPeek === "function") tdSheetPeek();
+          return;
+        }
+      }
       e.preventDefault(); e.stopPropagation();
       // Find all regions at tap point, innermost first
       var stack = [];
@@ -2865,7 +2880,7 @@ document.addEventListener("click", function(e){
       startY: e.clientY, startTime: Date.now(),
       panel: panel, H: H,
       baseY: curY,
-      state: curY < (H - 64) / 2 ? "open" : "peek",
+      state: curY < (H - 28) / 2 ? "open" : "peek",
       moved: false, curY: null
     };
     panel.style.transition = "none";
@@ -2891,7 +2906,7 @@ document.addEventListener("click", function(e){
     var totalDy = e.clientY - d.startY;
     var totalDt = Math.max(1, Date.now() - d.startTime);
     var vel = totalDy / totalDt; // px/ms, positive = down
-    var peekY = H - 64;
+    var peekY = H - 28;
     if (d.state === "open") {
       if (endY > peekY / 2 || vel > 0.3) { if (typeof tdSheetPeek === "function") tdSheetPeek(); }
       else if (typeof tdSheetOpen === "function") tdSheetOpen();

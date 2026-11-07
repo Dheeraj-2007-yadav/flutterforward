@@ -2220,9 +2220,13 @@ body.home-page .wrap { padding-top: 12px; }
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 10px;
-  word-break: break-word;
+  /* Wrap only at the › separators (zero-width space after each), never
+     mid-word — a long class name stays whole on its own line. */
+  word-break: normal;
+  overflow-wrap: normal;
 }
 .td-fi-crumb span { margin: 0 6px; opacity: 0.4; }
+.td-fi-crumb span::after { content: "\200b"; }
 
 .td-fi-pname {
   word-break: break-word;
@@ -3758,14 +3762,22 @@ body.book-cover-on .book-top h1{visibility:hidden}
 
 /* --- Mobile (<=900px): bottom-sheet description + shrinking phone ---
    (2026-11-07, user's solution — replaces the full-screen push.) Tapping a
-   widget shrinks the phone (scale .5, origin top center) and slides it to
-   the top; the description slides up from the bottom as a sheet (44dvh), so
+   widget shrinks the phone (scale .36, origin top center) and slides it to
+   the top; the description slides up from the bottom as a sheet (56dvh), so
    both stay visible. Tapping the phone grows it back and the sheet drops to
-   a 64px peek strip (widget name + drag handle + X); tap/drag the peek up
+   a 28px swipe-up indicator (handle + up chevron); tap/drag the indicator up
    to reopen, swipe down / X to close fully. All motion uses the same .45s
    cubic-bezier(.2,.88,.22,1) easing as the desktop slide. The phone, when
    no description is open, fills the viewport (flex:1 workbench). */
 @media (max-width:900px){
+  /* Teardown detail is a single-frame view: the footer (below main) and the
+     .wrap bottom padding push the page ~144px past the viewport, so the page
+     scrolls on mobile. Hide the footer and drop the bottom padding while a
+     teardown detail is open (body.td-detail-open, set by tdRender); the
+     safe-area body padding is dropped too (the sheet carries its own). */
+  body.td-detail-open .site-footer{ display:none; }
+  body.td-detail-open .wrap{ padding-bottom:0; }
+  body.td-detail-open{ padding-bottom:0; }
   .teardown-detail .teardown-workbench{
     position:relative; display:flex !important; flex:1; min-height:0;
     align-items:center; justify-content:center;
@@ -3783,16 +3795,16 @@ body.book-cover-on .book-top h1{visibility:hidden}
     height:100%; flex:1 1 auto !important; min-width:0;
     flex-direction:column !important;
   }
-  /* Sheet: fixed to the bottom, 44dvh tall. Its position is driven by the
+  /* Sheet: fixed to the bottom, 56dvh tall. Its position is driven by the
      state classes on .teardown-detail (open = fully up, peek = only the
-     64px peek bar visible). transform transitions .45s, same easing.
+     28px swipe-up indicator visible). transform transitions .45s, same easing.
      animation:none kills the pre-existing tdSheetUp/tdSheetUpMobile
      keyframes (their `to` state carries a stray translateX(-50%) that
      shoves this full-width sheet 195px left); the sheet's motion is now
      the transform transition, not a keyframe. */
   .teardown-detail .teardown-panel:not(.is-empty){
     position:fixed; left:0; right:0; bottom:0; z-index:80;
-    width:100%; height:min(44dvh, 520px); max-height:none;
+    width:100%; height:min(56dvh, 540px); max-height:none;
     border-radius:22px 22px 0 0; border:none;
     border-top:1px solid var(--line);
     box-shadow:0 -12px 40px rgba(15,23,42,.18);
@@ -3803,43 +3815,56 @@ body.book-cover-on .book-top h1{visibility:hidden}
     transition:transform .45s cubic-bezier(.2,.88,.22,1);
     transform:translateY(0);
   }
-  /* Open: sheet fully up. Peek: sheet down so only its 64px peek bar shows. */
+  /* Open: sheet fully up. Peek: sheet down so only its 28px swipe-up indicator shows. */
   .teardown-detail.td-sheet-open .teardown-panel:not(.is-empty){ transform:translateY(0); }
-  .teardown-detail.td-sheet-peek .teardown-panel:not(.is-empty){ transform:translateY(calc(100% - 64px)); }
+  .teardown-detail.td-sheet-peek .teardown-panel:not(.is-empty){ transform:translateY(calc(100% - 28px)); }
   /* Close: slide down off-screen from wherever it is (open or peek) — the
      panel's transform transitions .45s, so the start is its current
-     position (open = 0, peek = 100%-64px); no jump, same easing. */
+     position (open = 0, peek = 100%-28px); no jump, same easing. */
   .teardown-detail .teardown-panel.td-closing{
     transform:translateY(105%);
   }
   .teardown-detail .teardown-panel.is-empty{ display:none; }
-  /* Phone shrinks to half size, top-anchored, when the sheet is open. It
-     grows back (same .45s) when the sheet drops to peek or closes. */
+  /* Phone shrinks to ~0.36, top-anchored, when the sheet is open, so the
+     taller sheet has room to be fully readable. It grows back (same .45s)
+     when the sheet drops to peek or closes. */
   .teardown-detail .teardown-phone{
     transition:transform .45s cubic-bezier(.2,.88,.22,1);
   }
   .teardown-detail.td-sheet-open .teardown-phone{
-    transform:scale(.5); transform-origin:top center;
+    transform:scale(.36); transform-origin:top center;
   }
-  /* Peek bar: the sheet's top 64px — drag handle + widget name + X. Sticky
-     so it stays on top while the sheet scrolls. Desktop hides it. */
+  /* Peek bar: the sheet's top — a 28px swipe-up indicator (handle + up
+     chevron) above the widget-name row (name + X). Sticky so it stays on
+     top while the sheet scrolls. In the peek state the sheet is translated
+     down so only the 28px indicator shows; the name row sits below the
+     viewport edge. Desktop hides it. */
   .teardown-detail .td-sheet-peekbar{
     display:flex; flex-direction:column; align-items:stretch;
     position:sticky; top:0; z-index:2;
-    height:64px; flex:none;
+    flex:none;
     background:var(--bg);
     cursor:grab; touch-action:none;
     border-bottom:1px solid var(--line);
   }
   .teardown-detail .td-sheet-peekbar:active{ cursor:grabbing; }
+  .teardown-detail .td-sheet-peekhint{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:3px; height:28px; flex:none; padding-top:2px;
+  }
   .teardown-detail .td-sheet-handle{
     width:40px; height:4px; border-radius:2px;
     background:currentColor; opacity:.35;
-    color:var(--text-dim);
-    margin:8px auto 6px; flex:none;
+    color:var(--text-3);
+    flex:none;
+  }
+  .teardown-detail .td-sheet-peekchev{
+    width:8px; height:8px; flex:none;
+    border-left:2px solid var(--text-3); border-top:2px solid var(--text-3);
+    transform:rotate(45deg); opacity:.55;
   }
   .teardown-detail .td-sheet-peekrow{
-    display:flex; align-items:center; gap:10px; flex:1; min-height:0;
+    display:flex; align-items:center; gap:10px; flex:none; height:44px;
   }
   .teardown-detail .td-sheet-peekname{
     flex:1; min-width:0;
@@ -3852,8 +3877,8 @@ body.book-cover-on .book-top h1{visibility:hidden}
     border:1px solid var(--line); background:var(--bg-elev);
     color:var(--text); font-size:20px; line-height:1; cursor:pointer;
   }
-  /* Peek hint: the handle gently bobs, signalling "slide me back up". */
-  .teardown-detail.td-sheet-peek .td-sheet-handle{
+  /* Peek hint: the indicator (handle + chevron) gently bobs, signalling "slide me back up". */
+  .teardown-detail.td-sheet-peek .td-sheet-peekhint{
     animation:tdPeekHint 1.8s ease-in-out infinite;
   }
   /* Mobile sheet shows the widget name in the peek bar, so the duplicate
