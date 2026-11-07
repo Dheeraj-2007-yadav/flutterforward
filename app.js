@@ -54,7 +54,7 @@ ${currentUser?`<div class="bento-card bento-progress">\n<div class="bento-label"
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794021705',
+const FF_V='1794048265',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -2335,7 +2335,7 @@ function tdIsBelow(id, ancestor) {
 
 tdDetailView = function() {
   const item=TEARDOWNS[teardownState.app];
-  return `<div class="teardown-detail"><a class="td-back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
+  return `<div class="teardown-detail"><a class="td-back-link" href="#/teardowns" data-teardown-index>← All teardowns</a><div class="teardown-workbench"><div class="teardown-phone-stage"><div class="teardown-phone"><div class="teardown-dynamic-island"></div><div class="teardown-screen">${tdPhone(teardownState.app)}</div></div></div>${tdPanel()}</div></div>`;
 };
 
 function tdApplyView() {
@@ -2368,6 +2368,7 @@ function tdSyncSelection() {
   }
   const oldPanel=root.querySelector(".teardown-panel"); if(oldPanel)oldPanel.outerHTML=tdPanel();
   document.body.classList.toggle("td-sheet-open",!!teardownState.selected&&window.matchMedia("(max-width: 760px)").matches);
+  try{ if(typeof tdApplyLayout==="function") tdApplyLayout(); }catch(e){}
 }
 function tdBindCanvas() {
   const viewport=$("[data-tree-viewport]"); if(!viewport)return;
@@ -2561,6 +2562,7 @@ function tdClose(){
       panel.replaceWith(empty);
       // Clear active highlight
       document.querySelectorAll('.td-active').forEach(function(el){ el.classList.remove('td-active'); });
+      try{ if(typeof tdApplyLayout==="function") tdApplyLayout(); }catch(e){}
     }, 280);
   } else {
     teardownState.selected=null;
@@ -2574,8 +2576,51 @@ function tdClose(){
       p2.replaceWith(e2);
     }
     document.querySelectorAll('.td-active').forEach(function(el){ el.classList.remove('td-active'); });
+    try{ if(typeof tdApplyLayout==="function") tdApplyLayout(); }catch(e){}
   }
 };
+/* Teardown inspector layout (2026-11-07, approved solution):
+   Desktop (>900px): phone slides left, description opens on the right (td-split).
+   Mobile (<=900px): phone + description stack; tap the behind layer to bring it to front.
+   Selection logic is untouched — this only arranges the phone and the panel. */
+function tdApplyLayout(){
+  var d = document.querySelector(".teardown-detail"); if(!d) return;
+  var isDesktop = window.innerWidth > 900;
+  var hasSel = !!(typeof teardownState!=="undefined" && teardownState && teardownState.app && teardownState.selected);
+  d.classList.toggle("td-split", isDesktop && hasSel);
+  d.classList.toggle("td-stack-open", !isDesktop && hasSel);
+  var stage = d.querySelector(".teardown-phone-stage");
+  var panel = d.querySelector(".teardown-panel:not(.is-empty)");
+  if(!isDesktop && stage && panel && hasSel){
+    // A (new) selection always brings the description to front first.
+    panel.classList.remove("is-back"); panel.classList.add("is-front");
+    stage.classList.remove("is-front"); stage.classList.add("is-back");
+    d.dataset.tdFront = "desc";
+  } else if(stage || panel){
+    if(stage) stage.classList.remove("is-front","is-back");
+    if(panel) panel.classList.remove("is-front","is-back");
+  }
+}
+function tdStackFront(which){
+  var d = document.querySelector(".teardown-detail"); if(!d) return;
+  var stage = d.querySelector(".teardown-phone-stage");
+  var panel = d.querySelector(".teardown-panel:not(.is-empty)");
+  if(!stage || !panel) return;
+  if(which === "desc"){
+    panel.classList.remove("is-back"); panel.classList.add("is-front");
+    stage.classList.remove("is-front"); stage.classList.add("is-back");
+  } else {
+    stage.classList.remove("is-back"); stage.classList.add("is-front");
+    panel.classList.remove("is-front"); panel.classList.add("is-back");
+  }
+  d.dataset.tdFront = which;
+}
+if(!window.__ffTdLayoutResize){
+  window.__ffTdLayoutResize = 1;
+  window.addEventListener("resize", function(){
+    try{ if(typeof teardownState!=="undefined" && teardownState && teardownState.app) tdApplyLayout(); }catch(e){}
+  });
+}
 tdToggleBounds = function(){};
 function tdToggleBranch(id){
   const node=tdIndex(TEARDOWNS[teardownState.app]).map[id];if(!node||!node.children.length)return;
@@ -2617,6 +2662,16 @@ document.addEventListener("click", function(e){
   if (open && typeof tdOpen === "function") { e.preventDefault(); tdOpen(open.dataset.teardownOpen); return; }
   var sel = t.closest("[data-teardown-select]");
   if (sel && typeof tdSelect === "function") { e.preventDefault(); e.stopPropagation(); tdSelect(sel.dataset.teardownSelect); return; }
+  // Mobile stack: tap the behind layer (peek strip) to bring it to front.
+  // Close/Copy buttons fall through to their own handlers below.
+  if (window.innerWidth <= 900 && document.querySelector(".teardown-detail.td-stack-open")) {
+    if (!t.closest("[data-teardown-close]") && !t.closest("[data-teardown-copy]")) {
+      var _backPhone = t.closest(".teardown-phone-stage.is-back");
+      var _backPanel = t.closest(".teardown-panel.is-back");
+      if (_backPhone) { e.preventDefault(); e.stopPropagation(); if (typeof tdStackFront === "function") tdStackFront("phone"); return; }
+      if (_backPanel) { e.preventDefault(); e.stopPropagation(); if (typeof tdStackFront === "function") tdStackFront("desc"); return; }
+    }
+  }
   // Tapping shows picker with all widgets at that point
   var region = t.closest(".td-region[data-node]");
   if (region && typeof tdSelect === "function") {
