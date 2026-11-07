@@ -55,7 +55,7 @@ return `<div class="min-home bento-home">
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794014390',
+const FF_V='1794015610',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -2236,7 +2236,6 @@ function tdReleaseOneFrame() {
 
 function tdRender() {
   const root=$("#teardowns-root"); if(!root)return;
-  document.body.classList.toggle("teardown-detail-open", !!(typeof teardownState!=="undefined"&&teardownState&&teardownState.app));
   // Force cleanup: remove all children explicitly to break references
   while (root.firstChild) { root.removeChild(root.firstChild); }
   // Force style recalc to flush pending animations
@@ -2398,7 +2397,6 @@ tdPrepare = function() {
 };
 tdRender = function(keepView) {
   const root=$("#teardowns-root");if(!root)return;
-  document.body.classList.toggle("teardown-detail-open", !!(typeof teardownState!=="undefined"&&teardownState&&teardownState.app));
   const previous=keepView?teardownState.view:null;
   root.innerHTML=teardownState.app?tdDetailView():teardownIndexView();
   teardownState.view=previous;tdPrepare();

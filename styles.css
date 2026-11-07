@@ -3556,54 +3556,6 @@ body.book-cover-on .book-top h1{visibility:hidden}
 }
 
 
-/* ===== Audit fixes A3 + A6 + C5: teardown inspector layout ===== */
-/* A3 — Desktop (>900px): panel in-flow in the right grid column, never a fixed overlay.
-   (Overrides the "bottom sheet for ALL screen sizes" rule.) */
-@media (min-width:901px){
-  .teardown-detail .teardown-workbench{
-    display:grid !important;
-    grid-template-columns:minmax(280px,340px) minmax(0,1fr) !important;
-    gap:32px !important;
-    align-items:start !important;
-    justify-content:stretch !important;
-  }
-  .teardown-detail .teardown-panel:not(.is-empty){
-    position:relative !important;
-    left:auto !important; right:auto !important; bottom:auto !important;
-    transform:none !important;
-    width:auto !important;
-    height:auto !important;
-    max-height:calc(100dvh - var(--nav-h,64px) - 48px) !important;
-    border-radius:16px !important;
-    box-shadow:var(--card-shadow) !important;
-    padding:24px !important;
-    animation:none !important;
-    overflow-y:auto !important;
-  }
-  /* C5 — whole phone fits in the desktop viewport */
-  .teardown-detail .teardown-phone{ max-height:calc(100dvh - 280px) !important; }
-  .teardown-detail .teardown-screen{ max-height:calc(100dvh - 300px) !important; }
-}
-/* A6 — Mobile (<=900px) split view: phone capped at 46dvh, panel static below it. */
-@media (max-width:900px){
-  .teardown-detail{ display:flex !important; flex-direction:column !important; height:auto !important; max-height:none !important; overflow:visible !important; }
-  .teardown-detail .teardown-workbench{ flex-direction:column !important; flex:1 1 auto !important; min-height:0 !important; overflow:visible !important; gap:16px !important; padding:0 16px 24px !important; }
-  .teardown-detail .teardown-phone-stage{ flex:none !important; max-height:46dvh !important; min-height:0 !important; overflow:hidden !important; }
-  .teardown-detail .teardown-phone{ max-height:46dvh !important; }
-  .teardown-detail .teardown-screen{ max-height:44dvh !important; }
-  .teardown-detail .teardown-panel:not(.is-empty){
-    position:static !important; flex:1 1 auto !important; min-height:0 !important; height:auto !important; max-height:none !important;
-    overflow-y:auto !important; overflow-x:hidden !important; width:100% !important; max-width:100% !important; box-sizing:border-box !important;
-    border:1px solid var(--line) !important; border-radius:16px !important; box-shadow:none !important; animation:none !important;
-  }
-}
-
-/* A7 — Popout close below the mobile top bar (was overlapping the theme toggle). */
-@media (max-width:900px){
-  .td-popout-close{ top:76px !important; }
-  #td-popout-layer .td-popout-stage{ margin-top:64px !important; }
-}
-
 /* B1 — Home hero H1 matches the 58px page-head standard (was 56px / 34px). */
 .bento-head h1{font-size:58px !important;}
 @media (max-width:680px){.bento-head h1{font-size:36px !important;}}
@@ -3618,24 +3570,7 @@ body.book-cover-on .book-top h1{visibility:hidden}
 .quiz-why{margin-top:16px;padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--primary);border-radius:12px;background:var(--bg-elev);font-size:14.5px;line-height:1.65;color:var(--text-2);}
 .quiz-why b{color:var(--text);margin-right:4px;}
 
-/* B6 — Teardown detail is headerless: hide the nav, back link at the viewport far-left. */
-body.teardown-detail-open .topnav,body.teardown-detail-open .mobile-top{display:none !important;}
-@media (min-width:1080px){body.teardown-detail-open{padding-top:0 !important;}}
-body.teardown-detail-open .teardown-detail .td-back-link{position:fixed;left:16px;top:14px;z-index:60;}
-
-/* B7 — Empty inspector panel is visible (not display:none): in-flow card on desktop, one-line hint on phone. */
-@media (min-width:901px){
-  .teardown-detail .teardown-panel.is-empty{display:grid !important;place-items:center;min-height:360px;position:relative !important;left:auto !important;right:auto !important;bottom:auto !important;transform:none !important;width:auto !important;max-height:none !important;border-radius:20px !important;box-shadow:var(--card-shadow) !important;padding:24px !important;}
-}
-@media (max-width:900px){
-  .teardown-detail .teardown-panel.is-empty{display:block !important;position:static !important;min-height:0 !important;max-height:none !important;width:100% !important;box-sizing:border-box !important;border:1px solid var(--line) !important;border-radius:16px !important;box-shadow:none !important;padding:14px 16px !important;text-align:center;}
-  .teardown-detail .teardown-panel.is-empty h3{display:none !important;}
-  .teardown-detail .teardown-panel.is-empty p{margin:0 !important;font-size:14px;color:var(--text-2);}
-}
-
-/* B9 — Inspector tokens (were undefined) + <=390px teardown-row padding (card standard). */
-:root{--ink:var(--text);--ink-soft:var(--text-3);}
-[data-theme=dark]{--ink:var(--text);--ink-soft:var(--text-3);}
+/* Teardown list row: 16px padding at <=390px (card standard). */
 @media (max-width:390px){.teardown-row{padding:16px !important;}}
 
 /* C6 — Tap targets: invisible hit-area padding (min ~44px) on icon buttons + search close + book dots. */
@@ -3644,11 +3579,6 @@ body.teardown-detail-open .teardown-detail .td-back-link{position:fixed;left:16p
 .nav-search-close::after{content:"";position:absolute;inset:-8px;}
 .book-dot{position:relative;}
 .book-dot::after{content:"";position:absolute;inset:-12px;}
-
-/* C1 — Visible hotspot markers on tappable teardown regions (small dot, top-right corner). */
-.td-region{position:relative;}
-.td-region::after{content:"";position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--primary);border:1.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);opacity:.85;pointer-events:none;z-index:5;}
-#td-popout-layer .td-region::after{display:none;}
 
 /* C3 — Expand all / Collapse all control on the Lessons + Quizzes pages. */
 .phase-expand-row{display:flex;justify-content:flex-end;margin:0 0 12px;}
@@ -3670,6 +3600,3 @@ body.teardown-detail-open .teardown-detail .td-back-link{position:fixed;left:16p
 
 /* B8 (fix) — .section-head sets flex-wrap:wrap; the phase header must not wrap. */
 .phase-head{flex-wrap:nowrap !important;}
-
-/* C4 (explicit) — the live inspector code element must not split identifiers mid-word. */
-.td-fi-code{overflow-wrap:break-word !important;}
