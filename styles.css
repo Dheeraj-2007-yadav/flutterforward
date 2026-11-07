@@ -3253,6 +3253,8 @@ html{scroll-behavior:smooth}
 .bento-tagline{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.5;color:var(--text);padding-left:10px}
 .bento-head h1 .bento-brand{color:var(--primary);font-weight:700}
 .bento-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+/* Guest home: no YOUR PROGRESS card, so UP NEXT spans the full bento row. */
+.bento-grid .bento-upnext:only-child{grid-column:1/-1;}
 .bento-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:20px;padding:24px}
 .bento-upnext{display:flex;gap:24px;align-items:center;justify-content:space-between}
 .bento-upnext-main{flex:1;min-width:0}
