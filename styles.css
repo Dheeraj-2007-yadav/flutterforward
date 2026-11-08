@@ -3752,8 +3752,6 @@ body.book-cover-on .book-top h1{visibility:hidden}
     animation:tdSplitPanelOut .45s cubic-bezier(.2,.88,.22,1) both;
   }
   .teardown-detail .teardown-panel.is-empty{ display:none; }
-  /* Back button (mobile push view): hidden on desktop. */
-  .teardown-detail .td-panel-back{ display:none; }
   /* Dark theme: the panel border was too low-contrast to see. */
   [data-theme=dark] .teardown-detail .teardown-panel{ border-color:#2e4a6b; }
 }
@@ -3881,25 +3879,36 @@ body.book-cover-on .book-top h1{visibility:hidden}
   .teardown-detail.td-sheet-peek .td-sheet-peekhint{
     animation:tdPeekHint 1.8s ease-in-out infinite;
   }
+  /* Mobile detail height is CSS-driven (dvh) so it tracks the browser
+     toolbar continuously — the old JS one-time pixel height went stale
+     when the toolbar showed/hid, leaving a "long screen" on real phones.
+     84px = 66px header offset (46px mobile nav + 20px wrap padding) + 18px margin.
+     min-height must match: the base rule sets min-height:100dvh, which
+     otherwise beats max-height (min wins over max) and forces a full-height
+     detail that scrolls the page. */
+  .teardown-detail{
+    height:calc(100vh - 84px) !important; height:calc(100dvh - 84px) !important;
+    max-height:calc(100vh - 84px) !important; max-height:calc(100dvh - 84px) !important;
+    min-height:calc(100vh - 84px) !important; min-height:calc(100dvh - 84px) !important;
+  }
   /* Mobile sheet shows the widget name in the peek bar, so the duplicate
-     h2 is hidden; the head's X is hidden too (the peek bar has the X). The
-     back button (←) stays — it drops the sheet to the peek. */
+     h2 is hidden; the head's X is hidden too (the peek bar has the X).
+     No back button (←) in the mobile description — the sheet is dismissed
+     via swipe down, tap on the phone, or the peek bar's X. */
   .teardown-detail .td-fi-name{ display:none; }
   .teardown-detail .td-panel-close{ display:none; }
-  /* Back button: mobile only (desktop keeps just the X). */
-  .teardown-detail .td-panel-back{
-    display:grid; place-items:center; flex:none;
-    width:44px; height:44px; border-radius:50%;
-    border:1px solid var(--line); background:var(--bg-elev);
-    color:var(--text); font-size:20px; line-height:1; cursor:pointer;
-  }
-  /* Phone fills its stage, screen flexes to fit (content is flex-based).
-     max-height:none beats the old 100svh-200px cap (line 2422, a leftover
-     from the bottom-sheet layout that left room for the sheet) — with the
-     panel now a bottom sheet, the phone may use the whole workbench. */
+  /* Phone keeps a real-phone aspect (9:19.5) at any viewport height, so it
+     never looks stretched/"long": the width is derived from the flex height
+     via aspect-ratio, capped at the stage width; max-height caps the flex
+     height at (stage width × 19.5/9) so the aspect holds on very tall
+     viewports too (stage width ≈ 100vw − 60px wrap+workbench padding).
+     margin:auto centres the phone when the cap leaves spare space. */
   .teardown-detail .teardown-phone{
-    width:min(100%,316px); padding:7px; border-radius:42px;
-    flex:1 1 auto !important; height:auto; max-height:none !important;
+    width:auto; padding:7px; border-radius:42px;
+    flex:1 1 auto !important; height:auto;
+    aspect-ratio:9 / 19.5; max-width:100%;
+    max-height:calc((100vw - 60px) * 19.5 / 9) !important;
+    margin:auto;
   }
   .teardown-detail .teardown-screen{
     height:auto !important; flex:1 1 auto !important; min-height:0 !important;
@@ -3907,7 +3916,18 @@ body.book-cover-on .book-top h1{visibility:hidden}
     border-radius:34px;
   }
 }
-@keyframes tdPeekHint{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+@keyframes tdPeekHint{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-4px); } }
+/* Teardown code block = lesson book code block, exactly. The panel reuses
+   the book's .codeblock classes, but the book's scroll/cap rules are scoped
+   to .book-sheet-inner, so they are mirrored here for the panel: same
+   margin, same pre (no wrap, scrolls both ways, capped 300px / 240px). */
+.teardown-panel .codeblock{ margin:0 0 14px; }
+.teardown-panel .codeblock pre{ white-space:pre !important; overflow:auto; max-height:300px; margin:0; }
+/* The desktop panel has a broad pre-wrap !important rule (min-width:901px);
+   the !important above is what lets the book's no-wrap pre win for code. */
+@media (max-width:767px){
+  .teardown-panel .codeblock pre{ max-height:240px; }
+}
 /* Desktop: the sheet peek bar is mobile-only. */
 .td-sheet-peekbar{ display:none; }
 @media (prefers-reduced-motion:reduce){

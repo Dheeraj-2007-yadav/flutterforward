@@ -54,7 +54,7 @@ ${currentUser?`<div class="bento-card bento-progress">\n<div class="bento-label"
 </section>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794055435',
+const FF_V='1794057502',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -2091,11 +2091,11 @@ const TD_PROP_DESCS = {
 function tdHighlight(code) {
   var s = esc(code);
   return s.replace(/(&#39;.*?&#39;|\/\/[^\n]*|\b\d+(?:\.\d+)?\b|\b(?:const|final|var|late|required|return|if|else|for|in|while|do|switch|case|default|break|continue|class|extends|implements|with|mixin|enum|import|export|library|part|of|is|as|assert|async|await|yield|sync|get|set|operator|covariant|deferred|hide|show|on|try|catch|finally|throw|rethrow|new|this|super|null|true|false)\b|\b[A-Z][A-Za-z0-9_]*)/g, function(m) {
-    if (m.indexOf('&#39;') === 0) return '<span class="tk-str">' + m + '</span>';
-    if (m.indexOf('//') === 0) return '<span class="tk-com">' + m + '</span>';
-    if (/^\d/.test(m)) return '<span class="tk-num">' + m + '</span>';
-    if (/^[A-Z]/.test(m)) return '<span class="tk-type">' + m + '</span>';
-    return '<span class="tk-kw">' + m + '</span>';
+    if (m.indexOf('&#39;') === 0) return '<span class="tok-s">' + m + '</span>';
+    if (m.indexOf('//') === 0) return '<span class="tok-c">' + m + '</span>';
+    if (/^\d/.test(m)) return '<span class="tok-n">' + m + '</span>';
+    if (/^[A-Z]/.test(m)) return '<span class="tok-f">' + m + '</span>';
+    return '<span class="tok-k">' + m + '</span>';
   });
 }
 
@@ -2126,13 +2126,13 @@ function tdPanel() {
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
     + `<div class="td-sheet-peekbar" data-teardown-peekbar><span class="td-sheet-peekhint"><span class="td-sheet-handle"></span><span class="td-sheet-peekchev"></span></span><span class="td-sheet-peekrow"><span class="td-sheet-peekname">${esc(node.name)}</span><button class="td-sheet-peekclose" data-teardown-close aria-label="Close description">×</button></span></div>`
-    + `<div class="td-panel-head"><button class="td-panel-back" data-teardown-peek aria-label="Back to screen">←</button><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
+    + `<div class="td-panel-head"><div class="teardown-kicker">${esc(item.app)} teardown • ${esc(item.screen)}</div><button class="td-panel-close" data-teardown-close aria-label="Close panel">×</button></div>`
     + `<div class="td-fi-crumb">${crumbs}</div>`
     + `<h2 class="td-fi-name">${esc(node.name)}</h2>`
     + `<p class="td-fi-desc">${esc(node.what)} ${esc(node.why)}</p>`
     + propsHtml
-    + `<div class="td-fi-code-wrap"><div class="td-fi-code-head"><span>Example</span><button class="td-fi-copy" data-teardown-copy>Copy</button></div>`
-    + `<pre class="td-fi-code"><code>${tdHighlight(node.code)}</code></pre></div>`
+    + `<div class="codeblock"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span class="lang">dart</span><button class="copy-btn" data-teardown-copy>Copy</button></div>`
+    + `<pre><code>${tdHighlight(node.code)}</code></pre></div>`
     + `</aside>`;
 }
 function tdDetailView() {
@@ -2168,13 +2168,14 @@ function tdEnforceOneFrame() {
   var d = document.querySelector('.teardown-detail');
   if (!d) return;
   if (isMobile) {
-    // Mobile: size detail to fit viewport accounting for top offset
-    var rect = d.getBoundingClientRect();
-    var top = rect.top;
-    var targetH = window.innerHeight - top - 8;
-    d.style.setProperty('height', targetH + 'px', 'important');
-    d.style.setProperty('min-height', targetH + 'px', 'important');
-    d.style.setProperty('max-height', targetH + 'px', 'important');
+    // Mobile: the detail height is CSS-driven (calc(100dvh - 84px) in the
+    // port block) so it tracks the dynamic viewport continuously. A
+    // one-time JS pixel height goes stale when the browser toolbar
+    // shows/hides — that was the real-device "long screen". Only lock
+    // overflow here, and clear any stale inline height from an earlier render.
+    d.style.removeProperty('height');
+    d.style.removeProperty('min-height');
+    d.style.removeProperty('max-height');
     d.style.setProperty('overflow', 'hidden', 'important');
     return;
   }
@@ -2300,7 +2301,7 @@ function tdSelect(id) { if(!teardownState.app || !tdIndex(TEARDOWNS[teardownStat
 function tdToggleBounds() {}
 function tdCopy() {
   const node=tdSelectedNode(); if(!node)return;
-  const done=()=>{const b=$("[data-teardown-copy]");if(b){b.textContent="Copied ✓";b.classList.add("ok");window.setTimeout(()=>{if(document.contains(b)){b.textContent="Copy code";b.classList.remove("ok");}},1300);}};
+  const done=()=>{const b=$("[data-teardown-copy]");if(b){b.textContent="Copied ✓";b.classList.add("ok");window.setTimeout(()=>{if(document.contains(b)){b.textContent="Copy";b.classList.remove("ok");}},1300);}};
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(node.code).then(done).catch(done);
   else { const ta=document.createElement("textarea");ta.value=node.code;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}ta.remove();done(); }
 }
@@ -2823,9 +2824,6 @@ document.addEventListener("click", function(e){
   // Dismiss pop-out when tapping elsewhere (handled by backdrop)
   var close = t.closest("[data-teardown-close]");
   if (close && typeof tdClose === "function") { tdClose(); return; }
-  // Mobile sheet: back button (←) drops the sheet to the peek strip.
-  var peekBtn = t.closest("[data-teardown-peek]");
-  if (peekBtn && typeof tdSheetPeek === "function") { tdSheetPeek(); return; }
   // Mobile sheet: tapping the peek bar reopens the sheet fully.
   var peekbar = t.closest("[data-teardown-peekbar]");
   if (peekbar && typeof tdSheetOpen === "function") { tdSheetOpen(); return; }
