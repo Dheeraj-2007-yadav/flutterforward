@@ -157,7 +157,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
 
   // Custom PDF viewer — renders pages as canvas, no Drive UI, no download button
   let pdfDoc = null, pdfPage = 1, pdfScale = 1.3, pdfRendering = false;
-  window.__resPreview = function(title, url){
+  window.__resPreview = function(title, url, fileType, paid){
     const fileId = driveFileId(url);
     const directUrl = fileId
       ? "https://drive.google.com/uc?export=download&id=" + fileId
@@ -170,7 +170,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       modal.innerHTML =
         '<div class="res-modal-backdrop" id="res-modal-backdrop"></div>' +
         '<div class="res-modal-box res-pdf-box">' +
-          '<div class="res-modal-head"><h3 id="res-modal-title"></h3>' +
+          '<div class="res-modal-head"><div class="res-modal-head-copy"><div class="caps" id="res-modal-type">PDF</div><h3 id="res-modal-title"></h3></div>' +
           '<div class="res-pdf-controls">' +
             '<button class="res-pdf-btn" id="res-pdf-prev" aria-label="Previous page">&larr;</button>' +
             '<span class="res-pdf-pagenum"><span id="res-pdf-cur">1</span> / <span id="res-pdf-total">?</span></span>' +
@@ -196,6 +196,8 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       document.getElementById("res-pdf-zout").addEventListener("click", function(){ pdfScale = Math.max(0.6, pdfScale - 0.25); renderPdfPage(); });
     }
     document.getElementById("res-modal-title").textContent = title;
+    const typeEl = document.getElementById("res-modal-type");
+    if(typeEl) typeEl.textContent = String(fileType||"PDF").toUpperCase() + " · " + (paid ? "Paid" : "Free");
     // Restore original body content (fallback may have replaced it)
     const body = document.getElementById("res-pdf-body");
     if(!document.getElementById("res-pdf-canvas")){
@@ -271,21 +273,15 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
   views.resources = function(){
     const admin = isAdmin();
     return `
-    <div class="wrap">
-      <div class="page-head">
-        <h1 class="res-page-title">Student Resources</h1>
-        <p class="page-sub res-page-sub">Cheat sheets, notes, and guides to accelerate your Flutter progress.</p>
-      </div>
-      <div class="res-toolbar">
-        <div class="res-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" id="res-search-input" placeholder="Search resources..." />
-        </div>
-        <div class="res-filters">
-          <button class="res-filter active" data-filter="all">All <span id="res-count-all"></span></button>
-          <button class="res-filter" data-filter="free">Free <span id="res-count-free"></span></button>
-          <button class="res-filter" data-filter="paid">Paid <span id="res-count-paid"></span></button>
-        </div>
+    <div class="wrap resources-page">
+      <div class="page-head resources-head"><div class="resources-head-copy"><div class="caps">Cheatsheets · PDFs · Videos</div><h1>Resources</h1><p class="lede">Quick references to keep beside you while you build.</p></div><div class="resources-head-search"><span aria-hidden="true">⌕</span><input type="search" id="res-search-input" placeholder="Search resources…" aria-label="Search resources"></div></div>
+      <div class="chips res-chips" role="group" aria-label="Filter resources">
+        <button class="chip res-filter active" data-filter="all">All <span id="res-count-all"></span></button>
+        <button class="chip res-filter" data-filter="free">Free <span id="res-count-free"></span></button>
+        <button class="chip res-filter" data-filter="paid">Paid <span id="res-count-paid"></span></button>
+        <button class="chip res-filter" data-filter="pdf">PDF <span id="res-count-pdf"></span></button>
+        <button class="chip res-filter" data-filter="video">Video <span id="res-count-video"></span></button>
+        <button class="chip res-filter" data-filter="cheatsheet">Cheatsheet <span id="res-count-cheatsheet"></span></button>
       </div>
       ${admin ? `
       <div class="card" id="res-admin" style="margin-bottom:20px">
@@ -471,7 +467,16 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     const searchInput = document.getElementById("res-search-input");
     if(searchInput && !searchInput.dataset.wired){
       searchInput.dataset.wired = "1";
-      searchInput.addEventListener("input", applyResFilter);
+      // The in-page box must feed the shared query applyResFilter() reads,
+      // otherwise typing here filters nothing (navbar search was the only
+      // path that set __navSearchQuery). Behaviour fix, 2026-11-09.
+      searchInput.addEventListener("input", function(){
+        window.__navSearchQuery = searchInput.value;
+        applyResFilter();
+      });
+      searchInput.addEventListener("keydown", function(e){
+        if(e.key === "Escape"){ searchInput.value = ""; window.__navSearchQuery = ""; applyResFilter(); searchInput.blur(); }
+      });
     }
     document.querySelectorAll(".res-filter").forEach(function(f){
       if(f.dataset.wired) return;
@@ -495,17 +500,22 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     const q = (window.__navSearchQuery||"").toLowerCase().trim();
     const active = document.querySelector(".res-filter.active");
     const filter = active ? active.dataset.filter : "all";
-    document.querySelectorAll(".res-item").forEach(function(row){
-      const title = (row.dataset.title||"").toLowerCase();
-      const paid = row.dataset.paid;
-      const matchQ = !q || title.includes(q);
-      const matchF = filter === "all" || (filter === "free" && paid === "free") || (filter === "paid" && paid === "paid");
-      row.classList.toggle("hidden", !(matchQ && matchF));
-    });
     let n = 0;
-    document.querySelectorAll(".res-item:not(.hidden)").forEach(function(row){
-      const num = row.querySelector(".res-item-num");
-      if(num) num.textContent = String(++n).padStart(2, "0");
+    document.querySelectorAll(".res-card, .res-item").forEach(function(row){
+      const hay = (row.dataset.search || ((row.dataset.title||"") + " " + (row.dataset.cat||"") + " " + (row.dataset.type||""))).toLowerCase();
+      const paid = row.dataset.paid;
+      const type = (row.dataset.type||"").toLowerCase();
+      const cat = (row.dataset.cat||"").toLowerCase();
+      const matchQ = !q || hay.indexOf(q) >= 0;
+      let matchF = true;
+      if(filter === "free") matchF = paid === "free";
+      else if(filter === "paid") matchF = paid === "paid";
+      else if(filter === "pdf") matchF = type === "pdf";
+      else if(filter === "video") matchF = type === "video";
+      else if(filter === "cheatsheet") matchF = cat.indexOf("cheatsheet") >= 0;
+      const show = matchQ && matchF;
+      row.classList.toggle("hidden", !show);
+      if(show) n++;
     });
     const empty = document.querySelector(".res-empty");
     if(empty) empty.style.display = n === 0 ? "" : "none";
@@ -526,20 +536,27 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       window.__resData = window.__resCache.data;
       if(isAdmin()){ list.querySelectorAll("[data-admin-only]").forEach(function(el){ el.style.display = ""; }); }
       // Restore filter counts from cached data
-      let nAll = 0, nFree = 0, nPaid = 0;
+      let nAll = 0, nFree = 0, nPaid = 0, nPdf = 0, nVideo = 0, nCheat = 0;
       Object.values(window.__resData).forEach(function(r){
         nAll++; if(r.paid) nPaid++; else nFree++;
+        const ft = String(r.fileType||"").toLowerCase();
+        if(ft === "pdf") nPdf++;
+        if(ft === "video") nVideo++;
+        if(String(r.category||"").toLowerCase().indexOf("cheatsheet") >= 0) nCheat++;
       });
       setCount("res-count-all", nAll);
       setCount("res-count-free", nFree);
       setCount("res-count-paid", nPaid);
+      setCount("res-count-pdf", nPdf);
+      setCount("res-count-video", nVideo);
+      setCount("res-count-cheatsheet", nCheat);
       if(window.applyResFilter) window.applyResFilter();
       list.querySelectorAll("[data-paid-note]").forEach(function(b){
         b.addEventListener("click", function(){
           alert("This is a paid resource. Please contact the admin to purchase access.");
         });
       });
-      list.querySelectorAll(".res-item").forEach(function(row){
+      list.querySelectorAll(".res-card").forEach(function(row){
         row.addEventListener("keydown", function(e){
           if(e.key === "Enter" || e.key === " "){
             e.preventDefault();
@@ -554,7 +571,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         list.innerHTML = '<div class="card"><p class="muted">No resources yet. Check back soon!</p></div>';
         return;
       }
-      let html = '<div class="res-list">';
+      let html = '<div class="res-grid">';
       let idx = 0;
       window.__resData = window.__resData || {};
       snap.forEach(function(doc){
@@ -566,30 +583,27 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
           fileType: r.fileType||"PDF", paid: paid, price: r.price||"" };
         const fileType = escHtml((r.fileType||(r.type==="link"?"PDF":r.type)||"PDF").toUpperCase());
         const priceLabel = paid ? escHtml(fmtPrice(r.price)) : "Free";
-        const clickAction = paid ? `data-paid-note` : `onclick="window.__resPreview(window.__resData['${key}'].title, window.__resData['${key}'].url)"`;
-        const num = String(idx).padStart(2, "0");
+        const clickAction = paid ? `data-paid-note` : `onclick="window.__resPreview(window.__resData['${key}'].title, window.__resData['${key}'].url, window.__resData['${key}'].fileType, window.__resData['${key}'].paid)"`;
         const thumbUrl = driveThumb(r.storageUrl);
+        const cat = escHtml(r.category||"");
+        const typeKey = String(r.fileType||"PDF").toLowerCase();
+        const searchHay = escHtml(((r.title||"") + " " + (r.category||"") + " " + (r.fileType||"PDF")).toLowerCase());
         html += `
-        <div class="res-item" data-title="${escHtml((r.title||"").toLowerCase())}" data-paid="${paid?"paid":"free"}" ${clickAction} role="button" tabindex="0">
-          <div class="res-item-thumb" aria-hidden="true">
-            <span class="res-item-thumb-dash"></span>
-            <span class="res-item-thumb-title">${escHtml(r.title)}</span>
-            <span class="res-item-thumb-line"></span>
-            <span class="res-item-thumb-line"></span>
-            <span class="res-item-thumb-line"></span>
-            ${thumbUrl ? `<img class="res-item-thumb-img" src="${escHtml(thumbUrl)}" alt="" loading="lazy" onerror="this.style.display='none'" />` : ``}
+        <article class="res-card" data-search="${searchHay}" data-title="${escHtml((r.title||"").toLowerCase())}" data-cat="${escHtml((r.category||"").toLowerCase())}" data-type="${typeKey}" data-paid="${paid?"paid":"free"}" ${clickAction} role="button" tabindex="0">
+          <div class="res-card-thumb res-thumb-${typeKey}" aria-hidden="true">
+            ${thumbUrl ? `<img class="res-card-thumb-img" src="${escHtml(thumbUrl)}" alt="" loading="lazy" onerror="this.style.display='none'" />` : `<span class="res-card-thumb-icon">${fileIcon(r.fileType)}</span>`}
           </div>
-          <div class="res-item-main">
-            <span class="res-item-kicker"><span class="res-item-num">${num}</span> · ${fileType}</span>
-            <h3 class="res-item-title">${escHtml(r.title)}</h3>
-            ${r.description ? `<p class="res-item-desc">${escHtml(r.description)}</p>` : ``}
+          <div class="res-card-body">
+            <h3 class="res-card-title">${escHtml(r.title)}</h3>
+            <p class="res-card-meta">${fileType}${cat ? " · " + cat : ""}</p>
+            ${r.description ? `<p class="res-card-desc">${escHtml(r.description)}</p>` : ``}
           </div>
-          <div class="res-item-side">
-            <span class="res-item-price ${paid?"paid":"free"}">${priceLabel}</span>
-            <span class="res-item-go">${paid ? "Get access" : "View"} →</span>
+          <div class="res-card-foot">
+            <span class="res-price-chip ${paid?"paid":"free"}">${priceLabel}</span>
+            <span class="res-go">${paid ? "Get access" : "Open"} →</span>
             <button class="res-edit-btn" data-admin-only style="display:none" onclick="event.stopPropagation();window.__resEdit('${key}')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
           </div>
-        </div>`;
+        </article>`;
       });
       html += '</div>';
       html += '<div class="res-empty" style="display:none"><p class="muted">No resources found. Try a different search.</p></div>';
@@ -601,14 +615,22 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         list.querySelectorAll("[data-admin-only]").forEach(function(el){ el.style.display = ""; });
       }
       // Update filter counts
-      let nAll = 0, nFree = 0, nPaid = 0;
+      let nAll = 0, nFree = 0, nPaid = 0, nPdf = 0, nVideo = 0, nCheat = 0;
       snap.forEach(function(doc){
+        const d = doc.data()||{};
         nAll++;
-        if(doc.data().freeOrPaid === "paid") nPaid++; else nFree++;
+        if(d.freeOrPaid === "paid") nPaid++; else nFree++;
+        const ft = String(d.fileType||"").toLowerCase();
+        if(ft === "pdf") nPdf++;
+        if(ft === "video") nVideo++;
+        if(String(d.category||"").toLowerCase().indexOf("cheatsheet") >= 0) nCheat++;
       });
       setCount("res-count-all", nAll);
       setCount("res-count-free", nFree);
       setCount("res-count-paid", nPaid);
+      setCount("res-count-pdf", nPdf);
+      setCount("res-count-video", nVideo);
+      setCount("res-count-cheatsheet", nCheat);
       if(window.applyResFilter) window.applyResFilter();
       setTimeout(function(){ if(window.__resCheckDesc) window.__resCheckDesc(); }, 100);
       list.querySelectorAll("[data-paid-note]").forEach(function(b){
@@ -616,7 +638,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
           alert("This is a paid resource. Please contact the admin to purchase access.");
         });
       });
-      list.querySelectorAll(".res-item").forEach(function(row){
+      list.querySelectorAll(".res-card").forEach(function(row){
         row.addEventListener("keydown", function(e){
           if(e.key === "Enter" || e.key === " "){
             e.preventDefault();
