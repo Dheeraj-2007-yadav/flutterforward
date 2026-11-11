@@ -157,7 +157,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
 
   // Custom PDF viewer — renders pages as canvas, no Drive UI, no download button
   let pdfDoc = null, pdfPage = 1, pdfScale = 1.3, pdfRendering = false;
-  window.__resPreview = function(title, url, fileType, paid){
+  window.__resPreview = function(title, url, fileType, paid, desc){
     const fileId = driveFileId(url);
     const directUrl = fileId
       ? "https://drive.google.com/uc?export=download&id=" + fileId
@@ -170,7 +170,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       modal.innerHTML =
         '<div class="res-modal-backdrop" id="res-modal-backdrop"></div>' +
         '<div class="res-modal-box res-pdf-box">' +
-          '<div class="res-modal-head"><div class="res-modal-head-copy"><div class="caps" id="res-modal-type">PDF</div><h3 id="res-modal-title"></h3></div>' +
+          '<div class="res-modal-head"><div class="res-modal-head-copy"><div class="caps" id="res-modal-type">PDF</div><h3 id="res-modal-title"></h3><p class="res-modal-desc" id="res-modal-desc"></p></div>' +
           '<div class="res-pdf-controls">' +
             '<button class="res-pdf-btn" id="res-pdf-prev" aria-label="Previous page">&larr;</button>' +
             '<span class="res-pdf-pagenum"><span id="res-pdf-cur">1</span> / <span id="res-pdf-total">?</span></span>' +
@@ -196,6 +196,8 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       document.getElementById("res-pdf-zout").addEventListener("click", function(){ pdfScale = Math.max(0.6, pdfScale - 0.25); renderPdfPage(); });
     }
     document.getElementById("res-modal-title").textContent = title;
+    const descEl = document.getElementById("res-modal-desc");
+    if(descEl){ descEl.textContent = desc || ""; descEl.style.display = desc ? "" : "none"; }
     const typeEl = document.getElementById("res-modal-type");
     if(typeEl) typeEl.textContent = String(fileType||"PDF").toUpperCase() + " · " + (paid ? "Paid" : "Free");
     // Restore original body content (fallback may have replaced it)
@@ -274,14 +276,11 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     const admin = isAdmin();
     return `
     <div class="wrap resources-page">
-      <div class="page-head resources-head"><div class="resources-head-copy"><div class="caps">Cheatsheets · PDFs · Videos</div><h1>Resources</h1><p class="lede">Quick references to keep beside you while you build.</p></div><div class="resources-head-search"><span aria-hidden="true">⌕</span><input type="search" id="res-search-input" placeholder="Search resources…" aria-label="Search resources"></div></div>
+      <div class="page-head resources-head"><div class="resources-head-copy"><h1>Resources</h1><p class="lede">Quick references to keep beside you while you build.</p></div></div>
       <div class="chips res-chips" role="group" aria-label="Filter resources">
         <button class="chip res-filter active" data-filter="all">All <span id="res-count-all"></span></button>
         <button class="chip res-filter" data-filter="free">Free <span id="res-count-free"></span></button>
         <button class="chip res-filter" data-filter="paid">Paid <span id="res-count-paid"></span></button>
-        <button class="chip res-filter" data-filter="pdf">PDF <span id="res-count-pdf"></span></button>
-        <button class="chip res-filter" data-filter="video">Video <span id="res-count-video"></span></button>
-        <button class="chip res-filter" data-filter="cheatsheet">Cheatsheet <span id="res-count-cheatsheet"></span></button>
       </div>
       ${admin ? `
       <div class="card" id="res-admin" style="margin-bottom:20px">
@@ -463,21 +462,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     if(btn){
       btn.addEventListener("click", function(){ window.__resPublish(); });
     }
-    // Search + filter wiring
-    const searchInput = document.getElementById("res-search-input");
-    if(searchInput && !searchInput.dataset.wired){
-      searchInput.dataset.wired = "1";
-      // The in-page box must feed the shared query applyResFilter() reads,
-      // otherwise typing here filters nothing (navbar search was the only
-      // path that set __navSearchQuery). Behaviour fix, 2026-11-09.
-      searchInput.addEventListener("input", function(){
-        window.__navSearchQuery = searchInput.value;
-        applyResFilter();
-      });
-      searchInput.addEventListener("keydown", function(e){
-        if(e.key === "Escape"){ searchInput.value = ""; window.__navSearchQuery = ""; applyResFilter(); searchInput.blur(); }
-      });
-    }
+    // Filter wiring (search lives in the navbar; it sets __navSearchQuery)
     document.querySelectorAll(".res-filter").forEach(function(f){
       if(f.dataset.wired) return;
       f.dataset.wired = "1";
@@ -504,15 +489,10 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
     document.querySelectorAll(".res-card, .res-item").forEach(function(row){
       const hay = (row.dataset.search || ((row.dataset.title||"") + " " + (row.dataset.cat||"") + " " + (row.dataset.type||""))).toLowerCase();
       const paid = row.dataset.paid;
-      const type = (row.dataset.type||"").toLowerCase();
-      const cat = (row.dataset.cat||"").toLowerCase();
       const matchQ = !q || hay.indexOf(q) >= 0;
       let matchF = true;
       if(filter === "free") matchF = paid === "free";
       else if(filter === "paid") matchF = paid === "paid";
-      else if(filter === "pdf") matchF = type === "pdf";
-      else if(filter === "video") matchF = type === "video";
-      else if(filter === "cheatsheet") matchF = cat.indexOf("cheatsheet") >= 0;
       const show = matchQ && matchF;
       row.classList.toggle("hidden", !show);
       if(show) n++;
@@ -536,20 +516,13 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
       window.__resData = window.__resCache.data;
       if(isAdmin()){ list.querySelectorAll("[data-admin-only]").forEach(function(el){ el.style.display = ""; }); }
       // Restore filter counts from cached data
-      let nAll = 0, nFree = 0, nPaid = 0, nPdf = 0, nVideo = 0, nCheat = 0;
+      let nAll = 0, nFree = 0, nPaid = 0;
       Object.values(window.__resData).forEach(function(r){
         nAll++; if(r.paid) nPaid++; else nFree++;
-        const ft = String(r.fileType||"").toLowerCase();
-        if(ft === "pdf") nPdf++;
-        if(ft === "video") nVideo++;
-        if(String(r.category||"").toLowerCase().indexOf("cheatsheet") >= 0) nCheat++;
       });
       setCount("res-count-all", nAll);
       setCount("res-count-free", nFree);
       setCount("res-count-paid", nPaid);
-      setCount("res-count-pdf", nPdf);
-      setCount("res-count-video", nVideo);
-      setCount("res-count-cheatsheet", nCheat);
       if(window.applyResFilter) window.applyResFilter();
       list.querySelectorAll("[data-paid-note]").forEach(function(b){
         b.addEventListener("click", function(){
@@ -583,7 +556,7 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
           fileType: r.fileType||"PDF", paid: paid, price: r.price||"" };
         const fileType = escHtml((r.fileType||(r.type==="link"?"PDF":r.type)||"PDF").toUpperCase());
         const priceLabel = paid ? escHtml(fmtPrice(r.price)) : "Free";
-        const clickAction = paid ? `data-paid-note` : `onclick="window.__resPreview(window.__resData['${key}'].title, window.__resData['${key}'].url, window.__resData['${key}'].fileType, window.__resData['${key}'].paid)"`;
+        const clickAction = paid ? `data-paid-note` : `onclick="window.__resPreview(window.__resData['${key}'].title, window.__resData['${key}'].url, window.__resData['${key}'].fileType, window.__resData['${key}'].paid, window.__resData['${key}'].description)"`;
         const thumbUrl = driveThumb(r.storageUrl);
         const cat = escHtml(r.category||"");
         const typeKey = String(r.fileType||"PDF").toLowerCase();
@@ -595,8 +568,6 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
           </div>
           <div class="res-card-body">
             <h3 class="res-card-title">${escHtml(r.title)}</h3>
-            <p class="res-card-meta">${fileType}${cat ? " · " + cat : ""}</p>
-            ${r.description ? `<p class="res-card-desc">${escHtml(r.description)}</p>` : ``}
           </div>
           <div class="res-card-foot">
             <span class="res-price-chip ${paid?"paid":"free"}">${priceLabel}</span>
@@ -615,22 +586,15 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         list.querySelectorAll("[data-admin-only]").forEach(function(el){ el.style.display = ""; });
       }
       // Update filter counts
-      let nAll = 0, nFree = 0, nPaid = 0, nPdf = 0, nVideo = 0, nCheat = 0;
+      let nAll = 0, nFree = 0, nPaid = 0;
       snap.forEach(function(doc){
         const d = doc.data()||{};
         nAll++;
         if(d.freeOrPaid === "paid") nPaid++; else nFree++;
-        const ft = String(d.fileType||"").toLowerCase();
-        if(ft === "pdf") nPdf++;
-        if(ft === "video") nVideo++;
-        if(String(d.category||"").toLowerCase().indexOf("cheatsheet") >= 0) nCheat++;
       });
       setCount("res-count-all", nAll);
       setCount("res-count-free", nFree);
       setCount("res-count-paid", nPaid);
-      setCount("res-count-pdf", nPdf);
-      setCount("res-count-video", nVideo);
-      setCount("res-count-cheatsheet", nCheat);
       if(window.applyResFilter) window.applyResFilter();
       setTimeout(function(){ if(window.__resCheckDesc) window.__resCheckDesc(); }, 100);
       list.querySelectorAll("[data-paid-note]").forEach(function(b){
