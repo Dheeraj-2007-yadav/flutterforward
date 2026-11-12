@@ -94,8 +94,8 @@ ${currentUser?`<div class="ff-rank-card">
 </div>`:""}
 </div>
 <div class="ff-stats">
-<div class="ff-stat"><div class="ff-stat-top"><span class="caps">Lessons</span><span class="ff-stat-ico">📘</span></div><div class="ff-stat-num">${doneN}<span class="ff-faint"> / 40</span></div><div class="ff-bar"><i style="width:${Math.round(doneN/40*100)}%"></i></div><div class="ff-stat-sub">${doneN>=40?"All 40 done":`${40-doneN} to go`}</div></div>
-<div class="ff-stat"><div class="ff-stat-top"><span class="caps">Quizzes</span><span class="ff-stat-ico">✏️</span></div><div class="ff-stat-num">${passN}<span class="ff-faint"> / 40</span></div><div class="ff-bar"><i style="width:${Math.round(passN/40*100)}%"></i></div><div class="ff-stat-sub">${best===null?"No attempts yet":`Best score ${best}%`}</div></div>
+<div class="ff-stat"><div class="ff-stat-top"><span class="caps">Lessons</span><span class="ff-stat-ico">📘</span></div><div class="ff-stat-num">${doneN}<span class="ff-faint"> / 40</span></div><div class="ff-bar"><i style="width:${Math.round(doneN/40*100)}%"></i></div><div class="ff-stat-sub">${doneN>=40?"All 40 done":""}</div></div>
+<div class="ff-stat"><div class="ff-stat-top"><span class="caps">Quizzes</span><span class="ff-stat-ico">✏️</span></div><div class="ff-stat-num">${passN}<span class="ff-faint"> / 40</span></div><div class="ff-bar"><i style="width:${Math.round(passN/40*100)}%"></i></div><div class="ff-stat-sub">${best===null?"":`Best score ${best}%`}</div></div>
 <div class="ff-stat"><div class="ff-stat-top"><span class="caps">Teardowns</span><span class="ff-stat-ico">🔍</span></div><div class="ff-stat-num">${tdApps}<span class="ff-faint"> apps</span></div><div class="ff-stat-sub">${tdScreens} screens to explore</div></div>
 <div class="ff-stat"><div class="ff-stat-top"><span class="caps">Concepts</span><span class="ff-stat-ico">⬢</span></div><div class="ff-stat-num">${doneC}<span class="ff-faint"> / 40</span></div><div class="ff-bar"><i style="width:${Math.round(doneC/40*100)}%"></i></div><div class="ff-stat-sub">${currentUser?(nextRank?`Next rank: ${esc(nextRank.name)} in ${toNext}`:"Top rank — Flutter Master"):"Log in to save progress"}</div></div>
 </div>
@@ -122,7 +122,7 @@ ${currentUser?`<div class="ff-rank-card">
 </div>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794447257',
+const FF_V='1794460006',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},

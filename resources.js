@@ -564,13 +564,14 @@ const ADMIN_EMAIL = "dy78dy77@gmail.com";
         html += `
         <article class="res-card" data-search="${searchHay}" data-title="${escHtml((r.title||"").toLowerCase())}" data-cat="${escHtml((r.category||"").toLowerCase())}" data-type="${typeKey}" data-paid="${paid?"paid":"free"}" ${clickAction} role="button" tabindex="0">
           <div class="res-card-thumb res-thumb-${typeKey}" aria-hidden="true">
-            ${thumbUrl ? `<img class="res-card-thumb-img" src="${escHtml(thumbUrl)}" alt="" loading="lazy" onerror="this.style.display='none'" />` : `<span class="res-card-thumb-icon">${fileIcon(r.fileType)}</span>`}
+            <span class="res-card-thumb-icon">${fileIcon(r.fileType)}<span class="res-card-thumb-type">${fileType}</span></span>
+            ${thumbUrl ? `<img class="res-card-thumb-img" src="${escHtml(thumbUrl)}" alt="" loading="lazy" onerror="this.remove()" />` : ``}
           </div>
           <div class="res-card-body">
             <h3 class="res-card-title">${escHtml(r.title)}</h3>
           </div>
           <div class="res-card-foot">
-            <span class="res-price-chip ${paid?"paid":"free"}">${priceLabel}</span>
+            <span class="res-card-price ${paid?"paid":"free"}">${priceLabel}</span>
             <span class="res-go">${paid ? "Get access" : "Open"} →</span>
             <button class="res-edit-btn" data-admin-only style="display:none" onclick="event.stopPropagation();window.__resEdit('${key}')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
           </div>
