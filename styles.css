@@ -414,7 +414,7 @@ body.teardowns-page .wrap.wide { max-width: 1120px; }
 .ig-avatar { width:69px;height:69px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;color:#fff;background:#687585;font-size:17px;font-weight:800; }
 .ig-stats { flex:1; display:flex; justify-content:space-between; text-align:center; }
 .ig-stat { min-width:48px; }.ig-stat b { display:block;font-size:13px; }.ig-stat span { display:block;color:#444;font-size:8px; }
-.ig-bio { margin-top:10px; font-size:9px; line-height:1.4; }.ig-bio b { display:block;font-size:10px; }
+.ig-bio { margin-top:10px; font-size:9px; line-height:1.4; }.ig-bio b { display:block;font-size:10px; }.ig-bio [data-node="ig-bio-link"] { display:block; }
 .ig-actions { display:grid;grid-template-columns:1fr 1fr 34px;gap:5px;margin-top:10px; }
 .ig-actions > span { min-height:30px;display:grid;place-items:center;border-radius:7px;background:#efefef;font-size:8.5px;font-weight:700; }
 .ig-actions > span > span { width:100%;min-height:30px;display:grid;place-items:center; }
@@ -2178,7 +2178,9 @@ body.home-page .wrap { padding-top: 12px; }
   font-weight: 600;
   color: var(--ink);
   margin-bottom: 4px;
-  word-break: break-word;
+  /* Wrap property values at word boundaries only, never mid-word. */
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 .td-fi-pname .td-val {
   color: var(--accent);
@@ -2245,11 +2247,16 @@ body.home-page .wrap { padding-top: 12px; }
 .td-fi-crumb span::after { content: "\200b"; }
 
 .td-fi-pname {
-  word-break: break-word;
+  /* Wrap at word boundaries only — never mid-word. overflow-wrap:
+     break-word breaks a single unbreakable token only when that token
+     alone is wider than the panel (otherwise it would overflow). */
+  word-break: normal;
+  overflow-wrap: break-word;
   line-height: 1.5;
 }
 .td-fi-pname .td-val {
-  word-break: break-all;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 .td-fi-pdesc {
   line-height: 1.6;
@@ -2326,7 +2333,7 @@ body.home-page .wrap { padding-top: 12px; }
 
 /* --- Snapshot picker (real-UI cards) — restored 2026-11-09 --------- */
 /* The picker shows each widget's own rendered element from the phone
-   mock, scaled to fit the card box. A blue inset outline marks that
+   mock, scaled to fit the card box. An ink inset outline marks that
    widget's own box, so a parent and its child stay distinguishable. */
 .td-popout-box { background: var(--bg-elev); }
 .td-popout-widget { width: 100%; height: 100%; }
@@ -3023,7 +3030,9 @@ body.home-page .wrap { padding-top: 12px; }
 .st-switch.on i{left:18px;}
 
 .ig-highlights{display:flex;gap:14px;padding:2px 14px 12px;}
+.ig-story{display:flex;flex-direction:column;align-items:center;gap:4px;width:56px;flex:none;}
 .ig-story i{width:52px;height:52px;border-radius:50%;border:2px solid #d83282;background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:700;font-size:13px;}
+.ig-story-label{font-size:11px;font-weight:600;text-align:center;white-space:nowrap;}
 .lg-screen{height:calc(100% - 28px);display:flex;flex-direction:column;color:#0a1828;background:#fff;}
 .lg-safe{flex:1;display:flex;min-height:0;}
 .lg-center{flex:1;display:flex;flex-direction:column;min-height:0;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:24px 0 12px;}
@@ -3084,6 +3093,9 @@ body.home-page .wrap { padding-top: 12px; }
 .yt-nav svg { width: 20px; height: 20px; }
 /* Spotify home recreation — dark inside the phone in both site themes */
 .app-status:has(+ .sp-screen) { color: #fff; background: #121212; }
+/* 2026-11-11 Worker C fix #6: Spotify Search / Now Playing / Playlist and Netflix Title detail are dark-only apps — force their status bars dark too (tdStatus(false) renders them white in light site theme; Playlist's tdStatus(true) rendered WhatsApp-green #075e54). */
+.app-status:has(+ .spp-screen), .app-status:has(+ .ss-screen), .app-status:has(+ .spl-screen) { color: #fff; background: #121212; }
+.app-status:has(+ .nd-screen) { color: #fff; background: #141414; }
 .sp-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: #fff; background: #121212; }
 .sp-top { display: flex; align-items: center; gap: 8px; padding: 12px 14px 4px; }
 .sp-top b { flex: 1; min-width: 0; font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
@@ -3091,18 +3103,18 @@ body.home-page .wrap { padding-top: 12px; }
 .sp-top-actions svg { width: 19px; height: 19px; display: block; }
 .sp-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; padding: 6px 14px 10px; }
 .sp-scroll::-webkit-scrollbar { display: none; width: 0; }
-.sp-scroll h3 { margin: 18px 0 10px; font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
-.sp-chips { display: flex; gap: 7px; margin: 6px 0 14px; }
+.sp-scroll h3 { margin: 12px 0 10px; font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
+.sp-chips { display: flex; gap: 7px; margin: 6px 0 8px; }
 .sp-chip { min-height: 28px; display: grid; place-items: center; padding: 0 12px; border-radius: 999px; color: #fff; background: #2a2a2a; font-size: 10px; font-weight: 700; }
 .sp-chip.on { color: #000; background: #fff; }
-.sp-quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sp-quick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .sp-quick-card { overflow: hidden; border-radius: 5px; background: #2a2a2a; }
 .sp-card-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.sp-card-art { width: 46px; height: 46px; flex: none; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 800; }
-.sp-card-row > span:last-child { min-width: 0; overflow: hidden; font-size: 9.5px; font-weight: 700; line-height: 1.25; white-space: nowrap; text-overflow: ellipsis; }
+.sp-card-art { width: 38px; height: 38px; flex: none; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 800; }
+.sp-card-row > span:last-child { min-width: 0; overflow: hidden; font-size: 9.5px; font-weight: 700; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .sp-recent { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; }
 .sp-recent-card { min-width: 0; }
-.sp-recent-art { aspect-ratio: 1; display: grid; place-items: center; margin-bottom: 7px; border-radius: 5px; color: #fff; font-size: 17px; font-weight: 800; }
+.sp-recent-art { aspect-ratio: 1; display: grid; place-items: center; margin-bottom: 5px; border-radius: 5px; color: #fff; font-size: 17px; font-weight: 800; }
 .sp-recent-col b { display: block; font-size: 10.5px; }
 .sp-recent-col > span:last-child { display: block; margin-top: 2px; color: #b3b3b3; font-size: 8.5px; }
 .sp-made { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 2px; }
@@ -3345,14 +3357,14 @@ body.home-page .wrap { padding-top: 12px; }
 .gc-snackbar > span:first-child { flex: 1; min-width: 0; }
 .gc-undo { flex: none; font-size: 12px; font-weight: 700; color: #ea4335; }
 /* Teardown: spotify-player */
-.spp-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: var(--text); background: var(--bg-elev); }
+.spp-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: #fff; background: #121212; } /* Worker C fix #6: dark-only app, forced dark */
 .spp-bar { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 14px 6px; }
-.spp-collapse { flex: none; display: grid; place-items: center; width: 30px; height: 30px; color: var(--text-2); }
+.spp-collapse { flex: none; display: grid; place-items: center; width: 30px; height: 30px; color: rgba(255,255,255,.7); }
 .spp-collapse svg { width: 20px; height: 20px; display: block; }
 .spp-appbar-title { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 1px; }
-.spp-context { font-size: 8px; letter-spacing: 1.2px; color: var(--text-3); }
+.spp-context { font-size: 8px; letter-spacing: 1.2px; color: rgba(255,255,255,.6); }
 .spp-appbar-title b { font-size: 12px; font-weight: 700; }
-.spp-more { flex: none; display: grid; place-items: center; width: 30px; height: 30px; font-size: 17px; letter-spacing: 2px; color: var(--text-2); }
+.spp-more { flex: none; display: grid; place-items: center; width: 30px; height: 30px; font-size: 17px; letter-spacing: 2px; color: rgba(255,255,255,.7); }
 .spp-player { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; padding: 6px 20px 16px; }
 .spp-player::-webkit-scrollbar { display: none; width: 0; }
 .spp-content { display: flex; flex-direction: column; }
@@ -3361,20 +3373,20 @@ body.home-page .wrap { padding-top: 12px; }
 .spp-title-row { display: flex; align-items: center; gap: 10px; }
 .spp-song-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .spp-song-info b { font-size: 17px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.spp-song-info > span:last-child { font-size: 11px; color: var(--text-3); }
+.spp-song-info > span:last-child { font-size: 11px; color: rgba(255,255,255,.6); }
 .spp-like { flex: none; display: grid; place-items: center; width: 34px; height: 34px; font-size: 19px; color: #1db954; }
-.spp-seek-row { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 10px; color: var(--text-3); }
+.spp-seek-row { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 10px; color: rgba(255,255,255,.6); }
 .spp-seek-expanded { flex: 1; min-width: 0; display: flex; align-items: center; }
-.spp-seek { position: relative; flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+.spp-seek { position: relative; flex: 1; height: 4px; border-radius: 2px; background: #4d4d4d; }
 .spp-seek i { display: block; height: 100%; border-radius: 2px; background: #1db954; }
-.spp-seek b { position: absolute; left: 42%; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: var(--text); transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+.spp-seek b { position: absolute; left: 42%; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
 .spp-controls { display: flex; align-items: center; margin-top: 18px; }
-.spp-ctl { flex: none; display: grid; place-items: center; width: 36px; height: 36px; color: var(--text); }
+.spp-ctl { flex: none; display: grid; place-items: center; width: 36px; height: 36px; color: #fff; }
 .spp-ctl svg { width: 20px; height: 20px; display: block; }
 .spp-spacer { flex: 1; min-width: 4px; }
-.spp-play { flex: none; display: grid; place-items: center; width: 56px; height: 56px; margin: 0 6px; border-radius: 50%; color: var(--bg); background: var(--text); font-size: 15px; letter-spacing: 2px; }
+.spp-play { flex: none; display: grid; place-items: center; width: 56px; height: 56px; margin: 0 6px; border-radius: 50%; color: #000; background: #fff; font-size: 15px; letter-spacing: 2px; }
 .spp-bottom-row { display: flex; align-items: center; margin-top: 20px; }
-.spp-bottom-row .spp-ctl { color: var(--text-2); }
+.spp-bottom-row .spp-ctl { color: rgba(255,255,255,.7); }
 /* Teardown: youtube-player */
 /* YouTube — Video player teardown (yp- prefix). Theme vars only, plus YouTube red. */
 .yp-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: var(--text); background: var(--bg); }
@@ -3440,14 +3452,14 @@ body.home-page .wrap { padding-top: 12px; }
 /* S3 note: CircularProgressIndicator spinner is STATIC — no rotation (per brief). */
 /* Teardown: netflix-detail */
 /* Netflix — Title detail teardown (nd- prefix). Theme vars only, plus Netflix red. */
-.nd-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: var(--text); background: var(--bg); }
-.nd-bar { min-height: 48px; display: flex; align-items: center; gap: 14px; padding: 0 12px; border-bottom: 1px solid var(--line); background: var(--bg); }
+.nd-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: #fff; background: #141414; } /* Worker C fix #6: dark-only app, forced dark */
+.nd-bar { min-height: 48px; display: flex; align-items: center; gap: 14px; padding: 0 12px; border-bottom: 1px solid #2a2a2a; background: #141414; }
 .nd-bar svg { width: 20px; height: 20px; }
-.nd-back, .nd-search, .nd-more { display: grid; place-items: center; color: var(--text); }
+.nd-back, .nd-search, .nd-more { display: grid; place-items: center; color: #fff; }
 .nd-back svg { width: 22px; height: 22px; }
 .nd-more { font-size: 18px; line-height: 1; }
 .nd-bar-spacer { flex: 1; }
-.nd-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; background: var(--bg); }
+.nd-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; background: #141414; }
 .nd-scroll::-webkit-scrollbar { display: none; width: 0; }
 .nd-content { display: flex; flex-direction: column; }
 .nd-hero { position: relative; height: 300px; overflow: hidden; }
@@ -3467,21 +3479,30 @@ body.home-page .wrap { padding-top: 12px; }
 .nd-mylist { display: inline-flex; align-items: center; padding: 8px 14px; border: 1px solid rgba(255,255,255,.55); border-radius: 4px; color: #fff; background: rgba(255,255,255,.08); font-size: 12px; font-weight: 600; }
 .nd-dl { display: grid; place-items: center; color: #fff; }
 .nd-dl svg { width: 20px; height: 20px; }
-.nd-tabs { display: flex; border-bottom: 1px solid var(--line); background: var(--bg); }
-.nd-tab { flex: 1; padding: 12px 4px 10px; color: var(--text-3); font-size: 12px; font-weight: 600; text-align: center; }
-.nd-tab.on { border-bottom: 2px solid #e50914; color: var(--text); }
+.nd-tabs { display: flex; border-bottom: 1px solid #2a2a2a; background: #141414; }
+.nd-tab { flex: 1; padding: 12px 4px 10px; color: rgba(255,255,255,.6); font-size: 12px; font-weight: 600; text-align: center; white-space: nowrap; }
+.nd-tab.on { border-bottom: 2px solid #e50914; color: #fff; }
 .nd-tabview { padding: 12px 12px 16px; }
 .nd-episodes { display: flex; flex-direction: column; gap: 10px; }
-.nd-ep-card { border-radius: 8px; background: var(--bg-elev); }
+.nd-ep-card { border-radius: 8px; background: #1f1f1f; }
 .nd-ep-row { display: flex; align-items: center; gap: 10px; padding: 8px; }
 .nd-ep-thumb { width: 88px; height: 50px; display: grid; place-items: center; flex: none; border-radius: 6px; color: rgba(255,255,255,.85); font-size: 13px; font-weight: 800; }
 .nd-ep-col { flex: 1; min-width: 0; }
 .nd-ep-col b { display: block; font-size: 12px; }
-.nd-ep-col span:nth-child(2) { display: block; margin-top: 3px; color: var(--text-3); font-size: 11px; line-height: 1.4; }
-.nd-ep-col span:nth-child(3) { display: block; margin-top: 3px; color: var(--text-3); font-size: 10.5px; }
-.nd-ep-dl { flex: none; display: grid; place-items: center; color: var(--text-3); }
+.nd-ep-col span:nth-child(2) { display: block; margin-top: 3px; color: rgba(255,255,255,.6); font-size: 11px; line-height: 1.4; }
+.nd-ep-col span:nth-child(3) { display: block; margin-top: 3px; color: rgba(255,255,255,.6); font-size: 10.5px; }
+.nd-ep-dl { flex: none; display: grid; place-items: center; color: rgba(255,255,255,.6); }
 .nd-ep-dl svg { width: 19px; height: 19px; }
-.nd-page-next { display: none; } /* inactive TabBarView pages: present for selection, like ws-page.next */
+.nd-page-next { display: none; } /* TabBarView pages other than the active one: hidden until their tab is tapped */
+.nd-page-next.nd-on { display: block; }
+.nd-episodes.nd-off { display: none; }
+.nd-trailer-thumb { position: relative; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg,#7a1f2b,#2b0a12); display: grid; place-items: center; color: #fff; font-size: 28px; margin-bottom: 8px; }
+.nd-trailer-image { position: absolute; inset: 0; }
+.nd-trailer-title { display: block; font-size: 12px; font-weight: 700; color: #fff; }
+.nd-more-card { border-radius: 8px; background: #1f1f1f; padding: 8px; margin-bottom: 8px; }
+.nd-more-row { display: flex; align-items: center; gap: 10px; }
+.nd-more-poster { width: 48px; height: 68px; border-radius: 4px; flex: none; }
+.nd-more-name { font-size: 12px; font-weight: 700; color: #fff; }
 /* Teardown: amazon-product */
 /* Amazon — Product detail phone mock (S5). Paste into styles.css next to the
    .am-* rules. Brand colours stay inside the phone (navy header #131921,
@@ -3503,7 +3524,8 @@ body.home-page .wrap { padding-top: 12px; }
 .ap-hero { position: relative; height: 190px; overflow: hidden; background: linear-gradient(135deg, #3b6ea5, #7fb0d8); }
 .ap-hero-img { position: absolute; inset: 0; display: grid; place-items: center; }
 .ap-earbuds { position: relative; width: 110px; height: 64px; border-radius: 32px; background: rgba(255, 255, 255, .92); box-shadow: 0 10px 24px rgba(0, 0, 0, .25); }
-.ap-earbuds i { position: absolute; top: -16px; width: 26px; height: 44px; border-radius: 13px; background: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, .2); }
+.ap-earbuds i { position: absolute; top: -18px; width: 24px; height: 30px; border-radius: 12px 12px 9px 9px; background: linear-gradient(135deg,#3a3a3a,#0d0d0d); box-shadow: 0 3px 8px rgba(0, 0, 0, .35); }
+.ap-earbuds i::after { content: ""; position: absolute; left: 50%; top: 26px; width: 9px; height: 22px; margin-left: -4.5px; border-radius: 5px; background: linear-gradient(180deg,#262626,#0d0d0d); }
 .ap-earbuds i:first-child { left: 22px; transform: rotate(-12deg); }
 .ap-earbuds i:last-child { right: 22px; transform: rotate(12deg); }
 .ap-thumbs { display: flex; gap: 8px; padding: 10px 12px 2px; }
@@ -3725,9 +3747,9 @@ body.home-page .wrap { padding-top: 12px; }
 .sm-offer-col { display: flex; flex-direction: column; gap: 2px; }
 .sm-offer-col [data-node="sm-offer-title"] { font-size: 13px; font-weight: 800; }
 .sm-offer-col [data-node="sm-offer-sub"] { font-size: 10.5px; opacity: .9; }
-.sm-tabs { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 8px 12px; border-bottom: 1px solid var(--line); }
-.sm-tabs-row { display: flex; gap: 8px; }
-.sm-tab { flex: none; padding: 6px 12px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg-elev); font-size: 11px; font-weight: 600; color: var(--text); }
+.sm-tabs { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 8px 8px; border-bottom: 1px solid var(--line); }
+.sm-tabs-row { display: flex; gap: 6px; }
+.sm-tab { flex: none; padding: 6px 8px; border-radius: 16px; border: 1px solid var(--line); background: var(--bg-elev); font-size: 11px; font-weight: 600; color: var(--text); white-space: nowrap; }
 .sm-tab.on { background: #fc8019; border-color: #fc8019; color: #fff; }
 .sm-sec-title-wrap { padding: 16px 12px 4px; }
 .sm-sec-title-wrap h3 { font-size: 15px; font-weight: 800; margin: 0; }
@@ -3770,17 +3792,17 @@ body.home-page .wrap { padding-top: 12px; }
 .ys-nav svg { width: 20px; height: 20px; }
 .ys-nav.on { color: var(--text); }
 /* Teardown: spotify-search */
-.ss-screen { height: calc(100% - 28px); display: flex; flex-direction: column; position: relative; color: var(--text); background: var(--bg); }
+.ss-screen { height: calc(100% - 28px); display: flex; flex-direction: column; position: relative; color: #fff; background: #121212; } /* Worker C fix #6: dark-only app, forced dark */
 .ss-top { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 10px 14px 6px; }
 .ss-top [data-node="ss-appbar-title"] { font-size: 19px; font-weight: 800; }
 .ss-avatar { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: #1db954; color: #fff; font-size: 10px; font-weight: 800; }
 .ss-body { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 6px 14px 0; }
-.ss-field { flex: none; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-radius: 8px; background: var(--bg-elev); border: 1px solid var(--line); color: var(--text-3); font-size: 11.5px; }
+.ss-field { flex: none; height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-radius: 8px; background: #2a2a2a; border: 1px solid #3d3d3d; color: rgba(255,255,255,.6); font-size: 11.5px; }
 .ss-field svg { width: 16px; height: 16px; flex: none; }
 .ss-field span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ss-segments { flex: none; display: flex; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--bg-elev); }
-.ss-seg { flex: 1; height: 34px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: var(--text); }
-.ss-seg.on { background: var(--text); color: var(--bg); }
+.ss-segments { flex: none; display: flex; border: 1px solid #3d3d3d; border-radius: 20px; overflow: hidden; background: #2a2a2a; }
+.ss-seg { flex: 1; height: 34px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; }
+.ss-seg.on { background: #fff; color: #000; }
 .ss-body h3 { flex: none; font-size: 16px; font-weight: 800; margin: 0 0 10px; }
 .ss-grid-wrap { flex: 1; min-height: 0; display: flex; }
 .ss-grid { flex: 1; min-height: 0; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; padding-bottom: 12px; scrollbar-width: none; -ms-overflow-style: none; }
@@ -3788,10 +3810,10 @@ body.home-page .wrap { padding-top: 12px; }
 .ss-card { min-height: 76px; border-radius: 8px; padding: 12px; color: #fff; }
 .ss-card-col { display: flex; flex-direction: column; }
 .ss-card-col b { font-size: 13px; font-weight: 800; }
-.ss-bottom { flex: none; display: flex; border-top: 1px solid var(--line); background: var(--bg); padding: 6px 4px 8px; }
-.ss-nav { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: var(--text-3); }
+.ss-bottom { flex: none; display: flex; border-top: 1px solid #2a2a2a; background: #121212; padding: 6px 4px 8px; }
+.ss-nav { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: rgba(255,255,255,.6); }
 .ss-nav svg { width: 20px; height: 20px; }
-.ss-nav.on { color: var(--text); }
+.ss-nav.on { color: #fff; }
 /* Teardown: whatsapp-status */
 .ws-screen { height: calc(100% - 28px); display: flex; flex-direction: column; position: relative; color: #fff; background: #0b141a; }
 .ws-stack { flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; overflow: hidden; }
@@ -3822,11 +3844,11 @@ body.home-page .wrap { padding-top: 12px; }
 .ws-heart, .ws-send { flex: none; display: grid; place-items: center; width: 32px; height: 32px; color: #fff; font-size: 17px; }
 .ws-send svg { width: 20px; height: 20px; }
 /* Teardown: spotify-playlist */
-.spl-screen { height: calc(100% - 28px); display: flex; flex-direction: column; position: relative; color: var(--text); background: var(--bg-elev); }
+.spl-screen { height: calc(100% - 28px); display: flex; flex-direction: column; position: relative; color: #fff; background: #121212; } /* Worker C fix #6: dark-only app, forced dark */
 .spl-bar { flex: none; display: flex; align-items: center; gap: 10px; padding: 10px 12px 6px; }
-.spl-back { display: grid; place-items: center; width: 30px; height: 30px; font-size: 22px; color: var(--text); }
+.spl-back { display: grid; place-items: center; width: 30px; height: 30px; font-size: 22px; color: #fff; }
 .spl-bar b { flex: 1; font-size: 15px; }
-.spl-more { display: grid; place-items: center; width: 30px; height: 30px; font-size: 18px; letter-spacing: 1px; color: var(--text); }
+.spl-more { display: grid; place-items: center; width: 30px; height: 30px; font-size: 18px; letter-spacing: 1px; color: #fff; }
 .spl-scroll { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; padding: 6px 14px 14px; }
 .spl-scroll::-webkit-scrollbar { display: none; width: 0; }
 .spl-header { display: flex; gap: 14px; align-items: flex-end; padding: 8px 0 14px; }
@@ -3834,19 +3856,19 @@ body.home-page .wrap { padding-top: 12px; }
 .spl-cover-art { width: 100%; height: 100%; display: grid; place-items: center; background: linear-gradient(135deg, #4b2bb3, #8d67d8); color: #fff; font-size: 34px; }
 .spl-header-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
 .spl-header-info b { font-size: 19px; }
-.spl-header-info [data-node="spl-playlist-meta"] { font-size: 11px; color: var(--text-3); }
+.spl-header-info [data-node="spl-playlist-meta"] { font-size: 11px; color: rgba(255,255,255,.6); }
 .spl-actions { display: flex; align-items: center; gap: 16px; padding-bottom: 12px; }
 .spl-play { display: flex; align-items: center; height: 38px; padding: 0 22px; border-radius: 19px; background: #1db954; color: #000; font-size: 13px; font-weight: 800; }
 .spl-shuffle { display: grid; place-items: center; width: 34px; height: 34px; font-size: 19px; color: #1db954; }
 .spl-list { display: flex; flex-direction: column; }
-.spl-song { display: flex; align-items: center; gap: 10px; padding: 8px 2px; border-top: 1px solid var(--line); }
-.spl-song.dragging { background: var(--bg); border-radius: 8px; box-shadow: 0 6px 16px rgba(0, 0, 0, .35); transform: translateY(-3px); border-top-color: transparent; }
-.spl-drag { flex: none; display: grid; place-items: center; width: 24px; font-size: 13px; letter-spacing: 0; color: var(--text-3); cursor: grab; }
+.spl-song { display: flex; align-items: center; gap: 10px; padding: 8px 2px; border-top: 1px solid #2a2a2a; }
+.spl-song.dragging { background: #242424; border-radius: 8px; box-shadow: 0 6px 16px rgba(0, 0, 0, .35); transform: translateY(-3px); border-top-color: transparent; }
+.spl-drag { flex: none; display: grid; place-items: center; width: 24px; font-size: 13px; letter-spacing: 0; color: rgba(255,255,255,.6); cursor: grab; }
 .spl-art { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 4px; background: var(--art, #555); color: #fff; font-size: 11px; font-weight: 800; }
 .spl-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .spl-info b { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.spl-info span { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.spl-time { flex: none; font-size: 11px; color: var(--text-3); }
+.spl-info span { font-size: 11px; color: rgba(255,255,255,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.spl-time { flex: none; font-size: 11px; color: rgba(255,255,255,.6); }
 /* Teardown: login-signup */
 .ls-screen { height: calc(100% - 28px); display: flex; flex-direction: column; color: var(--text); background: var(--bg-elev); }
 .ls-safe { flex: 1; min-height: 0; display: flex; flex-direction: column; }
@@ -3893,7 +3915,8 @@ body.home-page .wrap { padding-top: 12px; }
 /* Teardown overlay: gmail-dismissible (S13) */
 /* S13 — Gmail Dismissible overlay: append to Gmail teardown CSS. */
 .gm-dismiss { position: relative; overflow: hidden; border-top: 1px solid var(--line); }
-.gm-dismiss .gm-tile { border-top: none; transform: translateX(112px); transition: transform .25s ease; background: var(--bg-elev); position: relative; z-index: 1; }
+/* 2026-11-11 Worker C fix #4: first inbox row renders at rest — the 112px swipe offset pushed its text past the phone edge. The red Archive background stays behind the tile; the Dismissible widget is unchanged in the tree. */
+.gm-dismiss .gm-tile { border-top: none; background: var(--bg-elev); position: relative; z-index: 1; }
 .gm-dismiss-bg { position: absolute; inset: 0; display: flex; align-items: center; background: #ea4335; color: #fff; z-index: 0; }
 .gm-dismiss-bg-row { display: flex; align-items: center; gap: 8px; padding-left: 16px; font-size: 12px; font-weight: 700; color: #fff; }
 .gm-dismiss-bg-icon { font-size: 17px; }
@@ -3903,9 +3926,9 @@ body.home-page .wrap { padding-top: 12px; }
 .wa-dialog-box { width: 100%; max-width: 240px; display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 14px; background: var(--bg-elev); color: var(--text); box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
 .wa-dialog-box b { font-size: 14px; }
 .wa-dialog-box [data-node="wa-dialog-content"] { font-size: 11.5px; line-height: 1.5; color: var(--text-2); }
-.wa-dialog-actions { display: flex; justify-content: flex-end; gap: 16px; padding-top: 4px; font-size: 12px; font-weight: 700; }
+.wa-dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 16px; padding-top: 4px; font-size: 12px; font-weight: 700; }
 .wa-dialog-cancel { color: var(--text-2); }
-.wa-dialog-delete { color: #d32f2f; }
+.wa-dialog-delete, .wa-dialog-delete-me { color: #d32f2f; }
 /* Teardown overlay: swiggy-refresh (S15) */
 /* S15 — Swiggy RefreshIndicator overlay: append to Swiggy teardown CSS. */
 .sw-refresh { display: flex; align-items: center; justify-content: center; height: 44px; flex: none; }
@@ -4972,6 +4995,20 @@ body.book-cover-on .book-top h1{visibility:hidden}
 @media (max-width:767px){
   .teardown-panel .codeblock pre{ max-height:240px; }
 }
+/* Mobile sheet code (2026-11-11, Worker D — audit #17): on the phone the
+   sheet is only ~348px wide, so a no-wrap pre hides up to ~700px of code
+   past its right edge with no cue that more exists. In the sheet the code
+   wraps to the sheet width instead, so every line is fully readable
+   without a sideways swipe. Geometry only: colours, header and copy
+   behaviour are untouched. The desktop panel keeps the no-wrap rule above. */
+@media (max-width:900px){
+  .teardown-detail .teardown-panel .codeblock pre{
+    white-space:pre-wrap !important;
+    overflow-wrap:break-word !important;
+    word-break:break-word !important;
+    overflow-x:hidden;
+  }
+}
 /* Desktop: the sheet peek bar is mobile-only. */
 .td-sheet-peekbar{ display:none; }
 @media (prefers-reduced-motion:reduce){
@@ -5055,7 +5092,7 @@ body.book-cover-on .book-top h1{visibility:hidden}
 
 /* ============================================================
    DESIGN APPLICATION — PHASE 1: tokens + typography + motion tokens
-   (2026-11-09, staging only, stamp UNCHANGED 1794367464)
+   (2026-11-09, staging only, stamp UNCHANGED 1794447257)
    Tokens aligned exactly to the design-concept prototype.
    Base type scale only — class-scoped component heading rules
    elsewhere in this file still override these base rules.
@@ -5090,7 +5127,7 @@ small{font-size:13px}
    (<1440px, opened by the hamburger in .mobile-top). The rules in this block
    now style the drawer at all widths; the desktop rail rules were deleted.
    Home: Rev 2 layout driven by REAL data (views.home) — no demo values.
-   Stamp unchanged (1794367464). No data/rank/gating/progress-logic changes. */
+   Stamp unchanged (1794447257). No data/rank/gating/progress-logic changes. */
 
 /* ---------- Sidebar shell: desktop >= 1024px ---------- */
 }
@@ -5201,7 +5238,7 @@ small{font-size:13px}
    book typography + component styles (caps labels, .lede promise, dot bullets,
    tinted Why/How boxes, 32px sheet, dots) applied to the real flipbook; all
    book mechanics untouched (stiff turn, drag, slider, resume, Mark complete,
-   quiz link, code scroll caps). Stamp unchanged (1794367464). */
+   quiz link, code scroll caps). Stamp unchanged (1794447257). */
 
 /* ---------- Lessons page head ---------- */
 .page-head>.caps{margin-bottom:8px}
@@ -5280,7 +5317,7 @@ small{font-size:13px}
      language slider stays in the title row; the lessons h1 keeps the Phase 1 type scale.
    Quizzes keep the phase-card + hairline rows — Phase 4 restructures them. The Phase 3
    block's phase-card-scoped rules are now superseded for lessons (dead there, still
-   live for quizzes where they apply). Stamp unchanged (1794367464). */
+   live for quizzes where they apply). Stamp unchanged (1794447257). */
 
 /* ---------- Lessons head: copy left, search pill right (concept .page-head + .search) ---------- */
 .lessons-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
@@ -5357,7 +5394,7 @@ small{font-size:13px}
      (QUIZ_TOPICS is {} so the chip always read "Question N"); quiz icons stay the 40
      unique glyphs with the 4 approved bento-chip tints cycling (not the concept's
      number circles); quiz rows keep the real meta "Lesson N · title · N questions".
-   Stamp unchanged (1794367464). */
+   Stamp unchanged (1794447257). */
 
 /* ---------- Quizzes head: copy left, search pill right (concept .page-head + .search) ---------- */
 .quizzes-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
@@ -5460,7 +5497,7 @@ small{font-size:13px}
    phone budget (a known fragile area); the picker stays a transient overlay (it shows
    the nested widgets at the tap point — a persistent in-flow strip cannot work with
    up to 107 widgets per screen, where the concept has 7).
-   Stamp unchanged (1794367464). */
+   Stamp unchanged (1794447257). */
 
 /* ---------- Teardowns head: copy left, search pill right (mirrors .lessons-head) ---------- */
 .teardowns-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
@@ -5527,7 +5564,7 @@ small{font-size:13px}
 
 /* ============ DESIGN APPLICATION — PHASE 6: Resources + Auth/Profile (complete layout, 2026-11-09) ============
    Brief: apply the Rev 2 design concept's COMPLETE LAYOUT (not just theme) to Resources +
-   Auth/Profile, mirroring the Phase 3b/4/5 pattern. Base = live site 1794367464 + Phases 1/2/3/3b/4/5
+   Auth/Profile, mirroring the Phase 3b/4/5 pattern. Base = live site 1794447257 + Phases 1/2/3/3b/4/5
    + the two approved one-line fixes.
    - Resources: search pill in the page head (lessons/quizzes/teardowns pattern); filter chips mapped
      to the real resource types (All / Free / Paid / PDF / Video / Cheatsheet); cards in the concept's
@@ -5541,7 +5578,7 @@ small{font-size:13px}
      Logout asks confirmation first (existing modal, restyled; copy updated to the concept's
      server-only wording — the old "saved in this browser" text was stale since v15).
    - Motion: NO wobbly/spring motion added here — that is Phase 7's job. Existing transitions only.
-   Stamp unchanged (1794367464). */
+   Stamp unchanged (1794447257). */
 
 /* ---------- Resources head: copy left, search pill right (concept .page-head + .search) ---------- */
 .resources-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
@@ -5652,7 +5689,7 @@ small{font-size:13px}
    + View Transition theme reveal (restored 2026-11-10: verified in Chrome 154 that
    ::view-transition-old/new(root) rules survive parsing and ff-theme-reveal draws the
    circle on desktop AND phone; the earlier "VT drops the rules" claim was false).
-   Stamp unchanged (1794367464). No layout/route/data/gating
+   Stamp unchanged (1794447257). No layout/route/data/gating
    changes. Rows/chips/options already spring (Phases 3b/4/5/6); this block fills the
    gaps the phase blocks left (buttons, theme button, nav, generic cards, chevrons).
    PROTECTED (untouched here): .auth-tabs::before slide, .lesson-lang::before slider
@@ -5743,7 +5780,7 @@ body:not(.book-page) .view.ff-enter>.wrap>*:only-child>.teardown-detail{animatio
    the brand is 336.4px and to the logged-in right side 41.6px ("Layout
    Architect") / 16.6px ("Animation Alchemist"), guest 338.1px — fits in both
    auth states, both themes. 1366/1280/1100/1024 stay drawer. (see
-   SHIPPING_PROGRESS.md). Stamp unchanged (1794367464).
+   SHIPPING_PROGRESS.md). Stamp unchanged (1794447257).
    CENTRING MECHANISM (CSS only, no JS): brand and .nav-right are absolutely
    positioned (left:24px / right:24px, full bar height, vertically centred by
    their own flex alignment) and .nav-links is the only in-flow flex child, so
@@ -6244,6 +6281,24 @@ body.lessons-page .wrap,body.quizzes-page .wrap{max-width:1080px}
    this a wheel-scroll would slide the complete-looking form up and cut its
    top. tdFitLogin() sets data-td-fit on the screen exactly when scaled. */
 .teardown-screen[data-td-fit] .lg-center,.teardown-screen[data-td-fit] .ls-scroll{overflow:hidden !important;}
+/* Login scale-to-fit, compact form (2026-11-11, Worker D — audit #19):
+   at short heights the phone is also NARROW (~113px of form width at
+   960x540), so the fixed 22px pad padding + fixed font sizes wrap the
+   title, the Google button and the sign-up row into broken lines even
+   though the scaled form fits vertically. While the fit is active only,
+   the pad loses side padding, the title / Google text shrink slightly
+   (the smaller natural height also raises the fit scale, so on screen
+   the text stays about the same size), and the sign-up / log-in row
+   becomes a clean centred two-line stack instead of a two-column wrap.
+   Nothing changes when the form fits unscaled. */
+.teardown-screen[data-td-fit] .lg-form-pad{ padding:0 10px; }
+.teardown-screen[data-td-fit] .lg-title{ font-size:17px; }
+.teardown-screen[data-td-fit] .lg-google{ font-size:10.5px; gap:5px; }
+.teardown-screen[data-td-fit] .lg-google .lg-g{ width:15px; height:15px; }
+.teardown-screen[data-td-fit] .lg-signup-row{ flex-direction:column; gap:2px; }
+.teardown-screen[data-td-fit] .ls-pad{ padding:14px 12px; }
+.teardown-screen[data-td-fit] .ls-title{ font-size:18px; }
+.teardown-screen[data-td-fit] .ls-login-row{ flex-direction:column; gap:2px; }
 
 /* BASE bugfix (pre-existing defect, found during the colour-reversal round, unrelated to the colour restore): the book's inline <code> chip background (var(--bg-sunken), #ececea in light) also paints the <code> inside dark .codeblock blocks, one light bar per line under the bright tokens; the code block's own background is dark in both themes, so the <code> inside it must paint nothing; scoped to .codeblock pre code so inline chips in lesson body text keep their chip background. */ .book-sheet-inner .codeblock pre code{background:none}
 
@@ -6259,3 +6314,48 @@ body.lessons-page .wrap,body.quizzes-page .wrap{max-width:1080px}
    dropped whole by Chrome, which does not recognise ::-moz-selection. */
 .codeblock ::selection,pre ::selection{background:#c9c9c4;color:#0a0a0a}
 .codeblock ::-moz-selection,pre ::-moz-selection{background:#c9c9c4;color:#0a0a0a}
+
+/* CODE BLOCK RESTYLE (2026-11-11, Worker A): light theme gets a LIGHT block.
+   Diagnosis (measured live, both themes): the block was a dark slab in BOTH
+   themes (light #0a0a0a, dark #1a1a1a) with near-white/grey tokens, so on a
+   light page the block read as a black hole and the code had almost no syntax
+   colour. Round 2's light-on-light design (cream block + dark tokens) is no
+   longer in effect: --code-bg light is #0a0a0a and the file's light token
+   rules are the near-white set. Fix: light block = var(--bg-sunken) (#ececea,
+   the site's sunken surface, same as inline code chips) with the Round 2
+   light token palette, darkened where AA fails on #ececea (tok-s #b45309 4.25:1
+   -> #92400e 5.99:1; tok-c #6b7280 4.09:1 -> #5b6470 5.07:1; same hues, darker
+   shades). Dark block + tokens UNCHANGED (already readable, all >= 4.5:1).
+   Border/header divider/Copy border in light use #c9c9c4 (the grey already
+   used for code selection) so the block reads as a block on the white sheet.
+   Selection in light reverts to the global ink selection (the #c9c9c4 code
+   highlight would be near-invisible on the light block); dark keeps it.
+   The .book-sheet-inner .codeblock pre code{background:none} fix line above
+   is untouched and still required (dark theme: chip bg #282828 on #1a1a1a).
+   No geometry changed: caps/scroll/overflow untouched (audit #17 is another
+   worker's geometry job). No blue anywhere except the code keyword token
+   #1e40af (Round 2's existing token colour; tokens are the readability
+   exception to the monochrome rule). */
+[data-theme=light] .codeblock{background:var(--bg-sunken);border-color:#c9c9c4;box-shadow:var(--card-shadow)}
+[data-theme=light] .codeblock pre{background:var(--bg-sunken)}
+[data-theme=light] .code-head{border-bottom-color:#c9c9c4}
+[data-theme=light] .codeblock pre,[data-theme=light] .codeblock pre code{color:#20201e!important}
+[data-theme=light] .codeblock .tok-k{color:#1e40af;font-weight:700}
+[data-theme=light] .codeblock .tok-s{color:#92400e}
+[data-theme=light] .codeblock .tok-n{color:#be185d}
+[data-theme=light] .codeblock .tok-c{color:#5b6470;font-style:italic}
+[data-theme=light] .codeblock .tok-f{color:#0e7490}
+[data-theme=light] .codeblock .tok-a{color:#7c3aed}
+[data-theme=light] .copy-btn{color:var(--text-2);border-color:#c9c9c4}
+[data-theme=light] .lesson-body pre{background:var(--bg-sunken);color:#20201e}
+[data-theme=light] .codeblock ::selection,[data-theme=light] pre ::selection{background:var(--accent);color:var(--on-primary)}
+[data-theme=light] .codeblock ::-moz-selection,[data-theme=light] pre ::-moz-selection{background:var(--accent);color:var(--on-primary)}
+[data-theme=dark] .codeblock pre{background:var(--code-bg)}
+[data-theme=dark] .codeblock pre,[data-theme=dark] .codeblock pre code{color:var(--code-text)!important}
+[data-theme=dark] .codeblock .tok-k{color:#ffffff;font-weight:700}
+[data-theme=dark] .codeblock .tok-s{color:#d6d6d2}
+[data-theme=dark] .codeblock .tok-n{color:#a3a3a0}
+[data-theme=dark] .codeblock .tok-c{color:#8a8a86;font-style:italic}
+[data-theme=dark] .codeblock .tok-f{color:#f5f5f3}
+[data-theme=dark] .codeblock .tok-a{color:#4fe3c1}
+[data-theme=light] .copy-btn.ok{color:#1d6b44;border-color:#1d6b44}

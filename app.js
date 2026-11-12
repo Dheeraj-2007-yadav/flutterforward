@@ -122,7 +122,7 @@ ${currentUser?`<div class="ff-rank-card">
 </div>
 </div>`;};
 /* Perf: lesson meta ships with app.js so lists render instantly; full lesson HTML across 40 files loads on demand when a lesson opens, keeping it off the startup path. If a lesson title/description changes in its data file, update LESSON_META too. */
-const FF_V='1794367464',
+const FF_V='1794447257',
 LESSON_META=[
 {"id":"lesson-01-setup","num":1,"quizId":"quiz-01-setup","title":"Setup & Your First App","description":"Install Flutter, create your first project, and run it on your own phone — main(), runApp(), MaterialApp, Scaffold, and hot reload."},
 {"id":"lesson-02-dart-basics","num":2,"quizId":"quiz-02-dart-basics","title":"Dart Basics","description":"The Dart you need for Flutter: variables, functions, conditions, loops, lists, maps, and strings."},
@@ -1377,7 +1377,7 @@ const TEARDOWNS = {
   },
   instagram: {
     app: "Instagram", screen: "Profile", count: 15, glyph: "IG", glyphClass: "instagram", accent: "#d83282",
-    hotspots: ["ig-sliver","ig-avatar","ig-stats","ig-tabs","ig-grid","ig-bottom"],
+    hotspots: ["ig-sliver","ig-avatar","ig-avatar-circle","ig-stats","ig-tabs","ig-grid","ig-bottom"],
     root: tdNode("ig-scroll","CustomScrollView","Combines multiple slivers into one coordinated scroll view.","It lets the profile header, tabs, and photo grid move as one Instagram profile.",`CustomScrollView(
   slivers: [
     const ProfileSliverAppBar(),
@@ -1531,7 +1531,10 @@ const TEARDOWNS = {
 settings: {
     app: "Settings", screen: "App settings", count: 51, glyph: "04", glyphClass: "", accent: "#5b5bd6",
     hotspots: ["st-appbar","st-profile-card","st-tile-profile","st-notif-switch","st-tile-lang","st-tile-about"],
-    root: tdNode("st-scaffold","Scaffold","Gives the settings page its frame: app bar on top, scrollable body below.","It keeps the Settings header pinned while the option groups scroll underneath.",`Scaffold(
+    root: tdNode("st-material","MaterialApp","The app shell for the App settings screen.","The Settings screens run under one shared Material theme and navigation context.",`MaterialApp(
+  home: const SettingsScreen(),
+)`,[
+      tdNode("st-scaffold","Scaffold","Gives the settings page its frame: app bar on top, scrollable body below.","It keeps the Settings header pinned while the option groups scroll underneath.",`Scaffold(
   appBar: AppBar(title: const Text('Settings')),
   body: const SettingsBody(),
 )`,[
@@ -1543,7 +1546,7 @@ settings: {
   icon: const Icon(Icons.arrow_back),
   onPressed: () => Navigator.pop(context),
 )`),
-        tdNode("st-appbar-title","Text","Renders a styled string on screen.","It labels the screen so the user knows these are app settings.",`const Text(
+        tdNode("st-appbar-title","Text","Shows 'Settings'.","It labels the screen so the user knows these are app settings.",`const Text(
   'Settings',
   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
 )`)
@@ -1584,25 +1587,22 @@ settings: {
     Text('dheeraj@example.com', style: TextStyle(color: Colors.grey)),
   ],
 )`,[
-              tdNode("st-name","Text","Renders a styled string on screen.","The name identifies whose settings these are.",`const Text(
+              tdNode("st-name","Text","Shows 'Dheeraj Kumar' in bold.","The name identifies whose settings these are.",`const Text(
   'Dheeraj Kumar',
   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
 )`),
-              tdNode("st-email","Text","Renders a styled string on screen.","The muted email confirms which account is signed in.",`const Text(
+              tdNode("st-email","Text","Shows 'dheeraj@example.com'.","The muted email confirms which account is signed in.",`const Text(
   'dheeraj@example.com',
   style: TextStyle(fontSize: 12, color: Colors.grey),
 )`)
             ]),
-            tdNode("st-edit","TextButton","A text-only button with a tap handler.","Edit jumps to the profile editor without leaving the settings flow.",`TextButton(
+            tdNode("st-edit","TextButton","A 'Edit' text button.","Edit jumps to the profile editor without leaving the settings flow.",`TextButton(
   onPressed: editProfile,
   child: const Text('Edit'),
 )`)
           ])
         ]),
-        tdNode("st-account-header","Text","Renders a styled string on screen.","The small-caps group label scans like a native settings section.",`const Padding(
-  padding: EdgeInsets.only(top: 20, bottom: 8),
-  child: Text('ACCOUNT', style: TextStyle(fontSize: 12, color: Colors.grey)),
-)`),
+        tdNode("st-account-header","Text","Shows 'ACCOUNT'.","The small-caps group label scans like a native settings section.",`const Text('ACCOUNT', style: TextStyle(fontSize: 12, color: Colors.grey))`),
         tdNode("st-account-group","Container","A box that can hold padding, color, and decoration.","It groups the account rows into one rounded white section.",`Container(
   decoration: BoxDecoration(
     color: Colors.white,
@@ -1620,14 +1620,14 @@ settings: {
   onTap: openProfile,
 )`,[
             tdNode("st-tile-profile-icon","Icon","Draws a Material icon glyph.","The person icon hints at the row's purpose before reading.",`const Icon(Icons.person_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-profile-title","Text","Renders a styled string on screen.","'Profile' names the destination screen.",`const Text('Profile')`),
-            tdNode("st-tile-profile-sub","Text","Renders a styled string on screen.","The subtitle previews what can be changed inside.",`const Text(
+            tdNode("st-tile-profile-title","Text","Shows 'Profile'.","'Profile' names the destination screen.",`const Text('Profile')`),
+            tdNode("st-tile-profile-sub","Text","Shows 'Name, email, avatar'.","The subtitle previews what can be changed inside.",`const Text(
   'Name, email, avatar',
   style: TextStyle(fontSize: 12, color: Colors.grey),
 )`),
             tdNode("st-tile-profile-chev","Icon","Draws a Material icon glyph.","The chevron promises another screen on tap.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div1","Divider","A thin horizontal line.","It separates rows inside the group so each option reads on its own.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div1","Divider","A hairline rule between the rows in this group.","It separates rows inside the group so each option reads on its own.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-privacy","ListTile","A ready-made settings row: leading icon, title, trailing.","Tapping it opens privacy controls for the account.",`ListTile(
   leading: const Icon(Icons.lock_outline),
   title: const Text('Privacy'),
@@ -1635,14 +1635,11 @@ settings: {
   onTap: openPrivacy,
 )`,[
             tdNode("st-tile-privacy-icon","Icon","Draws a Material icon glyph.","The lock signals this row is about data protection.",`const Icon(Icons.lock_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-privacy-title","Text","Renders a styled string on screen.","'Privacy' is the whole point of the destination.",`const Text('Privacy')`),
+            tdNode("st-tile-privacy-title","Text","Shows 'Privacy'.","'Privacy' is the whole point of the destination.",`const Text('Privacy')`),
             tdNode("st-tile-privacy-chev","Icon","Draws a Material icon glyph.","The chevron shows the row is tappable.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ])
         ]),
-        tdNode("st-pref-header","Text","Renders a styled string on screen.","The group label separates preferences from account rows.",`const Padding(
-  padding: EdgeInsets.only(top: 20, bottom: 8),
-  child: Text('PREFERENCES', style: TextStyle(fontSize: 12, color: Colors.grey)),
-)`),
+        tdNode("st-pref-header","Text","Shows 'PREFERENCES'.","The group label separates preferences from account rows.",`const Text('PREFERENCES', style: TextStyle(fontSize: 12, color: Colors.grey))`),
         tdNode("st-pref-group","Container","A box that can hold padding, color, and decoration.","It wraps the toggle rows in the same rounded card style.",`Container(
   decoration: BoxDecoration(
     color: Colors.white,
@@ -1658,26 +1655,26 @@ settings: {
   trailing: Switch(value: true, onChanged: toggleNotifications),
 )`,[
             tdNode("st-tile-notif-icon","Icon","Draws a Material icon glyph.","The bell identifies this as the alerts setting.",`const Icon(Icons.notifications_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-notif-title","Text","Renders a styled string on screen.","'Notifications' labels the toggle.",`const Text('Notifications')`),
+            tdNode("st-tile-notif-title","Text","Shows 'Notifications'.","'Notifications' labels the toggle.",`const Text('Notifications')`),
             tdNode("st-notif-switch","Switch","A Material on/off toggle.","It flips the preference in place — no new screen needed.",`Switch(
   value: true,
   onChanged: (v) => setState(() => notifications = v),
 )`)
           ]),
-          tdNode("st-div2","Divider","A thin horizontal line.","It keeps the toggle rows visually distinct.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div2","Divider","A hairline rule keeping the toggle rows distinct.","It keeps the toggle rows visually distinct.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-dark","ListTile","A ready-made settings row with a trailing switch.","Dark mode previews instantly, so a switch beats a new screen.",`ListTile(
   leading: const Icon(Icons.dark_mode_outlined),
   title: const Text('Dark mode'),
   trailing: Switch(value: false, onChanged: toggleDarkMode),
 )`,[
             tdNode("st-tile-dark-icon","Icon","Draws a Material icon glyph.","The moon reads as 'night theme' at a glance.",`const Icon(Icons.dark_mode_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-dark-title","Text","Renders a styled string on screen.","'Dark mode' names the theme toggle.",`const Text('Dark mode')`),
+            tdNode("st-tile-dark-title","Text","Shows 'Dark mode'.","'Dark mode' names the theme toggle.",`const Text('Dark mode')`),
             tdNode("st-dark-switch","Switch","A Material on/off toggle.","Flipping it rebuilds the app with the dark color scheme.",`Switch(
   value: false,
   onChanged: (v) => setState(() => darkMode = v),
 )`)
           ]),
-          tdNode("st-div3","Divider","A thin horizontal line.","The last divider before the language row.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div3","Divider","A hairline rule before the language row.","The last divider before the language row.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-lang","ListTile","A ready-made settings row with a trailing value.","The trailing text shows the current choice; tapping opens the picker.",`ListTile(
   leading: const Icon(Icons.language_outlined),
   title: const Text('Language'),
@@ -1685,17 +1682,14 @@ settings: {
   onTap: pickLanguage,
 )`,[
             tdNode("st-lang-icon","Icon","Draws a Material icon glyph.","The globe marks this as the locale setting.",`const Icon(Icons.language_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-lang-title","Text","Renders a styled string on screen.","'Language' labels the locale row.",`const Text('Language')`),
-            tdNode("st-lang-value","Text","Renders a styled string on screen.","'English' shows the active language without opening the picker.",`const Text(
+            tdNode("st-lang-title","Text","Shows 'Language'.","'Language' labels the locale row.",`const Text('Language')`),
+            tdNode("st-lang-value","Text","Shows 'English'.","'English' shows the active language without opening the picker.",`const Text(
   'English',
   style: TextStyle(color: Colors.grey),
 )`)
           ])
         ]),
-        tdNode("st-app-header","Text","Renders a styled string on screen.","The group label for app-level options.",`const Padding(
-  padding: EdgeInsets.only(top: 20, bottom: 8),
-  child: Text('APP', style: TextStyle(fontSize: 12, color: Colors.grey)),
-)`),
+        tdNode("st-app-header","Text","Shows 'APP'.","The group label for app-level options.",`const Text('APP', style: TextStyle(fontSize: 12, color: Colors.grey))`),
         tdNode("st-app-group","Container","A box that can hold padding, color, and decoration.","It groups the app rows into one rounded white section.",`Container(
   decoration: BoxDecoration(
     color: Colors.white,
@@ -1713,11 +1707,11 @@ settings: {
   onTap: openAppearance,
 )`,[
             tdNode("st-tile-appearance-icon","Icon","Draws a Material icon glyph.","The moon marks this as the theme setting.",`const Icon(Icons.dark_mode_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-appearance-title","Text","Renders a styled string on screen.","'Appearance' labels the theme row.",`const Text('Appearance')`),
-            tdNode("st-tile-appearance-sub","Text","Renders a styled string on screen.","'System default' shows the theme follows the device.",`const Text('System default', style: TextStyle(color: Colors.grey))`),
+            tdNode("st-tile-appearance-title","Text","Shows 'Appearance'.","'Appearance' labels the theme row.",`const Text('Appearance')`),
+            tdNode("st-tile-appearance-sub","Text","Shows 'System default'.","'System default' shows the theme follows the device.",`const Text('System default', style: TextStyle(color: Colors.grey))`),
             tdNode("st-tile-appearance-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div5","Divider","A thin horizontal line.","It separates the app rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div5","Divider","A hairline rule between the app rows.","It separates the app rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-storage","ListTile","A ready-made settings row: leading icon, title, subtitle, trailing.","Storage opens download and cache management.",`ListTile(
   leading: const Icon(Icons.storage_outlined),
   title: const Text('Storage'),
@@ -1726,11 +1720,11 @@ settings: {
   onTap: openStorage,
 )`,[
             tdNode("st-tile-storage-icon","Icon","Draws a Material icon glyph.","The storage icon marks this as the downloads setting.",`const Icon(Icons.storage_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-storage-title","Text","Renders a styled string on screen.","'Storage' labels the downloads row.",`const Text('Storage')`),
-            tdNode("st-tile-storage-sub","Text","Renders a styled string on screen.","'Manage downloads' says what lives behind the row.",`const Text('Manage downloads', style: TextStyle(color: Colors.grey))`),
+            tdNode("st-tile-storage-title","Text","Shows 'Storage'.","'Storage' labels the downloads row.",`const Text('Storage')`),
+            tdNode("st-tile-storage-sub","Text","Shows 'Manage downloads'.","'Manage downloads' says what lives behind the row.",`const Text('Manage downloads', style: TextStyle(color: Colors.grey))`),
             tdNode("st-tile-storage-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div6","Divider","A thin horizontal line.","It separates the app rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div6","Divider","A hairline rule between the app rows.","It separates the app rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-access","ListTile","A ready-made settings row: leading icon, title, subtitle, trailing.","Accessibility opens text size and contrast options.",`ListTile(
   leading: const Icon(Icons.accessibility_outlined),
   title: const Text('Accessibility'),
@@ -1739,11 +1733,11 @@ settings: {
   onTap: openAccessibility,
 )`,[
             tdNode("st-tile-access-icon","Icon","Draws a Material icon glyph.","The person icon marks this as the accessibility setting.",`const Icon(Icons.accessibility_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-access-title","Text","Renders a styled string on screen.","'Accessibility' labels the accessibility row.",`const Text('Accessibility')`),
-            tdNode("st-tile-access-sub","Text","Renders a styled string on screen.","'Text size, contrast' previews what the row controls.",`const Text('Text size, contrast', style: TextStyle(color: Colors.grey))`),
+            tdNode("st-tile-access-title","Text","Shows 'Accessibility'.","'Accessibility' labels the accessibility row.",`const Text('Accessibility')`),
+            tdNode("st-tile-access-sub","Text","Shows 'Text size, contrast'.","'Text size, contrast' previews what the row controls.",`const Text('Text size, contrast', style: TextStyle(color: Colors.grey))`),
             tdNode("st-tile-access-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div7","Divider","A thin horizontal line.","It separates the app rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div7","Divider","A hairline rule between the app rows.","It separates the app rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-data","ListTile","A ready-made settings row with a trailing switch.","Data usage limits downloads to Wi-Fi when the switch is on.",`ListTile(
   leading: const Icon(Icons.language_outlined),
   title: const Text('Data usage'),
@@ -1751,18 +1745,15 @@ settings: {
   trailing: Switch(value: false, onChanged: toggleWifiOnly),
 )`,[
             tdNode("st-tile-data-icon","Icon","Draws a Material icon glyph.","The globe marks this as the network setting.",`const Icon(Icons.language_outlined, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-data-title","Text","Renders a styled string on screen.","'Data usage' labels the network row.",`const Text('Data usage')`),
-            tdNode("st-tile-data-sub","Text","Renders a styled string on screen.","'Wi-Fi only' shows downloads wait for Wi-Fi.",`const Text('Wi-Fi only', style: TextStyle(color: Colors.grey))`),
+            tdNode("st-tile-data-title","Text","Shows 'Data usage'.","'Data usage' labels the network row.",`const Text('Data usage')`),
+            tdNode("st-tile-data-sub","Text","Shows 'Wi-Fi only'.","'Wi-Fi only' shows downloads wait for Wi-Fi.",`const Text('Wi-Fi only', style: TextStyle(color: Colors.grey))`),
             tdNode("st-data-switch","Switch","A Material on/off toggle.","It flips the Wi-Fi-only preference in place.",`Switch(
   value: false,
   onChanged: (v) => setState(() => wifiOnly = v),
 )`)
           ])
         ]),
-        tdNode("st-support-header","Text","Renders a styled string on screen.","The final group label for help and info rows.",`const Padding(
-  padding: EdgeInsets.only(top: 20, bottom: 8),
-  child: Text('SUPPORT', style: TextStyle(fontSize: 12, color: Colors.grey)),
-)`),
+        tdNode("st-support-header","Text","Shows 'SUPPORT'.","The final group label for help and info rows.",`const Text('SUPPORT', style: TextStyle(fontSize: 12, color: Colors.grey))`),
         tdNode("st-support-group","Container","A box that can hold padding, color, and decoration.","It gives the support rows the same grouped-card treatment.",`Container(
   decoration: BoxDecoration(
     color: Colors.white,
@@ -1779,10 +1770,10 @@ settings: {
   onTap: openHelp,
 )`,[
             tdNode("st-tile-help-icon","Icon","Draws a Material icon glyph.","The question mark marks this as the help entry.",`const Icon(Icons.help_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-help-title","Text","Renders a styled string on screen.","'Help & feedback' invites the user to get support.",`const Text('Help & feedback')`),
+            tdNode("st-tile-help-title","Text","Shows 'Help & feedback'.","'Help & feedback' invites the user to get support.",`const Text('Help & feedback')`),
             tdNode("st-tile-help-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div4","Divider","A thin horizontal line.","It separates the two support rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div4","Divider","A hairline rule between the support rows.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-rate","ListTile","A ready-made settings row: leading icon, title, trailing.","Rate opens the store review sheet.",`ListTile(
   leading: const Icon(Icons.help_outline),
   title: const Text('Rate the app'),
@@ -1790,10 +1781,10 @@ settings: {
   onTap: rateApp,
 )`,[
             tdNode("st-tile-rate-icon","Icon","Draws a Material icon glyph.","The question mark marks this as a feedback row.",`const Icon(Icons.help_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-rate-title","Text","Renders a styled string on screen.","'Rate the app' invites a store review.",`const Text('Rate the app')`),
+            tdNode("st-tile-rate-title","Text","Shows 'Rate the app'.","'Rate the app' invites a store review.",`const Text('Rate the app')`),
             tdNode("st-tile-rate-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div8","Divider","A thin horizontal line.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div8","Divider","A hairline rule between the support rows.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-about","ListTile","A ready-made settings row: leading icon, title, trailing.","About shows the app version and legal info.",`ListTile(
   leading: const Icon(Icons.info_outline),
   title: const Text('About'),
@@ -1801,10 +1792,10 @@ settings: {
   onTap: openAbout,
 )`,[
             tdNode("st-tile-about-icon","Icon","Draws a Material icon glyph.","The info mark signals app metadata lives here.",`const Icon(Icons.info_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-about-title","Text","Renders a styled string on screen.","'About' labels the app-info screen.",`const Text('About')`),
+            tdNode("st-tile-about-title","Text","Shows 'About'.","'About' labels the app-info screen.",`const Text('About')`),
             tdNode("st-tile-about-chev","Icon","Draws a Material icon glyph.","The chevron shows the row is tappable.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div10","Divider","A thin horizontal line.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div10","Divider","A hairline rule between the support rows.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-policy","ListTile","A ready-made settings row: leading icon, title, trailing.","Privacy policy opens the legal privacy document.",`ListTile(
   leading: const Icon(Icons.lock_outline),
   title: const Text('Privacy policy'),
@@ -1812,10 +1803,10 @@ settings: {
   onTap: openPrivacyPolicy,
 )`,[
             tdNode("st-tile-policy-icon","Icon","Draws a Material icon glyph.","The lock marks this as the privacy document.",`const Icon(Icons.lock_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-policy-title","Text","Renders a styled string on screen.","'Privacy policy' labels the legal document.",`const Text('Privacy policy')`),
+            tdNode("st-tile-policy-title","Text","Shows 'Privacy policy'.","'Privacy policy' labels the legal document.",`const Text('Privacy policy')`),
             tdNode("st-tile-policy-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ]),
-          tdNode("st-div11","Divider","A thin horizontal line.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
+          tdNode("st-div11","Divider","A hairline rule between the support rows.","It separates the support rows.",`const Divider(height: 1, indent: 56)`),
           tdNode("st-tile-terms","ListTile","A ready-made settings row: leading icon, title, trailing.","Terms of service opens the legal terms document.",`ListTile(
   leading: const Icon(Icons.info_outline),
   title: const Text('Terms of service'),
@@ -1823,11 +1814,12 @@ settings: {
   onTap: openTerms,
 )`,[
             tdNode("st-tile-terms-icon","Icon","Draws a Material icon glyph.","The info mark marks this as a legal document.",`const Icon(Icons.info_outline, color: Color(0xFF5B5BD6))`),
-            tdNode("st-tile-terms-title","Text","Renders a styled string on screen.","'Terms of service' labels the legal document.",`const Text('Terms of service')`),
+            tdNode("st-tile-terms-title","Text","Shows 'Terms of service'.","'Terms of service' labels the legal document.",`const Text('Terms of service')`),
             tdNode("st-tile-terms-chev","Icon","Draws a Material icon glyph.","The chevron shows the row leads somewhere.",`const Icon(Icons.chevron_right, color: Colors.grey)`)
           ])
         ])
       ])
+    ])
     ])
   }
 ,
@@ -1895,7 +1887,7 @@ login: {
     },
   "gmail-compose": {
   app: "Gmail", screen: "Compose", count: 26, glyph: "✎", glyphClass: "", accent: "#ea4335",
-  hotspots: ["gc-appbar","gc-to-field","gc-to-error","gc-subject-field","gc-body-field","gc-snackbar"],
+  hotspots: ["gc-appbar","gc-to-field","gc-to-error","gc-subject-field","gc-body-field"],
   root: tdNode("gc-material","MaterialApp","The compose screen runs under the same Gmail Material theme and navigation context as the inbox.","It sets the app-level theme and shows the compose screen as the home screen.",`MaterialApp(
   home: const GmailCompose(),
 )`,[])
@@ -1910,7 +1902,7 @@ login: {
 },
   "youtube-player": {
     app: "YouTube", screen: "Video player", count: 69, glyph: "▶", glyphClass: "", accent: "#ff0000",
-    hotspots: ["yp-video-area","yp-buffer","yp-seek","yp-share-tip","yp-comments-sheet","yp-layout"],
+    hotspots: ["yp-video-area","yp-seek","yp-share-tip","yp-comments-sheet","yp-layout"],
     root: tdNode("yp-material","MaterialApp","Sets the app-level theme, navigation, and Material behavior.","The YouTube player runs under the same theme and navigation context as the home feed.",`MaterialApp(\n  home: const YouTubePlayer(),\n)`,[])
   },
   "netflix-detail": {
@@ -2012,9 +2004,9 @@ login: {
 const TD_WIDGET_PURPOSE = {
   MaterialApp:"Sets the app-level theme, navigation, and Material behavior.", Scaffold:"Provides the visual frame for one screen.",
   AppBar:"Creates the screen's top bar and action slots.", SafeArea:"Keeps content clear of system cutouts and gestures.",
-  CustomScrollView:"Coordinates sliver-based content in one scroll position.", SliverAppBar:"Adds an app bar that participates in scrolling.",
-  SliverToBoxAdapter:"Places a regular box widget inside a sliver list.", SliverPersistentHeader:"Keeps a custom header in a sliver scroll view.",
-  SliverGrid:"Builds a lazily rendered grid inside a sliver scroll view.", Column:"Arranges children vertically.", Row:"Arranges children horizontally.",
+  CustomScrollView:"Lets different scrolling sections share one scroll position.", SliverAppBar:"Adds an app bar that participates in scrolling.",
+  SliverToBoxAdapter:"Lets a normal widget sit inside a scrolling list of sections.", SliverPersistentHeader:"Keeps a header pinned while its section scrolls.",
+  SliverGrid:"Builds a scrolling grid that creates rows as you reach them.", Column:"Arranges children vertically.", Row:"Arranges children horizontally.",
   Expanded:"Gives a child the remaining space on its main axis.", Padding:"Adds deliberate space around its child.", Container:"Combines layout, decoration, and constraints.",
   SizedBox:"Adds fixed space or constrains a child.", Align:"Positions a child within available space.", Center:"Centers a child on both axes.",
   ListView:"Builds scrollable repeated content.", Text:"Renders styled text.", Icon:"Renders a Material icon.", Image:"Renders image content.",
@@ -2063,7 +2055,7 @@ const TD_WIDGET_PURPOSE = {
   Drawer: "Slides in from the side with navigation destinations; closes with a swipe or a tap outside.",
   ListTile: "Groups a leading icon and a label into one tappable row.",
   Dismissible: "Wraps a list row so swiping it away runs an action such as archive or delete.",
-  AlertDialog: "A modal confirmation dialog with a title, content, and actions.",
+  AlertDialog: "A confirmation dialog with a title, content, and actions.",
   RefreshIndicator: "Wraps a scroll view so pulling down shows a spinner and refreshes the content.",
 };
 const TD_CODE_PROPS = {
@@ -2090,7 +2082,7 @@ const TD_CODE_PROPS = {
   "sw-location":"crossAxisAlignment: CrossAxisAlignment.start,", "sw-content-padding":"padding: const EdgeInsets.symmetric(horizontal: 14),",
   "sw-content-column":"crossAxisAlignment: CrossAxisAlignment.start,", "sw-category-box":"height: 78,", "sw-categories":"scrollDirection: Axis.horizontal,",
   "sw-offer-padding":"padding: const EdgeInsets.all(16),", "sw-offer-copy":"crossAxisAlignment: CrossAxisAlignment.start,",
-  "sw-restaurants-box":"height: 140,", "sw-restaurants":"scrollDirection: Axis.horizontal,", "sw-card-image-clip":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-details":"crossAxisAlignment: CrossAxisAlignment.start,"
+  "sw-restaurants-box":"height: 140,", "sw-restaurants":"scrollDirection: Axis.horizontal,", "sw-card-image-clip":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-1":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-2":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-3":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-4":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-5":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-6":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-7":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-image-clip-8":"borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),", "sw-card-details":"crossAxisAlignment: CrossAxisAlignment.start,"
 };
 function tdGeneratedCode(id,name,children) {
   const props = TD_CODE_PROPS[id] ? `  ${TD_CODE_PROPS[id].replace(/\n/g,"\n  ")}\n` : "";
@@ -2115,280 +2107,415 @@ function tdGeneratedCode(id,name,children) {
 const T = (id,name,why,children,code,what) => tdNode(id,name,what || TD_WIDGET_PURPOSE[name] || "Builds this part of the interface.",why,code || tdGeneratedCode(id,name,children || []),children || []);
 
 TEARDOWNS.whatsapp.root = T("wa-material","MaterialApp","The chat screen inherits one Material theme and navigation context.",[
-  T("wa-theme","Theme","A focused chat palette supplies WhatsApp-style color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF075E54)),\n  child: const ChatScreen(),\n)`),
+  T("wa-theme","Theme","A focused chat palette supplies WhatsApp-style color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF075E54)),\n  child: const ChatScreen(),\n)`, "Applies this theme to a chat screen."),
   T("wa-scaffold","Scaffold","The app bar, message history, and composer belong to one stable page frame.",[
     T("wa-appbar","AppBar","Contact identity and conversation actions remain visible above the chat.",[
-      T("wa-back","IconButton","Returns to the conversation list.",[],`IconButton(\n  onPressed: Navigator.of(context).pop,\n  icon: const Icon(Icons.arrow_back),\n)`),
+      T("wa-back","IconButton","Returns to the conversation list.",[],`IconButton(\n  onPressed: Navigator.of(context).pop,\n  icon: const Icon(Icons.arrow_back),\n)`, "The back button in WhatsApp."),
       T("wa-title-row","Row","Avatar and two-line identity sit together in the title slot.",[
-        T("wa-avatar","CircleAvatar","The contact has a compact visual identity.",[],`const CircleAvatar(radius: 18, child: Text('A'))`),
-        T("wa-title-gap","SizedBox","Separates the avatar from the contact text.",[],`const SizedBox(width: 10)`),
+        T("wa-avatar","CircleAvatar","The contact has a compact visual identity.",[],`const CircleAvatar(radius: 18, child: Text('A'))`, "A circular avatar showing 'A'."),
+        T("wa-title-gap","SizedBox","Separates the avatar from the contact text.",[],`const SizedBox(width: 10)`, "A 10px-wide gap."),
         T("wa-title","Column","The contact name sits above their live presence.",[
-          T("wa-name","Text","Shows the contact name.",[],`const Text('Alex', style: TextStyle(fontWeight: FontWeight.w700))`),
-          T("wa-online","Text","Shows the short presence state.",[],`const Text('online', style: TextStyle(fontSize: 12))`)
-        ])
-      ]),
-      T("wa-video","IconButton","Starts a video call without leaving the chat.",[],`IconButton(onPressed: startVideo, icon: const Icon(Icons.videocam_outlined))`),
-      T("wa-call","IconButton","Starts a voice call from the same context.",[],`IconButton(onPressed: startCall, icon: const Icon(Icons.call_outlined))`),
-      T("wa-menu","PopupMenuButton","Keeps less-used conversation actions out of the main row.",[],`PopupMenuButton<ChatAction>(\n  onSelected: handleChatAction,\n  itemBuilder: buildChatMenu,\n)`)
-    ],`AppBar(\n  leading: const BackButton(),\n  title: const ContactTitle(),\n  actions: const [VideoAction(), CallAction(), ChatMenu()],\n)`),
+          T("wa-name","Text","Shows the contact name.",[],`const Text('Alex', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Alex' in bold."),
+          T("wa-online","Text","Shows the short presence state.",[],`const Text('online', style: TextStyle(fontSize: 12))`, "Shows 'online'.")
+        ], undefined, "Stacks 'Alex' and 'online' vertically.")
+      ], undefined, "Places a circular avatar, a gap and 'Alex' and 'online' side by side."),
+      T("wa-video","IconButton","Starts a video call without leaving the chat.",[],`IconButton(onPressed: startVideo, icon: const Icon(Icons.videocam_outlined))`, "The video camera button in WhatsApp."),
+      T("wa-call","IconButton","Starts a voice call from the same context.",[],`IconButton(onPressed: startCall, icon: const Icon(Icons.call_outlined))`, "The phone button in WhatsApp."),
+      T("wa-menu","PopupMenuButton","Keeps less-used conversation actions out of the main row.",[],`PopupMenuButton<ChatAction>(\n  onSelected: handleChatAction,\n  itemBuilder: buildChatMenu,\n)`, "The menu button in the top bar.")
+    ],`AppBar(\n  leading: const BackButton(),\n  title: const ContactTitle(),\n  actions: const [VideoAction(), CallAction(), ChatMenu()],\n)`, "The top bar on the Chat screen."),
     T("wa-body","Container","A decorated surface sits behind the entire message history.",[
       T("wa-body-column","Column","The message list expands while the composer stays at the bottom.",[
         T("wa-list-expanded","Expanded","The conversation takes every pixel not used by the composer.",[
           T("wa-list","ListView","Messages are built lazily and remain vertically scrollable.",[
             T("wa-day-align","Center","The day marker is centered independently of message alignment.",[
               T("wa-day-box","Container","The day label gets compact padding and a light surface.",[
-                T("wa-day-text","Text","Labels the visible conversation day.",[],`const Text('TODAY', style: TextStyle(fontSize: 11))`)
-              ])
-            ]),
+                T("wa-day-text","Text","Labels the visible conversation day.",[],`const Text('TODAY', style: TextStyle(fontSize: 11))`, "Shows 'TODAY'.")
+              ], undefined, "A decorated box holding 'TODAY'.")
+            ], undefined, "Centres 'TODAY'."),
             T("wa-encrypt","Container","Shows the end-to-end encryption notice above the messages.",[
-              T("wa-encrypt-text","Text","Reassures the user that the chat is private.",[],`const Text('Messages are end-to-end encrypted.')`)
-            ]),
+              T("wa-encrypt-text","Text","Reassures the user that the chat is private.",[],`const Text('Messages are end-to-end encrypted.')`, "Shows 'Messages are end-to-end encrypted.'.")
+            ], undefined, "A decorated box holding 'Messages are end-to-end…'."),
             T("wa-incoming","Align","Incoming messages attach to the left edge.",[
               T("wa-incoming-bubble","Container","Padding, color, and corner radius form one incoming bubble.",[
                 T("wa-in-column","Column","Message text and time are stacked inside the bubble.",[
-                  T("wa-incoming-text","Text","Displays the received message body.",[],`Text(message.text)`),
-                  T("wa-in-time","Text","Shows when the message arrived.",[],`Text(message.time, style: const TextStyle(fontSize: 10))`)
-                ])
-              ])
-            ]),
+                  T("wa-incoming-text","Text","Displays the received message body.",[],`Text(message.text)`, "Shows the message text."),
+                  T("wa-in-time","Text","Shows when the message arrived.",[],`Text(message.time, style: const TextStyle(fontSize: 10))`, "Shows the message time.")
+                ], undefined, "Stacks the message text and the message time vertically.")
+              ], undefined, "A decorated box holding the message text and the message time.")
+            ], undefined, "Puts the message text and the message time on the left."),
             T("wa-outgoing","Align","The user's message attaches to the right edge.",[
               T("wa-outgoing-bubble","Container","A green surface distinguishes the sent message.",[
                 T("wa-out-row","Row","Time and delivery state share the bubble's trailing line.",[
-                  T("wa-outgoing-text","Text","Displays the sent message body.",[],`Text(message.text)`),
-                  T("wa-ticks","Stack","Two offset check icons form the read receipt.",[],`Stack(children: const [\n  Icon(Icons.check, size: 13),\n  Positioned(left: 4, child: Icon(Icons.check, size: 13)),\n])`)
-                ])
+                  T("wa-outgoing-text","Text","Displays the sent message body.",[],`Text(message.text)`, "Shows the message text."),
+                  T("wa-ticks","Stack","Two offset check icons form the read receipt.",[],`Stack(children: const [\n  Icon(Icons.check, size: 13),\n  Positioned(left: 4, child: Icon(Icons.check, size: 13)),\n])`,"Two overlapping tick icons: the read receipt.")
+                ], undefined, "Places the message text and a stack side by side.")
               
-              ])
-            ]),
+              ], undefined, "A decorated box holding the message text and a stack.")
+            ], undefined, "Puts the message text and a stack on the right."),
             T("wa-reply","Align","An incoming message attaches to the left edge.",[
               T("wa-reply-bubble","Container","Padding, color, and corner radius form one incoming bubble.",[
-                T("wa-reply-text","Text","Displays the received reply: 'Perfect. See you there!'.",[],`Text(message.text)`)
-              ])
-            ]),
+                T("wa-reply-text","Text","Displays the received reply: 'Perfect. See you there!'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the left."),
             T("wa-outgoing-2","Align","The user's message attaches to the right edge.",[
               T("wa-outgoing-2-bubble","Container","A green surface distinguishes the sent message.",[
-                T("wa-outgoing-2-text","Text","Displays the sent message: 'By the way, it is at 4 pm.'.",[],`Text(message.text)`)
-              ])
-            ]),
+                T("wa-outgoing-2-text","Text","Displays the sent message: 'By the way, it is at 4 pm.'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the right."),
             T("wa-incoming-2","Align","An incoming message attaches to the left edge.",[
               T("wa-incoming-2-bubble","Container","Padding, color, and corner radius form one incoming bubble.",[
-                T("wa-incoming-2-text","Text","Displays the received message: 'Noted — I will bring my laptop.'.",[],`Text(message.text)`)
-              ])
-            ]),
+                T("wa-incoming-2-text","Text","Displays the received message: 'Noted — I will bring my laptop.'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the left."),
             T("wa-outgoing-3","Align","The user's message attaches to the right edge.",[
               T("wa-outgoing-3-bubble","Container","A green surface distinguishes the sent message.",[
-                T("wa-outgoing-3-text","Text","Displays the sent message: 'We will build the profile screen together.'.",[],`Text(message.text)`)
-              ])
-            ]),
+                T("wa-outgoing-3-text","Text","Displays the sent message: 'We will build the profile screen together.'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the right."),
             T("wa-incoming-3","Align","An incoming message attaches to the left edge.",[
               T("wa-incoming-3-bubble","Container","Padding, color, and corner radius form one incoming bubble.",[
-                T("wa-incoming-3-text","Text","Displays the received message: 'Sounds good. See you then!'.",[],`Text(message.text)`)
-              ])
-            ]),
+                T("wa-incoming-3-text","Text","Displays the received message: 'Sounds good. See you then!'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the left."),
             T("wa-outgoing-4","Align","The user's message attaches to the right edge.",[
               T("wa-outgoing-4-bubble","Container","A green surface distinguishes the sent message.",[
-                T("wa-outgoing-4-text","Text","Displays the sent message: 'Do not forget the widget tree notes.'.",[],`Text(message.text)`)
-              ])
-            ]),
+                T("wa-outgoing-4-text","Text","Displays the sent message: 'Do not forget the widget tree notes.'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the right."),
             T("wa-incoming-4","Align","An incoming message attaches to the left edge.",[
               T("wa-incoming-4-bubble","Container","Padding, color, and corner radius form one incoming bubble.",[
-                T("wa-incoming-4-text","Text","Displays the received message: 'Already saved them. See you at 4!'.",[],`Text(message.text)`)
-              ])
-            ])
-          ],`ListView.builder(\n  reverse: true,\n  padding: const EdgeInsets.all(12),\n  itemCount: messages.length,\n  itemBuilder: (_, index) => MessageBubble(messages[index]),\n)`)
-        ]),
+                T("wa-incoming-4-text","Text","Displays the received message: 'Already saved them. See you at 4!'.",[],`Text(message.text)`, "Shows the message text.")
+              ], undefined, "A decorated box holding the message text.")
+            ], undefined, "Puts the message text on the left.")
+          ],`ListView.builder(\n  reverse: true,\n  padding: const EdgeInsets.all(12),\n  itemCount: messages.length,\n  itemBuilder: (_, index) => MessageBubble(messages[index]),\n)`, "A scrolling list of 11 items.")
+        ], undefined, "Lets a scrolling list take the remaining space."),
         T("wa-safe-composer","SafeArea","The input row stays above the system gesture area.",[
           T("wa-composer-padding","Padding","Breathing room separates the composer from screen edges.",[
             T("wa-composer","Row","The expanding text field and fixed send action share one line.",[
               T("wa-field-expanded","Expanded","Typing space grows to fill the row.",[
-                T("wa-field","TextField","The user writes a new message here.",[],`TextField(\n  controller: messageController,\n  decoration: const InputDecoration(\n    hintText: 'Message',\n    prefixIcon: Icon(Icons.emoji_emotions_outlined),\n  ),\n)`)
-              ]),
-              T("wa-send-gap","SizedBox","A small gap prevents the field and button from touching.",[],`const SizedBox(width: 6)`),
-              T("wa-send","IconButton","The circular action submits the current message.",[],`IconButton.filled(\n  onPressed: sendMessage,\n  icon: const Icon(Icons.send),\n)`)
-            ])
-          ])
-        ])
-      ])
-    ],`Container(\n  decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('chat_bg.png'))),\n  child: const ChatColumn(),\n)`),
-    T("wa-dialog","AlertDialog","AlertDialog is the modal confirmation that stops the user before a destructive action: it dims everything behind it, asks one question, and offers only the actions that answer it. In WhatsApp that is the delete confirm — long-press your own message, tap Delete, and this dialog asks 'Delete for everyone?' before anything disappears. A dialog is not placed in the widget tree like a normal child; it is shown with showDialog, which pushes it over the current screen, and it closes itself when an action is tapped. That is why there is no back button and no way to reach the chat behind it while it is open.",[
-      T("wa-dialog-title","Text","Asks the question the dialog exists to answer.",[],`const Text('Delete message?')`),
-      T("wa-dialog-content","Text","Explains what deleting will do, so the choice is informed.",[],`const Text('Delete for everyone? This message will be removed for everyone in this chat.')`),
-      T("wa-dialog-actions","Row","The two answers share one row at the bottom of the dialog.",[
-        T("wa-dialog-cancel","TextButton","Closes the dialog and keeps the message.",[],`TextButton(\n  onPressed: () => Navigator.pop(context),\n  child: const Text('Cancel'),\n)`),
-        T("wa-dialog-delete","TextButton","Deletes the message for everyone in the chat.",[],`TextButton(\n  onPressed: () => deleteForEveryone(message),\n  child: const Text(\n    'Delete for everyone',\n    style: TextStyle(color: Colors.red),\n  ),\n)`)
-      ])
-    ],`showDialog(\n  context: context,\n  builder: (_) => AlertDialog(\n    title: const Text('Delete message?'),\n    content: const Text('Delete for everyone? This message will be removed for everyone in this chat.'),\n    actions: [\n      TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),\n      TextButton(onPressed: () => deleteForEveryone(message), child: const Text('Delete for everyone')),\n    ],\n  ),\n)`,"A modal confirmation dialog with a title, content, and actions."),
-  ],`Scaffold(\n  appBar: const ChatAppBar(),\n  body: const ChatBody(),\n)\n// Long-press wa-outgoing-2 \u2192 showDialog(...) opens the AlertDialog above.`)
-]);
+                T("wa-field","TextField","The user writes a new message here.",[],`TextField(\n  controller: messageController,\n  decoration: const InputDecoration(\n    hintText: 'Message',\n    prefixIcon: Icon(Icons.emoji_emotions_outlined),\n  ),\n)`, "A text field for 'Message'.")
+              ], undefined, "Lets a text field take the remaining space."),
+              T("wa-send-gap","SizedBox","A small gap prevents the field and button from touching.",[],`const SizedBox(width: 6)`, "A 6px-wide gap."),
+              T("wa-send","IconButton","The circular action submits the current message.",[],`IconButton.filled(\n  onPressed: sendMessage,\n  icon: const Icon(Icons.send),\n)`, "The send button in WhatsApp.")
+            ], undefined, "Places a text field, a gap and the send button side by side.")
+          ], undefined, "Adds space around a text field and a gap.")
+        ], undefined, "Keeps a text field and a gap clear of notches and gestures.")
+      ], undefined, "Stacks a scrolling list and a text field and a gap vertically.")
+    ],`Container(\n  decoration: const BoxDecoration(image: DecorationImage(image: AssetImage('chat_bg.png'))),\n  child: const ChatColumn(),\n)`, "A decorated box holding a scrolling list and a text field and a gap."),
+    T("wa-dialog","AlertDialog","The delete confirm: long-press your own message, tap Delete, and it asks 'Delete this message?' with three choices — for everyone, for me, or cancel. showDialog pushes it over the screen; tapping an action or the dimmed area closes it.",[
+      T("wa-dialog-title","Text","Asks the question the dialog exists to answer.",[],`const Text('Delete this message?')`, "Shows 'Delete this message?'."),
+      T("wa-dialog-content","Text","Explains what deleting will do, so the choice is informed.",[],`const Text('This message will be deleted for everyone in this chat.')`, "Shows 'This message will be deleted for everyone in…'."),
+      T("wa-dialog-actions","Row","The three answers share one row at the bottom of the dialog.",[
+        T("wa-dialog-cancel","TextButton","Closes the dialog and keeps the message.",[],`TextButton(\n  onPressed: () => Navigator.pop(context),\n  child: const Text('Cancel'),\n)`, "A 'Cancel' text button."),
+        T("wa-dialog-delete-me","TextButton","Deletes the message only for this device — everyone else in the chat still sees it.",[],`TextButton(\n  onPressed: () => deleteForMe(message),\n  child: const Text(\n    'Delete for me',\n    style: TextStyle(color: Colors.red),\n  ),\n)`, "A 'Delete for me' text button."),
+        T("wa-dialog-delete","TextButton","Deletes the message for everyone in the chat.",[],`TextButton(\n  onPressed: () => deleteForEveryone(message),\n  child: const Text(\n    'Delete for everyone',\n    style: TextStyle(color: Colors.red),\n  ),\n)`, "A 'Delete for everyone' text button.")
+      ], undefined, "Places a text button side by side.")
+    ],`AlertDialog(\n  title: const Text('Delete this message?'),\n  content: const Text('This message will be deleted for everyone in this chat.'),\n  actions: [\n    TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),\n    TextButton(onPressed: () => deleteForMe(message), child: const Text('Delete for me')),\n    TextButton(onPressed: () => deleteForEveryone(message), child: const Text('Delete for everyone')),\n  ],\n)`,"A confirmation dialog with a title, content, and actions."),
+  ],`Scaffold(\n  appBar: const ChatAppBar(),\n  body: const ChatBody(),\n)\n// Long-press wa-outgoing-2 \u2192 showDialog(...) opens the AlertDialog above.`, "Frames this screen: a top bar and scrolling content.")
+], undefined, "The app shell for the Chat screen.");
 
 TEARDOWNS.instagram.root = T("ig-material","MaterialApp","The profile screen uses one shared Material theme and route context.",[
   T("ig-scaffold","Scaffold","Scrolling profile content and persistent bottom navigation share one screen frame.",[
     T("ig-scroll","CustomScrollView","The app bar, profile summary, tabs, and grid participate in one coordinated scroll.",[
       T("ig-sliver","SliverAppBar","The username and profile actions stay available while content moves below.",[
-        T("ig-title","Text","Shows the active profile handle.",[],`const Text('flutterforward', style: TextStyle(fontWeight: FontWeight.w700))`),
-        T("ig-create","IconButton","Opens Instagram's create flow.",[],`IconButton(onPressed: createPost, icon: const Icon(Icons.add_box_outlined))`),
-        T("ig-menu","IconButton","Opens profile settings and secondary actions.",[],`IconButton(onPressed: openMenu, icon: const Icon(Icons.menu))`)
-      ],`SliverAppBar(\n  pinned: true,\n  title: const Text('flutterforward'),\n  actions: [CreatePostButton(), ProfileMenuButton()],\n)`),
-      T("ig-summary-sliver","SliverToBoxAdapter","Regular profile content is adapted into the sliver scroll sequence.",[
+        T("ig-title","Text","Shows the active profile handle.",[],`const Text('flutterforward', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'flutterforward' in bold."),
+        T("ig-create","IconButton","Opens Instagram's create flow.",[],`IconButton(onPressed: createPost, icon: const Icon(Icons.add_box_outlined))`, "The add button in Instagram."),
+        T("ig-menu","IconButton","Opens profile settings and secondary actions.",[],`IconButton(onPressed: openMenu, icon: const Icon(Icons.menu))`, "The menu button in Instagram.")
+      ],`SliverAppBar(\n  pinned: true,\n  title: const Text('flutterforward'),\n  actions: [CreatePostButton(), ProfileMenuButton()],\n)`, "The 'flutterforward' header, collapsing as you scroll."),
+      T("ig-summary-sliver","SliverToBoxAdapter","Regular profile content joins the scrolling list.",[
         T("ig-profile-padding","Padding","Consistent inset keeps profile content off the screen edges.",[
           T("ig-profile","Column","Identity, biography, and actions appear in reading order.",[
             T("ig-top","Row","Avatar and account statistics share the profile's first line.",[
-              T("ig-avatar","CircleAvatar","The account image appears inside the story-ring treatment.",[],`const CircleAvatar(\n  radius: 34,\n  backgroundImage: AssetImage('profile.jpg'),\n)`),
+              T("ig-avatar","Container","The gradient story ring is a Container around the avatar: a circular gradient decoration with a little padding, so the avatar image sits inside the ring.",[
+                T("ig-avatar-circle","CircleAvatar","The account image itself, clipped into a circle inside the ring.",[],`const CircleAvatar(\n  radius: 34,\n  backgroundImage: AssetImage('profile.jpg'),\n)`, "A circular photo avatar in Instagram."),
+              ],`Container(\n  padding: const EdgeInsets.all(3),\n  decoration: const BoxDecoration(\n    shape: BoxShape.circle,\n    gradient: LinearGradient(\n      colors: [Color(0xFFFFC14D), Color(0xFFDF386E), Color(0xFF6C43C0)],\n    ),\n  ),\n  child: const CircleAvatar(\n    radius: 34,\n    backgroundImage: AssetImage('profile.jpg'),\n  ),\n)`, "A decorated box holding a circular avatar."),
               T("ig-stats-expanded","Expanded","Statistics consume the space beside the fixed avatar.",[
                 T("ig-stats","Row","Posts, followers, and following are evenly distributed.",[
                   T("ig-posts-stat","Column","The posts count sits above its label.",[
-                    T("ig-posts-value","Text","Displays the total post count.",[],`const Text('24', style: TextStyle(fontWeight: FontWeight.w700))`),
-                    T("ig-posts-label","Text","Labels the post metric.",[],`const Text('posts')`)
-                  ]),
+                    T("ig-posts-value","Text","Displays the total post count.",[],`const Text('24', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows '24' in bold."),
+                    T("ig-posts-label","Text","Labels the post metric.",[],`const Text('posts')`, "Shows 'posts'.")
+                  ], undefined, "Stacks '24' and 'posts' vertically."),
                   T("ig-followers-stat","Column","The followers count sits above its label.",[
-                    T("ig-followers-value","Text","Displays the follower count.",[],`const Text('1,248', style: TextStyle(fontWeight: FontWeight.w700))`),
-                    T("ig-followers-label","Text","Labels the follower metric.",[],`const Text('followers')`)
-                  ]),
+                    T("ig-followers-value","Text","Displays the follower count.",[],`const Text('1,248', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows '1,248' in bold."),
+                    T("ig-followers-label","Text","Labels the follower metric.",[],`const Text('followers')`, "Shows 'followers'.")
+                  ], undefined, "Stacks '1,248' and 'followers' vertically."),
                   T("ig-following-stat","Column","The following count sits above its label.",[
-                    T("ig-following-value","Text","Displays how many accounts are followed.",[],`const Text('186', style: TextStyle(fontWeight: FontWeight.w700))`),
-                    T("ig-following-label","Text","Labels the following metric.",[],`const Text('following')`)
-                  ])
-                ])
-              ])
-            ]),
+                    T("ig-following-value","Text","Displays how many accounts are followed.",[],`const Text('186', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows '186' in bold."),
+                    T("ig-following-label","Text","Labels the following metric.",[],`const Text('following')`, "Shows 'following'.")
+                  ], undefined, "Stacks '186' and 'following' vertically.")
+                ], undefined, "Places '24' and 'posts', '1,248' and 'followers' and '186' and 'following' side by side.")
+              ], undefined, "Lets '24' and 'posts' and '1,248' and 'followers' take the remaining space.")
+            ], undefined, "Places a circular avatar and '24' and 'posts' and '1,248' and 'followers' side by side."),
             T("ig-bio-column","Column","Name, description, and link form one compact biography block.",[
-              T("ig-bio-name","Text","Shows the profile display name.",[],`const Text('FlutterForward', style: TextStyle(fontWeight: FontWeight.w700))`),
-              T("ig-bio-copy","Text","Explains what the account publishes.",[],`const Text('Learn Flutter through practical screens.')`),
-              T("ig-bio-link","Text","Displays the account's external link.",[],`const Text('flutter.dev', style: TextStyle(color: Colors.blue))`)
-            ]),
+              T("ig-bio-name","Text","Shows the profile display name.",[],`const Text('FlutterForward', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'FlutterForward' in bold."),
+              T("ig-bio-copy","Text","Explains what the account publishes.",[],`const Text('Learn Flutter through practical screens.')`, "Shows 'Learn Flutter through practical screens.'."),
+              T("ig-bio-link","Text","Displays the account's external link.",[],`const Text('flutter.dev', style: TextStyle(color: Colors.blue))`, "Shows 'flutter.dev'.")
+            ], undefined, "Stacks 'FlutterForward', 'Learn Flutter through…' and 'flutter.dev' vertically."),
             T("ig-actions","Row","Profile actions remain aligned as one control group.",[
               T("ig-edit","Expanded","The edit action shares width evenly.",[
-                T("ig-edit-button","OutlinedButton","Opens profile editing.",[],`OutlinedButton(onPressed: editProfile, child: const Text('Edit profile'))`)
-              ]),
+                T("ig-edit-button","OutlinedButton","Opens profile editing.",[],`OutlinedButton(onPressed: editProfile, child: const Text('Edit profile'))`, "An outlined 'Edit profile' button.")
+              ], undefined, "Lets an outlined button take the remaining space."),
               T("ig-share","Expanded","The share action shares width evenly.",[
-                T("ig-share-button","OutlinedButton","Opens profile sharing options.",[],`OutlinedButton(onPressed: shareProfile, child: const Text('Share profile'))`)
-              ]),
-              T("ig-person-add","IconButton","Opens people discovery from this profile.",[],`IconButton(onPressed: findPeople, icon: const Icon(Icons.person_add_outlined))`)
-            ]),
+                T("ig-share-button","OutlinedButton","Opens profile sharing options.",[],`OutlinedButton(onPressed: shareProfile, child: const Text('Share profile'))`, "An outlined 'Share profile' button.")
+              ], undefined, "Lets an outlined button take the remaining space."),
+              T("ig-person-add","IconButton","Opens people discovery from this profile.",[],`IconButton(onPressed: findPeople, icon: const Icon(Icons.person_add_outlined))`, "The person add button in Instagram.")
+            ], undefined, "Places an outlined button and the person add button side by side."),
             T("ig-highlights","Row","Saved story highlights sit below the profile actions.",[
-              T("ig-story-1","CircleAvatar","A saved highlight for Flutter tips.",[],`const CircleAvatar(radius: 26, child: Text('Fl'))`),
-              T("ig-story-2","CircleAvatar","A saved highlight for widget guides.",[],`const CircleAvatar(radius: 26, child: Text('Wi'))`),
-              T("ig-story-3","CircleAvatar","A saved highlight for Dart notes.",[],`const CircleAvatar(radius: 26, child: Text('Da'))`)
-            ])
-          ])
-        ])
-      ]),
+              T("ig-story-1-col","Column","The Flutter highlight stacks its round cover above the full name, so the name reads in full instead of squeezed into the circle.",[
+                T("ig-story-1","CircleAvatar","A saved highlight for Flutter tips.",[],`const CircleAvatar(radius: 26, child: Text('F'))`, "A circular avatar showing 'F'."),
+                T("ig-story-1-label","Text","The highlight's full name — Flutter — under the cover.",[],`const Text('Flutter')`, "Shows 'Flutter'.")
+              ], undefined, "Stacks a circular avatar and 'Flutter' vertically."),
+              T("ig-story-2-col","Column","The Widgets highlight stacks its round cover above the full name, so the name reads in full instead of squeezed into the circle.",[
+                T("ig-story-2","CircleAvatar","A saved highlight for widget guides.",[],`const CircleAvatar(radius: 26, child: Text('W'))`, "A circular avatar showing 'W'."),
+                T("ig-story-2-label","Text","The highlight's full name — Widgets — under the cover.",[],`const Text('Widgets')`, "Shows 'Widgets'.")
+              ], undefined, "Stacks a circular avatar and 'Widgets' vertically."),
+              T("ig-story-3-col","Column","The Dart highlight stacks its round cover above the full name, so the name reads in full instead of squeezed into the circle.",[
+                T("ig-story-3","CircleAvatar","A saved highlight for Dart notes.",[],`const CircleAvatar(radius: 26, child: Text('D'))`, "A circular avatar showing 'D'."),
+                T("ig-story-3-label","Text","The highlight's full name — Dart — under the cover.",[],`const Text('Dart')`, "Shows 'Dart'.")
+              ], undefined, "Stacks a circular avatar and 'Dart' vertically.")
+            ], undefined, "Places a circular avatar and 'Flutter', a circular avatar and 'Widgets' and a circular avatar and 'Dart' side by side.")
+          ], undefined, "Stacks a row, 'FlutterForward' and 'Learn Flutter through…' and an outlined button vertically.")
+        ], undefined, "Adds space around a row and 'FlutterForward' and 'Learn Flutter through…'.")
+      ], undefined, "Lets an ordinary row and 'FlutterForward' and 'Learn Flutter through…' sit in the scrolling list."),
       T("ig-tabs-header","SliverPersistentHeader","The content switcher can remain pinned above the gallery.",[
         T("ig-tabs","TabBar","Grid, Reels, and tagged views share one selection control.",[
-          T("ig-grid-tab","Tab","Selects the profile post grid.",[],`const Tab(icon: Icon(Icons.grid_on))`),
-          T("ig-reels-tab","Tab","Selects the profile Reels feed.",[],`const Tab(icon: Icon(Icons.smart_display_outlined))`),
-          T("ig-tagged-tab","Tab","Selects posts where the profile is tagged.",[],`const Tab(icon: Icon(Icons.person_pin_outlined))`)
-        ])
-      ]),
+          T("ig-grid-tab","Tab","Selects the profile post grid.",[],`const Tab(icon: Icon(Icons.grid_on))`, "The grid tab."),
+          T("ig-reels-tab","Tab","Selects the profile Reels feed.",[],`const Tab(icon: Icon(Icons.smart_display_outlined))`, "The video tab."),
+          T("ig-tagged-tab","Tab","Selects posts where the profile is tagged.",[],`const Tab(icon: Icon(Icons.person_pin_outlined))`, "The tagged tab.")
+        ], undefined, "The row of tabs for this screen.")
+      ], undefined, "Pins tabs at the top while the list scrolls."),
       T("ig-grid","SliverGrid","Post thumbnails are lazily built in three equal columns.",[
-        T("ig-photo","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset(post.image, fit: BoxFit.cover)`)
-      ],`SliverGrid(\n  delegate: SliverChildBuilderDelegate(\n    (_, index) => Image.asset(posts[index].image, fit: BoxFit.cover),\n    childCount: posts.length,\n  ),\n  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),\n)`)
-    ]),
+        T("ig-photo-1","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_01.jpg', fit: BoxFit.cover)`, "Shows the post 01 image."),
+        T("ig-photo-2","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_02.jpg', fit: BoxFit.cover)`, "Shows the post 02 image."),
+        T("ig-photo-3","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_03.jpg', fit: BoxFit.cover)`, "Shows the post 03 image."),
+        T("ig-photo-4","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_04.jpg', fit: BoxFit.cover)`, "Shows the post 04 image."),
+        T("ig-photo-5","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_05.jpg', fit: BoxFit.cover)`, "Shows the post 05 image."),
+        T("ig-photo-6","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_06.jpg', fit: BoxFit.cover)`, "Shows the post 06 image."),
+        T("ig-photo-7","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_07.jpg', fit: BoxFit.cover)`, "Shows the post 07 image."),
+        T("ig-photo-8","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_08.jpg', fit: BoxFit.cover)`, "Shows the post 08 image."),
+        T("ig-photo-9","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_09.jpg', fit: BoxFit.cover)`, "Shows the post 09 image."),
+        T("ig-photo-10","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_10.jpg', fit: BoxFit.cover)`, "Shows the post 10 image."),
+        T("ig-photo-11","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_11.jpg', fit: BoxFit.cover)`, "Shows the post 11 image."),
+        T("ig-photo-12","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_12.jpg', fit: BoxFit.cover)`, "Shows the post 12 image."),
+        T("ig-photo-13","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_13.jpg', fit: BoxFit.cover)`, "Shows the post 13 image."),
+        T("ig-photo-14","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_14.jpg', fit: BoxFit.cover)`, "Shows the post 14 image."),
+        T("ig-photo-15","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_15.jpg', fit: BoxFit.cover)`, "Shows the post 15 image."),
+        T("ig-photo-16","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_16.jpg', fit: BoxFit.cover)`, "Shows the post 16 image."),
+        T("ig-photo-17","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_17.jpg', fit: BoxFit.cover)`, "Shows the post 17 image."),
+        T("ig-photo-18","Image","Each cell fills its square with one post thumbnail.",[],`Image.asset('assets/posts/post_18.jpg', fit: BoxFit.cover)`, "Shows the post 18 image.")
+      ],`SliverGrid(\n  delegate: SliverChildBuilderDelegate(\n    (_, index) => Image.asset(posts[index].image, fit: BoxFit.cover),\n    childCount: posts.length,\n  ),\n  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),\n)`, "A scrolling grid of the post 01 images.")
+    ], undefined, "One scroll position for a collapsing header, sections, pinned tabs and a grid."),
     T("ig-bottom","BottomNavigationBar","Primary Instagram destinations stay reachable below the profile.",[
-      T("ig-home-item","Icon","Represents the Home destination.",[],`const Icon(Icons.home_outlined)`),
-      T("ig-search-item","Icon","Represents Search and Explore.",[],`const Icon(Icons.search)`),
-      T("ig-create-item","Icon","Represents content creation.",[],`const Icon(Icons.add_box_outlined)`),
-      T("ig-reels-item","Icon","Represents Reels.",[],`const Icon(Icons.smart_display_outlined)`),
-      T("ig-profile-item","CircleAvatar","Represents the active profile destination.",[],`const CircleAvatar(radius: 11, backgroundImage: AssetImage('profile.jpg'))`)
-    ],`BottomNavigationBar(\n  currentIndex: 4,\n  type: BottomNavigationBarType.fixed,\n  items: profileNavigationItems,\n)`)
-  ])
-]);
+      T("ig-home-item","Icon","Represents the Home destination.",[],`const Icon(Icons.home_outlined)`, "Shows the home icon in Instagram."),
+      T("ig-search-item","Icon","Represents Search and Explore.",[],`const Icon(Icons.search)`, "Shows the search icon in Instagram."),
+      T("ig-create-item","Icon","Represents content creation.",[],`const Icon(Icons.add_box_outlined)`, "Shows the add icon in Instagram."),
+      T("ig-reels-item","Icon","Represents Reels.",[],`const Icon(Icons.smart_display_outlined)`, "Shows the video icon in Instagram."),
+      T("ig-profile-item","CircleAvatar","Represents the active profile destination.",[],`const CircleAvatar(radius: 11, backgroundImage: AssetImage('profile.jpg'))`, "A circular photo avatar in Instagram.")
+    ],`BottomNavigationBar(\n  currentIndex: 4,\n  type: BottomNavigationBarType.fixed,\n  items: profileNavigationItems,\n)`, "The bottom tabs: profile.jpg.")
+  ], undefined, "Frames this screen: a scrolling list and a bottom bar.")
+], undefined, "The app shell for the Profile screen.");
 
 TEARDOWNS.swiggy.root = T("sw-material","MaterialApp","The food home screen inherits shared theme and navigation behavior.",[
   T("sw-scaffold","Scaffold","Discovery content and persistent destination navigation share one page frame.",[
     T("sw-safe","SafeArea","Location and search controls remain clear of system insets.",[
-      T("sw-refresh","RefreshIndicator","RefreshIndicator is the pull-to-refresh wrapper: it watches the scroll view for a downward drag past the top and, when the user lets go, shows a spinner and calls onRefresh. On Swiggy Home that is how the restaurant list is re-fetched — pull the list down, the orange spinner appears at the top, and the latest restaurants load in. A plain CustomScrollView can scroll but cannot trigger a refresh; RefreshIndicator adds the gesture and the spinner around the scroll view without changing anything inside it. The spinner is built into RefreshIndicator itself, so there is no separate spinner widget in this tree.",[
+      T("sw-refresh","RefreshIndicator","It watches for a downward drag past the top and, when the user lets go, shows a spinner and calls onRefresh — that is how the restaurant list is re-fetched.",[
       T("sw-scroll-view","CustomScrollView","Header, categories, offer, and restaurant results scroll as one surface.",[
         T("sw-appbar","SliverAppBar","Location identity and account access occupy the top of the food screen.",[
           T("sw-head-padding","Padding","The location row receives consistent horizontal inset.",[
             T("sw-location-row","Row","Pin, address, and profile action share the header line.",[
-              T("sw-pin","Icon","Marks the delivery location context.",[],`const Icon(Icons.location_on_outlined, color: Color(0xFFFC8019))`),
+              T("sw-pin","Icon","Marks the delivery location context.",[],`const Icon(Icons.location_on_outlined, color: Color(0xFFFC8019))`, "Shows the location icon in Swiggy."),
               T("sw-location-expanded","Expanded","The address uses the space between pin and profile.",[
                 T("sw-location","Column","Location name is stacked over the full address.",[
-                  T("sw-home-text","Text","Shows the selected saved place.",[],`const Text('Home', style: TextStyle(fontWeight: FontWeight.w700))`),
-                  T("sw-address-text","Text","Shows the resolved delivery address.",[],`const Text('MG Road, Bengaluru', overflow: TextOverflow.ellipsis)`)
-                ])
-              ]),
-              T("sw-profile-avatar","CircleAvatar","Opens account and profile entry points.",[],`const CircleAvatar(radius: 16, child: Text('DK'))`)
-            ])
-          ])
-        ],`SliverAppBar(\n  pinned: true,\n  title: const DeliveryLocationHeader(),\n)`),
-        T("sw-content","SliverToBoxAdapter","The regular home sections are adapted into the sliver sequence.",[
+                  T("sw-home-text","Text","Shows the selected saved place.",[],`const Text('Home', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Home' in bold."),
+                  T("sw-address-text","Text","Shows the resolved delivery address.",[],`const Text('MG Road, Bengaluru', overflow: TextOverflow.ellipsis)`, "Shows 'MG Road, Bengaluru'.")
+                ], undefined, "Stacks 'Home' and 'MG Road, Bengaluru' vertically.")
+              ], undefined, "Lets 'Home' and 'MG Road, Bengaluru' take the remaining space."),
+              T("sw-profile-avatar","CircleAvatar","Opens account and profile entry points.",[],`const CircleAvatar(radius: 16, child: Text('DK'))`, "A circular avatar showing 'DK'.")
+            ], undefined, "Places the location icon, 'Home' and 'MG Road, Bengaluru' and a circular avatar side by side.")
+          ], undefined, "Adds space around the location icon and 'Home' and 'MG Road, Bengaluru'.")
+        ],`SliverAppBar(\n  pinned: true,\n  title: const DeliveryLocationHeader(),\n)`, "The header that collapses as you scroll."),
+        T("sw-content","SliverToBoxAdapter","The regular home sections join the scrolling list.",[
           T("sw-content-padding","Padding","All discovery sections align to one page inset.",[
             T("sw-content-column","Column","Search, categories, promotion, and restaurants follow vertically.",[
-              T("sw-search","TextField","Users can search dishes and restaurants from one entry point.",[],`TextField(\n  onChanged: searchFood,\n  decoration: const InputDecoration(\n    hintText: 'Search for dishes and restaurants',\n    suffixIcon: Icon(Icons.search),\n  ),\n)`),
-              T("sw-search-gap","SizedBox","Separates search from the first content section.",[],`const SizedBox(height: 18)`),
-              T("sw-category-title","Text","Introduces the food category carousel.",[],`const Text("What's on your mind?", style: TextStyle(fontWeight: FontWeight.w700))`),
+              T("sw-search","TextField","Users can search dishes and restaurants from one entry point.",[],`TextField(\n  onChanged: searchFood,\n  decoration: const InputDecoration(\n    hintText: 'Search for dishes and restaurants',\n    suffixIcon: Icon(Icons.search),\n  ),\n)`, "A text field for 'Search for dishes and restaurants'."),
+              T("sw-search-gap","SizedBox","Separates search from the first content section.",[],`const SizedBox(height: 18)`, "A 18px-tall gap."),
+              T("sw-category-title","Text","Introduces the food category carousel.",[],`const Text("What's on your mind?", style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'What's on your mind?' in bold."),
               T("sw-category-box","SizedBox","Gives the horizontal category list a stable height.",[
                 T("sw-categories","ListView","Food categories scroll horizontally without growing the page.",[
-                  T("sw-category-item","Column","Category image and label form one tappable option.",[
-                    T("sw-category-image","CircleAvatar","Presents the category illustration in a circle.",[],`CircleAvatar(radius: 28, backgroundImage: AssetImage(category.image))`),
-                    T("sw-category-label","Text","Names the category beneath its image.",[],`Text(category.name)`)
-                  ])
-                ],`ListView.separated(\n  scrollDirection: Axis.horizontal,\n  itemCount: categories.length,\n  itemBuilder: (_, index) => FoodCategory(categories[index]),\n  separatorBuilder: (_, __) => const SizedBox(width: 12),\n)`)
-              ]),
+                  T("sw-category-1","Column","Category image and label form one tappable option.",[
+                    T("sw-category-image-1","CircleAvatar","Presents the category illustration in a circle.",[],`CircleAvatar(radius: 28, backgroundImage: AssetImage('assets/categories/biryani.png'))`, "A circular photo avatar in Swiggy."),
+                    T("sw-category-label-1","Text","Names the category beneath its image.",[],`const Text('Biryani')`, "Shows 'Biryani'.")
+                  ], undefined, "Stacks a circular avatar and 'Biryani' vertically."),
+                  T("sw-category-2","Column","Category image and label form one tappable option.",[
+                    T("sw-category-image-2","CircleAvatar","Presents the category illustration in a circle.",[],`CircleAvatar(radius: 28, backgroundImage: AssetImage('assets/categories/pizza.png'))`, "A circular photo avatar in Swiggy."),
+                    T("sw-category-label-2","Text","Names the category beneath its image.",[],`const Text('Pizza')`, "Shows 'Pizza'.")
+                  ], undefined, "Stacks a circular avatar and 'Pizza' vertically."),
+                  T("sw-category-3","Column","Category image and label form one tappable option.",[
+                    T("sw-category-image-3","CircleAvatar","Presents the category illustration in a circle.",[],`CircleAvatar(radius: 28, backgroundImage: AssetImage('assets/categories/dosa.png'))`, "A circular photo avatar in Swiggy."),
+                    T("sw-category-label-3","Text","Names the category beneath its image.",[],`const Text('Dosa')`, "Shows 'Dosa'.")
+                  ], undefined, "Stacks a circular avatar and 'Dosa' vertically."),
+                  T("sw-category-4","Column","Category image and label form one tappable option.",[
+                    T("sw-category-image-4","CircleAvatar","Presents the category illustration in a circle.",[],`CircleAvatar(radius: 28, backgroundImage: AssetImage('assets/categories/rolls.png'))`, "A circular photo avatar in Swiggy."),
+                    T("sw-category-label-4","Text","Names the category beneath its image.",[],`const Text('Rolls')`, "Shows 'Rolls'.")
+                  ], undefined, "Stacks a circular avatar and 'Rolls' vertically.")
+                ],`ListView.separated(\n  scrollDirection: Axis.horizontal,\n  itemCount: categories.length,\n  itemBuilder: (_, index) => FoodCategory(categories[index]),\n  separatorBuilder: (_, __) => const SizedBox(width: 12),\n)`, "A scrolling list of sections.")
+              ], undefined, "Forces a scrolling list into a 12 by 78 box."),
               T("sw-offer","Card","Discount content reads as one prominent promotional surface.",[
                 T("sw-offer-padding","Padding","Offer text stays clear of the card edge.",[
                   T("sw-offer-copy","Column","Discount and qualification details are stacked.",[
-                    T("sw-offer-title","Text","Shows the promotion's strongest value.",[],`const Text('40% OFF', style: TextStyle(fontWeight: FontWeight.w800))`),
+                    T("sw-offer-title","Text","Shows the promotion's strongest value.",[],`const Text('40% OFF', style: TextStyle(fontWeight: FontWeight.w800))`, "Shows '40% OFF' in bold."),
                     T("sw-offer-detail","Text","Explains when the discount applies.",[],`const Text(
   'On your first order - use WELCOME',
   softWrap: true,
-)`)
-                  ])
-                ])
-              ],`Card(\n  color: const Color(0xFFFC8019),\n  child: const Padding(\n    padding: EdgeInsets.all(16),\n    child: OfferCopy(),\n  ),\n)`),
-              T("sw-restaurants-title","Text","Introduces nearby restaurant results.",[],`const Text('Top restaurants near you', style: TextStyle(fontWeight: FontWeight.w700))`),
-              T("sw-restaurants-subtitle","Text","States the delivery promise under the restaurant heading.",[],`const Text('Fast delivery and great ratings', style: TextStyle(color: Colors.grey))`),
+)`, "Shows 'On your first order - use WELCOME'.")
+                  ], undefined, "Stacks '40% OFF' and 'On your first order - use…' vertically.")
+                ], undefined, "Pads '40% OFF' and 'On your first order - use…' with 16px on every side.")
+              ],`Card(\n  color: const Color(0xFFFC8019),\n  child: const Padding(\n    padding: EdgeInsets.all(16),\n    child: OfferCopy(),\n  ),\n)`, "Groups '40% OFF' and 'On your first order - use…' on one card."),
+              T("sw-restaurants-title","Text","Introduces nearby restaurant results.",[],`const Text('Top restaurants near you', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Top restaurants near you' in bold."),
+              T("sw-restaurants-subtitle","Text","States the delivery promise under the restaurant heading.",[],`const Text('Fast delivery and great ratings', style: TextStyle(color: Colors.grey))`, "Shows 'Fast delivery and great ratings'."),
               T("sw-restaurants-box","SizedBox","Constrains the horizontal restaurant rail to card height.",[
                 T("sw-restaurants","ListView","Restaurant cards can be browsed side by side.",[
-                  T("sw-card-one","Card","One restaurant's image and delivery facts stay grouped.",[
-                    T("sw-card-column","Column","Restaurant image sits above its details.",[
-                      T("sw-card-image-clip","ClipRRect","The restaurant image follows the card's top corners.",[
-                        T("sw-card-image","Image","Shows the restaurant's representative food image.",[],`Image.asset(restaurant.image, height: 92, fit: BoxFit.cover)`)
-                      ]),
-                      T("sw-card-detail-padding","Padding","Restaurant text gets a compact inset.",[
-                        T("sw-card-details","Column","Name and delivery metadata are stacked.",[
-                          T("sw-card-name","Text","Shows the restaurant name.",[],`Text(restaurant.name, style: const TextStyle(fontWeight: FontWeight.w700))`),
-                          T("sw-card-meta","Text","Shows rating and estimated delivery time.",[],`Text('\${restaurant.rating} · \${restaurant.eta}')`)
-                        ])
-                      ])
-                    ])
-                  ])
-                ],`ListView.builder(\n  scrollDirection: Axis.horizontal,\n  itemCount: restaurants.length,\n  itemBuilder: (_, index) => RestaurantCard(restaurants[index]),\n)`)
-              ])
-            ]),
-              T("sw-restaurants-2","ListView","The second row of restaurant cards.",[],`ListView.builder(
+                  T("sw-card-1","Card","One restaurant's image and delivery facts stay grouped.",[
+                    T("sw-card-column-1","Column","Restaurant image sits above its details.",[
+                      T("sw-card-image-clip-1","ClipRRect","The restaurant image follows the card's top corners.",[
+                        T("sw-card-image-1","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/spice_kitchen.jpg', height: 92, fit: BoxFit.cover)`, "Shows the spice kitchen image.")
+                      ], undefined, "Rounds the corners of the spice kitchen image."),
+                      T("sw-card-detail-padding-1","Padding","Restaurant text gets a compact inset.",[
+                        T("sw-card-details-1","Column","Name and delivery metadata are stacked.",[
+                          T("sw-card-name-1","Text","Shows the restaurant name.",[],`const Text('Spice Kitchen', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Spice Kitchen' in bold."),
+                          T("sw-card-meta-1","Text","Shows rating and estimated delivery time.",[],`const Text('4.5 · 25–30 min')`, "Shows '4.5 · 25–30 min'.")
+                        ], undefined, "Stacks 'Spice Kitchen' and '4.5 · 25–30 min' vertically.")
+                      ], undefined, "Adds space around 'Spice Kitchen' and '4.5 · 25–30 min'.")
+                    ], undefined, "Stacks the spice kitchen image and 'Spice Kitchen' and '4.5 · 25–30 min' vertically.")
+                  ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/spice_kitchen.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Spice Kitchen', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the spice kitchen image and 'Spice Kitchen' and '4.5 · 25–30 min' on one card."),
+                  T("sw-card-2","Card","One restaurant's image and delivery facts stay grouped.",[
+                    T("sw-card-column-2","Column","Restaurant image sits above its details.",[
+                      T("sw-card-image-clip-2","ClipRRect","The restaurant image follows the card's top corners.",[
+                        T("sw-card-image-2","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/south_bowl.jpg', height: 92, fit: BoxFit.cover)`, "Shows the south bowl image.")
+                      ], undefined, "Rounds the corners of the south bowl image."),
+                      T("sw-card-detail-padding-2","Padding","Restaurant text gets a compact inset.",[
+                        T("sw-card-details-2","Column","Name and delivery metadata are stacked.",[
+                          T("sw-card-name-2","Text","Shows the restaurant name.",[],`const Text('South Bowl', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'South Bowl' in bold."),
+                          T("sw-card-meta-2","Text","Shows rating and estimated delivery time.",[],`const Text('4.3 · 20–25 min')`, "Shows '4.3 · 20–25 min'.")
+                        ], undefined, "Stacks 'South Bowl' and '4.3 · 20–25 min' vertically.")
+                      ], undefined, "Adds space around 'South Bowl' and '4.3 · 20–25 min'.")
+                    ], undefined, "Stacks the south bowl image and 'South Bowl' and '4.3 · 20–25 min' vertically.")
+                  ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/south_bowl.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('South Bowl', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the south bowl image and 'South Bowl' and '4.3 · 20–25 min' on one card.")
+                ],`ListView.builder(\n  scrollDirection: Axis.horizontal,\n  itemCount: restaurants.length,\n  itemBuilder: (_, index) => RestaurantCard(restaurants[index]),\n)`, "A scrolling list of cards.")
+              ], undefined, "A 140px-tall gap.")
+            ], undefined, "Stacks a text field, a gap and 'What's on your mind?' vertically."),
+              T("sw-restaurants-2","ListView","The second row of restaurant cards.",[
+                T("sw-card-3","Card","One restaurant's image and delivery facts stay grouped.",[
+                  T("sw-card-column-3","Column","Restaurant image sits above its details.",[
+                    T("sw-card-image-clip-3","ClipRRect","The restaurant image follows the card's top corners.",[
+                      T("sw-card-image-3","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/burger_barn.jpg', height: 92, fit: BoxFit.cover)`, "Shows the burger barn image.")
+                    ], undefined, "Rounds the corners of the burger barn image."),
+                    T("sw-card-detail-padding-3","Padding","Restaurant text gets a compact inset.",[
+                      T("sw-card-details-3","Column","Name and delivery metadata are stacked.",[
+                        T("sw-card-name-3","Text","Shows the restaurant name.",[],`const Text('Burger Barn', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Burger Barn' in bold."),
+                        T("sw-card-meta-3","Text","Shows rating and estimated delivery time.",[],`const Text('4.6 · 15–20 min')`, "Shows '4.6 · 15–20 min'.")
+                      ], undefined, "Stacks 'Burger Barn' and '4.6 · 15–20 min' vertically.")
+                    ], undefined, "Adds space around 'Burger Barn' and '4.6 · 15–20 min'.")
+                  ], undefined, "Stacks the burger barn image and 'Burger Barn' and '4.6 · 15–20 min' vertically.")
+                ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/burger_barn.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Burger Barn', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the burger barn image and 'Burger Barn' and '4.6 · 15–20 min' on one card."),
+                T("sw-card-4","Card","One restaurant's image and delivery facts stay grouped.",[
+                  T("sw-card-column-4","Column","Restaurant image sits above its details.",[
+                    T("sw-card-image-clip-4","ClipRRect","The restaurant image follows the card's top corners.",[
+                      T("sw-card-image-4","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/taco_town.jpg', height: 92, fit: BoxFit.cover)`, "Shows the taco town image.")
+                    ], undefined, "Rounds the corners of the taco town image."),
+                    T("sw-card-detail-padding-4","Padding","Restaurant text gets a compact inset.",[
+                      T("sw-card-details-4","Column","Name and delivery metadata are stacked.",[
+                        T("sw-card-name-4","Text","Shows the restaurant name.",[],`const Text('Taco Town', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Taco Town' in bold."),
+                        T("sw-card-meta-4","Text","Shows rating and estimated delivery time.",[],`const Text('4.2 · 20–25 min')`, "Shows '4.2 · 20–25 min'.")
+                      ], undefined, "Stacks 'Taco Town' and '4.2 · 20–25 min' vertically.")
+                    ], undefined, "Adds space around 'Taco Town' and '4.2 · 20–25 min'.")
+                  ], undefined, "Stacks the taco town image and 'Taco Town' and '4.2 · 20–25 min' vertically.")
+                ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/taco_town.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Taco Town', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the taco town image and 'Taco Town' and '4.2 · 20–25 min' on one card.")
+              ],`ListView.builder(
   scrollDirection: Axis.horizontal,
   itemCount: 2,
   itemBuilder: (_, index) => RestaurantCard(restaurants[index + 2]),
-)`),
-              T("sw-restaurants-3","ListView","The third row of restaurant cards.",[],`ListView.builder(
+)`, "A scrolling list of cards."),
+              T("sw-restaurants-3","ListView","The third row of restaurant cards.",[
+                T("sw-card-5","Card","One restaurant's image and delivery facts stay grouped.",[
+                  T("sw-card-column-5","Column","Restaurant image sits above its details.",[
+                    T("sw-card-image-clip-5","ClipRRect","The restaurant image follows the card's top corners.",[
+                      T("sw-card-image-5","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/pizza_place.jpg', height: 92, fit: BoxFit.cover)`, "Shows the pizza place image.")
+                    ], undefined, "Rounds the corners of the pizza place image."),
+                    T("sw-card-detail-padding-5","Padding","Restaurant text gets a compact inset.",[
+                      T("sw-card-details-5","Column","Name and delivery metadata are stacked.",[
+                        T("sw-card-name-5","Text","Shows the restaurant name.",[],`const Text('Pizza Place', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Pizza Place' in bold."),
+                        T("sw-card-meta-5","Text","Shows rating and estimated delivery time.",[],`const Text('4.4 · 30–35 min')`, "Shows '4.4 · 30–35 min'.")
+                      ], undefined, "Stacks 'Pizza Place' and '4.4 · 30–35 min' vertically.")
+                    ], undefined, "Adds space around 'Pizza Place' and '4.4 · 30–35 min'.")
+                  ], undefined, "Stacks the pizza place image and 'Pizza Place' and '4.4 · 30–35 min' vertically.")
+                ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/pizza_place.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Pizza Place', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the pizza place image and 'Pizza Place' and '4.4 · 30–35 min' on one card."),
+                T("sw-card-6","Card","One restaurant's image and delivery facts stay grouped.",[
+                  T("sw-card-column-6","Column","Restaurant image sits above its details.",[
+                    T("sw-card-image-clip-6","ClipRRect","The restaurant image follows the card's top corners.",[
+                      T("sw-card-image-6","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/dessert_den.jpg', height: 92, fit: BoxFit.cover)`, "Shows the dessert den image.")
+                    ], undefined, "Rounds the corners of the dessert den image."),
+                    T("sw-card-detail-padding-6","Padding","Restaurant text gets a compact inset.",[
+                      T("sw-card-details-6","Column","Name and delivery metadata are stacked.",[
+                        T("sw-card-name-6","Text","Shows the restaurant name.",[],`const Text('Dessert Den', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Dessert Den' in bold."),
+                        T("sw-card-meta-6","Text","Shows rating and estimated delivery time.",[],`const Text('4.7 · 15–20 min')`, "Shows '4.7 · 15–20 min'.")
+                      ], undefined, "Stacks 'Dessert Den' and '4.7 · 15–20 min' vertically.")
+                    ], undefined, "Adds space around 'Dessert Den' and '4.7 · 15–20 min'.")
+                  ], undefined, "Stacks the dessert den image and 'Dessert Den' and '4.7 · 15–20 min' vertically.")
+                ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/dessert_den.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Dessert Den', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the dessert den image and 'Dessert Den' and '4.7 · 15–20 min' on one card.")
+              ],`ListView.builder(
   scrollDirection: Axis.horizontal,
   itemCount: 2,
   itemBuilder: (_, index) => RestaurantCard(restaurants[index + 4]),
-)`),
-              T("sw-restaurants-4","ListView","The fourth row of restaurant cards.",[],`ListView.builder(
+)`, "A scrolling list of cards."),
+              T("sw-restaurants-4","ListView","The fourth row of restaurant cards.",[
+                T("sw-card-7","Card","One restaurant's image and delivery facts stay grouped.",[
+                  T("sw-card-column-7","Column","Restaurant image sits above its details.",[
+                    T("sw-card-image-clip-7","ClipRRect","The restaurant image follows the card's top corners.",[
+                      T("sw-card-image-7","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/noodle_house.jpg', height: 92, fit: BoxFit.cover)`, "Shows the noodle house image.")
+                    ], undefined, "Rounds the corners of the noodle house image."),
+                    T("sw-card-detail-padding-7","Padding","Restaurant text gets a compact inset.",[
+                      T("sw-card-details-7","Column","Name and delivery metadata are stacked.",[
+                        T("sw-card-name-7","Text","Shows the restaurant name.",[],`const Text('Noodle House', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Noodle House' in bold."),
+                        T("sw-card-meta-7","Text","Shows rating and estimated delivery time.",[],`const Text('4.5 · 20–25 min')`, "Shows '4.5 · 20–25 min'.")
+                      ], undefined, "Stacks 'Noodle House' and '4.5 · 20–25 min' vertically.")
+                    ], undefined, "Adds space around 'Noodle House' and '4.5 · 20–25 min'.")
+                  ], undefined, "Stacks the noodle house image and 'Noodle House' and '4.5 · 20–25 min' vertically.")
+                ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/noodle_house.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Noodle House', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the noodle house image and 'Noodle House' and '4.5 · 20–25 min' on one card."),
+                T("sw-card-8","Card","One restaurant's image and delivery facts stay grouped.",[
+                  T("sw-card-column-8","Column","Restaurant image sits above its details.",[
+                    T("sw-card-image-clip-8","ClipRRect","The restaurant image follows the card's top corners.",[
+                      T("sw-card-image-8","Image","Shows the restaurant's representative food image.",[],`Image.asset('assets/restaurants/salad_stop.jpg', height: 92, fit: BoxFit.cover)`, "Shows the salad stop image.")
+                    ], undefined, "Rounds the corners of the salad stop image."),
+                    T("sw-card-detail-padding-8","Padding","Restaurant text gets a compact inset.",[
+                      T("sw-card-details-8","Column","Name and delivery metadata are stacked.",[
+                        T("sw-card-name-8","Text","Shows the restaurant name.",[],`const Text('Salad Stop', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Salad Stop' in bold."),
+                        T("sw-card-meta-8","Text","Shows rating and estimated delivery time.",[],`const Text('4.3 · 10–15 min')`, "Shows '4.3 · 10–15 min'.")
+                      ], undefined, "Stacks 'Salad Stop' and '4.3 · 10–15 min' vertically.")
+                    ], undefined, "Adds space around 'Salad Stop' and '4.3 · 10–15 min'.")
+                  ], undefined, "Stacks the salad stop image and 'Salad Stop' and '4.3 · 10–15 min' vertically.")
+                ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),\n        child: Image.asset('assets/restaurants/salad_stop.jpg', height: 92, fit: BoxFit.cover),\n      ),\n      Text('Salad Stop', style: const TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the salad stop image and 'Salad Stop' and '4.3 · 10–15 min' on one card.")
+              ],`ListView.builder(
   scrollDirection: Axis.horizontal,
   itemCount: 2,
   itemBuilder: (_, index) => RestaurantCard(restaurants[index + 6]),
-)`)
-          ])
-        ])
-      ])
+)`, "A scrolling list of cards.")
+          ], undefined, "Pads a text field and a gap with 14px on the sides.")
+        ], undefined, "Lets an ordinary text field and a gap sit in the scrolling list.")
+      ], undefined, "One scroll position for a collapsing header and sections.")
       ],`RefreshIndicator(\n  onRefresh: refreshRestaurants,\n  color: const Color(0xFFFC8019),\n  child: const HomeScrollView(),\n)`,"Wraps a scroll view so pulling down shows a spinner and refreshes the content.")
-    ]),
+    ], undefined, "Keeps a refresh wrapper clear of notches and gestures."),
     T("sw-bottom","BottomNavigationBar","Food, Search, Cart, and Account remain one tap away.",[
-      T("sw-food-nav","Icon","Represents the active Food destination.",[],`const Icon(Icons.home_outlined)`),
-      T("sw-search-nav","Icon","Represents the Search destination.",[],`const Icon(Icons.search)`),
-      T("sw-cart-nav","Icon","Represents the Cart destination.",[],`const Icon(Icons.shopping_bag_outlined)`),
-      T("sw-account-nav","Icon","Represents the Account destination.",[],`const Icon(Icons.person_outline)`)
-    ],`BottomNavigationBar(\n  currentIndex: 0,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Food'),\n    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),\n    BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Cart'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Account'),\n  ],\n)`)
-  ])
-]);
+      T("sw-food-nav","Icon","Represents the active Food destination.",[],`const Icon(Icons.home_outlined)`, "Shows the home icon in Swiggy."),
+      T("sw-search-nav","Icon","Represents the Search destination.",[],`const Icon(Icons.search)`, "Shows the search icon in Swiggy."),
+      T("sw-cart-nav","Icon","Represents the Cart destination.",[],`const Icon(Icons.shopping_bag_outlined)`, "Shows the bag icon in Swiggy."),
+      T("sw-account-nav","Icon","Represents the Account destination.",[],`const Icon(Icons.person_outline)`, "Shows the person outline icon in Swiggy.")
+    ],`BottomNavigationBar(\n  currentIndex: 0,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Food'),\n    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),\n    BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Cart'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Account'),\n  ],\n)`, "The bottom tabs for this screen.")
+  ], undefined, "Frames this screen: a refresh wrapper and a bottom bar.")
+], undefined, "The app shell for the Home screen.");
 
 TEARDOWNS.login.root = T("lg-material","MaterialApp","The sign-in screen inherits one Material theme and navigation context.",[
-  T("lg-theme","Theme","A focused auth palette supplies brand color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF02569B)),\n  child: const SignInScreen(),\n)`),
+  T("lg-theme","Theme","A focused auth palette supplies brand color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF02569B)),\n  child: const SignInScreen(),\n)`, "Applies this theme to a sign in screen."),
   T("lg-scaffold","Scaffold","The brand header, sign-in form, and its actions share one stable page frame.",[
     T("lg-safe","SafeArea","Form content stays clear of notches, the status bar, and system gestures.",[
       T("lg-scroll","SingleChildScrollView","The form scrolls when the keyboard shrinks the visible area.",[
@@ -2398,27 +2525,27 @@ TEARDOWNS.login.root = T("lg-material","MaterialApp","The sign-in screen inherit
               T("lg-col","Column","Logo, fields, and actions follow from top to bottom.",[
                 T("lg-header","Column","Brand mark, title, and subtitle form the sign-in header.",[
                   T("lg-logo-ring","Container","A gradient ring gives the brand mark its badge shape.",[
-                    T("lg-logo","Text","Shows the app monogram inside the badge.",[],`const Text(\n  'FF',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`)
-                  ],`Container(\n  width: 64,\n  height: 64,\n  decoration: const BoxDecoration(\n    borderRadius: BorderRadius.all(Radius.circular(22)),\n    gradient: LinearGradient(colors: [Color(0xFF02569B), Color(0xFF13B9FD)]),\n  ),\n  child: const Center(child: Text('FF')),\n)`),
-                  T("lg-title","Text","Greets the returning user.",[],`const Text(\n  'Welcome back',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`),
-                  T("lg-subtitle","Text","Explains what signing in unlocks.",[],`const Text(\n  'Sign in to your account',\n  style: TextStyle(color: Colors.grey),\n)`)
-                ]),
+                    T("lg-logo","Text","Shows the app monogram inside the badge.",[],`const Text(\n  'FF',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`, "Shows 'FF' in bold.")
+                  ],`Container(\n  width: 64,\n  height: 64,\n  decoration: const BoxDecoration(\n    borderRadius: BorderRadius.all(Radius.circular(22)),\n    gradient: LinearGradient(colors: [Color(0xFF02569B), Color(0xFF13B9FD)]),\n  ),\n  child: const Center(child: Text('FF')),\n)`, "A decorated box holding 'FF'."),
+                  T("lg-title","Text","Greets the returning user.",[],`const Text(\n  'Welcome back',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`, "Shows 'Welcome back' in bold."),
+                  T("lg-subtitle","Text","Explains what signing in unlocks.",[],`const Text(\n  'Sign in to your account',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Sign in to your account'.")
+                ], undefined, "Stacks 'FF', 'Welcome back' and 'Sign in to your account' vertically."),
                 T("lg-email-field","TextField","Collects the account email address.",[
-                  T("lg-email-icon","Icon","Hints that this field expects an email address.",[],`const Icon(Icons.mail_outlined)`),
-                  T("lg-email-decoration","InputDecoration","Labels, hints, and borders describe the email field's state.",[],`const InputDecoration(\n  labelText: 'Email',\n  hintText: 'you@example.com',\n  prefixIcon: Icon(Icons.mail_outlined),\n  border: OutlineInputBorder(),\n)`)
-                ],`TextField(\n  controller: _emailController,\n  keyboardType: TextInputType.emailAddress,\n  decoration: const InputDecoration(\n    labelText: 'Email',\n    prefixIcon: Icon(Icons.mail_outlined),\n    border: OutlineInputBorder(),\n  ),\n  validator: (value) => value!.contains('@') ? null : 'Enter a valid email',\n)`),
-                T("lg-field-gap","SizedBox","Keeps a steady rhythm between the two fields.",[],`const SizedBox(height: 12)`),
+                  T("lg-email-icon","Icon","Hints that this field expects an email address.",[],`const Icon(Icons.mail_outlined)`, "Shows the mail icon in Login."),
+                  T("lg-email-decoration","InputDecoration","Labels, hints, and borders describe the email field's state.",[],`const InputDecoration(\n  labelText: 'Email',\n  hintText: 'you@example.com',\n  prefixIcon: Icon(Icons.mail_outlined),\n  border: OutlineInputBorder(),\n)`, "Styles the input: hint 'you@example.com'.")
+                ],`TextField(\n  controller: _emailController,\n  keyboardType: TextInputType.emailAddress,\n  decoration: const InputDecoration(\n    labelText: 'Email',\n    prefixIcon: Icon(Icons.mail_outlined),\n    border: OutlineInputBorder(),\n  ),\n  validator: (value) => value!.contains('@') ? null : 'Enter a valid email',\n)`, "A text field for 'Email'."),
+                T("lg-field-gap","SizedBox","Keeps a steady rhythm between the two fields.",[],`const SizedBox(height: 12)`, "A 12px-tall gap."),
                 T("lg-pass-field","TextField","Collects the password without showing it.",[
-                  T("lg-pass-icon","Icon","Hints that this field expects a secret.",[],`const Icon(Icons.lock_outlined)`),
-                  T("lg-pass-decoration","InputDecoration","Labels the password field and reserves the suffix slot.",[],`const InputDecoration(\n  labelText: 'Password',\n  prefixIcon: Icon(Icons.lock_outlined),\n  border: OutlineInputBorder(),\n)`),
-                  T("lg-eye","IconButton","Toggles password visibility without leaving the field.",[],`IconButton(\n  onPressed: _toggleObscure,\n  icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),\n)`)
-                ],`TextField(\n  controller: _passwordController,\n  obscureText: _obscure,\n  decoration: InputDecoration(\n    labelText: 'Password',\n    prefixIcon: const Icon(Icons.lock_outlined),\n    suffixIcon: IconButton(\n      onPressed: _toggleObscure,\n      icon: const Icon(Icons.visibility_outlined),\n    ),\n    border: const OutlineInputBorder(),\n  ),\n  validator: (value) => value!.length >= 6 ? null : 'Minimum 6 characters',\n)`),
+                  T("lg-pass-icon","Icon","Hints that this field expects a secret.",[],`const Icon(Icons.lock_outlined)`, "Shows the lock icon in Login."),
+                  T("lg-pass-decoration","InputDecoration","Labels the password field and reserves the suffix slot.",[],`const InputDecoration(\n  labelText: 'Password',\n  prefixIcon: Icon(Icons.lock_outlined),\n  border: OutlineInputBorder(),\n)`, "Styles the input: hint, icons and border."),
+                  T("lg-eye","IconButton","Toggles password visibility without leaving the field.",[],`IconButton(\n  onPressed: _toggleObscure,\n  icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),\n)`, "The visibility button in Login.")
+                ],`TextField(\n  controller: _passwordController,\n  obscureText: _obscure,\n  decoration: InputDecoration(\n    labelText: 'Password',\n    prefixIcon: const Icon(Icons.lock_outlined),\n    suffixIcon: IconButton(\n      onPressed: _toggleObscure,\n      icon: const Icon(Icons.visibility_outlined),\n    ),\n    border: const OutlineInputBorder(),\n  ),\n  validator: (value) => value!.length >= 6 ? null : 'Minimum 6 characters',\n)`, "A text field for 'Password'."),
                 T("lg-forgot-align","Align","Pins the recovery link to the trailing edge.",[
-                  T("lg-forgot","TextButton","Starts the password recovery flow.",[],`TextButton(\n  onPressed: _recoverPassword,\n  child: const Text('Forgot password?'),\n)`)
-                ],`const Align(\n  alignment: Alignment.centerRight,\n  child: TextButton(\n    onPressed: _recoverPassword,\n    child: Text('Forgot password?'),\n  ),\n)`),
-                T("lg-btn-gap","SizedBox","Separates the form from its primary action.",[],`const SizedBox(height: 16)`),
-                T("lg-login-btn","ElevatedButton","Submits the form and attempts sign-in.",[],`ElevatedButton(\n  onPressed: () {\n    if (_formKey.currentState!.validate()) _signIn();\n  },\n  child: const Text('Log in'),\n)`),
-                T("lg-or-gap","SizedBox","Breathing room before the alternative sign-in row.",[],`const SizedBox(height: 18)`),
+                  T("lg-forgot","TextButton","Starts the password recovery flow.",[],`TextButton(\n  onPressed: _recoverPassword,\n  child: const Text('Forgot password?'),\n)`, "A 'Forgot password?' text button.")
+                ],`const Align(\n  alignment: Alignment.centerRight,\n  child: TextButton(\n    onPressed: _recoverPassword,\n    child: Text('Forgot password?'),\n  ),\n)`, "Puts a text button on the right."),
+                T("lg-btn-gap","SizedBox","Separates the form from its primary action.",[],`const SizedBox(height: 16)`, "A 16px-tall gap."),
+                T("lg-login-btn","ElevatedButton","Submits the form and attempts sign-in.",[],`ElevatedButton(\n  onPressed: () {\n    if (_formKey.currentState!.validate()) _signIn();\n  },\n  child: const Text('Log in'),\n)`, "A filled 'Log in' button."),
+                T("lg-or-gap","SizedBox","Breathing room before the alternative sign-in row.",[],`const SizedBox(height: 18)`, "A 18px-tall gap."),
                 T("lg-or-row","Row","The 'or' divider separates password sign-in from social sign-in.",[],`Row(
   children: const [
     Expanded(child: Divider()),
@@ -2428,106 +2555,106 @@ TEARDOWNS.login.root = T("lg-material","MaterialApp","The sign-in screen inherit
     ),
     Expanded(child: Divider()),
   ],
-)`),
+)`,"A divider, the word 'or', and a divider."),
                 T("lg-google-btn","OutlinedButton","Offers one-tap sign-in with a Google account.",[],`OutlinedButton(
   onPressed: signInWithGoogle,
   child: const Text('Continue with Google'),
-)`),
-                T("lg-signup-gap","SizedBox","Lifts the sign-up prompt away from the social row.",[],`const SizedBox(height: 20)`),
+)`, "An outlined 'Continue with Google' button."),
+                T("lg-signup-gap","SizedBox","Lifts the sign-up prompt away from the social row.",[],`const SizedBox(height: 20)`, "A 20px-tall gap."),
                 T("lg-signup-row","Row","The prompt and its link share one centered line.",[
-                  T("lg-signup-text","Text","Invites new users without a link style.",[],`const Text("Don't have an account?")`),
-                  T("lg-signup-space","SizedBox","A fixed gap keeps the link from touching the prompt.",[],`const SizedBox(width: 6)`),
+                  T("lg-signup-text","Text","Invites new users without a link style.",[],`const Text("Don't have an account?")`, "Shows 'Don't have an account?'."),
+                  T("lg-signup-space","SizedBox","A fixed gap keeps the link from touching the prompt.",[],`const SizedBox(width: 6)`, "A 6px-wide gap."),
                   T("lg-signup-link","GestureDetector","Makes the 'Sign up' text tappable.",[
-                    T("lg-signup-link-text","Text","Routes new users to registration.",[],`const Text(\n  'Sign up',\n  style: TextStyle(color: Color(0xFF02569B), fontWeight: FontWeight.w700),\n)`)
-                  ],`GestureDetector(\n  onTap: _goToSignUp,\n  child: const Text(\n    'Sign up',\n    style: TextStyle(color: Color(0xFF02569B)),\n  ),\n)`)
-                ],`Row(\n  mainAxisAlignment: MainAxisAlignment.center,\n  children: [\n    const Text("Don't have an account?"),\n    const SizedBox(width: 6),\n    GestureDetector(onTap: _goToSignUp, child: const Text('Sign up')),\n  ],\n)`)
-              ])
-            ],`Form(\n  key: _formKey,\n  child: const SignInFields(),\n)`)
-          ],`const Padding(\n  padding: EdgeInsets.symmetric(horizontal: 22),\n  child: SignInForm(),\n)`)
-        ],`const Center(child: SignInCard())`)
-      ],`const SingleChildScrollView(child: SignInCard())`)
-    ],`const SafeArea(child: SignInBody())`)
-  ],`Scaffold(\n  body: const SafeArea(child: SignInBody()),\n)`)
-]);
+                    T("lg-signup-link-text","Text","Routes new users to registration.",[],`const Text(\n  'Sign up',\n  style: TextStyle(color: Color(0xFF02569B), fontWeight: FontWeight.w700),\n)`, "Shows 'Sign up' in bold.")
+                  ],`GestureDetector(\n  onTap: _goToSignUp,\n  child: const Text(\n    'Sign up',\n    style: TextStyle(color: Color(0xFF02569B)),\n  ),\n)`, "Makes 'Sign up' tappable.")
+                ],`Row(\n  mainAxisAlignment: MainAxisAlignment.center,\n  children: [\n    const Text("Don't have an account?"),\n    const SizedBox(width: 6),\n    GestureDetector(onTap: _goToSignUp, child: const Text('Sign up')),\n  ],\n)`, "Places 'Don't have an account?', a gap and a tappable area side by side.")
+              ], undefined, "Stacks 'FF' and 'Welcome back', a text field and a gap vertically.")
+            ],`Form(\n  key: _formKey,\n  child: const SignInFields(),\n)`, "Groups the fields into one form.")
+          ],`const Padding(\n  padding: EdgeInsets.symmetric(horizontal: 22),\n  child: SignInForm(),\n)`, "Pads a form with 22px on the sides.")
+        ],`const Center(child: SignInCard())`, "Centres a form.")
+      ],`const SingleChildScrollView(child: SignInCard())`, "Makes a form scrollable.")
+    ],`const SafeArea(child: SignInBody())`, "Keeps scrollable content clear of notches and gestures.")
+  ],`Scaffold(\n  body: const SafeArea(child: SignInBody()),\n)`, "Frames this screen: safe-area padding.")
+], undefined, "The app shell for the Sign in screen.");
 
 TEARDOWNS.youtube.root = T("yt-material","MaterialApp","MaterialApp sits at the top of the app and gives every screen one theme, one navigation stack, and one Material look.",[
   T("yt-scaffold","Scaffold","Scaffold frames a single screen, so the top bar, the video feed, and the bottom navigation stay in one stable layout.",[
     T("yt-appbar","AppBar","The top bar stays pinned above the feed, so the logo, search, and profile are always one tap away while videos scroll underneath.",[
       T("yt-logo-row","Row","The logo mark and the wordmark sit side by side in one horizontal row, so they read as a single brand lockup.",[
-        T("yt-logo-icon","Icon","A red rounded play mark is the instantly recognisable YouTube logo, drawn as a vector icon so it stays crisp at any size.",[],`const Icon(Icons.play_circle_fill, color: Color(0xFFFF0000), size: 28)`),
-        T("yt-logo-text","Text","The wordmark next to the play mark names the app in the top bar, in bold so it reads clearly at a glance.",[],`const Text('YouTube', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700))`)
-      ]),
-      T("yt-search","IconButton","Tapping the magnifier opens search, and an icon button gives it a proper tap target without taking the space a text field would.",[],`IconButton(onPressed: openSearch, icon: const Icon(Icons.search))`),
-      T("yt-cast","IconButton","Tapping the cast icon offers nearby TVs and speakers, so a video can jump from the phone to a bigger screen.",[],`IconButton(onPressed: openCast, icon: const Icon(Icons.cast))`),
-      T("yt-avatar","CircleAvatar","The signed-in user's photo is clipped into a small circle, which is the compact identity pattern used across Google apps.",[],`const CircleAvatar(radius: 14, backgroundImage: AssetImage('avatar.png'))`)
-    ],`AppBar(\n  title: const YouTubeLogo(),\n  actions: const [SearchAction(), CastAction(), ProfileAvatar()],\n)`),
+        T("yt-logo-icon","Icon","A red rounded play mark is the instantly recognisable YouTube logo, drawn as a vector icon so it stays crisp at any size.",[],`const Icon(Icons.play_circle_fill, color: Color(0xFFFF0000), size: 28)`, "Shows the play circle fill icon in YouTube."),
+        T("yt-logo-text","Text","The wordmark next to the play mark names the app in the top bar, in bold so it reads clearly at a glance.",[],`const Text('YouTube', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700))`, "Shows 'YouTube' in bold.")
+      ], undefined, "Places the play circle fill icon and 'YouTube' side by side."),
+      T("yt-search","IconButton","Tapping the magnifier opens search, and an icon button gives it a proper tap target without taking the space a text field would.",[],`IconButton(onPressed: openSearch, icon: const Icon(Icons.search))`, "The search button in YouTube."),
+      T("yt-cast","IconButton","Tapping the cast icon offers nearby TVs and speakers, so a video can jump from the phone to a bigger screen.",[],`IconButton(onPressed: openCast, icon: const Icon(Icons.cast))`, "The cast button in YouTube."),
+      T("yt-avatar","CircleAvatar","The signed-in user's photo is clipped into a small circle, which is the compact identity pattern used across Google apps.",[],`const CircleAvatar(radius: 14, backgroundImage: AssetImage('avatar.png'))`, "A circular photo avatar in YouTube.")
+    ],`AppBar(\n  title: const YouTubeLogo(),\n  actions: const [SearchAction(), CastAction(), ProfileAvatar()],\n)`, "The top bar on the Home feed screen."),
     T("yt-body","ListView","The feed is a lazily built vertical list, so only the video cards on screen are built and the feed can scroll through hundreds of videos.",[
       T("yt-chips-row","Row","Topic chips sit in one horizontal row under the top bar, so the user can filter the feed by tapping a single word.",[
         T("yt-chip-all","Chip","The selected 'All' chip shows the unfiltered feed, and its filled style marks it as the active filter.",[],`const Chip(label: Text('All'))`,"A compact, tappable label that filters a list by one topic."),
         T("yt-chip-music","Chip","Tapping 'Music' narrows the feed to music videos, so the user reaches a mood without typing a search.",[],`const Chip(label: Text('Music'))`,"A compact, tappable label that filters a list by one topic."),
         T("yt-chip-flutter","Chip","Tapping 'Flutter' narrows the feed to Flutter tutorials, which is how the home feed personalises itself to what the user watches.",[],`const Chip(label: Text('Flutter'))`,"A compact, tappable label that filters a list by one topic."),
         T("yt-chip-gaming","Chip","Tapping 'Gaming' narrows the feed to game videos, keeping the filter row useful for very different interests.",[],`const Chip(label: Text('Gaming'))`,"A compact, tappable label that filters a list by one topic.")
-      ]),
+      ], undefined, "Places a chip side by side."),
       T("yt-card-one","Card","Each video is grouped on one card surface, so its thumbnail, channel, and title are clearly one tappable unit in the feed.",[
         T("yt-card-one-col","Column","The thumbnail stacks above the video details, which is the vertical order every YouTube feed card follows.",[
           T("yt-thumbnail","Stack","The thumbnail layers the duration badge on top of the image, so the video length is visible without covering the artwork.",[
-            T("yt-thumb-image","Image","The thumbnail is the video's poster frame, and a 16:9 image is what makes a viewer decide to tap.",[],`Image.network(video.thumbnailUrl, fit: BoxFit.cover)`),
+            T("yt-thumb-image","Image","The thumbnail is the video's poster frame, and a 16:9 image is what makes a viewer decide to tap.",[],`Image.network(video.thumbnailUrl, fit: BoxFit.cover)`, "A still from the episode."),
             T("yt-duration","Container","A small dark box with padding sits in the corner of the thumbnail, giving the duration text a readable background.",[
-              T("yt-duration-text","Text","The running time tells the viewer how long the video is before they commit to watching it.",[],`const Text('12:48', style: TextStyle(color: Colors.white, fontSize: 11))`)
-            ])
-          ]),
+              T("yt-duration-text","Text","The running time tells the viewer how long the video is before they commit to watching it.",[],`const Text('12:48', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '12:48'.")
+            ], undefined, "A decorated box holding '12:48'.")
+          ], undefined, "Layers the video thumbnail and '12:48' in one box."),
           T("yt-card-one-info","Row","The channel avatar, the video text, and the overflow menu share one horizontal line under the thumbnail.",[
-            T("yt-channel-avatar","CircleAvatar","A small circular channel photo identifies who uploaded the video at a glance, without taking a full line.",[],`const CircleAvatar(radius: 16, backgroundImage: AssetImage('channel.png'))`),
+            T("yt-channel-avatar","CircleAvatar","A small circular channel photo identifies who uploaded the video at a glance, without taking a full line.",[],`const CircleAvatar(radius: 16, backgroundImage: AssetImage('channel.png'))`, "A circular photo avatar in YouTube."),
             T("yt-card-one-text","Column","Title, channel name, and view count stack vertically, so the eye reads the video's details top to bottom.",[
-              T("yt-video-title","Text","The title is the video's headline, shown in two lines at most so the card stays compact in the feed.",[],`const Text('Build a Flutter app in 20 minutes', maxLines: 2, style: TextStyle(fontWeight: FontWeight.w600))`),
+              T("yt-video-title","Text","The title is the video's headline, shown in two lines at most so the card stays compact in the feed.",[],`const Text('Build a Flutter app in 20 minutes', maxLines: 2, style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Build a Flutter app in 20 minutes'."),
               T("yt-channel-row","Row","The channel name and its verified tick sit on one line, so trust and identity are read together.",[
-                T("yt-channel-name","Text","The channel name tells the viewer whose video this is, in a smaller, quieter style than the title.",[],`const Text('FlutterForward', style: TextStyle(fontSize: 12))`),
-                T("yt-verified","Icon","A small check mark proves the channel is verified, which helps the viewer trust the source before tapping.",[],`const Icon(Icons.verified, size: 12)`)
-              ]),
-              T("yt-video-meta","Text","Views and upload time are combined in one grey line, giving the video's popularity and freshness at a glance.",[],`const Text('1.2M views • 3 days ago', style: TextStyle(fontSize: 12))`)
-            ]),
-            T("yt-more","IconButton","The three-dot menu hides secondary actions like Save to Watch later, so the card stays clean until the user asks for more.",[],`IconButton(onPressed: showVideoMenu, icon: const Icon(Icons.more_vert))`)
-          ])
-        ])
-      ]),
+                T("yt-channel-name","Text","The channel name tells the viewer whose video this is, in a smaller, quieter style than the title.",[],`const Text('FlutterForward', style: TextStyle(fontSize: 12))`, "Shows 'FlutterForward'."),
+                T("yt-verified","Icon","A small check mark proves the channel is verified, which helps the viewer trust the source before tapping.",[],`const Icon(Icons.verified, size: 12)`, "Shows the verified icon in YouTube.")
+              ], undefined, "Places 'FlutterForward' and the verified icon side by side."),
+              T("yt-video-meta","Text","Views and upload time are combined in one grey line, giving the video's popularity and freshness at a glance.",[],`const Text('1.2M views • 3 days ago', style: TextStyle(fontSize: 12))`, "Shows '1.2M views • 3 days ago'.")
+            ], undefined, "Stacks 'Build a Flutter app in 20…', 'FlutterForward' and the verified icon and '1.2M views • 3 days ago' vertically."),
+            T("yt-more","IconButton","The three-dot menu hides secondary actions like Save to Watch later, so the card stays clean until the user asks for more.",[],`IconButton(onPressed: showVideoMenu, icon: const Icon(Icons.more_vert))`, "The more options button in YouTube.")
+          ], undefined, "Places a circular avatar, a column and the more options button side by side.")
+        ], undefined, "Stacks a stack and a circular avatar and a column vertically.")
+      ], undefined, "Groups a stack and a circular avatar and a column on one card."),
       T("yt-card-two","Card","A second card repeats the same layout, which is how the feed shows that every video follows one consistent pattern.",[
         T("yt-card-two-col","Column","The second card stacks its thumbnail above its details exactly like the first, keeping the feed rhythm predictable.",[
           T("yt-thumbnail-two","Stack","The second thumbnail also layers its duration badge over the image, so the length is visible on every card.",[
-            T("yt-thumb-image-two","Image","A different poster frame marks this as a different video, while the same 16:9 shape keeps the feed uniform.",[],`Image.network(video.thumbnailUrl, fit: BoxFit.cover)`),
+            T("yt-thumb-image-two","Image","A different poster frame marks this as a different video, while the same 16:9 shape keeps the feed uniform.",[],`Image.network(video.thumbnailUrl, fit: BoxFit.cover)`, "A still from the episode."),
             T("yt-duration-two","Container","The same dark corner box carries this video's duration, so the badge looks identical on every card.",[
-              T("yt-duration-text-two","Text","This video's running time is shown before playback, letting the viewer pick a short watch over a long one.",[],`const Text('8:03', style: TextStyle(color: Colors.white, fontSize: 11))`)
-            ])
-          ]),
+              T("yt-duration-text-two","Text","This video's running time is shown before playback, letting the viewer pick a short watch over a long one.",[],`const Text('8:03', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '8:03'.")
+            ], undefined, "A decorated box holding '8:03'.")
+          ], undefined, "Layers the video thumbnail and '8:03' in one box."),
           T("yt-card-two-info","Row","Avatar, text, and menu repeat in the same horizontal line, so the second card is instantly recognisable as a video.",[
-            T("yt-channel-avatar-two","CircleAvatar","A different channel's circular photo identifies this uploader, proving the avatar belongs to the video, not the screen.",[],`const CircleAvatar(radius: 16, backgroundImage: AssetImage('channel2.png'))`),
+            T("yt-channel-avatar-two","CircleAvatar","A different channel's circular photo identifies this uploader, proving the avatar belongs to the video, not the screen.",[],`const CircleAvatar(radius: 16, backgroundImage: AssetImage('channel2.png'))`, "A circular photo avatar in YouTube."),
             T("yt-card-two-text","Column","Title, channel, and stats stack in the same order as the first card, so the eye knows exactly where to look.",[
-              T("yt-video-title-two","Text","This title describes a different video, and the two-line limit keeps both cards the same height.",[],`const Text('Dart null safety, explained simply', maxLines: 2, style: TextStyle(fontWeight: FontWeight.w600))`),
-              T("yt-channel-name-two","Text","The second channel's name is shown in the same quiet style, so the two cards feel like one list.",[],`const Text('Code with Dheeraj', style: TextStyle(fontSize: 12))`),
-              T("yt-video-meta-two","Text","Views and upload time are repeated here, so each card carries its own popularity and freshness.",[],`const Text('845K views • 1 week ago', style: TextStyle(fontSize: 12))`)
-            ]),
-            T("yt-more-two","IconButton","Every card gets its own overflow menu, so actions like Save apply to that video and not the one above it.",[],`IconButton(onPressed: showVideoMenu, icon: const Icon(Icons.more_vert))`)
-          ])
-        ])
-      ])
-    ]),
+              T("yt-video-title-two","Text","This title describes a different video, and the two-line limit keeps both cards the same height.",[],`const Text('Dart null safety, explained simply', maxLines: 2, style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Dart null safety, explained simply'."),
+              T("yt-channel-name-two","Text","The second channel's name is shown in the same quiet style, so the two cards feel like one list.",[],`const Text('Code with Dheeraj', style: TextStyle(fontSize: 12))`, "Shows 'Code with Dheeraj'."),
+              T("yt-video-meta-two","Text","Views and upload time are repeated here, so each card carries its own popularity and freshness.",[],`const Text('845K views • 1 week ago', style: TextStyle(fontSize: 12))`, "Shows '845K views • 1 week ago'.")
+            ], undefined, "Stacks 'Dart null safety, explained…', 'Code with Dheeraj' and '845K views • 1 week ago' vertically."),
+            T("yt-more-two","IconButton","Every card gets its own overflow menu, so actions like Save apply to that video and not the one above it.",[],`IconButton(onPressed: showVideoMenu, icon: const Icon(Icons.more_vert))`, "The more options button in YouTube.")
+          ], undefined, "Places a circular avatar, 'Dart null safety, explained…' and 'Code with Dheeraj' and the more options button side by side.")
+        ], undefined, "Stacks a stack and a row vertically.")
+      ], undefined, "Groups a stack and a row on one card.")
+    ], undefined, "A scrolling list of a chip and a card."),
     T("yt-bottom","BottomNavigationBar","The bottom bar keeps the app's five main destinations one thumb-tap away, which is why it never scrolls away with the feed.",[
       T("yt-nav-home","BottomNavigationBarItem","Home is the first destination and the selected one, so its filled icon and red label show where the user is.",[],`const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home')`,"One destination inside a BottomNavigationBar, with an icon and a label."),
       T("yt-nav-shorts","BottomNavigationBarItem","Shorts opens vertical short-form video, a separate feed from the home list, so it gets its own destination.",[],`const BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Shorts')`,"One destination inside a BottomNavigationBar, with an icon and a label."),
       T("yt-nav-create","BottomNavigationBarItem","The plus in the middle is the create action, placed centrally because uploading is a primary action, not a hidden one.",[],`const BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: '')`,"One destination inside a BottomNavigationBar, with an icon and a label."),
       T("yt-nav-subs","BottomNavigationBarItem","Subscriptions shows only channels the user follows, so it is a personal feed rather than the algorithmic home feed.",[],`const BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subscriptions')`,"One destination inside a BottomNavigationBar, with an icon and a label."),
       T("yt-nav-you","BottomNavigationBarItem","You opens the user's own library, history, and profile, grouping everything personal under one destination.",[],`const BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'You')`,"One destination inside a BottomNavigationBar, with an icon and a label.")
-    ],`BottomNavigationBar(\n  currentIndex: 0,\n  selectedItemColor: const Color(0xFFFF0000),\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Shorts'),\n    BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: ''),\n    BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subscriptions'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'You'),\n  ],\n)`)
-  ],`Scaffold(\n  appBar: const YouTubeAppBar(),\n  body: const HomeFeed(),\n  bottomNavigationBar: const YouTubeBottomNav(),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF0000)),\n  home: const YouTubeHome(),\n)`);
+    ],`BottomNavigationBar(\n  currentIndex: 0,\n  selectedItemColor: const Color(0xFFFF0000),\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Shorts'),\n    BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: ''),\n    BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subscriptions'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'You'),\n  ],\n)`, "The bottom tabs: Home, Shorts, Subscriptions, You.")
+  ],`Scaffold(\n  appBar: const YouTubeAppBar(),\n  body: const HomeFeed(),\n  bottomNavigationBar: const YouTubeBottomNav(),\n)`, "Frames this screen: a top bar, a scrolling list and a bottom bar.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF0000)),\n  home: const YouTubeHome(),\n)`, "The app shell for the Home feed screen.");
 
 TEARDOWNS.spotify.root = T("sp-material","MaterialApp","One dark Material theme and navigation context covers the whole Spotify home screen.",[
   T("sp-scaffold","Scaffold","The greeting bar, scrollable home feed, mini player, and bottom navigation share one stable screen frame.",[
     T("sp-appbar","AppBar","The greeting and quick actions stay visible at the top while the feed scrolls below.",[
-      T("sp-greeting","Text","Shows the time-of-day greeting at the top of home.",[],`const Text(\n  'Good evening',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`),
-      T("sp-bell","IconButton","Opens notifications without leaving home.",[],`IconButton(onPressed: openNotifications, icon: const Icon(Icons.notifications_outlined))`),
-      T("sp-history","IconButton","Opens recently played history.",[],`IconButton(onPressed: openHistory, icon: const Icon(Icons.history))`),
-      T("sp-settings","IconButton","Opens app settings from the home bar.",[],`IconButton(onPressed: openSettings, icon: const Icon(Icons.settings_outlined))`)
-    ],`AppBar(\n  title: const Text('Good evening'),\n  actions: [\n    IconButton(onPressed: openNotifications, icon: const Icon(Icons.notifications_outlined)),\n    IconButton(onPressed: openHistory, icon: const Icon(Icons.history)),\n    IconButton(onPressed: openSettings, icon: const Icon(Icons.settings_outlined)),\n  ],\n)`),
+      T("sp-greeting","Text","Shows the time-of-day greeting at the top of home.",[],`const Text(\n  'Good evening',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`, "Shows 'Good evening' in bold."),
+      T("sp-bell","IconButton","Opens notifications without leaving home.",[],`IconButton(onPressed: openNotifications, icon: const Icon(Icons.notifications_outlined))`, "The notifications button in Spotify."),
+      T("sp-history","IconButton","Opens recently played history.",[],`IconButton(onPressed: openHistory, icon: const Icon(Icons.history))`, "The history button in Spotify."),
+      T("sp-settings","IconButton","Opens app settings from the home bar.",[],`IconButton(onPressed: openSettings, icon: const Icon(Icons.settings_outlined))`, "The settings button in Spotify.")
+    ],`AppBar(\n  title: const Text('Good evening'),\n  actions: [\n    IconButton(onPressed: openNotifications, icon: const Icon(Icons.notifications_outlined)),\n    IconButton(onPressed: openHistory, icon: const Icon(Icons.history)),\n    IconButton(onPressed: openSettings, icon: const Icon(Icons.settings_outlined)),\n  ],\n)`, "The top bar: 'Good evening' with 3 actions."),
     T("sp-body","Column","The feed expands to fill the screen while the mini player stays pinned just above the bottom navigation.",[
       T("sp-content","Expanded","The home feed takes every pixel not used by the mini player.",[
         T("sp-feed","ListView","Home sections are built lazily and scroll vertically as one feed.",[
@@ -2535,61 +2662,133 @@ TEARDOWNS.spotify.root = T("sp-material","MaterialApp","One dark Material theme 
             T("sp-chip-all","FilterChip","Shows everything when selected; it is the default home filter.",[],`FilterChip(\n  label: const Text('All'),\n  selected: true,\n  onSelected: filterHome,\n)`,"A compact selectable chip that filters a list by one category."),
             T("sp-chip-music","FilterChip","Narrows home to music only when tapped.",[],`FilterChip(\n  label: const Text('Music'),\n  selected: false,\n  onSelected: filterHome,\n)`,"A compact selectable chip that filters a list by one category."),
             T("sp-chip-podcasts","FilterChip","Narrows home to podcasts only when tapped.",[],`FilterChip(\n  label: const Text('Podcasts'),\n  selected: false,\n  onSelected: filterHome,\n)`,"A compact selectable chip that filters a list by one category.")
-          ]),
+          ], undefined, "Places a filter chip side by side."),
           T("sp-quick-grid","GridView","Six shortcuts are packed into a tight two-column grid so the most-played mixes are one tap away.",[
-            T("sp-card-one","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
-              T("sp-card-row","Row","Art and title share one horizontal line inside the tile.",[
-                T("sp-card-art","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/liked_songs.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`),
-                T("sp-card-label","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-              ])
-            ])
+            T("sp-card-1","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
+              T("sp-card-row-1","Row","Art and title share one horizontal line inside the tile.",[
+                T("sp-card-art-1","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/liked_songs.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`, "Shows the liked songs image."),
+                T("sp-card-label-1","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Liked Songs' in bold.")
+              ], undefined, "Places the liked songs image and 'Liked Songs' side by side.")
+            ],`Card(\n  child: Row(\n    children: [\n      Image.asset('assets/covers/liked_songs.png', width: 56, height: 56, fit: BoxFit.cover),\n      Text('Liked Songs', style: TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the liked songs image and 'Liked Songs' on one card."),
+            T("sp-card-2","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
+              T("sp-card-row-2","Row","Art and title share one horizontal line inside the tile.",[
+                T("sp-card-art-2","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/daily_mix_1.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`, "Shows the daily mix 1 image."),
+                T("sp-card-label-2","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Daily Mix 1',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Daily Mix 1' in bold.")
+              ], undefined, "Places the daily mix 1 image and 'Daily Mix 1' side by side.")
+            ],`Card(\n  child: Row(\n    children: [\n      Image.asset('assets/covers/daily_mix_1.png', width: 56, height: 56, fit: BoxFit.cover),\n      Text('Daily Mix 1', style: TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the daily mix 1 image and 'Daily Mix 1' on one card."),
+            T("sp-card-3","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
+              T("sp-card-row-3","Row","Art and title share one horizontal line inside the tile.",[
+                T("sp-card-art-3","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/discover_weekly.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`, "Shows the discover weekly image."),
+                T("sp-card-label-3","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Discover Weekly',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Discover Weekly' in bold.")
+              ], undefined, "Places the discover weekly image and 'Discover Weekly' side by side.")
+            ],`Card(\n  child: Row(\n    children: [\n      Image.asset('assets/covers/discover_weekly.png', width: 56, height: 56, fit: BoxFit.cover),\n      Text('Discover Weekly', style: TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the discover weekly image and 'Discover Weekly' on one card."),
+            T("sp-card-4","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
+              T("sp-card-row-4","Row","Art and title share one horizontal line inside the tile.",[
+                T("sp-card-art-4","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/chill_hits.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`, "Shows the chill hits image."),
+                T("sp-card-label-4","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Chill Hits',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Chill Hits' in bold.")
+              ], undefined, "Places the chill hits image and 'Chill Hits' side by side.")
+            ],`Card(\n  child: Row(\n    children: [\n      Image.asset('assets/covers/chill_hits.png', width: 56, height: 56, fit: BoxFit.cover),\n      Text('Chill Hits', style: TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the chill hits image and 'Chill Hits' on one card."),
+            T("sp-card-5","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
+              T("sp-card-row-5","Row","Art and title share one horizontal line inside the tile.",[
+                T("sp-card-art-5","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/top_50_global.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`, "Shows the top 50 global image."),
+                T("sp-card-label-5","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Top 50 – Global',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Top 50 – Global' in bold.")
+              ], undefined, "Places the top 50 global image and 'Top 50 – Global' side by side.")
+            ],`Card(\n  child: Row(\n    children: [\n      Image.asset('assets/covers/top_50_global.png', width: 56, height: 56, fit: BoxFit.cover),\n      Text('Top 50 – Global', style: TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the top 50 global image and 'Top 50 – Global' on one card."),
+            T("sp-card-6","Card","One shortcut reads as a single tappable tile: square art on the left, title on the right.",[
+              T("sp-card-row-6","Row","Art and title share one horizontal line inside the tile.",[
+                T("sp-card-art-6","Image","Shows the playlist cover art at the left edge of the tile.",[],`Image.asset(\n  'assets/covers/release_radar.png',\n  width: 56,\n  height: 56,\n  fit: BoxFit.cover,\n)`, "Shows the release radar image."),
+                T("sp-card-label-6","Text","Names the playlist or mix on the tile.",[],`const Text(\n  'Release Radar',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Release Radar' in bold.")
+              ], undefined, "Places the release radar image and 'Release Radar' side by side.")
+            ],`Card(\n  child: Row(\n    children: [\n      Image.asset('assets/covers/release_radar.png', width: 56, height: 56, fit: BoxFit.cover),\n      Text('Release Radar', style: TextStyle(fontWeight: FontWeight.w700)),\n    ],\n  ),\n)`, "Groups the release radar image and 'Release Radar' on one card.")
           ],`GridView.count(\n  crossAxisCount: 2,\n  shrinkWrap: true,\n  physics: const NeverScrollableScrollPhysics(),\n  mainAxisSpacing: 8,\n  crossAxisSpacing: 8,\n  childAspectRatio: 3.2,\n  children: const [QuickMixCard(), QuickMixCard()],\n)`,"Builds a scrollable grid of tiles with a fixed number of columns."),
-          T("sp-recent-title","Text","Heads the recently played section so the feed reads as clear groups.",[],`const Text(\n  'Recently played',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`),
+          T("sp-recent-title","Text","Heads the recently played section so the feed reads as clear groups.",[],`const Text(\n  'Recently played',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`, "Shows 'Recently played' in bold."),
           T("sp-recent-grid","GridView","Recent albums sit in a two-column grid, so four of them are visible without scrolling far.",[
-            T("sp-recent-card","Card","One recent item reads as a single tile: cover art above its title and artist.",[
-              T("sp-recent-col","Column","Art, title, and artist are stacked inside the tile.",[
-                T("sp-recent-art","Image","Shows the album or playlist cover for the recent item.",[],`Image.asset(\n  'assets/covers/after_hours.png',\n  fit: BoxFit.cover,\n)`),
-                T("sp-recent-name","Text","Names the album or playlist.",[],`const Text(\n  'After Hours',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-                T("sp-recent-artist","Text","Names the artist under the title, in a quieter style.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`)
-              ])
-            ])
+            T("sp-recent-card-1","Card","One recent item reads as a single tile: cover art above its title and artist.",[
+              T("sp-recent-col-1","Column","Art, title, and artist are stacked inside the tile.",[
+                T("sp-recent-art-1","Image","Shows the album or playlist cover for the recent item.",[],`Image.asset(\n  'assets/covers/after_hours.png',\n  fit: BoxFit.cover,\n)`, "Shows the after hours image."),
+                T("sp-recent-name-1","Text","Names the album or playlist.",[],`const Text(\n  'After Hours',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'After Hours' in bold."),
+                T("sp-recent-artist-1","Text","Names the artist under the title, in a quieter style.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'The Weeknd'.")
+              ], undefined, "Stacks the after hours image, 'After Hours' and 'The Weeknd' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/after_hours.png', fit: BoxFit.cover),\n      Text('After Hours', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('The Weeknd', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the after hours image, 'After Hours' and 'The Weeknd' on one card."),
+            T("sp-recent-card-2","Card","One recent item reads as a single tile: cover art above its title and artist.",[
+              T("sp-recent-col-2","Column","Art, title, and artist are stacked inside the tile.",[
+                T("sp-recent-art-2","Image","Shows the album or playlist cover for the recent item.",[],`Image.asset(\n  'assets/covers/future_nostalgia.png',\n  fit: BoxFit.cover,\n)`, "Shows the future nostalgia image."),
+                T("sp-recent-name-2","Text","Names the album or playlist.",[],`const Text(\n  'Future Nostalgia',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Future Nostalgia' in bold."),
+                T("sp-recent-artist-2","Text","Names the artist under the title, in a quieter style.",[],`const Text(\n  'Dua Lipa',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Dua Lipa'.")
+              ], undefined, "Stacks the future nostalgia image, 'Future Nostalgia' and 'Dua Lipa' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/future_nostalgia.png', fit: BoxFit.cover),\n      Text('Future Nostalgia', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('Dua Lipa', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the future nostalgia image, 'Future Nostalgia' and 'Dua Lipa' on one card."),
+            T("sp-recent-card-3","Card","One recent item reads as a single tile: cover art above its title and artist.",[
+              T("sp-recent-col-3","Column","Art, title, and artist are stacked inside the tile.",[
+                T("sp-recent-art-3","Image","Shows the album or playlist cover for the recent item.",[],`Image.asset(\n  'assets/covers/divide.png',\n  fit: BoxFit.cover,\n)`, "Shows the divide image."),
+                T("sp-recent-name-3","Text","Names the album or playlist.",[],`const Text(\n  'Divide',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Divide' in bold."),
+                T("sp-recent-artist-3","Text","Names the artist under the title, in a quieter style.",[],`const Text(\n  'Ed Sheeran',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Ed Sheeran'.")
+              ], undefined, "Stacks the divide image, 'Divide' and 'Ed Sheeran' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/divide.png', fit: BoxFit.cover),\n      Text('Divide', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('Ed Sheeran', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the divide image, 'Divide' and 'Ed Sheeran' on one card."),
+            T("sp-recent-card-4","Card","One recent item reads as a single tile: cover art above its title and artist.",[
+              T("sp-recent-col-4","Column","Art, title, and artist are stacked inside the tile.",[
+                T("sp-recent-art-4","Image","Shows the album or playlist cover for the recent item.",[],`Image.asset(\n  'assets/covers/starboy.png',\n  fit: BoxFit.cover,\n)`, "Shows the starboy image."),
+                T("sp-recent-name-4","Text","Names the album or playlist.",[],`const Text(\n  'Starboy',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Starboy' in bold."),
+                T("sp-recent-artist-4","Text","Names the artist under the title, in a quieter style.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'The Weeknd'.")
+              ], undefined, "Stacks the starboy image, 'Starboy' and 'The Weeknd' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/starboy.png', fit: BoxFit.cover),\n      Text('Starboy', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('The Weeknd', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the starboy image, 'Starboy' and 'The Weeknd' on one card.")
           ],`GridView.count(\n  crossAxisCount: 2,\n  shrinkWrap: true,\n  physics: const NeverScrollableScrollPhysics(),\n  mainAxisSpacing: 16,\n  crossAxisSpacing: 16,\n  childAspectRatio: 0.85,\n  children: const [RecentCard(), RecentCard()],\n)`,"Builds a scrollable grid of tiles with a fixed number of columns."),
-          T("sp-made-title","Text","Heads the personalised mixes section.",[],`const Text(\n  'Made for you',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`),
+          T("sp-made-title","Text","Heads the personalised mixes section.",[],`const Text(\n  'Made for you',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`, "Shows 'Made for you' in bold."),
           T("sp-made-list","ListView","Made-for-you mixes scroll sideways, so the vertical feed stays short while many mixes stay reachable.",[
-            T("sp-made-card","Card","One mix reads as a single card: square art above its title and short description.",[
-              T("sp-made-col","Column","Art, title, and description are stacked inside the card.",[
-                T("sp-made-art","Image","Shows the mix cover art at the top of the card.",[],`Image.asset(\n  'assets/covers/daily_mix.png',\n  fit: BoxFit.cover,\n)`),
-                T("sp-made-name","Text","Names the personalised mix.",[],`const Text(\n  'Daily Mix 1',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-                T("sp-made-desc","Text","Explains what is inside the mix in one short line.",[],`const Text(\n  'The Weeknd, Dua Lipa and more',\n  style: TextStyle(color: Colors.grey),\n)`)
-              ])
-            ])
-          ],`SizedBox(\n  height: 210,\n  child: ListView.builder(\n    scrollDirection: Axis.horizontal,\n    itemCount: mixes.length,\n    itemBuilder: (_, index) => MadeForYouCard(mixes[index]),\n  ),\n)`)
-        ])
-      ]),
+            T("sp-made-card-1","Card","One mix reads as a single card: square art above its title and short description.",[
+              T("sp-made-col-1","Column","Art, title, and description are stacked inside the card.",[
+                T("sp-made-art-1","Image","Shows the mix cover art at the top of the card.",[],`Image.asset(\n  'assets/covers/daily_mix.png',\n  fit: BoxFit.cover,\n)`, "Shows the daily mix image."),
+                T("sp-made-name-1","Text","Names the personalised mix.",[],`const Text(\n  'Daily Mix 1',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Daily Mix 1' in bold."),
+                T("sp-made-desc-1","Text","Explains what is inside the mix in one short line.",[],`const Text(\n  'The Weeknd, Dua Lipa and more',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'The Weeknd, Dua Lipa and more'.")
+              ], undefined, "Stacks the daily mix image, 'Daily Mix 1' and 'The Weeknd, Dua Lipa and…' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/daily_mix.png', fit: BoxFit.cover),\n      Text('Daily Mix 1', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('The Weeknd, Dua Lipa and more', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the daily mix image, 'Daily Mix 1' and 'The Weeknd, Dua Lipa and…' on one card."),
+            T("sp-made-card-2","Card","One mix reads as a single card: square art above its title and short description.",[
+              T("sp-made-col-2","Column","Art, title, and description are stacked inside the card.",[
+                T("sp-made-art-2","Image","Shows the mix cover art at the top of the card.",[],`Image.asset(\n  'assets/covers/daily_mix_2.png',\n  fit: BoxFit.cover,\n)`, "Shows the daily mix 2 image."),
+                T("sp-made-name-2","Text","Names the personalised mix.",[],`const Text(\n  'Daily Mix 2',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Daily Mix 2' in bold."),
+                T("sp-made-desc-2","Text","Explains what is inside the mix in one short line.",[],`const Text(\n  'Ed Sheeran, Coldplay and more',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Ed Sheeran, Coldplay and more'.")
+              ], undefined, "Stacks the daily mix 2 image, 'Daily Mix 2' and 'Ed Sheeran, Coldplay and…' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/daily_mix_2.png', fit: BoxFit.cover),\n      Text('Daily Mix 2', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('Ed Sheeran, Coldplay and more', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the daily mix 2 image, 'Daily Mix 2' and 'Ed Sheeran, Coldplay and…' on one card."),
+            T("sp-made-card-3","Card","One mix reads as a single card: square art above its title and short description.",[
+              T("sp-made-col-3","Column","Art, title, and description are stacked inside the card.",[
+                T("sp-made-art-3","Image","Shows the mix cover art at the top of the card.",[],`Image.asset(\n  'assets/covers/discover_weekly.png',\n  fit: BoxFit.cover,\n)`, "Shows the discover weekly image."),
+                T("sp-made-name-3","Text","Names the personalised mix.",[],`const Text(\n  'Discover Weekly',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Discover Weekly' in bold."),
+                T("sp-made-desc-3","Text","Explains what is inside the mix in one short line.",[],`const Text(\n  'Your weekly mixtape of fresh music',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Your weekly mixtape of fresh music'.")
+              ], undefined, "Stacks the discover weekly image, 'Discover Weekly' and 'Your weekly mixtape of…' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/discover_weekly.png', fit: BoxFit.cover),\n      Text('Discover Weekly', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('Your weekly mixtape of fresh music', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the discover weekly image, 'Discover Weekly' and 'Your weekly mixtape of…' on one card."),
+            T("sp-made-card-4","Card","One mix reads as a single card: square art above its title and short description.",[
+              T("sp-made-col-4","Column","Art, title, and description are stacked inside the card.",[
+                T("sp-made-art-4","Image","Shows the mix cover art at the top of the card.",[],`Image.asset(\n  'assets/covers/on_repeat.png',\n  fit: BoxFit.cover,\n)`, "Shows the on repeat image."),
+                T("sp-made-name-4","Text","Names the personalised mix.",[],`const Text(\n  'On Repeat',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'On Repeat' in bold."),
+                T("sp-made-desc-4","Text","Explains what is inside the mix in one short line.",[],`const Text(\n  'Songs you can’t get enough of',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Songs you can’t get enough of'.")
+              ], undefined, "Stacks the on repeat image, 'On Repeat' and 'Songs you can’t get enough…' vertically.")
+            ],`Card(\n  child: Column(\n    children: [\n      Image.asset('assets/covers/on_repeat.png', fit: BoxFit.cover),\n      Text('On Repeat', style: TextStyle(fontWeight: FontWeight.w700)),\n      Text('Songs you can’t get enough of', style: TextStyle(color: Colors.grey)),\n    ],\n  ),\n)`, "Groups the on repeat image, 'On Repeat' and 'Songs you can’t get enough…' on one card.")
+          ],`ListView.builder(\n  scrollDirection: Axis.horizontal,\n  itemCount: mixes.length,\n  itemBuilder: (_, index) => MadeForYouCard(mixes[index]),\n)`, "A scrolling list of cards.")
+        ], undefined, "A scrolling list of 6 items.")
+      ], undefined, "Lets a scrolling list take the remaining space."),
       T("sp-player","Container","A dark rounded bar floats above the bottom navigation so playback controls are always one tap away.",[
         T("sp-player-col","Column","The player row sits above a thin progress line inside the same bar.",[
           T("sp-player-row","Row","Cover art, song info, and playback actions share one line.",[
             T("sp-player-art","ClipRRect","Rounds the corners of the small square cover art.",[
-              T("sp-player-img","Image","Shows the cover of the song that is playing.",[],`Image.asset(\n  'assets/covers/blinding_lights.png',\n  width: 40,\n  height: 40,\n  fit: BoxFit.cover,\n)`)
-            ]),
+              T("sp-player-img","Image","Shows the cover of the song that is playing.",[],`Image.asset(\n  'assets/covers/blinding_lights.png',\n  width: 40,\n  height: 40,\n  fit: BoxFit.cover,\n)`, "Shows the blinding lights image.")
+            ], undefined, "Rounds the corners of the blinding lights image."),
             T("sp-player-info","Column","The song title sits above the artist name.",[
-              T("sp-player-title","Text","Shows the title of the song that is playing.",[],`const Text(\n  'Blinding Lights',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sp-player-artist","Text","Shows the artist of the song that is playing.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`)
-            ]),
-            T("sp-player-devices","IconButton","Opens the list of speakers and devices to play on.",[],`IconButton(onPressed: openDevices, icon: const Icon(Icons.speaker_outlined))`),
-            T("sp-player-play","IconButton","Pauses or resumes the current song from anywhere in the app.",[],`IconButton(onPressed: togglePlay, icon: const Icon(Icons.pause))`)
-          ]),
+              T("sp-player-title","Text","Shows the title of the song that is playing.",[],`const Text(\n  'Blinding Lights',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Blinding Lights' in bold."),
+              T("sp-player-artist","Text","Shows the artist of the song that is playing.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'The Weeknd'.")
+            ], undefined, "Stacks 'Blinding Lights' and 'The Weeknd' vertically."),
+            T("sp-player-devices","IconButton","Opens the list of speakers and devices to play on.",[],`IconButton(onPressed: openDevices, icon: const Icon(Icons.speaker_outlined))`, "The speaker button in Spotify."),
+            T("sp-player-play","IconButton","Pauses or resumes the current song from anywhere in the app.",[],`IconButton(onPressed: togglePlay, icon: const Icon(Icons.pause))`, "The pause button in Spotify.")
+          ], undefined, "Places the blinding lights image, 'Blinding Lights' and 'The Weeknd' and the speaker button side by side."),
           T("sp-player-progress","LinearProgressIndicator","A thin green line shows how far through the song playback is.",[],`const LinearProgressIndicator(\n  value: 0.42,\n  color: Color(0xFF1DB954),\n  backgroundColor: Color(0xFF4D4D4D),\n)`,"A thin horizontal bar that shows progress through a task or track.")
-        ])
-      ],`Container(\n  margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),\n  decoration: BoxDecoration(\n    color: const Color(0xFF282828),\n    borderRadius: BorderRadius.circular(8),\n  ),\n  child: const MiniPlayer(),\n)`)
-    ]),
+        ], undefined, "Stacks a row and a progress bar vertically.")
+      ],`Container(\n  margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),\n  decoration: BoxDecoration(\n    color: const Color(0xFF282828),\n    borderRadius: BorderRadius.circular(8),\n  ),\n  child: const MiniPlayer(),\n)`, "A decorated box holding a row and a progress bar.")
+    ], undefined, "Stacks a scrolling list and a row and a progress bar vertically."),
     T("sp-bottom","BottomNavigationBar","Home, Search, and Your Library stay reachable from every screen.",[
       T("sp-nav-home","BottomNavigationBarItem","Takes the user back to the home feed.",[],`const BottomNavigationBarItem(\n  icon: Icon(Icons.home),\n  label: 'Home',\n)`,"One destination inside a BottomNavigationBar: an icon plus a label."),
       T("sp-nav-search","BottomNavigationBarItem","Opens search for songs, artists, and playlists.",[],`const BottomNavigationBarItem(\n  icon: Icon(Icons.search),\n  label: 'Search',\n)`,"One destination inside a BottomNavigationBar: an icon plus a label."),
       T("sp-nav-library","BottomNavigationBarItem","Opens the user's saved playlists and albums.",[],`const BottomNavigationBarItem(\n  icon: Icon(Icons.library_music_outlined),\n  label: 'Your Library',\n)`,"One destination inside a BottomNavigationBar: an icon plus a label.")
-    ],`BottomNavigationBar(\n  currentIndex: 0,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),\n    BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), label: 'Your Library'),\n  ],\n)`)
-  ],`Scaffold(\n  appBar: const HomeAppBar(),\n  body: const HomeBody(),\n  bottomNavigationBar: const HomeBottomNav(),\n)`)
-],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const SpotifyHome(),\n)`);
+    ],`BottomNavigationBar(\n  currentIndex: 0,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),\n    BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), label: 'Your Library'),\n  ],\n)`, "The bottom tabs: Home, Search, Your Library.")
+  ],`Scaffold(\n  appBar: const HomeAppBar(),\n  body: const HomeBody(),\n  bottomNavigationBar: const HomeBottomNav(),\n)`, "Frames this screen: a top bar, scrolling content and a bottom bar.")
+],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const SpotifyHome(),\n)`, "The app shell for the Home screen.");
 
 TEARDOWNS.amazon.root = T("am-material","MaterialApp","The Amazon home screen inherits one shared theme and navigation context.",[
   T("am-scaffold","Scaffold","Search, home content, and bottom navigation share one stable page frame.",[
@@ -2597,158 +2796,224 @@ TEARDOWNS.amazon.root = T("am-material","MaterialApp","The Amazon home screen in
       T("am-search-row","Row","The search field and the cart action share the header line.",[
         T("am-search-expanded","Expanded","The search field takes all the space the cart button does not need.",[
           T("am-search-field","TextField","Shoppers type a product, brand, or category here to search the catalogue.",[
-            T("am-search-icon","Icon","A magnifier marks this field as a search box before anything is typed.",[],`const Icon(Icons.search, color: Color(0xFF767676))`),
-            T("am-search-hint","Text","The hint tells shoppers what they can search for.",[],`const Text('Search Amazon.in', style: TextStyle(color: Color(0xFF767676)))`),
-            T("am-mic","IconButton","Starts voice search so shoppers can speak instead of typing.",[],`IconButton(\n  onPressed: startVoiceSearch,\n  icon: const Icon(Icons.mic),\n)`),
-            T("am-camera","IconButton","Opens the camera so shoppers can search by taking a photo of a product.",[],`IconButton(\n  onPressed: openLens,\n  icon: const Icon(Icons.camera_alt_outlined),\n)`)
-          ],`TextField(\n  decoration: const InputDecoration(\n    hintText: 'Search Amazon.in',\n    prefixIcon: Icon(Icons.search),\n    suffixIcon: Row(\n      mainAxisSize: MainAxisSize.min,\n      children: [Icon(Icons.mic), Icon(Icons.camera_alt_outlined)],\n    ),\n    filled: true,\n    fillColor: Colors.white,\n    border: OutlineInputBorder(borderSide: BorderSide.none),\n  ),\n)`)
-        ]),
+            T("am-search-icon","Icon","A magnifier marks this field as a search box before anything is typed.",[],`const Icon(Icons.search, color: Color(0xFF767676))`, "Shows the search icon in Amazon."),
+            T("am-search-hint","Text","The hint tells shoppers what they can search for.",[],`const Text('Search Amazon.in', style: TextStyle(color: Color(0xFF767676)))`, "Shows 'Search Amazon.in'."),
+            T("am-mic","IconButton","Starts voice search so shoppers can speak instead of typing.",[],`IconButton(\n  onPressed: startVoiceSearch,\n  icon: const Icon(Icons.mic),\n)`, "The microphone button in Amazon."),
+            T("am-camera","IconButton","Opens the camera so shoppers can search by taking a photo of a product.",[],`IconButton(\n  onPressed: openLens,\n  icon: const Icon(Icons.camera_alt_outlined),\n)`, "The camera button in Amazon.")
+          ],`TextField(\n  decoration: const InputDecoration(\n    hintText: 'Search Amazon.in',\n    prefixIcon: Icon(Icons.search),\n    suffixIcon: Row(\n      mainAxisSize: MainAxisSize.min,\n      children: [Icon(Icons.mic), Icon(Icons.camera_alt_outlined)],\n    ),\n    filled: true,\n    fillColor: Colors.white,\n    border: OutlineInputBorder(borderSide: BorderSide.none),\n  ),\n)`, "A text field for 'Search Amazon.in'.")
+        ], undefined, "Lets a text field take the remaining space."),
         T("am-cart-stack","Stack","The cart icon and its count badge are layered in the same spot.",[
-          T("am-cart","IconButton","Opens the cart to review items before checkout.",[],`IconButton(\n  onPressed: openCart,\n  icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),\n)`),
+          T("am-cart","IconButton","Opens the cart to review items before checkout.",[],`IconButton(\n  onPressed: openCart,\n  icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),\n)`, "The cart button in Amazon."),
           T("am-cart-badge","Positioned","The badge is pinned to the top corner of the cart icon.",[
-            T("am-cart-count","Text","Shows how many items are already in the cart.",[],`const Text(\n  '2',\n  style: TextStyle(color: Color(0xFF131921), fontSize: 11, fontWeight: FontWeight.w800),\n)`)
+            T("am-cart-count","Text","Shows how many items are already in the cart.",[],`const Text(\n  '2',\n  style: TextStyle(color: Color(0xFF131921), fontSize: 11, fontWeight: FontWeight.w800),\n)`, "Shows '2' in bold.")
           ],null,"Positions a child relative to the edges of its Stack.")
-        ])
-      ])
-    ],`AppBar(\n  backgroundColor: const Color(0xFF131921),\n  title: const SearchBar(),\n  actions: [CartButton()],\n)`),
+        ], undefined, "Layers the cart button and a positioned widget in one box.")
+      ], undefined, "Places a text field and a stack side by side.")
+    ],`AppBar(\n  backgroundColor: const Color(0xFF131921),\n  title: const SearchBar(),\n  actions: [CartButton()],\n)`, "The top bar on the Home screen."),
     T("am-body","ListView","Location, categories, the deal banner, and product results scroll as one home feed.",[
       T("am-location-row","Row","Pin, delivery address, and chevron share one compact line.",[
-        T("am-location-icon","Icon","A pin marks this row as the delivery location.",[],`const Icon(Icons.location_on_outlined, color: Colors.white, size: 16)`),
-        T("am-location-text","Text","Shows where the order will be delivered, so shoppers can spot a wrong address.",[],`const Text(\n  'Deliver to Dheeraj - Jaipur 302001',\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`),
-        T("am-location-chevron","Icon","A chevron hints the location can be changed with a tap.",[],`const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 16)`)
-      ]),
+        T("am-location-icon","Icon","A pin marks this row as the delivery location.",[],`const Icon(Icons.location_on_outlined, color: Colors.white, size: 16)`, "Shows the location icon in Amazon."),
+        T("am-location-text","Text","Shows where the order will be delivered, so shoppers can spot a wrong address.",[],`const Text(\n  'Deliver to Dheeraj - Jaipur 302001',\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`, "Shows 'Deliver to Dheeraj - Jaipur 302001'."),
+        T("am-location-chevron","Icon","A chevron hints the location can be changed with a tap.",[],`const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 16)`, "Shows the expand icon in Amazon.")
+      ], undefined, "Places the location icon, 'Deliver to Dheeraj - Jaipur…' and the expand icon side by side."),
       T("am-chips","ListView","Category chips scroll sideways so shoppers can filter without leaving the home feed.",[
         T("am-chip-deals","Chip","A tappable label that filters the feed to today's deals.",[
-          T("am-chip-deals-text","Text","Names the deals filter.",[],`const Text('Deals')`)
+          T("am-chip-deals-text","Text","Names the deals filter.",[],`const Text('Deals')`, "Shows 'Deals'.")
         ],`const Chip(label: Text('Deals'))`,"Shows a compact, tappable label for one filter or category."),
         T("am-chip-prime","Chip","A tappable label that filters the feed to Prime-eligible products.",[
-          T("am-chip-prime-text","Text","Names the Prime filter.",[],`const Text('Prime')`)
+          T("am-chip-prime-text","Text","Names the Prime filter.",[],`const Text('Prime')`, "Shows 'Prime'.")
         ],`const Chip(label: Text('Prime'))`,"Shows a compact, tappable label for one filter or category."),
         T("am-chip-electronics","Chip","A tappable label that filters the feed to electronics.",[
-          T("am-chip-electronics-text","Text","Names the electronics filter.",[],`const Text('Electronics')`)
+          T("am-chip-electronics-text","Text","Names the electronics filter.",[],`const Text('Electronics')`, "Shows 'Electronics'.")
         ],`const Chip(label: Text('Electronics'))`,"Shows a compact, tappable label for one filter or category."),
         T("am-chip-fashion","Chip","A tappable label that filters the feed to fashion.",[
-          T("am-chip-fashion-text","Text","Names the fashion filter.",[],`const Text('Fashion')`)
+          T("am-chip-fashion-text","Text","Names the fashion filter.",[],`const Text('Fashion')`, "Shows 'Fashion'.")
         ],`const Chip(label: Text('Fashion'))`,"Shows a compact, tappable label for one filter or category."),
         T("am-chip-grocery","Chip","A tappable label that filters the feed to grocery.",[
-          T("am-chip-grocery-text","Text","Names the grocery filter.",[],`const Text('Grocery')`)
+          T("am-chip-grocery-text","Text","Names the grocery filter.",[],`const Text('Grocery')`, "Shows 'Grocery'.")
         ],`const Chip(label: Text('Grocery'))`,"Shows a compact, tappable label for one filter or category.")
-      ],`ListView.separated(\n  scrollDirection: Axis.horizontal,\n  itemCount: categories.length,\n  itemBuilder: (_, index) => FilterChip(categories[index]),\n  separatorBuilder: (_, __) => const SizedBox(width: 6),\n)`),
+      ],`ListView.separated(\n  scrollDirection: Axis.horizontal,\n  itemCount: categories.length,\n  itemBuilder: (_, index) => FilterChip(categories[index]),\n  separatorBuilder: (_, __) => const SizedBox(width: 6),\n)`, "A scrolling list of a chips."),
       T("am-hero","Card","The deal of the day reads as one prominent promotional surface.",[
         T("am-hero-stack","Stack","The banner image and its headline are layered in the same box.",[
-          T("am-hero-image","Image","Shows the promotional artwork behind the deal headline.",[],`Image.asset(\n  'assets/deal_banner.png',\n  fit: BoxFit.cover,\n)`),
+          T("am-hero-image","Image","Shows the promotional artwork behind the deal headline.",[],`Image.asset(\n  'assets/deal_banner.png',\n  fit: BoxFit.cover,\n)`, "Shows the deal banner image."),
           T("am-hero-copy","Column","Kicker, headline, and button are stacked over the banner image.",[
-            T("am-hero-kicker","Text","Labels the banner as the deal of the day.",[],`const Text(\n  'DEAL OF THE DAY',\n  style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),\n)`),
-            T("am-hero-title","Text","States the headline offer in one line.",[],`const Text(\n  'Up to 70% off | Headphones',\n  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800),\n)`),
+            T("am-hero-kicker","Text","Labels the banner as the deal of the day.",[],`const Text(\n  'DEAL OF THE DAY',\n  style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),\n)`, "Shows 'DEAL OF THE DAY' in bold."),
+            T("am-hero-title","Text","States the headline offer in one line.",[],`const Text(\n  'Up to 70% off | Headphones',\n  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800),\n)`, "Shows 'Up to 70% off | Headphones' in bold."),
             T("am-hero-cta","ElevatedButton","Takes shoppers straight to the deal's product list.",[
-              T("am-hero-cta-text","Text","Labels the deal action.",[],`const Text('Shop now')`)
+              T("am-hero-cta-text","Text","Labels the deal action.",[],`const Text('Shop now')`, "Shows 'Shop now'.")
             ],`ElevatedButton(\n  onPressed: openDeal,\n  child: const Text('Shop now'),\n)`,"Shows a primary action with a filled background and elevation.")
-          ])
-        ])
-      ]),
-      T("am-section-title","Text","Introduces the product results below the banner.",[],`const Text(\n  'Best deals for you',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
+          ], undefined, "Stacks 'DEAL OF THE DAY', 'Up to 70% off | Headphones' and a filled button vertically.")
+        ], undefined, "Layers the deal banner image and 'DEAL OF THE DAY' and 'Up to 70% off | Headphones' in one box.")
+      ], undefined, "Groups a stack on one card."),
+      T("am-section-title","Text","Introduces the product results below the banner.",[],`const Text(\n  'Best deals for you',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Best deals for you' in bold."),
       T("am-grid","GridView","Products are laid out in two columns so shoppers can compare them at a glance.",[
-        T("am-product-card","Card","One product's image, rating, price, and Prime badge stay grouped.",[
-          T("am-product-column","Column","Product image sits above its details.",[
-            T("am-product-image-clip","ClipRRect","The product image follows the card's top corners.",[
-              T("am-product-image","Image","Shows the product photo.",[],`Image.asset(\n  product.image,\n  height: 74,\n  fit: BoxFit.cover,\n)`)
-            ]),
-            T("am-product-padding","Padding","Product text gets a compact inset from the card edge.",[
-              T("am-product-details","Column","Title, rating, price, and Prime badge are stacked.",[
-                T("am-product-title","Text","Shows the product name.",[],`Text(product.name, style: const TextStyle(fontWeight: FontWeight.w700))`),
-                T("am-product-stars","Row","Stars and the numeric rating share one line.",[
-                  T("am-product-rating","Text","Shows the star rating and how many shoppers rated it.",[],`Text('\${product.stars} \\u2605 \\u00b7 \${product.rating}')`)
-                ]),
-                T("am-product-price-row","Row","Sale price and struck-through MRP sit side by side.",[
-                  T("am-product-price","Text","Shows the price shoppers actually pay.",[],`Text(\n  product.price,\n  style: const TextStyle(fontWeight: FontWeight.w800),\n)`),
-                  T("am-product-mrp","Text","Shows the original price so the saving is visible.",[],`Text(\n  product.mrp,\n  style: TextStyle(decoration: TextDecoration.lineThrough),\n)`)
-                ]),
-                T("am-prime-badge","Container","A small blue badge marks Prime-eligible products.",[
-                  T("am-prime-text","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`)
-                ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`)
-              ])
-            ])
-          ])
-        ])
+        T("am-product-card-1","Card","One product's image, rating, price, and Prime badge stay grouped.",[
+          T("am-product-column-1","Column","Product image sits above its details.",[
+            T("am-product-image-clip-1","ClipRRect","The product image follows the card's top corners.",[
+              T("am-product-image-1","Image","Shows the product photo.",[],`Image.asset(\n  'assets/products/earbuds_pro.jpg',\n  height: 74,\n  fit: BoxFit.cover,\n)`, "Shows the earbuds pro image.")
+            ], undefined, "Rounds the corners of the earbuds pro image."),
+            T("am-product-padding-1","Padding","Product text gets a compact inset from the card edge.",[
+              T("am-product-details-1","Column","Title, rating, price, and Prime badge are stacked.",[
+                T("am-product-title-1","Text","Shows the product name.",[],`const Text('Wireless Earbuds Pro', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Wireless Earbuds Pro' in bold."),
+                T("am-product-stars-1","Row","Stars and the numeric rating share one line.",[
+                  T("am-product-rating-1","Text","Shows the star rating and how many shoppers rated it.",[],`const Text('★★★★☆ 4.5')`, "Shows '★★★★☆ 4.5'.")
+                ], undefined, "Places '★★★★☆ 4.5' side by side."),
+                T("am-product-price-row-1","Row","Sale price and struck-through MRP sit side by side.",[
+                  T("am-product-price-1","Text","Shows the price shoppers actually pay.",[],`const Text(\n  '₹1,499',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹1,499' in bold."),
+                  T("am-product-mrp-1","Text","Shows the original price so the saving is visible.",[],`const Text(\n  '₹2,999',\n  style: TextStyle(decoration: TextDecoration.lineThrough),\n)`, "Shows '₹2,999'.")
+                ], undefined, "Places '₹1,499' and '₹2,999' side by side."),
+                T("am-prime-badge-1","Container","A small blue badge marks Prime-eligible products.",[
+                  T("am-prime-text-1","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`, "Shows 'prime' in bold.")
+                ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`, "A decorated box holding 'prime'.")
+              ], undefined, "Stacks 'Wireless Earbuds Pro', '★★★★☆ 4.5' and '₹1,499' and '₹2,999' vertically.")
+            ], undefined, "Pads 'Wireless Earbuds Pro' and '★★★★☆ 4.5' with 6px on the sides.")
+          ], undefined, "Stacks the earbuds pro image and 'Wireless Earbuds Pro' and '★★★★☆ 4.5' vertically.")
+        ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        child: Image.asset('assets/products/earbuds_pro.jpg', height: 74, fit: BoxFit.cover),\n      ),\n      Text('Wireless Earbuds Pro', style: const TextStyle(fontWeight: FontWeight.w700)),\n      Text('₹1,499', style: const TextStyle(fontWeight: FontWeight.w800)),\n    ],\n  ),\n)`, "Groups the earbuds pro image and 'Wireless Earbuds Pro' and '★★★★☆ 4.5' on one card."),
+        T("am-product-card-2","Card","One product's image, rating, price, and Prime badge stay grouped.",[
+          T("am-product-column-2","Column","Product image sits above its details.",[
+            T("am-product-image-clip-2","ClipRRect","The product image follows the card's top corners.",[
+              T("am-product-image-2","Image","Shows the product photo.",[],`Image.asset(\n  'assets/products/smart_watch_5.jpg',\n  height: 74,\n  fit: BoxFit.cover,\n)`, "Shows the smart watch 5 image.")
+            ], undefined, "Rounds the corners of the smart watch 5 image."),
+            T("am-product-padding-2","Padding","Product text gets a compact inset from the card edge.",[
+              T("am-product-details-2","Column","Title, rating, price, and Prime badge are stacked.",[
+                T("am-product-title-2","Text","Shows the product name.",[],`const Text('Smart Watch Series 5', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Smart Watch Series 5' in bold."),
+                T("am-product-stars-2","Row","Stars and the numeric rating share one line.",[
+                  T("am-product-rating-2","Text","Shows the star rating and how many shoppers rated it.",[],`const Text('★★★★★ 4.8')`, "Shows '★★★★★ 4.8'.")
+                ], undefined, "Places '★★★★★ 4.8' side by side."),
+                T("am-product-price-row-2","Row","Sale price and struck-through MRP sit side by side.",[
+                  T("am-product-price-2","Text","Shows the price shoppers actually pay.",[],`const Text(\n  '₹2,799',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹2,799' in bold."),
+                  T("am-product-mrp-2","Text","Shows the original price so the saving is visible.",[],`const Text(\n  '₹5,999',\n  style: TextStyle(decoration: TextDecoration.lineThrough),\n)`, "Shows '₹5,999'.")
+                ], undefined, "Places '₹2,799' and '₹5,999' side by side."),
+                T("am-prime-badge-2","Container","A small blue badge marks Prime-eligible products.",[
+                  T("am-prime-text-2","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`, "Shows 'prime' in bold.")
+                ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`, "A decorated box holding 'prime'.")
+              ], undefined, "Stacks 'Smart Watch Series 5', '★★★★★ 4.8' and '₹2,799' and '₹5,999' vertically.")
+            ], undefined, "Pads 'Smart Watch Series 5' and '★★★★★ 4.8' with 6px on the sides.")
+          ], undefined, "Stacks the smart watch 5 image and 'Smart Watch Series 5' and '★★★★★ 4.8' vertically.")
+        ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        child: Image.asset('assets/products/smart_watch_5.jpg', height: 74, fit: BoxFit.cover),\n      ),\n      Text('Smart Watch Series 5', style: const TextStyle(fontWeight: FontWeight.w700)),\n      Text('₹2,799', style: const TextStyle(fontWeight: FontWeight.w800)),\n    ],\n  ),\n)`, "Groups the smart watch 5 image and 'Smart Watch Series 5' and '★★★★★ 4.8' on one card."),
+        T("am-product-card-3","Card","One product's image, rating, price, and Prime badge stay grouped.",[
+          T("am-product-column-3","Column","Product image sits above its details.",[
+            T("am-product-image-clip-3","ClipRRect","The product image follows the card's top corners.",[
+              T("am-product-image-3","Image","Shows the product photo.",[],`Image.asset(\n  'assets/products/running_shoes.jpg',\n  height: 74,\n  fit: BoxFit.cover,\n)`, "Shows the running shoes image.")
+            ], undefined, "Rounds the corners of the running shoes image."),
+            T("am-product-padding-3","Padding","Product text gets a compact inset from the card edge.",[
+              T("am-product-details-3","Column","Title, rating, price, and Prime badge are stacked.",[
+                T("am-product-title-3","Text","Shows the product name.",[],`const Text('Running Shoes', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Running Shoes' in bold."),
+                T("am-product-stars-3","Row","Stars and the numeric rating share one line.",[
+                  T("am-product-rating-3","Text","Shows the star rating and how many shoppers rated it.",[],`const Text('★★★★☆ 4.3')`, "Shows '★★★★☆ 4.3'.")
+                ], undefined, "Places '★★★★☆ 4.3' side by side."),
+                T("am-product-price-row-3","Row","Sale price and struck-through MRP sit side by side.",[
+                  T("am-product-price-3","Text","Shows the price shoppers actually pay.",[],`const Text(\n  '₹1,199',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹1,199' in bold."),
+                  T("am-product-mrp-3","Text","Shows the original price so the saving is visible.",[],`const Text(\n  '₹2,499',\n  style: TextStyle(decoration: TextDecoration.lineThrough),\n)`, "Shows '₹2,499'.")
+                ], undefined, "Places '₹1,199' and '₹2,499' side by side."),
+                T("am-prime-badge-3","Container","A small blue badge marks Prime-eligible products.",[
+                  T("am-prime-text-3","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`, "Shows 'prime' in bold.")
+                ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`, "A decorated box holding 'prime'.")
+              ], undefined, "Stacks 'Running Shoes', '★★★★☆ 4.3' and '₹1,199' and '₹2,499' vertically.")
+            ], undefined, "Pads 'Running Shoes' and '★★★★☆ 4.3' with 6px on the sides.")
+          ], undefined, "Stacks the running shoes image and 'Running Shoes' and '★★★★☆ 4.3' vertically.")
+        ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        child: Image.asset('assets/products/running_shoes.jpg', height: 74, fit: BoxFit.cover),\n      ),\n      Text('Running Shoes', style: const TextStyle(fontWeight: FontWeight.w700)),\n      Text('₹1,199', style: const TextStyle(fontWeight: FontWeight.w800)),\n    ],\n  ),\n)`, "Groups the running shoes image and 'Running Shoes' and '★★★★☆ 4.3' on one card."),
+        T("am-product-card-4","Card","One product's image, rating, price, and Prime badge stay grouped.",[
+          T("am-product-column-4","Column","Product image sits above its details.",[
+            T("am-product-image-clip-4","ClipRRect","The product image follows the card's top corners.",[
+              T("am-product-image-4","Image","Shows the product photo.",[],`Image.asset(\n  'assets/products/travel_backpack.jpg',\n  height: 74,\n  fit: BoxFit.cover,\n)`, "Shows the travel backpack image.")
+            ], undefined, "Rounds the corners of the travel backpack image."),
+            T("am-product-padding-4","Padding","Product text gets a compact inset from the card edge.",[
+              T("am-product-details-4","Column","Title, rating, price, and Prime badge are stacked.",[
+                T("am-product-title-4","Text","Shows the product name.",[],`const Text('Travel Backpack 32L', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Travel Backpack 32L' in bold."),
+                T("am-product-stars-4","Row","Stars and the numeric rating share one line.",[
+                  T("am-product-rating-4","Text","Shows the star rating and how many shoppers rated it.",[],`const Text('★★★★☆ 4.6')`, "Shows '★★★★☆ 4.6'.")
+                ], undefined, "Places '★★★★☆ 4.6' side by side."),
+                T("am-product-price-row-4","Row","Sale price and struck-through MRP sit side by side.",[
+                  T("am-product-price-4","Text","Shows the price shoppers actually pay.",[],`const Text(\n  '₹899',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹899' in bold."),
+                  T("am-product-mrp-4","Text","Shows the original price so the saving is visible.",[],`const Text(\n  '₹1,799',\n  style: TextStyle(decoration: TextDecoration.lineThrough),\n)`, "Shows '₹1,799'.")
+                ], undefined, "Places '₹899' and '₹1,799' side by side."),
+                T("am-prime-badge-4","Container","A small blue badge marks Prime-eligible products.",[
+                  T("am-prime-text-4","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`, "Shows 'prime' in bold.")
+                ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`, "A decorated box holding 'prime'.")
+              ], undefined, "Stacks 'Travel Backpack 32L', '★★★★☆ 4.6' and '₹899' and '₹1,799' vertically.")
+            ], undefined, "Pads 'Travel Backpack 32L' and '★★★★☆ 4.6' with 6px on the sides.")
+          ], undefined, "Stacks the travel backpack image and 'Travel Backpack 32L' and '★★★★☆ 4.6' vertically.")
+        ],`Card(\n  child: Column(\n    children: [\n      ClipRRect(\n        child: Image.asset('assets/products/travel_backpack.jpg', height: 74, fit: BoxFit.cover),\n      ),\n      Text('Travel Backpack 32L', style: const TextStyle(fontWeight: FontWeight.w700)),\n      Text('₹899', style: const TextStyle(fontWeight: FontWeight.w800)),\n    ],\n  ),\n)`, "Groups the travel backpack image and 'Travel Backpack 32L' and '★★★★☆ 4.6' on one card.")
       ],`GridView.builder(\n  shrinkWrap: true,\n  physics: const NeverScrollableScrollPhysics(),\n  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(\n    crossAxisCount: 2,\n    crossAxisSpacing: 10,\n    mainAxisSpacing: 10,\n    childAspectRatio: 0.72,\n  ),\n  itemCount: deals.length,\n  itemBuilder: (_, index) => ProductCard(deals[index]),\n)`,"Lays children out in a scrollable two-dimensional grid.")
-    ]),
+    ], undefined, "A scrolling list of 5 items."),
     T("am-bottom","BottomNavigationBar","Home, Account, Cart, and Menu remain one tap away.",[
-      T("am-nav-home","Icon","Represents the active Home destination.",[],`const Icon(Icons.home_outlined)`),
-      T("am-nav-account","Icon","Represents the Account destination.",[],`const Icon(Icons.person_outline)`),
-      T("am-nav-cart","Icon","Represents the Cart destination.",[],`const Icon(Icons.shopping_bag_outlined)`),
-      T("am-nav-menu","Icon","Represents the Menu destination.",[],`const Icon(Icons.menu)`)
-    ],`BottomNavigationBar(\n  currentIndex: 0,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Account'),\n    BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Cart'),\n    BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),\n  ],\n)`)
-  ])
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF9900)),\n  home: const AmazonHome(),\n)`);
+      T("am-nav-home","Icon","Represents the active Home destination.",[],`const Icon(Icons.home_outlined)`, "Shows the home icon in Amazon."),
+      T("am-nav-account","Icon","Represents the Account destination.",[],`const Icon(Icons.person_outline)`, "Shows the person outline icon in Amazon."),
+      T("am-nav-cart","Icon","Represents the Cart destination.",[],`const Icon(Icons.shopping_bag_outlined)`, "Shows the bag icon in Amazon."),
+      T("am-nav-menu","Icon","Represents the Menu destination.",[],`const Icon(Icons.menu)`, "Shows the menu icon in Amazon.")
+    ],`BottomNavigationBar(\n  currentIndex: 0,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Account'),\n    BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: 'Cart'),\n    BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),\n  ],\n)`, "The bottom tabs for this screen.")
+  ], undefined, "Frames this screen: a top bar, a scrolling list and a bottom bar.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF9900)),\n  home: const AmazonHome(),\n)`, "The app shell for the Home screen.");
 
 TEARDOWNS.gmail.root = T("gm-material","MaterialApp","The whole Gmail inbox runs under one Material theme and navigation context.",[
   T("gm-scaffold","Scaffold","The search bar, inbox list, and compose button belong to one stable page frame.",[
     T("gm-appbar","AppBar","The menu, search field, and account avatar stay visible above the inbox.",[
-      T("gm-menu","IconButton","Opens the navigation drawer with labels and folders.",[],`IconButton(\n  onPressed: openDrawer,\n  icon: const Icon(Icons.menu),\n)`),
+      T("gm-menu","IconButton","Opens the navigation drawer with labels and folders.",[],`IconButton(\n  onPressed: openDrawer,\n  icon: const Icon(Icons.menu),\n)`, "The menu button in Gmail."),
       T("gm-search-expanded","Expanded","The search field takes all the width left between the menu and the avatar.",[
-        T("gm-search-field","TextField","Searches mail by sender, subject, or words in the message.",[],`TextField(\n  decoration: const InputDecoration(\n    hintText: 'Search in mail',\n    prefixIcon: Icon(Icons.search),\n    border: InputBorder.none,\n  ),\n)`)
-      ]),
-      T("gm-avatar","CircleAvatar","Shows who is signed in at a glance.",[],`const CircleAvatar(\n  radius: 16,\n  backgroundColor: Color(0xFF5B5BD6),\n  child: Text('D'),\n)`)
-    ],`AppBar(\n  leading: IconButton(\n    onPressed: openDrawer,\n    icon: const Icon(Icons.menu),\n  ),\n  title: const TextField(\n    decoration: InputDecoration(\n      hintText: 'Search in mail',\n      prefixIcon: Icon(Icons.search),\n      border: InputBorder.none,\n    ),\n  ),\n  actions: const [CircleAvatar(radius: 16, child: Text('D'))],\n)`),
+        T("gm-search-field","TextField","Searches mail by sender, subject, or words in the message.",[],`TextField(\n  decoration: const InputDecoration(\n    hintText: 'Search in mail',\n    prefixIcon: Icon(Icons.search),\n    border: InputBorder.none,\n  ),\n)`, "A text field for 'Search in mail'.")
+      ], undefined, "Lets a text field take the remaining space."),
+      T("gm-avatar","CircleAvatar","Shows who is signed in at a glance.",[],`const CircleAvatar(\n  radius: 16,\n  backgroundColor: Color(0xFF5B5BD6),\n  child: Text('D'),\n)`, "A circular avatar showing 'D'.")
+    ],`AppBar(\n  leading: IconButton(\n    onPressed: openDrawer,\n    icon: const Icon(Icons.menu),\n  ),\n  title: const TextField(\n    decoration: InputDecoration(\n      hintText: 'Search in mail',\n      prefixIcon: Icon(Icons.search),\n      border: InputBorder.none,\n    ),\n  ),\n  actions: const [CircleAvatar(radius: 16, child: Text('D'))],\n)`, "The top bar: 'Search in mail' with 1 action."),
     T("gm-body","Column","The Primary label sits above the inbox list, which takes the rest of the screen.",[
       T("gm-label-row","Row","The inbox label and its unread count share one line.",[
-        T("gm-primary-label","Text","Names the inbox category shown below.",[],`const Text(\n  'Primary',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-      ]),
+        T("gm-primary-label","Text","Names the inbox category shown below.",[],`const Text(\n  'Primary',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Primary' in bold.")
+      ], undefined, "Places 'Primary' side by side."),
       T("gm-inbox-list","ListView","Email tiles are built lazily and stay vertically scrollable.",[
-        T("gm-dismissible","Dismissible","Dismissible is the widget that turns a list row into a swipe action: it watches for a horizontal drag on its child and, once the drag passes the threshold, slides the child away and calls onDismissed. In Gmail that is the archive gesture — swipe a mail left-to-right and it leaves the inbox without opening it. A plain ListTile can only be tapped; Dismissible is what gives the row its swipe. The key is not optional: it is how Flutter knows exactly which mail was swiped when the list rebuilds without it.",[
+        T("gm-dismissible","Dismissible","It watches for a horizontal drag and, past the threshold, slides the child away and calls onDismissed. In Gmail that is the archive gesture — swipe a mail and it leaves the inbox without opening it.",[
           T("gm-dismiss-bg","Container","A red background sits behind the tile and is revealed only while the tile is being dragged.",[
             T("gm-dismiss-bg-row","Row","The archive icon and its label share one line on the background.",[
-              T("gm-dismiss-bg-icon","Icon","The archive icon tells the user what the swipe will do before they let go.",[],`const Icon(Icons.archive_outlined, color: Colors.white)`),
-              T("gm-dismiss-bg-label","Text","Labels the swipe action as Archive.",[],`const Text(\n  'Archive',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`)
-            ])
-          ]),
+              T("gm-dismiss-bg-icon","Icon","The archive icon tells the user what the swipe will do before they let go.",[],`const Icon(Icons.archive_outlined, color: Colors.white)`, "Shows the archive icon in Gmail."),
+              T("gm-dismiss-bg-label","Text","Labels the swipe action as Archive.",[],`const Text(\n  'Archive',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'Archive' in bold.")
+            ], undefined, "Places the archive icon and 'Archive' side by side.")
+          ], undefined, "A decorated box holding the archive icon and 'Archive'."),
                   T("gm-tile-1","ListTile","One email reads as a single tappable row.",[
-                    T("gm-tile1-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF02569B),\n  child: Text('F'),\n)`),
+                    T("gm-tile1-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF02569B),\n  child: Text('F'),\n)`, "A circular avatar showing 'F'."),
                     T("gm-tile1-body","Column","Sender, subject, and snippet stack inside the tile.",[
-                      T("gm-tile1-sender","Text","Shows who sent the email.",[],`const Text(\n  'FlutterForward',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-                      T("gm-tile1-subject","Text","Shows what the email is about.",[],`const Text(\n  'Your 40-lesson Flutter course is live',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-                      T("gm-tile1-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('All lessons, quizzes and ranks in one place…')`)
-                    ]),
-                    T("gm-tile1-time","Text","Shows when the email arrived.",[],`const Text('9:41', style: TextStyle(fontSize: 11))`),
-                    T("gm-tile1-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star, color: Colors.amber),\n)`)
+                      T("gm-tile1-sender","Text","Shows who sent the email.",[],`const Text(\n  'FlutterForward',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'FlutterForward' in bold."),
+                      T("gm-tile1-subject","Text","Shows what the email is about.",[],`const Text(\n  'Your 40-lesson Flutter course is live',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Your 40-lesson Flutter course is live' in bold."),
+                      T("gm-tile1-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('All lessons, quizzes and ranks in one place…')`, "Shows 'All lessons, quizzes and ranks in one place…'.")
+                    ], undefined, "Stacks 'FlutterForward', 'Your 40-lesson Flutter…' and 'All lessons, quizzes and…' vertically."),
+                    T("gm-tile1-time","Text","Shows when the email arrived.",[],`const Text('9:41', style: TextStyle(fontSize: 11))`, "Shows '9:41'."),
+                    T("gm-tile1-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star, color: Colors.amber),\n)`, "The star button in Gmail.")
                   ],`ListTile(\n  leading: const CircleAvatar(child: Text('F')),\n  title: const Text('FlutterForward'),\n  subtitle: const Text('Your 40-lesson Flutter course is live'),\n  trailing: const Icon(Icons.star, color: Colors.amber),\n  onTap: openEmail,\n)`,"Groups a leading avatar, title, subtitle, and trailing action into one tappable row.")
         ],`Dismissible(\n  key: const ValueKey('mail-1'),\n  direction: DismissDirection.startToEnd,\n  background: Container(\n    color: const Color(0xFFEA4335),\n    alignment: Alignment.centerLeft,\n    padding: const EdgeInsets.only(left: 16),\n    child: const Row(\n      mainAxisSize: MainAxisSize.min,\n      children: [\n        Icon(Icons.archive_outlined, color: Colors.white),\n        SizedBox(width: 8),\n        Text('Archive', style: TextStyle(color: Colors.white)),\n      ],\n    ),\n  ),\n  onDismissed: (_) => archiveMail('mail-1'),\n  child: const MailTile(mail: mails[0]),\n)`,"Wraps a list row so swiping it away runs an action such as archive or delete."),
         T("gm-tile-2","ListTile","One email reads as a single tappable row.",[
-          T("gm-tile2-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF188038),\n  child: Text('R'),\n)`),
+          T("gm-tile2-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF188038),\n  child: Text('R'),\n)`, "A circular avatar showing 'R'."),
           T("gm-tile2-body","Column","Sender, subject, and snippet stack inside the tile.",[
-            T("gm-tile2-sender","Text","Shows who sent the email.",[],`const Text('RTU Kota')`),
-            T("gm-tile2-subject","Text","Shows what the email is about.",[],`const Text('Exam timetable: V Sem main exams')`),
-            T("gm-tile2-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('Reporting 10:00 AM, first paper 27 Nov…')`)
-          ]),
-          T("gm-tile2-time","Text","Shows when the email arrived.",[],`const Text('8:15', style: TextStyle(fontSize: 11))`),
-          T("gm-tile2-attach","Icon","Marks that the email carries a file attachment.",[],`const Icon(Icons.attach_file, size: 14)`),
-          T("gm-tile2-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star_border),\n)`)
+            T("gm-tile2-sender","Text","Shows who sent the email.",[],`const Text('RTU Kota')`, "Shows 'RTU Kota'."),
+            T("gm-tile2-subject","Text","Shows what the email is about.",[],`const Text('Exam timetable: V Sem main exams')`, "Shows 'Exam timetable: V Sem main exams'."),
+            T("gm-tile2-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('Reporting 10:00 AM, first paper 27 Nov…')`, "Shows 'Reporting 10:00 AM, first paper 27 Nov…'.")
+          ], undefined, "Stacks 'RTU Kota', 'Exam timetable: V Sem main…' and 'Reporting 10:00 AM, first…' vertically."),
+          T("gm-tile2-time","Text","Shows when the email arrived.",[],`const Text('8:15', style: TextStyle(fontSize: 11))`, "Shows '8:15'."),
+          T("gm-tile2-attach","Icon","Marks that the email carries a file attachment.",[],`const Icon(Icons.attach_file, size: 14)`, "Shows the attachment icon in Gmail."),
+          T("gm-tile2-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star_border),\n)`, "The star border button in Gmail.")
         ],`ListTile(\n  leading: const CircleAvatar(child: Text('R')),\n  title: const Text('RTU Kota'),\n  subtitle: const Text('Exam timetable: V Sem main exams'),\n  trailing: const Icon(Icons.attach_file),\n  onTap: openEmail,\n)`,"Groups a leading avatar, title, subtitle, and trailing action into one tappable row."),
         T("gm-tile-3","ListTile","One email reads as a single tappable row.",[
-          T("gm-tile3-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF24292F),\n  child: Text('G'),\n)`),
+          T("gm-tile3-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF24292F),\n  child: Text('G'),\n)`, "A circular avatar showing 'G'."),
           T("gm-tile3-body","Column","Sender, subject, and snippet stack inside the tile.",[
-            T("gm-tile3-sender","Text","Shows who sent the email.",[],`const Text('GitHub')`),
-            T("gm-tile3-subject","Text","Shows what the email is about.",[],`const Text('[flutterlearn] New pull request #42')`),
-            T("gm-tile3-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('Teardown: Gmail inbox mock ready for review')`)
-          ]),
-          T("gm-tile3-time","Text","Shows when the email arrived.",[],`const Text('Yesterday', style: TextStyle(fontSize: 11))`),
-          T("gm-tile3-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star_border),\n)`)
+            T("gm-tile3-sender","Text","Shows who sent the email.",[],`const Text('GitHub')`, "Shows 'GitHub'."),
+            T("gm-tile3-subject","Text","Shows what the email is about.",[],`const Text('[flutterlearn] New pull request #42')`, "Shows '[flutterlearn] New pull request #42'."),
+            T("gm-tile3-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('Teardown: Gmail inbox mock ready for review')`, "Shows 'Teardown: Gmail inbox mock ready for review'.")
+          ], undefined, "Stacks 'GitHub', '[flutterlearn] New pull…' and 'Teardown: Gmail inbox mock…' vertically."),
+          T("gm-tile3-time","Text","Shows when the email arrived.",[],`const Text('Yesterday', style: TextStyle(fontSize: 11))`, "Shows 'Yesterday'."),
+          T("gm-tile3-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star_border),\n)`, "The star border button in Gmail.")
         ],`ListTile(\n  leading: const CircleAvatar(child: Text('G')),\n  title: const Text('GitHub'),\n  subtitle: const Text('[flutterlearn] New pull request #42'),\n  trailing: const Icon(Icons.star_border),\n  onTap: openEmail,\n)`,"Groups a leading avatar, title, subtitle, and trailing action into one tappable row."),
         T("gm-tile-4","ListTile","One email reads as a single tappable row.",[
-          T("gm-tile4-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF7C4DFF),\n  child: Text('D'),\n)`),
+          T("gm-tile4-avatar","CircleAvatar","The sender gets a compact coloured initial.",[],`const CircleAvatar(\n  backgroundColor: Color(0xFF7C4DFF),\n  child: Text('D'),\n)`, "A circular avatar showing 'D'."),
           T("gm-tile4-body","Column","Sender, subject, and snippet stack inside the tile.",[
-            T("gm-tile4-sender","Text","Shows who sent the email.",[],`const Text('Dheeraj Kumar')`),
-            T("gm-tile4-subject","Text","Shows what the email is about.",[],`const Text('Notes: Analysis of Algorithms PYQs')`),
-            T("gm-tile4-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('AoA papers 2019–2024, topic-wise breakdown…')`)
-          ]),
-          T("gm-tile4-time","Text","Shows when the email arrived.",[],`const Text('Mon', style: TextStyle(fontSize: 11))`),
-          T("gm-tile4-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star_border),\n)`)
+            T("gm-tile4-sender","Text","Shows who sent the email.",[],`const Text('Dheeraj Kumar')`, "Shows 'Dheeraj Kumar'."),
+            T("gm-tile4-subject","Text","Shows what the email is about.",[],`const Text('Notes: Analysis of Algorithms PYQs')`, "Shows 'Notes: Analysis of Algorithms PYQs'."),
+            T("gm-tile4-snippet","Text","Shows the first line so the inbox can be skimmed.",[],`const Text('AoA papers 2019–2024, topic-wise breakdown…')`, "Shows 'AoA papers 2019–2024, topic-wise breakdown…'.")
+          ], undefined, "Stacks 'Dheeraj Kumar', 'Notes: Analysis of…' and 'AoA papers 2019–2024,…' vertically."),
+          T("gm-tile4-time","Text","Shows when the email arrived.",[],`const Text('Mon', style: TextStyle(fontSize: 11))`, "Shows 'Mon'."),
+          T("gm-tile4-star","IconButton","Stars the email so it can be found later under Starred.",[],`IconButton(\n  onPressed: toggleStar,\n  icon: const Icon(Icons.star_border),\n)`, "The star border button in Gmail.")
         ],`ListTile(\n  leading: const CircleAvatar(child: Text('D')),\n  title: const Text('Dheeraj Kumar'),\n  subtitle: const Text('Notes: Analysis of Algorithms PYQs'),\n  trailing: const Icon(Icons.star_border),\n  onTap: openEmail,\n)`,"Groups a leading avatar, title, subtitle, and trailing action into one tappable row.")
-      ])
-    ]),
+      ], undefined, "A scrolling list of a swipeable row and a row.")
+    ], undefined, "Stacks 'Primary' and a scrolling list vertically."),
     T("gm-fab","FloatingActionButton","A floating action stays above the list so composing is always one tap away.",[],`FloatingActionButton.extended(\n  onPressed: composeEmail,\n  icon: const Icon(Icons.edit),\n  label: const Text('Compose'),\n)`,"A prominent floating action that stays above the scrolling content.")
-  ],`Scaffold(\n  appBar: AppBar(\n    title: const TextField(\n      decoration: InputDecoration(hintText: 'Search in mail'),\n    ),\n  ),\n  body: const InboxBody(),\n  floatingActionButton: FloatingActionButton.extended(\n    onPressed: composeEmail,\n    icon: const Icon(Icons.edit),\n    label: const Text('Compose'),\n  ),\n)`)
-],`MaterialApp(\n  home: const GmailInbox(),\n)`);
+  ],`Scaffold(\n  appBar: AppBar(\n    title: const TextField(\n      decoration: InputDecoration(hintText: 'Search in mail'),\n    ),\n  ),\n  body: const InboxBody(),\n  floatingActionButton: FloatingActionButton.extended(\n    onPressed: composeEmail,\n    icon: const Icon(Icons.edit),\n    label: const Text('Compose'),\n  ),\n)`, "Frames this screen: a top bar, scrolling content and a floating button.")
+],`MaterialApp(\n  home: const GmailInbox(),\n)`, "The app shell for the Inbox screen.");
 
 TEARDOWNS.netflix.root = T("nf-material","MaterialApp","The Netflix home screen inherits one dark Material theme and navigation context.",[
   T("nf-scaffold","Scaffold","The top bar, scrolling home content, and bottom navigation share one stable screen frame.",[
@@ -2761,16 +3026,16 @@ TEARDOWNS.netflix.root = T("nf-material","MaterialApp","The Netflix home screen 
     letterSpacing: 1.5,
     color: Color(0xFFE50914),
   ),
-)`),
+)`, "Shows 'NETFLIX' in bold."),
       T("nf-search-btn","IconButton","Opens search without leaving the home screen.",[],`IconButton(
   onPressed: openSearch,
   icon: const Icon(Icons.search, color: Colors.white),
-)`),
+)`, "The search button in Netflix."),
       T("nf-avatar","CircleAvatar","The profile avatar is the compact entry point to account switching.",[],`const CircleAvatar(
   radius: 14,
   backgroundColor: Color(0xFFE50914),
   child: Text('D', style: TextStyle(color: Colors.white)),
-)`)
+)`, "A circular avatar showing 'D'.")
     ],`AppBar(
   backgroundColor: Colors.transparent,
   elevation: 0,
@@ -2779,13 +3044,13 @@ TEARDOWNS.netflix.root = T("nf-material","MaterialApp","The Netflix home screen 
     IconButton(onPressed: openSearch, icon: const Icon(Icons.search)),
     const ProfileAvatar(),
   ],
-)`),
+)`, "The top bar: 'NETFLIX' with 1 action."),
     T("nf-body","ListView","The hero banner and every content row scroll together as one vertical list.",[
       T("nf-hero","Stack","The poster image, dark gradient, and title text are layered in the same box.",[
         T("nf-hero-image","Image","The featured show's key art fills the hero area.",[],`Image.network(
   featured.posterUrl,
   fit: BoxFit.cover,
-)`),
+)`, "The poster photo."),
         T("nf-hero-gradient","Container","A dark gradient sits over the poster's lower half so white text stays readable.",[],`Container(
   decoration: const BoxDecoration(
     gradient: LinearGradient(
@@ -2794,7 +3059,7 @@ TEARDOWNS.netflix.root = T("nf-material","MaterialApp","The Netflix home screen 
       colors: [Colors.transparent, Colors.black87],
     ),
   ),
-)`),
+)`, "A decorated box for this section."),
         T("nf-hero-content","Column","The title, genre tags, and action buttons are stacked at the bottom of the hero.",[
           T("nf-hero-title","Text","Shows the featured show's title in large bold type.",[],`const Text(
   'STRANGER THINGS',
@@ -2803,104 +3068,196 @@ TEARDOWNS.netflix.root = T("nf-material","MaterialApp","The Netflix home screen 
     fontWeight: FontWeight.w900,
     color: Colors.white,
   ),
-)`),
+)`, "Shows 'STRANGER THINGS' in bold."),
           T("nf-hero-genres","Row","Genre tags sit side by side on one line under the title.",[
-            T("nf-genre-1","Text","Names the first genre of the featured show.",[],`const Text('Sci-Fi', style: TextStyle(color: Colors.white70))`),
-            T("nf-genre-2","Text","Names the second genre of the featured show.",[],`const Text('Drama', style: TextStyle(color: Colors.white70))`),
-            T("nf-genre-3","Text","Names the third genre of the featured show.",[],`const Text('Thriller', style: TextStyle(color: Colors.white70))`)
-          ]),
+            T("nf-genre-1","Text","Names the first genre of the featured show.",[],`const Text('Sci-Fi', style: TextStyle(color: Colors.white70))`, "Shows 'Sci-Fi'."),
+            T("nf-genre-2","Text","Names the second genre of the featured show.",[],`const Text('Drama', style: TextStyle(color: Colors.white70))`, "Shows 'Drama'."),
+            T("nf-genre-3","Text","Names the third genre of the featured show.",[],`const Text('Thriller', style: TextStyle(color: Colors.white70))`, "Shows 'Thriller'.")
+          ], undefined, "Places 'Sci-Fi', 'Drama' and 'Thriller' side by side."),
           T("nf-hero-actions","Row","The Play and My List buttons share one row so both actions are one tap away.",[
             T("nf-play","ElevatedButton","Starts playback of the featured show immediately.",[
-              T("nf-play-icon","Icon","The play triangle signals that tapping starts the video.",[],`const Icon(Icons.play_arrow, color: Colors.black)`),
+              T("nf-play-icon","Icon","The play triangle signals that tapping starts the video.",[],`const Icon(Icons.play_arrow, color: Colors.black)`, "Shows the play icon in Netflix."),
               T("nf-play-label","Text","Labels the primary hero action.",[],`const Text(
   'Play',
   style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
-)`)
+)`, "Shows 'Play' in bold.")
             ],`ElevatedButton.icon(
   onPressed: playFeatured,
   icon: const Icon(Icons.play_arrow, color: Colors.black),
   label: const Text('Play', style: TextStyle(color: Colors.black)),
   style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-)`, "A filled button for the primary action on a screen."),
+)`,"A filled 'Play' button."),
             T("nf-mylist","OutlinedButton","Saves the featured show to the user's list without starting playback.",[
-              T("nf-mylist-label","Text","Labels the secondary hero action.",[],`const Text('+ My List', style: TextStyle(color: Colors.white))`)
+              T("nf-mylist-label","Text","Labels the secondary hero action.",[],`const Text('+ My List', style: TextStyle(color: Colors.white))`, "Shows '+ My List'.")
             ],`OutlinedButton.icon(
   onPressed: addToMyList,
   icon: const Icon(Icons.add, color: Colors.white),
   label: const Text('My List', style: TextStyle(color: Colors.white)),
-)`)
-          ])
-        ])
-      ]),
+)`, "An outlined 'My List' button.")
+          ], undefined, "Places a filled button and an outlined button side by side.")
+        ], undefined, "Stacks 'STRANGER THINGS', 'Sci-Fi' and 'Drama' and a filled button and an outlined button vertically.")
+      ], undefined, "Layers a network photo, a box and 'STRANGER THINGS' and 'Sci-Fi' and 'Drama' in one box."),
       T("nf-trending-section","Column","The section title sits above its horizontal row of posters.",[
         T("nf-trending-title","Text","Labels the Trending Now row so the user knows what the posters are.",[],`const Text(
   'Trending Now',
   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
-)`),
+)`, "Shows 'Trending Now' in bold."),
         T("nf-trending-row","ListView","Posters scroll sideways so the row shows many titles without lengthening the page.",[
-          T("nf-trending-card","Card","One poster and its title are grouped as a single tappable result.",[
-            T("nf-trending-poster","Image","The show's poster art is what the user recognises and taps.",[],`Image.network(show.posterUrl, fit: BoxFit.cover)`),
-            T("nf-trending-name","Text","Shows the show title under its poster.",[],`Text(show.title, style: const TextStyle(color: Colors.white, fontSize: 12))`)
+          T("nf-trending-card-1","Card","One poster and its title are grouped as a single tappable result.",[
+            T("nf-trending-poster-1","Image","The show's poster art is what the user recognises and taps.",[],`Image.network(squidGame.posterUrl, fit: BoxFit.cover)`, "The poster photo."),
+            T("nf-trending-name-1","Text","Shows the show title under its poster.",[],`const Text('Squid Game', style: TextStyle(color: Colors.white, fontSize: 12))`, "Shows 'Squid Game'.")
           ],`Card(
   clipBehavior: Clip.antiAlias,
   color: const Color(0xFF1F1F1F),
   child: Column(
     children: [
-      Image.network(show.posterUrl),
-      Text(show.title),
+      Image.network(squidGame.posterUrl),
+      Text('Squid Game'),
     ],
   ),
-)`)
+)`, "Groups a network photo and 'Squid Game' on one card."),
+          T("nf-trending-card-2","Card","One poster and its title are grouped as a single tappable result.",[
+            T("nf-trending-poster-2","Image","The show's poster art is what the user recognises and taps.",[],`Image.network(wednesday.posterUrl, fit: BoxFit.cover)`, "The poster photo."),
+            T("nf-trending-name-2","Text","Shows the show title under its poster.",[],`const Text('Wednesday', style: TextStyle(color: Colors.white, fontSize: 12))`, "Shows 'Wednesday'.")
+          ],`Card(
+  clipBehavior: Clip.antiAlias,
+  color: const Color(0xFF1F1F1F),
+  child: Column(
+    children: [
+      Image.network(wednesday.posterUrl),
+      Text('Wednesday'),
+    ],
+  ),
+)`, "Groups a network photo and 'Wednesday' on one card."),
+          T("nf-trending-card-3","Card","One poster and its title are grouped as a single tappable result.",[
+            T("nf-trending-poster-3","Image","The show's poster art is what the user recognises and taps.",[],`Image.network(moneyHeist.posterUrl, fit: BoxFit.cover)`, "The poster photo."),
+            T("nf-trending-name-3","Text","Shows the show title under its poster.",[],`const Text('Money Heist', style: TextStyle(color: Colors.white, fontSize: 12))`, "Shows 'Money Heist'.")
+          ],`Card(
+  clipBehavior: Clip.antiAlias,
+  color: const Color(0xFF1F1F1F),
+  child: Column(
+    children: [
+      Image.network(moneyHeist.posterUrl),
+      Text('Money Heist'),
+    ],
+  ),
+)`, "Groups a network photo and 'Money Heist' on one card."),
+          T("nf-trending-card-4","Card","One poster and its title are grouped as a single tappable result.",[
+            T("nf-trending-poster-4","Image","The show's poster art is what the user recognises and taps.",[],`Image.network(theCrown.posterUrl, fit: BoxFit.cover)`, "The poster photo."),
+            T("nf-trending-name-4","Text","Shows the show title under its poster.",[],`const Text('The Crown', style: TextStyle(color: Colors.white, fontSize: 12))`, "Shows 'The Crown'.")
+          ],`Card(
+  clipBehavior: Clip.antiAlias,
+  color: const Color(0xFF1F1F1F),
+  child: Column(
+    children: [
+      Image.network(theCrown.posterUrl),
+      Text('The Crown'),
+    ],
+  ),
+)`, "Groups a network photo and 'The Crown' on one card.")
         ],`ListView.builder(
   scrollDirection: Axis.horizontal,
   itemCount: trending.length,
   itemBuilder: (_, index) => TrendingCard(trending[index]),
-)`)
-      ]),
+)`, "A scrolling list of cards.")
+      ], undefined, "Stacks 'Trending Now' and a scrolling list vertically."),
       T("nf-top10-section","Column","The section title sits above the ranked Top 10 row.",[
         T("nf-top10-title","Text","Labels the Top 10 row, Netflix's daily ranked chart.",[],`const Text(
   'Top 10 TV Shows Today',
   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
-)`),
+)`, "Shows 'Top 10 TV Shows Today' in bold."),
         T("nf-top10-row","ListView","Ranked titles scroll sideways so all ten stay reachable in one row.",[
-          T("nf-top10-card","Row","A giant rank number and its poster sit side by side as one chart entry.",[
-            T("nf-top10-rank","Text","The huge outlined number shows the show's chart position at a glance.",[],`Text(
-  rank.toString(),
-  style: const TextStyle(fontSize: 96, fontWeight: FontWeight.w900),
-)`),
-            T("nf-top10-poster","Image","The poster identifies which show holds that rank.",[],`Image.network(show.posterUrl, fit: BoxFit.cover)`)
-          ])
+          T("nf-top10-card-1","Row","A giant rank number and its poster sit side by side as one chart entry.",[
+            T("nf-top10-rank-1","Text","The huge outlined number shows the show's chart position at a glance.",[],`const Text(
+  '1',
+  style: TextStyle(fontSize: 96, fontWeight: FontWeight.w900),
+)`, "Shows '1' in bold."),
+            T("nf-top10-poster-1","Image","The poster identifies which show holds that rank.",[],`Image.network(strangerThings.posterUrl, fit: BoxFit.cover)`, "The poster photo.")
+          ],`Row(
+  children: [
+    Text('1', style: const TextStyle(fontSize: 96, fontWeight: FontWeight.w900)),
+    Image.network(strangerThings.posterUrl, fit: BoxFit.cover),
+  ],
+)`, "Places '1' and a network photo side by side."),
+          T("nf-top10-card-2","Row","A giant rank number and its poster sit side by side as one chart entry.",[
+            T("nf-top10-rank-2","Text","The huge outlined number shows the show's chart position at a glance.",[],`const Text(
+  '2',
+  style: TextStyle(fontSize: 96, fontWeight: FontWeight.w900),
+)`, "Shows '2' in bold."),
+            T("nf-top10-poster-2","Image","The poster identifies which show holds that rank.",[],`Image.network(wednesday.posterUrl, fit: BoxFit.cover)`, "The poster photo.")
+          ],`Row(
+  children: [
+    Text('2', style: const TextStyle(fontSize: 96, fontWeight: FontWeight.w900)),
+    Image.network(wednesday.posterUrl, fit: BoxFit.cover),
+  ],
+)`, "Places '2' and a network photo side by side."),
+          T("nf-top10-card-3","Row","A giant rank number and its poster sit side by side as one chart entry.",[
+            T("nf-top10-rank-3","Text","The huge outlined number shows the show's chart position at a glance.",[],`const Text(
+  '3',
+  style: TextStyle(fontSize: 96, fontWeight: FontWeight.w900),
+)`, "Shows '3' in bold."),
+            T("nf-top10-poster-3","Image","The poster identifies which show holds that rank.",[],`Image.network(moneyHeist.posterUrl, fit: BoxFit.cover)`, "The poster photo.")
+          ],`Row(
+  children: [
+    Text('3', style: const TextStyle(fontSize: 96, fontWeight: FontWeight.w900)),
+    Image.network(moneyHeist.posterUrl, fit: BoxFit.cover),
+  ],
+)`, "Places '3' and a network photo side by side.")
         ],`ListView.builder(
   scrollDirection: Axis.horizontal,
   itemCount: top10.length,
   itemBuilder: (_, index) => Top10Card(top10[index], index + 1),
-)`)
-      ]),
+)`, "A scrolling list of rows.")
+      ], undefined, "Stacks 'Top 10 TV Shows Today' and a scrolling list vertically."),
       T("nf-continue-section","Column","The section title sits above the in-progress titles.",[
         T("nf-continue-title","Text","Labels the row of shows the user has already started.",[],`const Text(
   'Continue Watching',
   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
-)`),
+)`, "Shows 'Continue Watching' in bold."),
         T("nf-continue-row","ListView","In-progress titles scroll sideways so the user can resume any of them.",[
-          T("nf-continue-card","Column","Poster, progress bar, and title info are stacked as one resumable title.",[
-            T("nf-continue-poster","Image","The poster reminds the user which show this progress belongs to.",[],`Image.network(show.posterUrl, fit: BoxFit.cover)`),
-            T("nf-continue-progress","LinearProgressIndicator","A thin red bar shows how much of the episode is already watched.",[],`const LinearProgressIndicator(
+          T("nf-continue-card-1","Column","Poster, progress bar, and title info are stacked as one resumable title.",[
+            T("nf-continue-poster-1","Image","The poster reminds the user which show this progress belongs to.",[],`Image.network(breakingBad.posterUrl, fit: BoxFit.cover)`, "The poster photo."),
+            T("nf-continue-progress-1","LinearProgressIndicator","A thin red bar shows how much of the episode is already watched.",[],`const LinearProgressIndicator(
   value: 0.62,
   backgroundColor: Colors.white24,
   valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
 )`, "Draws a thin horizontal bar showing a fraction of progress."),
-            T("nf-continue-info","Row","The title and remaining time share one line under the progress bar.",[
-              T("nf-continue-name","Text","Names the show being resumed.",[],`Text(show.title, style: const TextStyle(color: Colors.white, fontSize: 12))`),
-              T("nf-continue-time","Text","Shows how much of the episode is left to watch.",[],`const Text('32m left', style: TextStyle(color: Colors.white70, fontSize: 11))`)
-            ])
-          ])
+            T("nf-continue-info-1","Row","The title and remaining time share one line under the progress bar.",[
+              T("nf-continue-name-1","Text","Names the show being resumed.",[],`const Text('Breaking Bad', style: TextStyle(color: Colors.white, fontSize: 12))`, "Shows 'Breaking Bad'."),
+              T("nf-continue-time-1","Text","Shows how much of the episode is left to watch.",[],`const Text('32m left', style: TextStyle(color: Colors.white70, fontSize: 11))`, "Shows '32m left'.")
+            ], undefined, "Places 'Breaking Bad' and '32m left' side by side.")
+          ],`Column(
+  children: [
+    Image.network(breakingBad.posterUrl, fit: BoxFit.cover),
+    LinearProgressIndicator(value: 0.62),
+    Text('Breaking Bad', style: const TextStyle(color: Colors.white, fontSize: 12)),
+  ],
+)`, "Stacks a network photo, a progress bar and 'Breaking Bad' and '32m left' vertically."),
+          T("nf-continue-card-2","Column","Poster, progress bar, and title info are stacked as one resumable title.",[
+            T("nf-continue-poster-2","Image","The poster reminds the user which show this progress belongs to.",[],`Image.network(dark.posterUrl, fit: BoxFit.cover)`, "The poster photo."),
+            T("nf-continue-progress-2","LinearProgressIndicator","A thin red bar shows how much of the episode is already watched.",[],`const LinearProgressIndicator(
+  value: 0.35,
+  backgroundColor: Colors.white24,
+  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
+)`, "Draws a thin horizontal bar showing a fraction of progress."),
+            T("nf-continue-info-2","Row","The title and remaining time share one line under the progress bar.",[
+              T("nf-continue-name-2","Text","Names the show being resumed.",[],`const Text('Dark', style: TextStyle(color: Colors.white, fontSize: 12))`, "Shows 'Dark'."),
+              T("nf-continue-time-2","Text","Shows how much of the episode is left to watch.",[],`const Text('18m left', style: TextStyle(color: Colors.white70, fontSize: 11))`, "Shows '18m left'.")
+            ], undefined, "Places 'Dark' and '18m left' side by side.")
+          ],`Column(
+  children: [
+    Image.network(dark.posterUrl, fit: BoxFit.cover),
+    LinearProgressIndicator(value: 0.35),
+    Text('Dark', style: const TextStyle(color: Colors.white, fontSize: 12)),
+  ],
+)`, "Stacks a network photo, a progress bar and 'Dark' and '18m left' vertically.")
         ],`ListView.builder(
   scrollDirection: Axis.horizontal,
   itemCount: continueWatching.length,
   itemBuilder: (_, index) => ContinueCard(continueWatching[index]),
-)`)
-      ])
-    ]),
+)`, "A scrolling list of sections.")
+      ], undefined, "Stacks 'Continue Watching' and a scrolling list vertically.")
+    ], undefined, "A scrolling list of a stack, 'Trending Now' and a scrolling list and 'Top 10 TV Shows Today' and a scrolling list."),
     T("nf-bottom","BottomNavigationBar","Five primary destinations stay reachable at the bottom of every home visit.",[
       T("nf-nav-home","BottomNavigationBarItem","Takes the user to the home feed.",[],`const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home')`, "One destination inside a BottomNavigationBar, with its icon and label."),
       T("nf-nav-search","BottomNavigationBarItem","Takes the user to search and browse by genre.",[],`const BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search')`, "One destination inside a BottomNavigationBar, with its icon and label."),
@@ -2920,472 +3277,464 @@ TEARDOWNS.netflix.root = T("nf-material","MaterialApp","The Netflix home screen 
     BottomNavigationBarItem(icon: Icon(Icons.download), label: 'Downloads'),
     BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
   ],
-)`)
+)`, "The bottom tabs: Home, Search, Coming Soon, Downloads, More.")
   ],`Scaffold(
   appBar: const NetflixAppBar(),
   body: const NetflixHomeBody(),
   bottomNavigationBar: const NetflixBottomNav(),
-)`)
+)`, "Frames this screen: a top bar, a scrolling list and a bottom bar.")
 ],`MaterialApp(
   theme: ThemeData.dark().copyWith(
     scaffoldBackgroundColor: const Color(0xFF141414),
   ),
   home: const NetflixHome(),
-)`);
+)`, "The app shell for the Home screen.");
 
 TEARDOWNS.calculator.root = T("calc-material","MaterialApp","MaterialApp sits at the top of the app and gives every screen one theme, one navigation stack, and one Material look.",[
   T("calc-scaffold","Scaffold","Scaffold frames the single calculator screen, so the display takes the top half and the key grid stays docked at the bottom. Without it the display and the keys would be separate widgets with nothing keeping them aligned.",[
     T("calc-body","Column","The display stacks above the key grid, which is the vertical order every calculator follows: read the result on top, press keys below.",[
       T("calc-display","Expanded","The display takes all the vertical space the key grid does not need, so the expression has room to breathe on tall screens and the keys stay the same size.",[
         T("calc-display-col","Column","The previous entry, the live expression, and the result stack vertically and align to the right, so the eye reads the calculation top to bottom.",[
-          T("calc-history","Text","The small grey line shows the previous entry, so the user can see what was just calculated without it competing with the live expression.",[],`const Text('128 × 45', style: TextStyle(color: Colors.grey, fontSize: 16))`),
-          T("calc-display-fit","FittedBox","The display has a fixed width, but the expression keeps growing as the user types. FittedBox with BoxFit.scaleDown shrinks the whole expression so the full calculation stays visible instead of clipping off the edge. That shrinking is exactly why the calculator is the home for FittedBox: no other app on this list has text that must fit a fixed box.",[
-            T("calc-display-text","Text","The live expression is the largest text on screen, so it reads at a glance while typing.",[],`const Text('128 × 45 + 3,592 − 128 ÷ 4', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w300))`)
+          T("calc-history","Text","The small grey line shows the previous entry, so the user can see what was just calculated without it competing with the live expression.",[],`const Text('128 × 45', style: TextStyle(color: Colors.grey, fontSize: 16))`, "Shows '128 × 45'."),
+          T("calc-display-fit","FittedBox","The display has a fixed width, but the expression keeps growing as the user types. FittedBox with BoxFit.scaleDown shrinks the whole expression so the full calculation stays visible instead of clipping off the edge.",[
+            T("calc-display-text","Text","The live expression is the largest text on screen, so it reads at a glance while typing.",[],`const Text('128 × 45 + 3,592 − 128 ÷ 4', style: TextStyle(fontSize: 48, fontWeight: FontWeight.w300))`, "Shows '128 × 45 + 3,592 − 128 ÷ 4'.")
           ],`FittedBox(\n  fit: BoxFit.scaleDown,\n  alignment: Alignment.centerRight,\n  child: const Text('128 × 45 + 3,592 − 128 ÷ 4', style: TextStyle(fontSize: 48)),\n)`, "Scales its child up or down so it fits the available box."),
-          T("calc-result","Text","The result sits under the expression in the brand blue, so the answer is unmistakable once equals is pressed.",[],`const Text('= 9,320', style: TextStyle(color: Color(0xFF1A73E8), fontSize: 28, fontWeight: FontWeight.w500))`)
-        ])
-      ]),
-      T("calc-keys","GridView","The 20 keys are laid out in 4 columns by a grid, so every key is the same size and the pad fills the width exactly. Taught in depth in Spotify — Home grids; here it is the key pad, not a content feed.",[
-        T("calc-key-ac","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player, where the same widget forces the 16:9 player; here it forces square keys.",[
+          T("calc-result","Text","The result sits under the expression in the brand blue, so the answer is unmistakable once equals is pressed.",[],`const Text('= 9,320', style: TextStyle(color: Color(0xFF1A73E8), fontSize: 28, fontWeight: FontWeight.w500))`, "Shows '= 9,320'.")
+        ], undefined, "Stacks '128 × 45', a fitted box and '= 9,320' vertically.")
+      ], undefined, "Lets '128 × 45' and a fitted box take the remaining space."),
+      T("calc-keys","GridView","The 20 keys are laid out in 4 columns by a grid, so every key is the same size and the pad fills the width exactly.",[
+        T("calc-key-ac","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-ac","ElevatedButton","AC clears the whole calculation and resets the display to zero.",[
-            T("calc-keytext-ac","Text","The 'AC' label names the clear-all action.",[],`const Text('AC', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: clearAll,\n  child: const Text('AC'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-ac","Text","The 'AC' label names the clear-all action.",[],`const Text('AC', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`, "Shows 'AC'.")
+          ],`ElevatedButton(\n  onPressed: clearAll,\n  child: const Text('AC'),\n)`,"A filled 'AC' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-lparen","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-lparen","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-lparen","ElevatedButton","The opening bracket starts a grouped part of the calculation, so what is inside it is worked out first.",[
-            T("calc-keytext-lparen","Text","The '(' label marks the open-bracket key.",[],`const Text('(', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: () => append('('),\n  child: const Text('('),\n)`, "A filled button with elevation.")
+            T("calc-keytext-lparen","Text","The '(' label marks the open-bracket key.",[],`const Text('(', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`, "Shows '('.")
+          ],`ElevatedButton(\n  onPressed: () => append('('),\n  child: const Text('('),\n)`,"A filled '(' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-rparen","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-rparen","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-rparen","ElevatedButton","The closing bracket ends the grouped part of the calculation.",[
-            T("calc-keytext-rparen","Text","The ')' label marks the close-bracket key.",[],`const Text(')', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: () => append(')'),\n  child: const Text(')'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-rparen","Text","The ')' label marks the close-bracket key.",[],`const Text(')', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`, "Shows ')'.")
+          ],`ElevatedButton(\n  onPressed: () => append(')'),\n  child: const Text(')'),\n)`,"A filled ')' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-div","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-div","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-div","ElevatedButton","Divide is one of the four operators, shown in the brand blue so operators stand apart from the digits.",[
-            T("calc-keytext-div","Text","The '÷' label marks the divide key.",[],`const Text('÷', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: () => append('÷'),\n  child: const Text('÷'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-div","Text","The '÷' label marks the divide key.",[],`const Text('÷', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`, "Shows '÷'.")
+          ],`ElevatedButton(\n  onPressed: () => append('÷'),\n  child: const Text('÷'),\n)`,"A filled '÷' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-7","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-7","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-7","ElevatedButton","Tapping 7 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-7","Text","The '7' label is the digit itself.",[],`const Text('7', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('7'),\n  child: const Text('7'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-7","Text","The '7' label is the digit itself.",[],`const Text('7', style: TextStyle(fontSize: 22))`, "Shows '7'.")
+          ],`ElevatedButton(\n  onPressed: () => append('7'),\n  child: const Text('7'),\n)`,"A filled '7' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-8","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-8","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-8","ElevatedButton","Tapping 8 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-8","Text","The '8' label is the digit itself.",[],`const Text('8', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('8'),\n  child: const Text('8'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-8","Text","The '8' label is the digit itself.",[],`const Text('8', style: TextStyle(fontSize: 22))`, "Shows '8'.")
+          ],`ElevatedButton(\n  onPressed: () => append('8'),\n  child: const Text('8'),\n)`,"A filled '8' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-9","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-9","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-9","ElevatedButton","Tapping 9 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-9","Text","The '9' label is the digit itself.",[],`const Text('9', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('9'),\n  child: const Text('9'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-9","Text","The '9' label is the digit itself.",[],`const Text('9', style: TextStyle(fontSize: 22))`, "Shows '9'.")
+          ],`ElevatedButton(\n  onPressed: () => append('9'),\n  child: const Text('9'),\n)`,"A filled '9' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-mul","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-mul","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-mul","ElevatedButton","Multiply is one of the four operators, shown in the brand blue so operators stand apart from the digits.",[
-            T("calc-keytext-mul","Text","The '×' label marks the multiply key.",[],`const Text('×', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: () => append('×'),\n  child: const Text('×'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-mul","Text","The '×' label marks the multiply key.",[],`const Text('×', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`, "Shows '×'.")
+          ],`ElevatedButton(\n  onPressed: () => append('×'),\n  child: const Text('×'),\n)`,"A filled '×' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-4","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-4","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-4","ElevatedButton","Tapping 4 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-4","Text","The '4' label is the digit itself.",[],`const Text('4', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('4'),\n  child: const Text('4'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-4","Text","The '4' label is the digit itself.",[],`const Text('4', style: TextStyle(fontSize: 22))`, "Shows '4'.")
+          ],`ElevatedButton(\n  onPressed: () => append('4'),\n  child: const Text('4'),\n)`,"A filled '4' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-5","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-5","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-5","ElevatedButton","Tapping 5 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-5","Text","The '5' label is the digit itself.",[],`const Text('5', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('5'),\n  child: const Text('5'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-5","Text","The '5' label is the digit itself.",[],`const Text('5', style: TextStyle(fontSize: 22))`, "Shows '5'.")
+          ],`ElevatedButton(\n  onPressed: () => append('5'),\n  child: const Text('5'),\n)`,"A filled '5' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-6","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-6","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-6","ElevatedButton","Tapping 6 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-6","Text","The '6' label is the digit itself.",[],`const Text('6', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('6'),\n  child: const Text('6'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-6","Text","The '6' label is the digit itself.",[],`const Text('6', style: TextStyle(fontSize: 22))`, "Shows '6'.")
+          ],`ElevatedButton(\n  onPressed: () => append('6'),\n  child: const Text('6'),\n)`,"A filled '6' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-sub","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-sub","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-sub","ElevatedButton","Subtract is one of the four operators, shown in the brand blue so operators stand apart from the digits.",[
-            T("calc-keytext-sub","Text","The '−' label marks the subtract key.",[],`const Text('−', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: () => append('−'),\n  child: const Text('−'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-sub","Text","The '−' label marks the subtract key.",[],`const Text('−', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`, "Shows '−'.")
+          ],`ElevatedButton(\n  onPressed: () => append('−'),\n  child: const Text('−'),\n)`,"A filled '−' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-1","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-1","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-1","ElevatedButton","Tapping 1 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-1","Text","The '1' label is the digit itself.",[],`const Text('1', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('1'),\n  child: const Text('1'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-1","Text","The '1' label is the digit itself.",[],`const Text('1', style: TextStyle(fontSize: 22))`, "Shows '1'.")
+          ],`ElevatedButton(\n  onPressed: () => append('1'),\n  child: const Text('1'),\n)`,"A filled '1' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-2","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-2","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-2","ElevatedButton","Tapping 2 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-2","Text","The '2' label is the digit itself.",[],`const Text('2', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('2'),\n  child: const Text('2'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-2","Text","The '2' label is the digit itself.",[],`const Text('2', style: TextStyle(fontSize: 22))`, "Shows '2'.")
+          ],`ElevatedButton(\n  onPressed: () => append('2'),\n  child: const Text('2'),\n)`,"A filled '2' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-3","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-3","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-3","ElevatedButton","Tapping 3 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-3","Text","The '3' label is the digit itself.",[],`const Text('3', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('3'),\n  child: const Text('3'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-3","Text","The '3' label is the digit itself.",[],`const Text('3', style: TextStyle(fontSize: 22))`, "Shows '3'.")
+          ],`ElevatedButton(\n  onPressed: () => append('3'),\n  child: const Text('3'),\n)`,"A filled '3' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-add","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-add","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-add","ElevatedButton","Add is one of the four operators, shown in the brand blue so operators stand apart from the digits.",[
-            T("calc-keytext-add","Text","The '+' label marks the add key.",[],`const Text('+', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`)
-          ],`ElevatedButton(\n  onPressed: () => append('+'),\n  child: const Text('+'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-add","Text","The '+' label marks the add key.",[],`const Text('+', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500))`, "Shows '+'.")
+          ],`ElevatedButton(\n  onPressed: () => append('+'),\n  child: const Text('+'),\n)`,"A filled '+' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-0","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-0","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-0","ElevatedButton","Tapping 0 appends the digit to the current entry, building the number the user is typing.",[
-            T("calc-keytext-0","Text","The '0' label is the digit itself.",[],`const Text('0', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('0'),\n  child: const Text('0'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-0","Text","The '0' label is the digit itself.",[],`const Text('0', style: TextStyle(fontSize: 22))`, "Shows '0'.")
+          ],`ElevatedButton(\n  onPressed: () => append('0'),\n  child: const Text('0'),\n)`,"A filled '0' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-dot","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-dot","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-dot","ElevatedButton","The decimal point lets the user type fractions, so 3.5 is entered as 3, point, 5.",[
-            T("calc-keytext-dot","Text","The '.' label marks the decimal-point key.",[],`const Text('.', style: TextStyle(fontSize: 22))`)
-          ],`ElevatedButton(\n  onPressed: () => append('.'),\n  child: const Text('.'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-dot","Text","The '.' label marks the decimal-point key.",[],`const Text('.', style: TextStyle(fontSize: 22))`, "Shows '.'.")
+          ],`ElevatedButton(\n  onPressed: () => append('.'),\n  child: const Text('.'),\n)`,"A filled '.' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-del","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-del","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-del","ElevatedButton","Backspace deletes the last character typed, so a wrong digit can be fixed without clearing the whole calculation.",[
-            T("calc-keytext-del","Text","The '⌫' label marks the backspace key.",[],`const Text('⌫', style: TextStyle(fontSize: 18))`)
-          ],`ElevatedButton(\n  onPressed: backspace,\n  child: const Text('⌫'),\n)`, "A filled button with elevation.")
+            T("calc-keytext-del","Text","The '⌫' label marks the backspace key.",[],`const Text('⌫', style: TextStyle(fontSize: 18))`, "Shows '⌫'.")
+          ],`ElevatedButton(\n  onPressed: backspace,\n  child: const Text('⌫'),\n)`,"A filled '⌫' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square."),
-        T("calc-key-eq","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1. Taught in depth in YouTube — Video player; here it forces square keys.",[
+        T("calc-key-eq","AspectRatio","Every key must stay square no matter the screen width, so each key is wrapped in an AspectRatio of 1:1.",[
           T("calc-keybtn-eq","ElevatedButton","Equals works the calculation out and shows the answer in the display, in solid brand blue because it is the one action every calculation ends with.",[
-            T("calc-keytext-eq","Text","The '=' label marks the equals key.",[],`const Text('=', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600))`)
-          ],`ElevatedButton(\n  onPressed: calculate,\n  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1A73E8)),\n  child: const Text('='),\n)`, "A filled button with elevation.")
+            T("calc-keytext-eq","Text","The '=' label marks the equals key.",[],`const Text('=', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600))`, "Shows '='.")
+          ],`ElevatedButton(\n  onPressed: calculate,\n  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF1A73E8)),\n  child: const Text('='),\n)`,"A filled '=' button.")
         ],`const AspectRatio(aspectRatio: 1, child: KeyButton())`, "Taught in depth in YouTube — Video player (16:9); here it forces each key into a 1:1 square.")
       ],`GridView.builder(\n  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(\n    crossAxisCount: 4,\n    crossAxisSpacing: 8,\n    mainAxisSpacing: 8,\n  ),\n  itemCount: keys.length,\n  itemBuilder: (_, index) => CalculatorKey(keys[index]),\n)`, "Taught in depth in Spotify — Home grids; here it lays the 20 calculator keys out in 4 columns.")
-    ])
-  ],`Scaffold(\n  body: const CalculatorBody(),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFF1A73E8)),\n  home: const CalculatorScreen(),\n)`);
+    ], undefined, "Stacks '128 × 45' and a fitted box and a grid vertically.")
+  ],`Scaffold(\n  body: const CalculatorBody(),\n)`, "Frames this screen: scrolling content.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFF1A73E8)),\n  home: const CalculatorScreen(),\n)`, "The app shell for the Main pad screen.");
 
 TEARDOWNS.notes.root = T("nt-material","MaterialApp","MaterialApp sits at the top of the app and gives every screen one theme, one navigation stack, and one Material look.",[
-  T("nt-scaffold","Scaffold","Scaffold frames the Keep home screen: the search bar and note grid fill the body, the BottomAppBar and NavigationBar stack at the bottom, and the + button docks into the bottom bar's notch. Without it each of those bars would need its own positioning; with it Flutter knows exactly which slot each piece belongs to.",[
+  T("nt-scaffold","Scaffold","The search bar and note grid fill the body, the BottomAppBar and NavigationBar stack at the bottom, and the + button docks into the bottom bar's notch.",[
     T("nt-body","Column","The search bar stacks above the note grid, so finding a note comes before browsing them.",[
-      T("nt-search","SearchBar","The search bar is the first thing on the screen because Keep is searched far more than it is browsed: one tap here searches every note's title and body at once. Taught in depth in YouTube — Search, where the same widget carries a field plus suggestions; here it is the single search entry over the note grid.",[
-        T("nt-search-menu","Icon","The hamburger opens the navigation drawer with labels, archive, and trash.",[],`const Icon(Icons.menu)`),
-        T("nt-search-hint","Text","The hint tells the user this bar searches notes, not the web.",[],`const Text('Search your notes', style: TextStyle(color: Colors.grey))`),
-        T("nt-search-avatar","CircleAvatar","The signed-in user's photo sits at the end of the search bar, so account and settings are one tap away from the home screen.",[],`const CircleAvatar(radius: 14, backgroundImage: AssetImage('avatar.png'))`)
+      T("nt-search","SearchBar","Keep is searched far more than it is browsed: one tap here searches every note's title and body at once.",[
+        T("nt-search-menu","Icon","The hamburger opens the navigation drawer with labels, archive, and trash.",[],`const Icon(Icons.menu)`, "Shows the menu icon in Notes."),
+        T("nt-search-hint","Text","The hint tells the user this bar searches notes, not the web.",[],`const Text('Search your notes', style: TextStyle(color: Colors.grey))`, "Shows 'Search your notes'."),
+        T("nt-search-avatar","CircleAvatar","The signed-in user's photo sits at the end of the search bar, so account and settings are one tap away from the home screen.",[],`const CircleAvatar(radius: 14, backgroundImage: AssetImage('avatar.png'))`, "A circular photo avatar in Notes.")
       ],`SearchBar(\n  hintText: 'Search your notes',\n  leading: const Icon(Icons.menu),\n  trailing: [const CircleAvatar(radius: 14, child: Text('DK'))],\n)`, "Taught in depth in YouTube — Search (field + suggestions); here it is the single search entry over the note grid."),
       T("nt-notes-expanded","Expanded","The note grid takes all the space below the search bar, so the notes fill the screen instead of leaving empty space.",[
-        T("nt-notes-grid","GridView","The notes are laid out in a two-column grid, so short and tall cards sit side by side like a pinboard instead of one long list. Taught in depth in Spotify — Home grids; here it is the masonry-style note board.",[
-          T("nt-note-1","InkWell","A note card has no button inside it — the whole card is the tap target. InkWell wraps the card so a tap anywhere on it opens the note, and the ripple spreading from the touch point tells the user the tap registered. That ripple is the difference from GestureDetector, which detects the tap silently: Keep's cards feel alive because the ink answers every touch.",[
+        T("nt-notes-grid","GridView","The notes sit in a two-column grid, so short and tall cards sit side by side like a pinboard instead of one long list.",[
+          T("nt-note-1","InkWell","A note card has no button inside it — the whole card is the tap target. InkWell wraps the card so a tap anywhere opens the note, and the ripple spreading from the touch point tells the user the tap registered.",[
             T("nt-card-1","Card","Card lifts the note onto its own Material surface, so each note reads as one distinct sheet on the pinboard.",[
               T("nt-card-1-col","Column","Title, body, and label stack vertically, so the note reads top to bottom.",[
-                T("nt-note-1-title","Text","The title names the note at a glance in the grid.",[],`const Text('Flutter ideas', style: TextStyle(fontWeight: FontWeight.w600))`),
-                T("nt-note-1-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('Teardown picker: search by widget name, not by app.', style: TextStyle(fontSize: 12))`),
+                T("nt-note-1-title","Text","The title names the note at a glance in the grid.",[],`const Text('Flutter ideas', style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Flutter ideas'."),
+                T("nt-note-1-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('Teardown picker: search by widget name, not by app.', style: TextStyle(fontSize: 12))`, "Shows 'Teardown picker: search by widget name, not by…'."),
                 T("nt-note-1-labels","Row","Labels sit in one horizontal row under the body, so a note can carry several tags without growing taller.",[
                   T("nt-note-1-chip","Chip","The 'Ideas' label groups this note with every other idea note, and tapping it filters the grid to that label. Taught in depth in YouTube — Home feed chips; here it is a note label.",[],`const Chip(label: Text('Ideas'))`, "A compact, tappable label that filters a list by one topic.")
-                ])
-              ])
-            ])
+                ], undefined, "Places a chip side by side.")
+              ], undefined, "Stacks 'Flutter ideas', 'Teardown picker: search by…' and a chip vertically.")
+            ], undefined, "Groups 'Flutter ideas', 'Teardown picker: search by…' and a chip on one card.")
           ],`InkWell(\n  onTap: openNote,\n  borderRadius: BorderRadius.circular(12),\n  child: const NoteCard(),\n)`, "A tappable area that paints the Material ripple over its child when pressed."),
           T("nt-note-2","InkWell","A note card has no button inside it — the whole card is the tap target, and InkWell's ripple is what confirms the tap. Tapping this card opens the shopping list for editing.",[
             T("nt-card-2","Card","Card lifts the note onto its own Material surface, so each note reads as one distinct sheet on the pinboard.",[
               T("nt-card-2-col","Column","Title and body stack vertically, so the note reads top to bottom.",[
-                T("nt-note-2-title","Text","The title names the note at a glance in the grid.",[],`const Text('Shopping list', style: TextStyle(fontWeight: FontWeight.w600))`),
-                T("nt-note-2-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('Milk · Eggs · Bread · Coffee', style: TextStyle(fontSize: 12))`)
-              ])
-            ])
+                T("nt-note-2-title","Text","The title names the note at a glance in the grid.",[],`const Text('Shopping list', style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Shopping list'."),
+                T("nt-note-2-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('Milk · Eggs · Bread · Coffee', style: TextStyle(fontSize: 12))`, "Shows 'Milk · Eggs · Bread · Coffee'.")
+              ], undefined, "Stacks 'Shopping list' and 'Milk · Eggs · Bread · Coffee' vertically.")
+            ], undefined, "Groups 'Shopping list' and 'Milk · Eggs · Bread · Coffee' on one card.")
           ],`InkWell(\n  onTap: openNote,\n  borderRadius: BorderRadius.circular(12),\n  child: const NoteCard(),\n)`, "A tappable area that paints the Material ripple over its child when pressed."),
           T("nt-note-3","InkWell","A note card has no button inside it — the whole card is the tap target, and InkWell's ripple is what confirms the tap. Tapping this card opens the meeting notes for editing.",[
             T("nt-card-3","Card","Card lifts the note onto its own Material surface, so each note reads as one distinct sheet on the pinboard.",[
               T("nt-card-3-col","Column","Title and body stack vertically, so the note reads top to bottom.",[
-                T("nt-note-3-title","Text","The title names the note at a glance in the grid.",[],`const Text('Meeting notes', style: TextStyle(fontWeight: FontWeight.w600))`),
-                T("nt-note-3-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('Ship the 40-lesson course first. Certificates come last.', style: TextStyle(fontSize: 12))`)
-              ])
-            ])
+                T("nt-note-3-title","Text","The title names the note at a glance in the grid.",[],`const Text('Meeting notes', style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Meeting notes'."),
+                T("nt-note-3-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('Ship the 40-lesson course first. Certificates come last.', style: TextStyle(fontSize: 12))`, "Shows 'Ship the 40-lesson course first. Certificates…'.")
+              ], undefined, "Stacks 'Meeting notes' and 'Ship the 40-lesson course…' vertically.")
+            ], undefined, "Groups 'Meeting notes' and 'Ship the 40-lesson course…' on one card.")
           ],`InkWell(\n  onTap: openNote,\n  borderRadius: BorderRadius.circular(12),\n  child: const NoteCard(),\n)`, "A tappable area that paints the Material ripple over its child when pressed."),
           T("nt-note-4","InkWell","A note card has no button inside it — the whole card is the tap target, and InkWell's ripple is what confirms the tap. Tapping this card opens the reading list for editing.",[
             T("nt-card-4","Card","Card lifts the note onto its own Material surface, so each note reads as one distinct sheet on the pinboard.",[
               T("nt-card-4-col","Column","Title and body stack vertically, so the note reads top to bottom.",[
-                T("nt-note-4-title","Text","The title names the note at a glance in the grid.",[],`const Text('Book to read', style: TextStyle(fontWeight: FontWeight.w600))`),
-                T("nt-note-4-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('The Design of Everyday Things — ch. 1–3', style: TextStyle(fontSize: 12))`)
-              ])
-            ])
+                T("nt-note-4-title","Text","The title names the note at a glance in the grid.",[],`const Text('Book to read', style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Book to read'."),
+                T("nt-note-4-body","Text","The body carries the note's content in a smaller, quieter style than the title.",[],`const Text('The Design of Everyday Things — ch. 1–3', style: TextStyle(fontSize: 12))`, "Shows 'The Design of Everyday Things — ch. 1–3'.")
+              ], undefined, "Stacks 'Book to read' and 'The Design of Everyday…' vertically.")
+            ], undefined, "Groups 'Book to read' and 'The Design of Everyday…' on one card.")
           ],`InkWell(\n  onTap: openNote,\n  borderRadius: BorderRadius.circular(12),\n  child: const NoteCard(),\n)`, "A tappable area that paints the Material ripple over its child when pressed.")
         ],`GridView.builder(\n  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(\n    crossAxisCount: 2,\n    crossAxisSpacing: 8,\n    mainAxisSpacing: 8,\n  ),\n  itemCount: notes.length,\n  itemBuilder: (_, index) => NoteCard(notes[index]),\n)`, "Taught in depth in Spotify — Home grids; here it is the two-column note board.")
-      ])
-    ]),
-    T("nt-bottom","BottomAppBar","Keep's create actions — checklist, drawing, audio note, photo note — live in a BottomAppBar pinned to the bottom of the screen, so starting any kind of note is always one tap away. The bar's CircularNotchedRectangle shape cuts a semicircular notch out of its top edge, and the + button docks into that notch instead of floating over the notes. That notch is the whole point of BottomAppBar: a plain Container bar could hold the icons, but only BottomAppBar makes room for the FAB.",[
-      T("nt-act-check","IconButton","Starts a new checklist note, with one tappable line per item.",[],`IconButton(onPressed: newChecklist, icon: const Icon(Icons.check_box_outlined))`),
-      T("nt-act-draw","IconButton","Starts a new drawing note on a blank canvas.",[],`IconButton(onPressed: newDrawing, icon: const Icon(Icons.brush_outlined))`),
-      T("nt-act-mic","IconButton","Starts a new audio note that records and transcribes.",[],`IconButton(onPressed: newAudioNote, icon: const Icon(Icons.mic_outlined))`),
-      T("nt-act-image","IconButton","Starts a new photo note from the camera or gallery.",[],`IconButton(onPressed: newPhotoNote, icon: const Icon(Icons.image_outlined))`)
+      ], undefined, "Lets a grid take the remaining space.")
+    ], undefined, "Stacks a search field and a grid vertically."),
+    T("nt-bottom","BottomAppBar","Keep's create actions — checklist, drawing, audio note, photo note — live here, pinned to the bottom, so starting any note is one tap away. Its notch cuts room for the + button to dock into.",[
+      T("nt-act-check","IconButton","Starts a new checklist note, with one tappable line per item.",[],`IconButton(onPressed: newChecklist, icon: const Icon(Icons.check_box_outlined))`, "The check box button in Notes."),
+      T("nt-act-draw","IconButton","Starts a new drawing note on a blank canvas.",[],`IconButton(onPressed: newDrawing, icon: const Icon(Icons.brush_outlined))`, "The brush button in Notes."),
+      T("nt-act-mic","IconButton","Starts a new audio note that records and transcribes.",[],`IconButton(onPressed: newAudioNote, icon: const Icon(Icons.mic_outlined))`, "The microphone button in Notes."),
+      T("nt-act-image","IconButton","Starts a new photo note from the camera or gallery.",[],`IconButton(onPressed: newPhotoNote, icon: const Icon(Icons.image_outlined))`, "The image button in Notes.")
     ],`BottomAppBar(\n  shape: const CircularNotchedRectangle(),\n  child: Row(\n    children: [\n      IconButton(onPressed: newChecklist, icon: const Icon(Icons.check_box_outlined)),\n      IconButton(onPressed: newDrawing, icon: const Icon(Icons.brush_outlined)),\n      IconButton(onPressed: newAudioNote, icon: const Icon(Icons.mic_outlined)),\n      IconButton(onPressed: newPhotoNote, icon: const Icon(Icons.image_outlined)),\n    ],\n  ),\n)`, "A bottom bar that holds actions and can cut a notch for a docked floating action button."),
-    T("nt-nav","NavigationBar","NavigationBar is the Material 3 successor to BottomNavigationBar: instead of a fixed bar with a coloured label, the selected destination gets a pill-shaped indicator behind its icon, the labels stay visible, and the bar follows the M3 colour scheme. Keep uses it for its two top-level destinations, Notes and Reminders, because two destinations with a clear selected pill read better than the older bottom bar — and that pill is the visible difference to look for.",[
+    T("nt-nav","NavigationBar","The Material 3 successor to BottomNavigationBar: the selected destination gets a pill-shaped indicator behind its icon, and the labels stay visible. Keep uses it for Notes and Reminders.",[
       T("nt-nav-notes","NavigationDestination","Notes is the selected destination, so its pill indicator shows where the user is.",[],`const NavigationDestination(icon: Icon(Icons.lightbulb_outline), selectedIcon: Icon(Icons.lightbulb), label: 'Notes')`, "One destination inside a NavigationBar, with an icon and a label."),
       T("nt-nav-reminders","NavigationDestination","Reminders opens the time- and place-based reminders list, a separate view from the notes grid.",[],`const NavigationDestination(icon: Icon(Icons.notifications_outlined), selectedIcon: Icon(Icons.notifications), label: 'Reminders')`, "One destination inside a NavigationBar, with an icon and a label.")
     ],`NavigationBar(\n  selectedIndex: 0,\n  onDestinationSelected: switchTab,\n  destinations: const [\n    NavigationDestination(icon: Icon(Icons.lightbulb_outline), label: 'Notes'),\n    NavigationDestination(icon: Icon(Icons.notifications_outlined), label: 'Reminders'),\n  ],\n)`, "Material 3's bottom navigation: destinations with a pill indicator on the selected one."),
-    T("nt-fab","FloatingActionButton","The + button is the fastest way to start a note, so it floats above the content instead of hiding in a menu. Taught in depth in Gmail — Inbox compose button; here it docks into the BottomAppBar's notch to create a new note.",[
-      T("nt-fab-icon","Icon","The plus mark is the universal sign for 'create something new'.",[],`const Icon(Icons.add)`)
+    T("nt-fab","FloatingActionButton","The + button is the fastest way to start a note, so it floats above the content instead of hiding in a menu — and it docks into the BottomAppBar's notch.",[
+      T("nt-fab-icon","Icon","The plus mark is the universal sign for 'create something new'.",[],`const Icon(Icons.add)`, "Shows the add icon in Notes.")
     ],`FloatingActionButton(\n  onPressed: createNote,\n  child: const Icon(Icons.add),\n)`, "Taught in depth in Gmail — Inbox compose button; here it docks into the BottomAppBar's notch to create a new note.")
-  ],`Scaffold(\n  body: const NotesHomeBody(),\n  floatingActionButton: const CreateNoteButton(),\n  floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,\n  bottomNavigationBar: const Column(\n    mainAxisSize: MainAxisSize.min,\n    children: [NotesBottomAppBar(), NotesNavigationBar()],\n  ),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFbbc04)),\n  home: const NotesHome(),\n)`);
+  ],`Scaffold(\n  body: const NotesHomeBody(),\n  floatingActionButton: const CreateNoteButton(),\n  floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,\n  bottomNavigationBar: const Column(\n    mainAxisSize: MainAxisSize.min,\n    children: [NotesBottomAppBar(), NotesNavigationBar()],\n  ),\n)`, "Frames this screen: scrolling content, a bottom bar and a floating button.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFbbc04)),\n  home: const NotesHome(),\n)`, "The app shell for the Home screen.");
 
 TEARDOWNS.tasks.root = T("tk-material","MaterialApp","MaterialApp sits at the top of the app and gives every screen one theme, one navigation stack, and one Material look.",[
-  T("tk-scaffold","Scaffold","Scaffold frames the task list screen: the AppBar stays on top, the reorderable list fills the middle, and the add-task field stays docked at the bottom. Without it the list and the input would be separate widgets with nothing keeping them aligned.",[
+  T("tk-scaffold","Scaffold","Scaffold frames this screen: the AppBar stays on top, the reorderable list fills the middle, and the add-task field stays docked at the bottom. Without it the list and the input would be separate, unaligned widgets.",[
     T("tk-appbar","AppBar","The top bar stays pinned above the list, so the list name, sort, and menu are always one tap away while tasks scroll underneath.",[
-      T("tk-menu","IconButton","Opens the list switcher, so the user can jump between their Personal, College, and Work lists.",[],`IconButton(onPressed: openListSwitcher, icon: const Icon(Icons.menu))`),
-      T("tk-title","Text","The title names the active list, so the user always knows which list these tasks belong to.",[],`const Text('My Tasks', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`),
-      T("tk-sort","IconButton","Sorts the list by date or by the user's own order.",[],`IconButton(onPressed: sortTasks, icon: const Icon(Icons.sort))`),
-      T("tk-more","IconButton","The three-dot menu hides secondary actions like renaming or deleting the whole list.",[],`IconButton(onPressed: showListMenu, icon: const Icon(Icons.more_vert))`)
-    ],`AppBar(\n  leading: const IconButton(icon: Icon(Icons.menu), onPressed: openListSwitcher),\n  title: const Text('My Tasks'),\n  actions: const [SortButton(), ListMenuButton()],\n)`),
+      T("tk-menu","IconButton","Opens the list switcher, so the user can jump between their Personal, College, and Work lists.",[],`IconButton(onPressed: openListSwitcher, icon: const Icon(Icons.menu))`, "The menu button in Tasks."),
+      T("tk-title","Text","The title names the active list, so the user always knows which list these tasks belong to.",[],`const Text('My Tasks', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500))`, "Shows 'My Tasks'."),
+      T("tk-sort","IconButton","Sorts the list by date or by the user's own order.",[],`IconButton(onPressed: sortTasks, icon: const Icon(Icons.sort))`, "The sort button in Tasks."),
+      T("tk-more","IconButton","The three-dot menu hides secondary actions like renaming or deleting the whole list.",[],`IconButton(onPressed: showListMenu, icon: const Icon(Icons.more_vert))`, "The more options button in Tasks.")
+    ],`AppBar(\n  leading: const IconButton(icon: Icon(Icons.menu), onPressed: openListSwitcher),\n  title: const Text('My Tasks'),\n  actions: const [SortButton(), ListMenuButton()],\n)`, "The top bar: 'My Tasks' with 3 actions."),
     T("tk-body","Column","The task list expands while the add-task field stays at the bottom, so typing a new task never scrolls away.",[
       T("tk-list-expanded","Expanded","The list takes every pixel not used by the add field, so tasks fill the screen.",[
-        T("tk-list","ReorderableListView","The tasks are a list the user drags to reorder: grabbing a row's handle and dropping it higher moves that task up the priority order, and the list rebuilds in the new order. Taught in depth in Spotify — Playlist, where songs are dragged into a new play order; here the same drag re-prioritises tasks.",[
-          T("tk-task-1","Dismissible","Swiping this row sideways deletes the task, and the SnackBar at the bottom offers Undo before the delete becomes permanent. Taught in depth in Gmail — Inbox swipe to archive; here a swipe deletes the task.",[
+        T("tk-list","ReorderableListView","Grabbing a row's handle and dropping it higher moves that task up the priority order, and the list rebuilds in the new order.",[
+          T("tk-task-1","Dismissible","Swiping this row sideways deletes the task, and the SnackBar at the bottom offers Undo before the delete becomes permanent.",[
             T("tk-row-1","Row","The checkbox, the task text, and the drag handle share one horizontal line, so each task reads as one row.",[
-              T("tk-check-1","Checkbox","This is the canonical Checkbox: a real, tappable, state-changing tick box. Tapping it marks the task done, the row rebuilds with a strikethrough, and the task moves to the Completed section — the checkbox is not decoration, it is the control that changes the task's state. That is why Tasks, not a settings toggle or a sign-up form, is the home for Checkbox.",[
+              T("tk-check-1","Checkbox","Tapping it marks the task done, the row rebuilds with a strikethrough, and the task moves to the Completed section — the checkbox is not decoration, it is the control that changes the task's state.",[
               ],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => task.done = value!),\n)`, "A square tick box the user taps to switch a boolean value on or off."),
               T("tk-task-1-col","Column","The task title sits above its date and list, so the eye reads what is due before when it is due.",[
-                T("tk-task-1-title","Text","The title names the task in one line.",[],`const Text('Buy Flutter course notes', style: TextStyle(fontSize: 15))`),
-                T("tk-task-1-meta","Text","The date and list tell the user when it is due and which list it belongs to.",[],`const Text('Today • Personal', style: TextStyle(fontSize: 12, color: Colors.grey))`)
-              ]),
-              T("tk-drag-1","Icon","The two rows of dots are the drag handle: grabbing here, not on the text, starts the reorder drag.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`)
-            ])
+                T("tk-task-1-title","Text","The title names the task in one line.",[],`const Text('Buy Flutter course notes', style: TextStyle(fontSize: 15))`, "Shows 'Buy Flutter course notes'."),
+                T("tk-task-1-meta","Text","The date and list tell the user when it is due and which list it belongs to.",[],`const Text('Today • Personal', style: TextStyle(fontSize: 12, color: Colors.grey))`, "Shows 'Today • Personal'.")
+              ], undefined, "Stacks 'Buy Flutter course notes' and 'Today • Personal' vertically."),
+              T("tk-drag-1","Icon","The two rows of dots are the drag handle: grabbing here, not on the text, starts the reorder drag.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Tasks.")
+            ], undefined, "Places a tick box, 'Buy Flutter course notes' and 'Today • Personal' and the drag handle icon side by side.")
           ],`Dismissible(\n  key: Key(task.id),\n  background: Container(color: Colors.red, alignment: Alignment.centerLeft, child: const Icon(Icons.delete, color: Colors.white)),\n  onDismissed: (_) => deleteTask(task),\n  child: const TaskRow(),\n)`, "Taught in depth in Gmail — Inbox swipe to archive; here a swipe deletes the task and the SnackBar offers Undo."),
-          T("tk-task-2","Dismissible","Swiping this row sideways deletes the task, and the SnackBar at the bottom offers Undo before the delete becomes permanent. Taught in depth in Gmail — Inbox swipe to archive; here a swipe deletes the task.",[
+          T("tk-task-2","Dismissible","Swiping this row sideways deletes the task, and the SnackBar at the bottom offers Undo before the delete becomes permanent.",[
             T("tk-row-2","Row","The checkbox, the task text, and the drag handle share one horizontal line, so each task reads as one row.",[
               T("tk-check-2","Checkbox","Tapping this checkbox marks the assignment done and moves it to the Completed section, exactly like the first task's checkbox.",[
               ],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => task.done = value!),\n)`, "A square tick box the user taps to switch a boolean value on or off."),
               T("tk-task-2-col","Column","The task title sits above its date and list, so the eye reads what is due before when it is due.",[
-                T("tk-task-2-title","Text","The title names the task in one line.",[],`const Text('Finish AoA assignment', style: TextStyle(fontSize: 15))`),
-                T("tk-task-2-meta","Text","The date and list tell the user when it is due and which list it belongs to.",[],`const Text('Tomorrow • College', style: TextStyle(fontSize: 12, color: Colors.grey))`)
-              ]),
-              T("tk-drag-2","Icon","The two rows of dots are the drag handle: grabbing here, not on the text, starts the reorder drag.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`)
-            ])
+                T("tk-task-2-title","Text","The title names the task in one line.",[],`const Text('Finish AoA assignment', style: TextStyle(fontSize: 15))`, "Shows 'Finish AoA assignment'."),
+                T("tk-task-2-meta","Text","The date and list tell the user when it is due and which list it belongs to.",[],`const Text('Tomorrow • College', style: TextStyle(fontSize: 12, color: Colors.grey))`, "Shows 'Tomorrow • College'.")
+              ], undefined, "Stacks 'Finish AoA assignment' and 'Tomorrow • College' vertically."),
+              T("tk-drag-2","Icon","The two rows of dots are the drag handle: grabbing here, not on the text, starts the reorder drag.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Tasks.")
+            ], undefined, "Places a tick box, 'Finish AoA assignment' and 'Tomorrow • College' and the drag handle icon side by side.")
           ],`Dismissible(\n  key: Key(task.id),\n  background: Container(color: Colors.red, alignment: Alignment.centerLeft, child: const Icon(Icons.delete, color: Colors.white)),\n  onDismissed: (_) => deleteTask(task),\n  child: const TaskRow(),\n)`, "Taught in depth in Gmail — Inbox swipe to archive; here a swipe deletes the task and the SnackBar offers Undo."),
-          T("tk-task-3","Dismissible","Swiping this row sideways deletes the task, and the SnackBar at the bottom offers Undo before the delete becomes permanent. Taught in depth in Gmail — Inbox swipe to archive; here a swipe deletes the task.",[
+          T("tk-task-3","Dismissible","Swiping this row sideways deletes the task, and the SnackBar at the bottom offers Undo before the delete becomes permanent.",[
             T("tk-row-3","Row","The checkbox, the task text, and the drag handle share one horizontal line, so each task reads as one row.",[
               T("tk-check-3","Checkbox","Tapping this checkbox marks the call done and moves it to the Completed section, exactly like the first task's checkbox.",[
               ],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => task.done = value!),\n)`, "A square tick box the user taps to switch a boolean value on or off."),
               T("tk-task-3-col","Column","The task title sits above its date and list, so the eye reads what is due before when it is due.",[
-                T("tk-task-3-title","Text","The title names the task in one line.",[],`const Text('Call mom', style: TextStyle(fontSize: 15))`),
-                T("tk-task-3-meta","Text","The date and list tell the user when it is due and which list it belongs to.",[],`const Text('Fri • Personal', style: TextStyle(fontSize: 12, color: Colors.grey))`)
-              ]),
-              T("tk-drag-3","Icon","The two rows of dots are the drag handle: grabbing here, not on the text, starts the reorder drag.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`)
-            ])
+                T("tk-task-3-title","Text","The title names the task in one line.",[],`const Text('Call mom', style: TextStyle(fontSize: 15))`, "Shows 'Call mom'."),
+                T("tk-task-3-meta","Text","The date and list tell the user when it is due and which list it belongs to.",[],`const Text('Fri • Personal', style: TextStyle(fontSize: 12, color: Colors.grey))`, "Shows 'Fri • Personal'.")
+              ], undefined, "Stacks 'Call mom' and 'Fri • Personal' vertically."),
+              T("tk-drag-3","Icon","The two rows of dots are the drag handle: grabbing here, not on the text, starts the reorder drag.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Tasks.")
+            ], undefined, "Places a tick box, 'Call mom' and 'Fri • Personal' and the drag handle icon side by side.")
           ],`Dismissible(\n  key: Key(task.id),\n  background: Container(color: Colors.red, alignment: Alignment.centerLeft, child: const Icon(Icons.delete, color: Colors.white)),\n  onDismissed: (_) => deleteTask(task),\n  child: const TaskRow(),\n)`, "Taught in depth in Gmail — Inbox swipe to archive; here a swipe deletes the task and the SnackBar offers Undo.")
         ],`ReorderableListView(\n  onReorder: reorderTasks,\n  children: [\n    TaskRow(key: ValueKey('task-1')),\n    TaskRow(key: ValueKey('task-2')),\n    TaskRow(key: ValueKey('task-3')),\n  ],\n)`, "Taught in depth in Spotify — Playlist drag to reorder; here the user drags tasks by the handle to re-prioritise them.")
-      ]),
-      T("tk-completed-divider","Divider","A thin rule separates the active tasks from the completed section below them.",[],`const Divider(height: 1)`, "A thin horizontal rule."),
-      T("tk-completed-title","Text","The 'Completed (1)' header counts the finished tasks, so the user sees progress without opening another screen.",[],`const Text('Completed (1)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600))`),
+      ], undefined, "Lets a reorderable list view take the remaining space."),
+      T("tk-completed-divider","Divider","A thin rule separates the active tasks from the completed section below them.",[],`const Divider(height: 1)`,"A hairline rule between the active tasks and the completed section."),
+      T("tk-completed-title","Text","The 'Completed (1)' header counts the finished tasks, so the user sees progress without opening another screen.",[],`const Text('Completed (1)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600))`, "Shows 'Completed (1)'."),
       T("tk-done-row","Row","The checked box and the struck-through title share one row, so a finished task reads as done at a glance.",[
         T("tk-check-done","Checkbox","This checkbox is the same widget in its checked state: the tick and the filled blue box prove the task is done, and tapping it again would un-complete it.",[
         ],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => task.done = value!),\n)`, "A square tick box the user taps to switch a boolean value on or off."),
-        T("tk-done-text","Text","The struck-through title shows the task is finished without removing it from the list.",[],`const Text('Submit lab record', style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey))`)
-      ]),
+        T("tk-done-text","Text","The struck-through title shows the task is finished without removing it from the list.",[],`const Text('Submit lab record', style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey))`, "Shows 'Submit lab record'.")
+      ], undefined, "Places a tick box and 'Submit lab record' side by side."),
       T("tk-add-row","Row","The add field and its send button share the bottom line, so a new task is typed and added without leaving the list.",[
-        T("tk-add-field","TextField","Typing here starts a new task; the hint makes clear this field adds, it does not search.",[],`TextField(\n  controller: _newTaskController,\n  decoration: const InputDecoration(\n    hintText: 'Add a task',\n    border: InputBorder.none,\n  ),\n)`),
-        T("tk-add-btn","IconButton","The send button adds the typed text as a new task at the bottom of the list.",[],`IconButton(onPressed: addTask, icon: const Icon(Icons.send))`)
-      ])
-    ]),
-    T("tk-snackbar","SnackBar","After a swipe-delete, a SnackBar slides up at the bottom with 'Task deleted' and an Undo action, so a mistaken swipe can be undone before the task is gone for good. Taught in depth in Gmail — Compose, where it confirms 'Message sent'; here it confirms the delete and offers Undo.",[
-      T("tk-snack-text","Text","The message names what just happened, so the user knows the swipe did something.",[],`const Text('Task deleted')`),
-      T("tk-snack-undo","TextButton","Undo restores the deleted task to its old position in the list.",[],`SnackBarAction(label: 'Undo', onPressed: restoreTask)`, "A text-only button with a tap handler.")
+        T("tk-add-field","TextField","Typing here starts a new task; the hint makes clear this field adds, it does not search.",[],`TextField(\n  controller: _newTaskController,\n  decoration: const InputDecoration(\n    hintText: 'Add a task',\n    border: InputBorder.none,\n  ),\n)`, "A text field for 'Add a task'."),
+        T("tk-add-btn","IconButton","The send button adds the typed text as a new task at the bottom of the list.",[],`IconButton(onPressed: addTask, icon: const Icon(Icons.send))`, "The send button in Tasks.")
+      ], undefined, "Places a text field and the send button side by side.")
+    ], undefined, "Stacks a reorderable list view, a divider and 'Completed (1)' vertically."),
+    T("tk-snackbar","SnackBar","After a swipe-delete, a SnackBar slides up at the bottom with 'Task deleted' and an Undo action, so a mistaken swipe can be undone before the task is gone for good.",[
+      T("tk-snack-text","Text","The message names what just happened, so the user knows the swipe did something.",[],`const Text('Task deleted')`, "Shows 'Task deleted'."),
+      T("tk-snack-undo","SnackBarAction","Undo restores the deleted task to its old position in the list.",[],`SnackBarAction(label: 'Undo', onPressed: restoreTask)`, "The SnackBar's action button, labelled Undo.")
     ],`SnackBar(\n  content: const Text('Task deleted'),\n  action: SnackBarAction(label: 'Undo', onPressed: restoreTask),\n)`, "Taught in depth in Gmail — Compose 'Message sent'; here it confirms the delete and offers Undo.")
-  ],`Scaffold(\n  appBar: const TaskListAppBar(),\n  body: const TaskListBody(),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFF1A73E8)),\n  home: const TaskListScreen(),\n)`);
+  ],`Scaffold(\n  appBar: const TaskListAppBar(),\n  body: const TaskListBody(),\n)`, "Frames this screen: a top bar and scrolling content.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFF1A73E8)),\n  home: const TaskListScreen(),\n)`, "The app shell for the Task list screen.");
 
 TEARDOWNS["gmail-compose"].root = T("gc-material","MaterialApp","The compose screen runs under the same Gmail Material theme and navigation context as the inbox, so the red accent, text styles, and the back navigation that closes the draft all behave the same as everywhere else in the app.",[
-  T("gc-scaffold","Scaffold","Scaffold is the frame of the compose screen: it pins the AppBar with Close, Attach, and Send on top, holds the form in its body, and gives the SnackBar a ScaffoldMessenger to appear from after sending. Without it the form and the sent confirmation would have no screen to belong to.",[
+  T("gc-scaffold","Scaffold","Scaffold is the frame of the compose screen: it pins the AppBar with Close, Attach, and Send on top and holds the form in its body. Without it the form would have no screen to belong to.",[
     T("gc-appbar","AppBar","The AppBar is the compose toolbar: Close on the left abandons the draft, the title names the screen, and Attach and Send sit as actions on the right so sending is always one tap away, even while the keyboard is up.",[
-      T("gc-close","IconButton","Closes the draft and returns to the inbox without sending.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.close),\n)`),
-      T("gc-title","Text","Names the screen so the user knows a new mail is being written.",[],`const Text('Compose')`),
-      T("gc-attach","IconButton","Attaches a file or photo to the draft without leaving the compose screen.",[],`IconButton(\n  onPressed: attachFile,\n  icon: const Icon(Icons.attach_file),\n)`),
-      T("gc-send","IconButton","Sends the mail — but only after the Form validates, so tapping it with an empty To field shows the inline error instead of sending.",[],`IconButton(\n  onPressed: () {\n    if (_formKey.currentState!.validate()) sendEmail();\n  },\n  icon: const Icon(Icons.send),\n)`)
-    ],`AppBar(\n  leading: IconButton(\n    onPressed: () => Navigator.pop(context),\n    icon: const Icon(Icons.close),\n  ),\n  title: const Text('Compose'),\n  actions: [\n    IconButton(onPressed: attachFile, icon: const Icon(Icons.attach_file)),\n    IconButton(onPressed: sendEmail, icon: const Icon(Icons.send)),\n  ],\n)`),
+      T("gc-close","IconButton","Closes the draft and returns to the inbox without sending.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.close),\n)`, "The close button in Gmail."),
+      T("gc-title","Text","Names the screen so the user knows a new mail is being written.",[],`const Text('Compose')`, "Shows 'Compose'."),
+      T("gc-attach","IconButton","Attaches a file or photo to the draft without leaving the compose screen.",[],`IconButton(\n  onPressed: attachFile,\n  icon: const Icon(Icons.attach_file),\n)`, "The attachment button in Gmail."),
+      T("gc-send","IconButton","Sends the mail — but only after the Form validates, so tapping it with an empty To field shows the inline error instead of sending.",[],`IconButton(\n  onPressed: () {\n    if (_formKey.currentState!.validate()) sendEmail();\n  },\n  icon: const Icon(Icons.send),\n)`, "The send button in Gmail.")
+    ],`AppBar(\n  leading: IconButton(\n    onPressed: () => Navigator.pop(context),\n    icon: const Icon(Icons.close),\n  ),\n  title: const Text('Compose'),\n  actions: [\n    IconButton(onPressed: attachFile, icon: const Icon(Icons.attach_file)),\n    IconButton(onPressed: sendEmail, icon: const Icon(Icons.send)),\n  ],\n)`, "The top bar: 'Compose' with 3 actions."),
     T("gc-form","Form","Form groups the To, Subject, and Body fields under one GlobalKey so the Send button can validate them all together. That single key is how one tap on Send knows whether the To field is filled before anything is sent.",[
-      T("gc-scroll","SingleChildScrollView","The compose form is taller than the screen once the keyboard opens, so the whole form scrolls as one child instead of overflowing. Without it the Body field would be unreachable while typing.",[
+      T("gc-scroll","SingleChildScrollView","The compose form is taller than the screen once the keyboard opens, so the whole form scrolls as one child instead of overflowing.",[
         T("gc-fields","Column","To, Subject, and Body follow from top to bottom in the order the user fills them.",[
-          T("gc-to-field","TextFormField","The To field is where TextFormField earns its keep: its validator checks the address before Send does anything, so tapping Send with an empty To shows the red error under the field instead of sending a mail to nobody. A plain TextField could not do that check on its own.",[
-            T("gc-to-icon","Icon","The person icon marks this as the recipients field before anything is typed.",[],`const Icon(Icons.person_outline)`),
+          T("gc-to-field","TextFormField","Its validator checks the address before Send does anything, so tapping Send with an empty To shows the red error under the field instead of sending a mail to nobody.",[
+            T("gc-to-icon","Icon","The person icon marks this as the recipients field before anything is typed.",[],`const Icon(Icons.person_outline)`, "Shows the person outline icon in Gmail."),
             T("gc-to-decoration","InputDecoration","Labels the field 'To', hints 'Add recipients', and draws the underline border the error text appears under.",[],`const InputDecoration(\n  labelText: 'To',\n  hintText: 'Add recipients',\n  prefixIcon: Icon(Icons.person_outline),\n  border: UnderlineInputBorder(),\n)`,"Describes a text field's label, hint, icons, and borders."),
-            T("gc-to-error","Text","The validator's error string, painted in red under the To field when Send is tapped with no recipient. It is the visible half of validation — the validator returns this text, and the field displays it.",[],`const Text(\n  'Enter at least one recipient',\n  style: TextStyle(color: Colors.red, fontSize: 12),\n)`)
+            T("gc-to-error","Text","The validator's error string, painted in red under the To field when Send is tapped with no recipient. It is the visible half of validation — the validator returns this text, and the field displays it.",[],`const Text(\n  'Enter at least one recipient',\n  style: TextStyle(color: Colors.red, fontSize: 12),\n)`, "Shows 'Enter at least one recipient'.")
           ],`TextFormField(\n  controller: _toController,\n  keyboardType: TextInputType.emailAddress,\n  validator: (value) => value == null || value.trim().isEmpty ? 'Enter at least one recipient' : null,\n  decoration: const InputDecoration(\n    labelText: 'To',\n    hintText: 'Add recipients',\n    prefixIcon: Icon(Icons.person_outline),\n    border: UnderlineInputBorder(),\n  ),\n)`,"A text input that validates itself inside a Form — its validator returns an error string or null."),
-          T("gc-to-divider","Divider","A thin rule separates the recipients row from the Subject field below it.",[],`const Divider(height: 1)`,"A thin horizontal rule."),
+          T("gc-to-divider","Divider","A thin rule separates the recipients row from the Subject field below it.",[],`const Divider(height: 1)`,"A hairline rule between the recipients row and the Subject field."),
           T("gc-cc-row","Row","Cc and Bcc sit on one short row of their own, so expanding the recipient list costs no permanent space — the extra fields only appear after a tap.",[
-            T("gc-cc","TextButton","Reveals the Cc field so a copy can go to someone who is not the main recipient.",[],`TextButton(\n  onPressed: showCcField,\n  child: const Text('Cc'),\n)`,"A text-only button with a tap handler."),
-            T("gc-bcc","TextButton","Reveals the Bcc field so a hidden copy can go out without the other recipients seeing it.",[],`TextButton(\n  onPressed: showBccField,\n  child: const Text('Bcc'),\n)`,"A text-only button with a tap handler.")
-          ]),
-          T("gc-subject-field","TextFormField","Subject is a TextFormField too, but with the opposite rule from To: it has no required validator, so an empty subject still sends — the same widget, reused with a different validation rule for a different field.",[
+            T("gc-cc","TextButton","Reveals the Cc field so a copy can go to someone who is not the main recipient.",[],`TextButton(\n  onPressed: showCcField,\n  child: const Text('Cc'),\n)`,"A 'Cc' text button."),
+            T("gc-bcc","TextButton","Reveals the Bcc field so a hidden copy can go out without the other recipients seeing it.",[],`TextButton(\n  onPressed: showBccField,\n  child: const Text('Bcc'),\n)`,"A 'Bcc' text button.")
+          ], undefined, "Places a text button side by side."),
+          T("gc-subject-field","TextFormField","Subject has the opposite rule from To: no required validator, so an empty subject still sends — the same widget, reused with a different rule.",[
             T("gc-subject-decoration","InputDecoration","Labels the field 'Subject' and keeps the underline style the To field uses, so the form reads as one consistent set of fields.",[],`const InputDecoration(\n  labelText: 'Subject',\n  hintText: 'Subject',\n  border: UnderlineInputBorder(),\n)`,"Describes a text field's label, hint, icons, and borders.")
           ],`TextFormField(\n  controller: _subjectController,\n  textCapitalization: TextCapitalization.sentences,\n  decoration: const InputDecoration(\n    labelText: 'Subject',\n    hintText: 'Subject',\n    border: UnderlineInputBorder(),\n  ),\n)`,"A text input that validates itself inside a Form — its validator returns an error string or null."),
-          T("gc-subject-divider","Divider","A thin rule separates the Subject field from the message body below it.",[],`const Divider(height: 1)`,"A thin horizontal rule."),
-          T("gc-body-field","TextFormField","The Body is the third TextFormField in the same Form, and it shows the widget's other shape: multiline and expanding, so it grows to fill the space under the Subject instead of staying one line tall. Its validator is empty because a blank body is a valid mail.",[
+          T("gc-subject-divider","Divider","A thin rule separates the Subject field from the message body below it.",[],`const Divider(height: 1)`,"A hairline rule between the Subject field and the message body."),
+          T("gc-body-field","TextFormField","It shows the widget's other shape: multiline and expanding, so it grows to fill the space under the Subject. A blank body is valid, so its validator is empty.",[
             T("gc-body-decoration","InputDecoration","The body field drops the label and the border entirely — just the 'Compose email' hint — so the writing area feels like a blank page, not another form row.",[],`const InputDecoration(\n  hintText: 'Compose email',\n  border: InputBorder.none,\n)`,"Describes a text field's label, hint, icons, and borders.")
           ],`TextFormField(\n  controller: _bodyController,\n  keyboardType: TextInputType.multiline,\n  maxLines: null,\n  expands: true,\n  textCapitalization: TextCapitalization.sentences,\n  decoration: const InputDecoration(\n    hintText: 'Compose email',\n    border: InputBorder.none,\n  ),\n)`,"A text input that validates itself inside a Form — its validator returns an error string or null.")
-        ])
+        ], undefined, "Stacks a text field, a divider and a text button vertically.")
       ],`SingleChildScrollView(\n  padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),\n  child: const ComposeFields(),\n)`,"Taught in depth in Login — Sign in; here it scrolls the whole compose form when the keyboard shrinks the visible area."),
     ],`Form(\n  key: _formKey,\n  child: const ComposeScrollView(),\n)`,"Groups text fields under one key so they validate together."),
-    T("gc-snackbar","SnackBar","After a valid Send, the screen does not navigate away with a dialog — it shows a SnackBar: a short dark bar at the bottom saying 'Message sent', with an Undo action that unsends within a few seconds. That is the SnackBar's job: confirm a completed action briefly, then disappear on its own.",[
-      T("gc-snackbar-text","Text","The confirmation itself — short, past tense, and gone in four seconds.",[],`const Text('Message sent')`),
-      T("gc-snackbar-undo","TextButton","The SnackBar's action: one tap pulls the mail back before it is delivered, which is why the confirmation is a SnackBar and not a toast with no action.",[],`TextButton(\n  onPressed: undoSend,\n  child: const Text('Undo'),\n)`,"A text-only button with a tap handler.")
-    ],`SnackBar(\n  content: const Text('Message sent'),\n  action: SnackBarAction(\n    label: 'Undo',\n    onPressed: undoSend,\n  ),\n  duration: const Duration(seconds: 4),\n)`,"A temporary message bar at the bottom of the screen, shown with ScaffoldMessenger, with an optional action.")
-  ],`Scaffold(\n  appBar: const ComposeAppBar(),\n  body: const ComposeForm(),\n)`)
-],`MaterialApp(\n  home: const GmailCompose(),\n)`);
+  ],`Scaffold(\n  appBar: const ComposeAppBar(),\n  body: const ComposeForm(),\n)`, "Frames this screen: a top bar and a form.")
+],`MaterialApp(\n  home: const GmailCompose(),\n)`, "The app shell for the Compose screen.");
 
 TEARDOWNS["spotify-player"].root = T("spp-material","MaterialApp","The full player runs under the same dark Spotify Material theme and navigation context as the home feed, so the green accent, the text styles, and the collapse back to the mini player all behave the same as everywhere else in the app.",[
   T("spp-scaffold","Scaffold","Scaffold is the frame of the player screen: it pins the AppBar with the collapse action on top and holds the expanding player in its body. Without it the art, seek bar, and controls would have no screen to belong to.",[
     T("spp-appbar","AppBar","The AppBar is the player's top strip: the chevron collapses back to the mini player, the title names the playlist the song is playing from, and the overflow menu holds the secondary actions, so the player controls below never have to carry navigation.",[
-      T("spp-collapse","IconButton","Collapses the full player back down to the mini player bar on Home.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.keyboard_arrow_down),\n)`),
+      T("spp-collapse","IconButton","Collapses the full player back down to the mini player bar on Home.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.keyboard_arrow_down),\n)`, "The expand button in Spotify."),
       T("spp-appbar-title","Column","The context line sits above the playlist name, so the title reads as two stacked lines in the AppBar's title slot.",[
-        T("spp-context","Text","The small caps line tells the user where this song is playing from.",[],`const Text(\n  'PLAYING FROM PLAYLIST',\n  style: TextStyle(fontSize: 10, letterSpacing: 1.2),\n)`),
-        T("spp-playlist","Text","Names the playlist the current song belongs to.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-      ]),
-      T("spp-more","IconButton","Opens the overflow menu: add to playlist, share, and song options.",[],`IconButton(\n  onPressed: openSongMenu,\n  icon: const Icon(Icons.more_vert),\n)`)
-    ],`AppBar(\n  leading: IconButton(\n    onPressed: () => Navigator.pop(context),\n    icon: const Icon(Icons.keyboard_arrow_down),\n  ),\n  title: const PlayingFromTitle(),\n  actions: [\n    IconButton(onPressed: openSongMenu, icon: const Icon(Icons.more_vert)),\n  ],\n)`),
-    T("spp-player","AnimatedContainer","This is the AnimatedContainer that makes the mini player feel like it grows into the full player: tapping the mini bar changes this container's height from the 64-pixel bar to the full screen, and AnimatedContainer interpolates the height and padding over 350 milliseconds instead of jumping. Change the height value and the whole player animates — no AnimationController needed.",[
+        T("spp-context","Text","The small caps line tells the user where this song is playing from.",[],`const Text(\n  'PLAYING FROM PLAYLIST',\n  style: TextStyle(fontSize: 10, letterSpacing: 1.2),\n)`, "Shows 'PLAYING FROM PLAYLIST'."),
+        T("spp-playlist","Text","Names the playlist the current song belongs to.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Liked Songs' in bold.")
+      ], undefined, "Stacks 'PLAYING FROM PLAYLIST' and 'Liked Songs' vertically."),
+      T("spp-more","IconButton","Opens the overflow menu: add to playlist, share, and song options.",[],`IconButton(\n  onPressed: openSongMenu,\n  icon: const Icon(Icons.more_vert),\n)`, "The more options button in Spotify.")
+    ],`AppBar(\n  leading: IconButton(\n    onPressed: () => Navigator.pop(context),\n    icon: const Icon(Icons.keyboard_arrow_down),\n  ),\n  title: const PlayingFromTitle(),\n  actions: [\n    IconButton(onPressed: openSongMenu, icon: const Icon(Icons.more_vert)),\n  ],\n)`, "The top bar on the Now Playing screen."),
+    T("spp-player","AnimatedContainer","Tapping the mini bar changes this container's height from the 64-pixel bar to the full screen, and AnimatedContainer interpolates the change over 350 milliseconds instead of jumping. No AnimationController needed.",[
       T("spp-content","Column","Album art, song info, seek bar, controls, and the device row stack from top to bottom inside the expanding player.",[
-        T("spp-art-hero","Hero","Taught in depth in Amazon — Product detail; here it carries the album art from the home feed's mini player into the full player, so the cover appears to grow from the small square into the large art instead of cutting between screens. The tag must match the mini player's Hero tag exactly, or the flight never happens.",[
-          T("spp-art","Image","The large album art is the visual anchor of the whole player — it is what the Hero carries across from the mini player.",[],`Image.asset(\n  'assets/covers/blinding_lights.png',\n  fit: BoxFit.cover,\n)`)
+        T("spp-art-hero","Hero","It carries the album art from the mini player into the full player, so the cover grows instead of cutting screens. The tag must match the mini player's tag exactly.",[
+          T("spp-art","Image","The large album art is the visual anchor of the whole player — it is what the Hero carries across from the mini player.",[],`Image.asset(\n  'assets/covers/blinding_lights.png',\n  fit: BoxFit.cover,\n)`, "Shows the blinding lights image.")
         ],`Hero(\n  tag: 'album-blinding-lights',\n  child: Image.asset(\n    'assets/covers/blinding_lights.png',\n    fit: BoxFit.cover,\n  ),\n)`,"Taught in depth in Amazon — Product detail; here it carries the album art from the mini player into the full player."),
         T("spp-title-row","Row","The song info takes the width it needs while the heart sits at the far end of the same line.",[
           T("spp-song-info","Column","The song title sits above the artist name, so the pair reads as one block.",[
-            T("spp-song-title","Text","Shows the title of the song that is playing, in the largest text on the screen after the art.",[],`const Text(\n  'Blinding Lights',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`),
-            T("spp-artist","Text","Shows the artist under the title, in a quieter style.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`)
-          ]),
-          T("spp-like","IconButton","Hearts the song into Liked Songs; the filled green heart is the confirmation, no dialog needed.",[],`IconButton(\n  onPressed: toggleLike,\n  icon: const Icon(Icons.favorite, color: Color(0xFF1DB954)),\n)`)
-        ]),
+            T("spp-song-title","Text","Shows the title of the song that is playing, in the largest text on the screen after the art.",[],`const Text(\n  'Blinding Lights',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`, "Shows 'Blinding Lights' in bold."),
+            T("spp-artist","Text","Shows the artist under the title, in a quieter style.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'The Weeknd'.")
+          ], undefined, "Stacks 'Blinding Lights' and 'The Weeknd' vertically."),
+          T("spp-like","IconButton","Hearts the song into Liked Songs; the filled green heart is the confirmation, no dialog needed.",[],`IconButton(\n  onPressed: toggleLike,\n  icon: const Icon(Icons.favorite, color: Color(0xFF1DB954)),\n)`, "The heart button in Spotify.")
+        ], undefined, "Places 'Blinding Lights' and 'The Weeknd' and the heart button side by side."),
         T("spp-seek-row","Row","The elapsed time, the seek bar, and the total time share one line under the song info.",[
-          T("spp-elapsed","Text","Shows how far into the song playback is, updating as the song plays.",[],`const Text('1:24', style: TextStyle(fontSize: 11))`),
+          T("spp-elapsed","Text","Shows how far into the song playback is, updating as the song plays.",[],`const Text('1:24', style: TextStyle(fontSize: 11))`, "Shows '1:24'."),
           T("spp-seek-expanded","Expanded","The seek bar takes every pixel between the two time labels, so the thumb has the full width to drag across.",[
-            T("spp-seek","Slider","The seek bar is a Slider: the thumb's position is the playback position, and dragging it calls seek so the song jumps to that time. The value is the elapsed seconds, the max is the song length, and onChanged is what makes the drag do something instead of just moving the thumb.",[],`Slider(\n  value: 84,\n  min: 0,\n  max: 200,\n  onChanged: seekTo,\n  activeColor: const Color(0xFFFFFFFF),\n  inactiveColor: const Color(0xFF4D4D4D),\n)`,"A draggable value selector — here it is the seek bar: the thumb's position is the playback position, and dragging it seeks the song.")
-          ]),
-          T("spp-total","Text","Shows the full length of the song, so the seek bar's end has a meaning.",[],`const Text('3:20', style: TextStyle(fontSize: 11))`)
-        ]),
+            T("spp-seek","Slider","Dragging it calls seek so the song jumps to that time. The value is the elapsed seconds, the max is the song length, and onChanged is what makes the drag do something instead of just moving the thumb.",[],`Slider(\n  value: 84,\n  min: 0,\n  max: 200,\n  onChanged: seekTo,\n  activeColor: const Color(0xFFFFFFFF),\n  inactiveColor: const Color(0xFF4D4D4D),\n)`,"A draggable seek bar: the thumb's position is the playback position.")
+          ], undefined, "Lets a slider take the remaining space."),
+          T("spp-total","Text","Shows the full length of the song, so the seek bar's end has a meaning.",[],`const Text('3:20', style: TextStyle(fontSize: 11))`, "Shows '3:20'.")
+        ], undefined, "Places '1:24', a slider and '3:20' side by side."),
         T("spp-controls","Row","Shuffle, previous, play, next, and repeat share one controls row, with empty Spacer gaps pushing the outer pair to the edges so Play stays dead centre.",[
-          T("spp-shuffle","IconButton","Toggles shuffle so the playlist plays in random order.",[],`IconButton(\n  onPressed: toggleShuffle,\n  icon: const Icon(Icons.shuffle),\n)`),
+          T("spp-shuffle","IconButton","Toggles shuffle so the playlist plays in random order.",[],`IconButton(\n  onPressed: toggleShuffle,\n  icon: const Icon(Icons.shuffle),\n)`, "The shuffle button in Spotify."),
           T("spp-spacer-1","Spacer","The first Spacer takes all the free space between Shuffle and Previous, so the outer controls sit at the row's edges instead of bunching around Play.",[],`const Spacer(flex: 1)`,"An empty flexible space that pushes its siblings apart inside a Row or Column."),
-          T("spp-prev","IconButton","Skips back to the previous song, or to the start of this one.",[],`IconButton(\n  onPressed: playPrevious,\n  icon: const Icon(Icons.skip_previous),\n)`),
-          T("spp-play","IconButton","The big central control: pauses or resumes the current song. It is larger than the other controls because it is the action the thumb reaches for most.",[],`IconButton(\n  onPressed: togglePlay,\n  iconSize: 56,\n  icon: const Icon(Icons.pause),\n)`),
-          T("spp-next","IconButton","Skips forward to the next song in the playlist.",[],`IconButton(\n  onPressed: playNext,\n  icon: const Icon(Icons.skip_next),\n)`),
+          T("spp-prev","IconButton","Skips back to the previous song, or to the start of this one.",[],`IconButton(\n  onPressed: playPrevious,\n  icon: const Icon(Icons.skip_previous),\n)`, "The previous track button in Spotify."),
+          T("spp-play","IconButton","The big central control: pauses or resumes the current song. It is larger than the other controls because it is the action the thumb reaches for most.",[],`IconButton(\n  onPressed: togglePlay,\n  iconSize: 56,\n  icon: const Icon(Icons.pause),\n)`, "The pause button in Spotify."),
+          T("spp-next","IconButton","Skips forward to the next song in the playlist.",[],`IconButton(\n  onPressed: playNext,\n  icon: const Icon(Icons.skip_next),\n)`, "The next track button in Spotify."),
           T("spp-spacer-2","Spacer","The second Spacer mirrors the first on the other side of Play, so Previous and Next stay the same distance from the centre and the row stays balanced.",[],`const Spacer(flex: 1)`,"An empty flexible space that pushes its siblings apart inside a Row or Column."),
-          T("spp-repeat","IconButton","Toggles repeat: off, repeat the playlist, or repeat this one song.",[],`IconButton(\n  onPressed: toggleRepeat,\n  icon: const Icon(Icons.repeat),\n)`)
-        ]),
+          T("spp-repeat","IconButton","Toggles repeat: off, repeat the playlist, or repeat this one song.",[],`IconButton(\n  onPressed: toggleRepeat,\n  icon: const Icon(Icons.repeat),\n)`, "The repeat button in Spotify.")
+        ], undefined, "Places the shuffle button, a spacer and the previous track button side by side."),
         T("spp-bottom-row","Row","The device picker sits at the left and the share and queue actions at the right, with a Spacer holding them apart.",[
-          T("spp-devices","IconButton","Opens the list of speakers and devices this song can play on.",[],`IconButton(\n  onPressed: openDevices,\n  icon: const Icon(Icons.speaker_outlined),\n)`),
+          T("spp-devices","IconButton","Opens the list of speakers and devices this song can play on.",[],`IconButton(\n  onPressed: openDevices,\n  icon: const Icon(Icons.speaker_outlined),\n)`, "The speaker button in Spotify."),
           T("spp-spacer-3","Spacer","The Spacer in this row pushes Share and Queue to the far right, so the device action keeps the left edge to itself.",[],`const Spacer(flex: 1)`,"An empty flexible space that pushes its siblings apart inside a Row or Column."),
-          T("spp-share","IconButton","Shares the song as a link or to another app.",[],`IconButton(\n  onPressed: shareSong,\n  icon: const Icon(Icons.share_outlined),\n)`),
-          T("spp-queue","IconButton","Opens the play queue to see — and reorder — what plays next.",[],`IconButton(\n  onPressed: openQueue,\n  icon: const Icon(Icons.queue_music),\n)`)
-        ])
-      ])
-    ],`AnimatedContainer(\n  duration: const Duration(milliseconds: 350),\n  curve: Curves.easeOut,\n  height: _expanded ? double.infinity : 64,\n  padding: const EdgeInsets.all(20),\n  color: const Color(0xFF121212),\n  child: const PlayerContent(),\n)`,"A Container that animates its size, colour, or padding whenever those values change — here it grows the mini player into the full player.")
-  ],`Scaffold(\n  appBar: const PlayerAppBar(),\n  body: const ExpandingPlayer(),\n)`)
-],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const NowPlayingScreen(),\n)`);
+          T("spp-share","IconButton","Shares the song as a link or to another app.",[],`IconButton(\n  onPressed: shareSong,\n  icon: const Icon(Icons.share_outlined),\n)`, "The share button in Spotify."),
+          T("spp-queue","IconButton","Opens the play queue to see — and reorder — what plays next.",[],`IconButton(\n  onPressed: openQueue,\n  icon: const Icon(Icons.queue_music),\n)`, "The queue button in Spotify.")
+        ], undefined, "Places the speaker button, a spacer and the share button side by side.")
+      ], undefined, "Stacks a flying image, 'Blinding Lights' and 'The Weeknd' and the heart button and '1:24' and a slider vertically.")
+    ],`AnimatedContainer(\n  duration: const Duration(milliseconds: 350),\n  curve: Curves.easeOut,\n  height: _expanded ? double.infinity : 64,\n  padding: const EdgeInsets.all(20),\n  color: const Color(0xFF121212),\n  child: const PlayerContent(),\n)`,"A Container that animates its size when its values change.")
+  ],`Scaffold(\n  appBar: const PlayerAppBar(),\n  body: const ExpandingPlayer(),\n)`, "Frames this screen: a top bar and an animated box.")
+],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const NowPlayingScreen(),\n)`, "The app shell for the Now Playing screen.");
 
 TEARDOWNS["youtube-player"].root = T("yp-material","MaterialApp","MaterialApp sits at the top of the player and gives this screen the same YouTube theme, navigation stack, and Material look as the home feed, so the player feels like the same app and not a separate video window.",[
   T("yp-scaffold","Scaffold","Scaffold frames the player screen: the top bar stays on top, the video and its details fill the body, and there is no bottom navigation because the player takes over the whole screen while a video is open.",[
     T("yp-appbar","AppBar","The top bar holds the back arrow, cast, and overflow menu over the player, so the viewer can leave the video, send it to a TV, or open more actions without hunting for them.",[
-      T("yp-back","IconButton","Tapping back closes the player and returns to the feed it came from.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back),\n)`),
-      T("yp-cast","IconButton","Tapping cast offers nearby TVs and speakers, so the video can jump from the phone to a bigger screen.",[],`IconButton(\n  onPressed: openCast,\n  icon: const Icon(Icons.cast),\n)`),
-      T("yp-more","IconButton","The three-dot menu hides secondary actions like Report and Playback speed, keeping the player chrome clean until asked for.",[],`IconButton(\n  onPressed: showPlayerMenu,\n  icon: const Icon(Icons.more_vert),\n)`)
-    ],`AppBar(\n  backgroundColor: Colors.transparent,\n  leading: const BackButton(),\n  actions: const [\n    CastAction(),\n    PlayerOverflowMenu(),\n  ],\n)`),
-    T("yp-layout","LayoutBuilder","LayoutBuilder is what lets one player screen serve both orientations: it reads the space the player actually gets, and in portrait it stacks the video above the title, actions, and comments, while in landscape it hands the whole screen to the video. NOTE: the fixed-width phone mock cannot show the layout changing — this portrait layout is the only state visible here; the portrait-vs-landscape branch lives in the code below, not in the mock.",[
+      T("yp-back","IconButton","Tapping back closes the player and returns to the feed it came from.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back),\n)`, "The back button in YouTube."),
+      T("yp-cast","IconButton","Tapping cast offers nearby TVs and speakers, so the video can jump from the phone to a bigger screen.",[],`IconButton(\n  onPressed: openCast,\n  icon: const Icon(Icons.cast),\n)`, "The cast button in YouTube."),
+      T("yp-more","IconButton","The three-dot menu hides secondary actions like Report and Playback speed, keeping the player chrome clean until asked for.",[],`IconButton(\n  onPressed: showPlayerMenu,\n  icon: const Icon(Icons.more_vert),\n)`, "The more options button in YouTube.")
+    ],`AppBar(\n  backgroundColor: Colors.transparent,\n  leading: const BackButton(),\n  actions: const [\n    CastAction(),\n    PlayerOverflowMenu(),\n  ],\n)`, "The top bar on the Video player screen."),
+    T("yp-layout","LayoutBuilder","It reads the space the player gets: portrait stacks the video above the title, actions, and comments; landscape hands the whole screen to the video. The mock shows only the portrait layout.",[
       T("yp-body","Column","The video, seek bar, title, channel row, actions, comments sheet, and Up next list stack vertically in portrait, which is the reading order a viewer follows after tapping a video.",[
-        T("yp-video-area","AspectRatio","AspectRatio forces the video surface into a fixed 16:9 frame no matter how wide the phone is, so the video never stretches, squashes, or leaves black bars that change size. Every YouTube video is shot and uploaded 16:9, and this widget is the guarantee the player honours that shape.",[
-          T("yp-video-stack","Stack","The video frame, the buffering spinner, and the playback controls are layered in the same 16:9 box, so the controls float over the video instead of pushing it around.",[
-            T("yp-video-frame","Image","The video frame itself is the current frame of the playing video, filling the whole 16:9 area edge to edge.",[],`Image.network(\n  video.streamUrl,\n  fit: BoxFit.cover,\n)`),
-            T("yp-buffer-wrap","Center","Center puts the buffering spinner dead in the middle of the video, so the eye lands on it the moment playback stalls.",[
-              T("yp-buffer","CircularProgressIndicator","CircularProgressIndicator is the spinning ring that says the video is still loading: it has no fixed value, so it spins indefinitely until enough of the video has buffered to resume. It appears over the video frame the moment the network stalls and disappears the moment playback resumes, which is why it sits centred on the video instead of in a corner.",[],`const CircularProgressIndicator(\n  value: null,\n  strokeWidth: 3,\n  color: Colors.white,\n)`,"A spinning ring that shows an indeterminate loading state, such as video buffering.")
-            ],`const Center(\n  child: CircularProgressIndicator(),\n)`),
+        T("yp-video-area","AspectRatio","It forces the video surface into a fixed 16:9 frame no matter how wide the phone is, so the video never stretches or squashes. Most landscape videos are 16:9 — Shorts are 9:16.",[
+          T("yp-video-stack","Stack","The video frame and the playback controls are layered in the same 16:9 box, so the controls float over the video instead of pushing it around.",[
+            T("yp-video-frame","Image","The video frame itself is the current frame of the playing video, filling the whole 16:9 area edge to edge.",[],`Image.network(\n  video.streamUrl,\n  fit: BoxFit.cover,\n)`, "The stream photo."),
             T("yp-controls-align","Align","Align pins the playback controls to the bottom edge of the video, so play, next, time, and fullscreen always sit on the video itself and never drift into the title area below.",[
               T("yp-controls-row","Row","Play, next, the time readout, and fullscreen share one row across the bottom of the video, in the order a viewer reaches for them.",[
-                T("yp-play-pause","IconButton","Toggles play and pause without leaving the video.",[],`IconButton(\n  onPressed: togglePlay,\n  icon: const Icon(Icons.pause),\n)`),
-                T("yp-next","IconButton","Skips straight to the next video in the queue.",[],`IconButton(\n  onPressed: playNext,\n  icon: const Icon(Icons.skip_next),\n)`),
-                T("yp-time","Text","Shows how far into the video playback is, next to the controls that change it.",[],`const Text(\n  '4:32 / 12:48',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`),
-                T("yp-fullscreen","IconButton","Rotates the player into fullscreen landscape, handing the whole display to the video.",[],`IconButton(\n  onPressed: enterFullscreen,\n  icon: const Icon(Icons.fullscreen),\n)`)
-              ])
-            ],`const Align(\n  alignment: Alignment.bottomCenter,\n  child: PlayerControls(),\n)`)
-          ])
+                T("yp-play-pause","IconButton","Toggles play and pause without leaving the video.",[],`IconButton(\n  onPressed: togglePlay,\n  icon: const Icon(Icons.pause),\n)`, "The pause button in YouTube."),
+                T("yp-next","IconButton","Skips straight to the next video in the queue.",[],`IconButton(\n  onPressed: playNext,\n  icon: const Icon(Icons.skip_next),\n)`, "The next track button in YouTube."),
+                T("yp-time","Text","Shows how far into the video playback is, next to the controls that change it.",[],`const Text(\n  '4:32 / 12:48',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`, "Shows '4:32 / 12:48'."),
+                T("yp-fullscreen","IconButton","Rotates the player into fullscreen landscape, handing the whole display to the video.",[],`IconButton(\n  onPressed: enterFullscreen,\n  icon: const Icon(Icons.fullscreen),\n)`, "The fullscreen button in YouTube.")
+              ], undefined, "Places the pause button, the next track button and '4:32 / 12:48' side by side.")
+            ],`const Align(\n  alignment: Alignment.bottomCenter,\n  child: PlayerControls(),\n)`, "Puts the pause button and the next track button at the bottom.")
+          ], undefined, "Layers a network photo and the pause button and the next track button in one box.")
         ],`AspectRatio(\n  aspectRatio: 16 / 9,\n  child: const VideoSurface(),\n)`,"Forces its child into a fixed width-to-height ratio, such as 16:9 video."),
-        T("yp-seek-row","Row","The seek bar sits in a row with the current time on the left and the total length on the right, so the viewer can read where they are and drag to anywhere in the video.",[
-          T("yp-current","Text","Shows the current playback position in minutes and seconds.",[],`const Text(\n  '4:32',\n  style: TextStyle(fontSize: 12),\n)`),
-          T("yp-seek-expanded","Expanded","The seek bar takes all the space between the two time labels, giving the thumb the longest possible drag track.",[
-            T("yp-seek","Slider","Taught in depth in Spotify — Now Playing; here it is the video seek bar, so dragging it jumps to that point in the video and the filled track shows how much has played. It is the same widget as the audio seek bar, used for video instead of music.",[],`Slider(\n  value: 0.36,\n  onChanged: seekTo,\n)`,"A draggable thumb on a track that picks a value, such as a playback position.")
-          ]),
-          T("yp-total","Text","Shows the full length of the video, so the viewer knows how long the watch is.",[],`const Text(\n  '12:48',\n  style: TextStyle(fontSize: 12),\n)`)
-        ]),
-        T("yp-title","Text","The video title sits directly under the player in bold, so the viewer can confirm what is playing without scrolling.",[],`const Text(\n  'Build a Flutter app in 20 minutes',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`),
+        T("yp-seek-row","Row","The seek bar fills the row under the video, so the viewer can drag to anywhere in the video; the time readout lives with the playback controls on the video itself.",[
+          T("yp-seek-expanded","Expanded","The seek bar takes the full width of the row, giving the thumb the longest possible drag track.",[
+            T("yp-seek","Slider","The video seek bar: dragging it jumps to that point in the video, and the filled track shows how much has played. It is the same widget as the audio seek bar, used for video instead of music.",[],`Slider(\n  value: 0.36,\n  onChanged: seekTo,\n)`,"A draggable thumb on a track that picks a value, such as a playback position.")
+          ], undefined, "Lets a slider take the remaining space.")
+        ], undefined, "Places a slider side by side."),
+        T("yp-title","Text","The video title sits directly under the player in bold, so the viewer can confirm what is playing without scrolling.",[],`const Text(\n  'Build a Flutter app in 20 minutes',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`, "Shows 'Build a Flutter app in 20 minutes' in bold."),
         T("yp-channel-row","Row","The channel avatar, name, subscriber count, and Subscribe button share one row, so the whole channel identity is a single glanceable unit.",[
-          T("yp-avatar","CircleAvatar","A small circular channel photo identifies who uploaded the video at a glance.",[],`const CircleAvatar(\n  radius: 16,\n  backgroundImage: AssetImage('channel.png'),\n)`),
+          T("yp-avatar","CircleAvatar","A small circular channel photo identifies who uploaded the video at a glance.",[],`const CircleAvatar(\n  radius: 16,\n  backgroundImage: AssetImage('channel.png'),\n)`, "A circular photo avatar in YouTube."),
           T("yp-channel-col","Column","The channel name sits above its subscriber count, stacking identity over scale.",[
-            T("yp-channel-name","Text","Names the channel that uploaded the video.",[],`const Text(\n  'FlutterForward',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("yp-channel-subs","Text","The subscriber count tells the viewer how big this channel is before they decide to subscribe.",[],`const Text(\n  '1.2M subscribers',\n  style: TextStyle(fontSize: 12),\n)`)
-          ]),
+            T("yp-channel-name","Text","Names the channel that uploaded the video.",[],`const Text(\n  'FlutterForward',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'FlutterForward' in bold."),
+            T("yp-channel-subs","Text","The subscriber count tells the viewer how big this channel is before they decide to subscribe.",[],`const Text(\n  '1.2M subscribers',\n  style: TextStyle(fontSize: 12),\n)`, "Shows '1.2M subscribers'.")
+          ], undefined, "Stacks 'FlutterForward' and '1.2M subscribers' vertically."),
           T("yp-subscribe","ElevatedButton","Subscribe is the one primary action on the player, so it is a filled button that stands out from the quiet icon actions around it.",[
-            T("yp-subscribe-label","Text","Labels the primary channel action.",[],`const Text(\n  'Subscribe',\n  style: TextStyle(color: Colors.white),\n)`)
-          ],`ElevatedButton(\n  onPressed: subscribeToChannel,\n  child: const Text('Subscribe'),\n)`,"A filled button for the primary action on a screen.")
-        ]),
-        T("yp-actions-row","Row","Like, Share, Download, and Save sit in one row under the channel, so every way to react to the video is one tap away and none of them needs a menu.",[
-          T("yp-like","IconButton","Tapping the thumb tells YouTube the video was liked, which feeds recommendations.",[],`IconButton(\n  onPressed: likeVideo,\n  icon: const Icon(Icons.thumb_up_outlined),\n)`),
-          T("yp-like-count","Text","The like count next to the thumb shows how many viewers liked the video.",[],`const Text(\n  '12K',\n  style: TextStyle(fontSize: 12),\n)`),
-          T("yp-share-tip","Tooltip","Tooltip is the label that appears when the viewer long-presses the Share icon: the icon alone is a bare arrow, so the tooltip reveals the word 'Share' on demand without taking up permanent space in the row. NOTE: a long-press-only label cannot be shown in its hidden state and its revealed state at once — the mock shows the revealed state on this one icon, and the long-press behaviour lives in the code below.",[
-            T("yp-share","IconButton","Opens the share sheet to send the video to another app or copy its link.",[],`IconButton(\n  onPressed: shareVideo,\n  icon: const Icon(Icons.share_outlined),\n)`)
+            T("yp-subscribe-label","Text","Labels the primary channel action.",[],`const Text(\n  'Subscribe',\n  style: TextStyle(color: Colors.white),\n)`, "Shows 'Subscribe'.")
+          ],`ElevatedButton(\n  onPressed: subscribeToChannel,\n  child: const Text('Subscribe'),\n)`,"A filled 'Subscribe' button.")
+        ], undefined, "Places a circular avatar, 'FlutterForward' and '1.2M subscribers' and a filled button side by side."),
+        T("yp-actions-row","Row","Like, Dislike, Share, Download, and Save sit in one row under the channel, so every way to react to the video is one tap away and none of them needs a menu.",[
+          T("yp-like","IconButton","Tapping the thumb tells YouTube the video was liked, which feeds recommendations.",[],`IconButton(\n  onPressed: likeVideo,\n  icon: const Icon(Icons.thumb_up_outlined),\n)`, "The like button in YouTube."),
+          T("yp-like-count","Text","The like count next to the thumb shows how many viewers liked the video.",[],`const Text(\n  '12K',\n  style: TextStyle(fontSize: 12),\n)`, "Shows '12K'."),
+          T("yp-dislike","IconButton","Tapping the thumb down tells YouTube the video was not liked, which feeds recommendations in the other direction.",[],`IconButton(\n  onPressed: dislikeVideo,\n  icon: const Icon(Icons.thumb_down_outlined),\n)`, "The thumb down button in YouTube."),
+          T("yp-share-tip","Tooltip","It appears when the viewer long-presses the Share icon: the icon alone is a bare arrow, so the tooltip reveals the word 'Share' on demand without taking up permanent space.",[
+            T("yp-share","IconButton","Opens the share sheet to send the video to another app or copy its link.",[],`IconButton(\n  onPressed: shareVideo,\n  icon: const Icon(Icons.share_outlined),\n)`, "The share button in YouTube.")
           ],`Tooltip(\n  message: 'Share',\n  waitDuration: const Duration(milliseconds: 500),\n  child: IconButton(\n    onPressed: shareVideo,\n    icon: const Icon(Icons.share_outlined),\n  ),\n)`,"A label that appears on long-press or hover to name an icon-only action."),
-          T("yp-download","IconButton","Downloads the video for offline watching.",[],`IconButton(\n  onPressed: downloadVideo,\n  icon: const Icon(Icons.download_outlined),\n)`),
-          T("yp-save","IconButton","Saves the video to a playlist such as Watch later.",[],`IconButton(\n  onPressed: saveVideo,\n  icon: const Icon(Icons.bookmark_outline),\n)`)
-        ]),
-        T("yp-comments-sheet","BottomSheet","BottomSheet is the comments panel that slides up from the bottom of the player: it is not a new screen, it is a sheet layered over the player, so the viewer can read comments and swipe it back down without losing their place in the video. Tapping the comments area opens it; dragging its handle or tapping outside closes it, and the video keeps playing underneath.",[
+          T("yp-download","IconButton","Downloads the video for offline watching.",[],`IconButton(\n  onPressed: downloadVideo,\n  icon: const Icon(Icons.download_outlined),\n)`, "The download button in YouTube."),
+          T("yp-save","IconButton","Saves the video to a playlist such as Watch later.",[],`IconButton(\n  onPressed: saveVideo,\n  icon: const Icon(Icons.bookmark_outline),\n)`, "The bookmark outline button in YouTube.")
+        ], undefined, "Places the like button, '12K' and the thumb down button side by side."),
+        T("yp-comments-sheet","BottomSheet","It is not a new screen, it is a sheet layered over the player, so the viewer can read comments and swipe it back down without losing their place in the video. The video keeps playing underneath.",[
           T("yp-sheet-col","Column","The drag handle, header, and comment rows stack inside the sheet, in the order a reader scans them.",[
-            T("yp-sheet-handle","Container","The short grey bar at the top of the sheet is the drag handle: it signals the sheet can be pulled down to dismiss it.",[],`Container(\n  width: 36,\n  height: 4,\n  decoration: BoxDecoration(\n    color: Colors.grey,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`),
+            T("yp-sheet-handle","Container","The short grey bar at the top of the sheet is the drag handle: it signals the sheet can be pulled down to dismiss it.",[],`Container(\n  width: 36,\n  height: 4,\n  decoration: BoxDecoration(\n    color: Colors.grey,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`, "A grey box."),
             T("yp-sheet-header","Row","The comments count and the close button share the sheet header, so the reader knows how many comments there are and how to leave.",[
-              T("yp-sheet-title","Text","Heads the sheet with the comment count, so the scale of the discussion is visible before reading.",[],`const Text(\n  'Comments • 1.2K',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("yp-sheet-close","IconButton","Closes the sheet and returns to the player.",[],`IconButton(\n  onPressed: closeComments,\n  icon: const Icon(Icons.close),\n)`)
-            ]),
+              T("yp-sheet-title","Text","Heads the sheet with the comment count, so the scale of the discussion is visible before reading.",[],`const Text(\n  'Comments • 1.2K',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Comments • 1.2K' in bold."),
+              T("yp-sheet-close","IconButton","Closes the sheet and returns to the player.",[],`IconButton(\n  onPressed: closeComments,\n  icon: const Icon(Icons.close),\n)`, "The close button in YouTube.")
+            ], undefined, "Places 'Comments • 1.2K' and the close button side by side."),
             T("yp-comment-one","Row","One comment is a row: the commenter's avatar on the left, their name and words on the right.",[
-              T("yp-comment-one-avatar","CircleAvatar","The commenter's circular photo identifies who wrote the comment.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF1A73E8),\n  child: Text('A'),\n)`),
+              T("yp-comment-one-avatar","CircleAvatar","The commenter's circular photo identifies who wrote the comment.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF1A73E8),\n  child: Text('A'),\n)`, "A circular avatar showing 'A'."),
               T("yp-comment-one-body","Column","The commenter's name sits above their words, so each comment reads as a small headed note.",[
-                T("yp-comment-one-name","Text","Names the person who wrote the comment.",[],`const Text(\n  '@aarav.codes',\n  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),\n)`),
-                T("yp-comment-one-text","Text","The comment itself, shown in full under its author's name.",[],`const Text(\n  'The diagrams in this one finally made state click for me.',\n  style: TextStyle(fontSize: 12),\n)`)
-              ])
-            ]),
+                T("yp-comment-one-name","Text","Names the person who wrote the comment.",[],`const Text(\n  '@aarav.codes',\n  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),\n)`, "Shows '@aarav.codes' in bold."),
+                T("yp-comment-one-text","Text","The comment itself, shown in full under its author's name.",[],`const Text(\n  'The diagrams in this one finally made state click for me.',\n  style: TextStyle(fontSize: 12),\n)`, "Shows 'The diagrams in this one finally made state…'.")
+              ], undefined, "Stacks '@aarav.codes' and 'The diagrams in this one…' vertically.")
+            ], undefined, "Places a circular avatar and '@aarav.codes' and 'The diagrams in this one…' side by side."),
             T("yp-comment-two","Row","A second comment repeats the same row pattern, showing the sheet is a list of comments, not a single note.",[
-              T("yp-comment-two-avatar","CircleAvatar","A different commenter's photo marks this as a different voice in the thread.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF0F9D58),\n  child: Text('P'),\n)`),
+              T("yp-comment-two-avatar","CircleAvatar","A different commenter's photo marks this as a different voice in the thread.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF0F9D58),\n  child: Text('P'),\n)`, "A circular avatar showing 'P'."),
               T("yp-comment-two-body","Column","Name above words, in the same order as the first comment, so the thread scans evenly.",[
-                T("yp-comment-two-name","Text","Names the second commenter.",[],`const Text(\n  '@priya.builds',\n  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),\n)`),
-                T("yp-comment-two-text","Text","The second comment's words, showing the thread continues past the first reply.",[],`const Text(\n  'Watching this twice — once to learn, once to build along.',\n  style: TextStyle(fontSize: 12),\n)`)
-              ])
-            ])
-          ])
+                T("yp-comment-two-name","Text","Names the second commenter.",[],`const Text(\n  '@priya.builds',\n  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),\n)`, "Shows '@priya.builds' in bold."),
+                T("yp-comment-two-text","Text","The second comment's words, showing the thread continues past the first reply.",[],`const Text(\n  'Watching this twice — once to learn, once to build along.',\n  style: TextStyle(fontSize: 12),\n)`, "Shows 'Watching this twice — once to learn, once to…'.")
+              ], undefined, "Stacks '@priya.builds' and 'Watching this twice — once…' vertically.")
+            ], undefined, "Places a circular avatar and '@priya.builds' and 'Watching this twice — once…' side by side.")
+          ], undefined, "Stacks a box, 'Comments • 1.2K' and the close button and a row vertically.")
         ],`BottomSheet(\n  elevation: 8,\n  shape: const RoundedRectangleBorder(\n    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),\n  ),\n  builder: (context) => const CommentsSheet(),\n)`,"A panel that slides up from the bottom of the screen, such as a comments sheet."),
-        T("yp-upnext-title","Text","Heads the list of videos YouTube suggests next, so the viewer knows the player is offering more to watch.",[],`const Text(\n  'Up next',\n  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),\n)`),
+        T("yp-upnext-title","Text","Heads the list of videos YouTube suggests next, so the viewer knows the player is offering more to watch.",[],`const Text(\n  'Up next',\n  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),\n)`, "Shows 'Up next' in bold."),
         T("yp-upnext-list","ListView","Up next is a lazily built vertical list, so only the suggestions on screen are built and the list can scroll through many videos.",[
           T("yp-upnext-card","Card","One suggestion is grouped on a card surface, so its thumbnail and text read as one tappable video.",[
             T("yp-upnext-row","Row","The thumbnail sits left and the text right, the compact horizontal pattern for suggested videos.",[
-              T("yp-upnext-thumb","Image","A small 16:9 thumbnail is what the viewer recognises and taps.",[],`Image.network(\n  video.thumbnailUrl,\n  width: 120,\n  fit: BoxFit.cover,\n)`),
+              T("yp-upnext-thumb","Image","A small 16:9 thumbnail is what the viewer recognises and taps.",[],`Image.network(\n  video.thumbnailUrl,\n  width: 120,\n  fit: BoxFit.cover,\n)`, "A still from the episode."),
               T("yp-upnext-col","Column","Title above channel and stats, stacking the suggestion's details in reading order.",[
-                T("yp-upnext-name","Text","Names the suggested video.",[],`const Text(\n  'Dart null safety, explained simply',\n  maxLines: 2,\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`),
-                T("yp-upnext-meta","Text","Channel, views, and age in one quiet line under the title.",[],`const Text(\n  'Code with Dheeraj • 845K views • 1 week ago',\n  style: TextStyle(fontSize: 11),\n)`)
-              ])
-            ])
-          ]),
+                T("yp-upnext-name","Text","Names the suggested video.",[],`const Text(\n  'Dart null safety, explained simply',\n  maxLines: 2,\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Shows 'Dart null safety, explained simply'."),
+                T("yp-upnext-meta","Text","Channel, views, and age in one quiet line under the title.",[],`const Text(\n  'Code with Dheeraj • 845K views • 1 week ago',\n  style: TextStyle(fontSize: 11),\n)`, "Shows 'Code with Dheeraj • 845K views • 1 week ago'.")
+              ], undefined, "Stacks 'Dart null safety, explained…' and 'Code with Dheeraj • 845K…' vertically.")
+            ], undefined, "Places the video thumbnail and a column side by side.")
+          ], undefined, "Groups the video thumbnail and a column on one card."),
           T("yp-upnext-card-two","Card","A second suggestion repeats the same card layout, proving every Up next item follows one pattern.",[
             T("yp-upnext-row-two","Row","Thumbnail left, text right, exactly like the first suggestion.",[
-              T("yp-upnext-thumb-two","Image","A different thumbnail marks this as a different suggested video.",[],`Image.network(\n  video.thumbnailUrl,\n  width: 120,\n  fit: BoxFit.cover,\n)`),
+              T("yp-upnext-thumb-two","Image","A different thumbnail marks this as a different suggested video.",[],`Image.network(\n  video.thumbnailUrl,\n  width: 120,\n  fit: BoxFit.cover,\n)`, "A still from the episode."),
               T("yp-upnext-col-two","Column","Title above channel and stats, in the same order as the first suggestion.",[
-                T("yp-upnext-name-two","Text","Names the second suggested video.",[],`const Text(\n  'Flutter widgets every beginner must know',\n  maxLines: 2,\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`),
-                T("yp-upnext-meta-two","Text","The second suggestion's channel and stats, in the same quiet style.",[],`const Text(\n  'FlutterForward • 2.1M views • 2 weeks ago',\n  style: TextStyle(fontSize: 11),\n)`)
-              ])
-            ])
-          ])
-        ])
-      ])
-    ],`LayoutBuilder(\n  builder: (context, constraints) {\n    final isLandscape = constraints.maxWidth > constraints.maxHeight;\n    return isLandscape ? const LandscapePlayer() : const PortraitPlayer();\n  },\n)`,"Rebuilds its child with a different layout depending on the space available, such as portrait vs landscape.")
-  ],`Scaffold(\n  appBar: const PlayerAppBar(),\n  body: const PlayerBody(),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF0000)),\n  home: const YouTubePlayer(),\n)`);
+                T("yp-upnext-name-two","Text","Names the second suggested video.",[],`const Text(\n  'Flutter widgets every beginner must know',\n  maxLines: 2,\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Shows 'Flutter widgets every beginner must know'."),
+                T("yp-upnext-meta-two","Text","The second suggestion's channel and stats, in the same quiet style.",[],`const Text(\n  'FlutterForward • 2.1M views • 2 weeks ago',\n  style: TextStyle(fontSize: 11),\n)`, "Shows 'FlutterForward • 2.1M views • 2 weeks ago'.")
+              ], undefined, "Stacks 'Flutter widgets every…' and 'FlutterForward • 2.1M views…' vertically.")
+            ], undefined, "Places the video thumbnail and a column side by side.")
+          ], undefined, "Groups the video thumbnail and a column on one card.")
+        ], undefined, "A scrolling list of cards.")
+      ], undefined, "Stacks a fixed-ratio box, a slider and 'Build a Flutter app in 20…' vertically.")
+    ],`LayoutBuilder(\n  builder: (context, constraints) {\n    final isLandscape = constraints.maxWidth > constraints.maxHeight;\n    return isLandscape ? const LandscapePlayer() : const PortraitPlayer();\n  },\n)`,"Rebuilds its child for the space available, such as portrait vs landscape.")
+  ],`Scaffold(\n  appBar: const PlayerAppBar(),\n  body: const PlayerBody(),\n)`, "Frames this screen: a top bar and a layout switch.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF0000)),\n  home: const YouTubePlayer(),\n)`, "The app shell for the Video player screen.");
 
 TEARDOWNS["netflix-detail"].root = T("nd-material","MaterialApp","The title detail screen inherits the same dark Netflix theme and navigation context as home, so the backdrop, match line, and tabs feel like the same app and not a separate page.",[
   T("nd-scaffold","Scaffold","Scaffold frames the detail screen: the top bar stays on top while the backdrop, tabs, and tab pages scroll in the body, and there is no bottom navigation because a detail page takes over the whole screen until the viewer goes back.",[
     T("nd-appbar","AppBar","The top bar holds the back arrow, search, and overflow menu over the detail page, so the viewer can leave the title, search for something else, or open more actions without scrolling back up.",[
-      T("nd-back","IconButton","Tapping back closes the detail page and returns to the home rows it came from.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back),\n)`),
-      T("nd-search","IconButton","Opens search without leaving the title detail flow.",[],`IconButton(\n  onPressed: openSearch,\n  icon: const Icon(Icons.search),\n)`),
-      T("nd-more","IconButton","The three-dot menu hides secondary actions like Share and Rate, keeping the top bar clean until asked for.",[],`IconButton(\n  onPressed: showTitleMenu,\n  icon: const Icon(Icons.more_vert),\n)`)
-    ],`AppBar(\n  backgroundColor: Colors.transparent,\n  elevation: 0,\n  leading: const BackButton(),\n  actions: const [\n    SearchAction(),\n    TitleOverflowMenu(),\n  ],\n)`),
+      T("nd-back","IconButton","Tapping back closes the detail page and returns to the home rows it came from.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back),\n)`, "The back button in Netflix."),
+      T("nd-search","IconButton","Opens search without leaving the title detail flow.",[],`IconButton(\n  onPressed: openSearch,\n  icon: const Icon(Icons.search),\n)`, "The search button in Netflix."),
+      T("nd-more","IconButton","The three-dot menu hides secondary actions like Share and Rate, keeping the top bar clean until asked for.",[],`IconButton(\n  onPressed: showTitleMenu,\n  icon: const Icon(Icons.more_vert),\n)`, "The more options button in Netflix.")
+    ],`AppBar(\n  backgroundColor: Colors.transparent,\n  elevation: 0,\n  leading: const BackButton(),\n  actions: const [\n    SearchAction(),\n    TitleOverflowMenu(),\n  ],\n)`, "The top bar on the Title detail screen."),
     T("nd-body","SingleChildScrollView","SingleChildScrollView makes the whole detail page scroll as one tall column — backdrop, match line, genres, actions, tabs, and tab pages — so the page can be longer than the screen without any section being cut off.",[
       T("nd-content","Column","The backdrop, tab bar, and tab pages stack vertically in reading order, which is the order a viewer scans a title page.",[
         T("nd-backdrop-stack","Stack","The backdrop art, the dark shade, and the title content are layered in the same box, so the title, match line, and buttons sit on top of the artwork instead of below it.",[
-          T("nd-switcher","AnimatedSwitcher","AnimatedSwitcher crossfades the backdrop whenever the featured episode changes: the old backdrop fades out while the new one fades in over 400ms, instead of the image swapping instantly. It works by keying the backdrop image to the episode — a new key means a new child, and AnimatedSwitcher animates between the old child and the new one.",[
-            T("nd-backdrop","Image","The title's key art fills the hero area, and it is the image that crossfades when the episode changes.",[],`Image.network(\n  episode.backdropUrl,\n  fit: BoxFit.cover,\n)`)
+          T("nd-switcher","AnimatedSwitcher","It crossfades the backdrop whenever the featured episode changes: the old one fades out while the new one fades in over 400ms, instead of swapping instantly.",[
+            T("nd-backdrop","Image","The title's key art fills the hero area, and it is the image that crossfades when the episode changes.",[],`Image.network(\n  episode.backdropUrl,\n  fit: BoxFit.cover,\n)`, "The backdrop photo.")
           ],`AnimatedSwitcher(\n  duration: const Duration(milliseconds: 400),\n  transitionBuilder: (child, animation) => FadeTransition(\n    opacity: animation,\n    child: child,\n  ),\n  child: Image.network(\n    episode.backdropUrl,\n    key: ValueKey(episode.id),\n  ),\n)`,"Crossfades between the old and new child when the child changes, such as a backdrop swapping episodes."),
-          T("nd-backdrop-shade","Container","A dark gradient sits over the lower half of the backdrop so the white title and match line stay readable on any artwork.",[],`Container(\n  decoration: const BoxDecoration(\n    gradient: LinearGradient(\n      begin: Alignment.topCenter,\n      end: Alignment.bottomCenter,\n      colors: [Colors.transparent, Colors.black87],\n    ),\n  ),\n)`),
+          T("nd-backdrop-shade","Container","A dark gradient sits over the lower half of the backdrop so the white title and match line stay readable on any artwork.",[],`Container(\n  decoration: const BoxDecoration(\n    gradient: LinearGradient(\n      begin: Alignment.topCenter,\n      end: Alignment.bottomCenter,\n      colors: [Colors.transparent, Colors.black87],\n    ),\n  ),\n)`, "A decorated box for this section."),
           T("nd-backdrop-content","Column","The title, match line, genre chips, and action buttons are stacked at the bottom of the backdrop, where the shade makes them readable.",[
-            T("nd-title","Text","Shows the title's name in large bold type over the backdrop art.",[],`const Text(\n  'Stranger Things',\n  style: TextStyle(\n    fontSize: 28,\n    fontWeight: FontWeight.w900,\n    color: Colors.white,\n  ),\n)`),
-            T("nd-match","RichText","RichText builds the match line as one text run with differently styled spans inside it: '98% Match' in bold green, the year in white, and the season count in muted grey. A plain Text widget can only style the whole line one way, so RichText is what makes this single line carry three meanings at once.",[],`RichText(\n  text: const TextSpan(\n    children: [\n      TextSpan(\n        text: '98% Match',\n        style: TextStyle(color: Color(0xFF46D369), fontWeight: FontWeight.w700),\n      ),\n      TextSpan(text: '  2024  ', style: TextStyle(color: Colors.white)),\n      TextSpan(text: '2 Seasons', style: TextStyle(color: Colors.white70)),\n    ],\n  ),\n)`,"One text run with differently styled spans inside it, such as a green match score beside a grey season count."),
-            T("nd-genres","Wrap","Wrap lays the genre chips in a row and flows them onto a second line when they run out of room, so six genres fit under the title without shrinking or scrolling sideways. A Row would overflow or clip the last chips; Wrap is what lets the chips spill naturally onto the next line.",[
+            T("nd-title","Text","Shows the title's name in large bold type over the backdrop art.",[],`const Text(\n  'Stranger Things',\n  style: TextStyle(\n    fontSize: 28,\n    fontWeight: FontWeight.w900,\n    color: Colors.white,\n  ),\n)`, "Shows 'Stranger Things' in bold."),
+            T("nd-match","RichText","The match line needs three styles in one line — green '98% Match', white year, grey season count — and a plain Text can only style the whole line one way.",[],`RichText(\n  text: const TextSpan(\n    children: [\n      TextSpan(\n        text: '98% Match',\n        style: TextStyle(color: Color(0xFF46D369), fontWeight: FontWeight.w700),\n      ),\n      TextSpan(text: '  2024  ', style: TextStyle(color: Colors.white)),\n      TextSpan(text: '4 Seasons', style: TextStyle(color: Colors.white70)),\n    ],\n  ),\n)`,"One text run with differently styled spans inside it, such as a green match score beside a grey season count."),
+            T("nd-genres","Wrap","It lays the genre chips in a row and flows them onto a second line when they run out of room, so six genres fit under the title without shrinking or scrolling sideways.",[
               T("nd-chip-scifi","Chip","Marks the title as science fiction, one tap away from similar sci-fi titles.",[],`const Chip(label: Text('Sci-Fi'))`,"A compact, tappable label that names one category or genre."),
               T("nd-chip-drama","Chip","Marks the title as drama, so viewers who like drama know what to expect.",[],`const Chip(label: Text('Drama'))`,"A compact, tappable label that names one category or genre."),
               T("nd-chip-thriller","Chip","Marks the title as a thriller, setting the mood before the first episode.",[],`const Chip(label: Text('Thriller'))`,"A compact, tappable label that names one category or genre."),
@@ -3395,920 +3744,920 @@ TEARDOWNS["netflix-detail"].root = T("nd-material","MaterialApp","The title deta
             ],`Wrap(\n  spacing: 8,\n  runSpacing: 8,\n  children: const [\n    Chip(label: Text('Sci-Fi')),\n    Chip(label: Text('Drama')),\n    Chip(label: Text('Thriller')),\n    Chip(label: Text('Horror')),\n    Chip(label: Text('Mystery')),\n    Chip(label: Text('Supernatural')),\n  ],\n)`,"Flows children onto the next line when they run out of room, such as genre chips."),
             T("nd-actions","Row","The Play button, My List button, and Download action share one row under the genres, so the three things a viewer does with a title are one tap away.",[
               T("nd-play","ElevatedButton","Starts playback of the title immediately, so it is the filled primary button in the row.",[
-                T("nd-play-icon","Icon","The play triangle signals that tapping starts the video.",[],`const Icon(Icons.play_arrow, color: Colors.black)`),
-                T("nd-play-label","Text","Labels the primary hero action.",[],`const Text(\n  'Play',\n  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),\n)`)
-              ],`ElevatedButton.icon(\n  onPressed: playTitle,\n  icon: const Icon(Icons.play_arrow, color: Colors.black),\n  label: const Text('Play', style: TextStyle(color: Colors.black)),\n  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),\n)`,"A filled button for the primary action on a screen."),
+                T("nd-play-icon","Icon","The play triangle signals that tapping starts the video.",[],`const Icon(Icons.play_arrow, color: Colors.black)`, "Shows the play icon in Netflix."),
+                T("nd-play-label","Text","Labels the primary hero action.",[],`const Text(\n  'Play',\n  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),\n)`, "Shows 'Play' in bold.")
+              ],`ElevatedButton.icon(\n  onPressed: playTitle,\n  icon: const Icon(Icons.play_arrow, color: Colors.black),\n  label: const Text('Play', style: TextStyle(color: Colors.black)),\n  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),\n)`,"A filled 'Play' button."),
               T("nd-mylist","OutlinedButton","Saves the title to the viewer's list without starting playback, so it is an outlined secondary button next to Play.",[
-                T("nd-mylist-label","Text","Labels the secondary hero action.",[],`const Text('+ My List', style: TextStyle(color: Colors.white))`)
-              ],`OutlinedButton.icon(\n  onPressed: addToMyList,\n  icon: const Icon(Icons.add, color: Colors.white),\n  label: const Text('My List', style: TextStyle(color: Colors.white)),\n)`),
-              T("nd-download","IconButton","Downloads the title for offline watching.",[],`IconButton(\n  onPressed: downloadTitle,\n  icon: const Icon(Icons.download),\n)`)
-            ])
-          ])
-        ]),
-        T("nd-tabs","TabBar","TabBar is the row of tabs — Episodes, Trailers, More Like This — that switches the page below it. It only draws and controls the tabs; the swipeable pages themselves are the TabBarView that follows it, so this screen finally completes the pair that Instagram's profile started.",[
-          T("nd-tab-episodes","Tab","The Episodes tab opens the episode list, which is the default page for a series.",[],`const Tab(text: 'Episodes')`),
-          T("nd-tab-trailers","Tab","The Trailers tab opens the title's trailers and teasers.",[],`const Tab(text: 'Trailers')`),
-          T("nd-tab-more","Tab","The More Like This tab opens titles similar to this one.",[],`const Tab(text: 'More Like This')`)
-        ]),
-        T("nd-tabview","TabBarView","TabBarView is the swipeable pages the TabBar switches between: Episodes, Trailers, and More Like This are three pages in one view, and swiping or tapping a tab slides from one to the next. The TabBar above only draws the tabs — this widget is what actually holds and switches the pages, which is why the pair is only complete with both.",[
+                T("nd-mylist-label","Text","Labels the secondary hero action.",[],`const Text('+ My List', style: TextStyle(color: Colors.white))`, "Shows '+ My List'.")
+              ],`OutlinedButton.icon(\n  onPressed: addToMyList,\n  icon: const Icon(Icons.add, color: Colors.white),\n  label: const Text('My List', style: TextStyle(color: Colors.white)),\n)`, "An outlined 'My List' button."),
+              T("nd-download","IconButton","Downloads the title for offline watching.",[],`IconButton(\n  onPressed: downloadTitle,\n  icon: const Icon(Icons.download),\n)`, "The download button in Netflix.")
+            ], undefined, "Places a filled button, an outlined button and the download button side by side.")
+          ], undefined, "Stacks 'Stranger Things', styled text runs and chips vertically.")
+        ], undefined, "Layers a crossfading widget, a box and 'Stranger Things' and styled text runs in one box."),
+        T("nd-tabs","TabBar","It only draws and controls the tabs; the swipeable pages themselves are the TabBarView that follows it. The pair is only complete with both.",[
+          T("nd-tab-episodes","Tab","The Episodes tab opens the episode list, which is the default page for a series.",[],`const Tab(text: 'Episodes')`, "The 'Episodes' tab."),
+          T("nd-tab-trailers","Tab","The Trailers tab opens the title's trailers and teasers.",[],`const Tab(text: 'Trailers')`, "The 'Trailers' tab."),
+          T("nd-tab-more","Tab","The More Like This tab opens titles similar to this one.",[],`const Tab(text: 'More Like This')`, "The 'More Like This' tab.")
+        ], undefined, "The tabs: Episodes, Trailers, More Like This."),
+        T("nd-tabview","TabBarView","Episodes, Trailers, and More Like This are three pages in one view; swiping or tapping a tab slides from one to the next. The TabBar only draws the tabs — this widget holds and switches the pages.",[
           T("nd-episodes-page","Column","The Episodes page lists the season's episodes in order, newest season first, each as its own card.",[
             T("nd-episode-one","Card","One episode is grouped on a card surface, so its thumbnail, title, description, and download action read as a single episode.",[
               T("nd-episode-one-row","Row","The episode thumbnail sits left, the episode text in the middle, and the download action right, the compact horizontal pattern for episode rows.",[
-                T("nd-episode-one-thumb","Image","A still from the episode is what the viewer recognises before reading its title.",[],`Image.network(\n  episode.thumbnailUrl,\n  width: 110,\n  fit: BoxFit.cover,\n)`),
+                T("nd-episode-one-thumb","Image","A still from the episode is what the viewer recognises before reading its title.",[],`Image.network(\n  episode.thumbnailUrl,\n  width: 110,\n  fit: BoxFit.cover,\n)`, "A still from the episode."),
                 T("nd-episode-one-col","Column","Episode title above description above runtime, stacking the episode's details in reading order.",[
-                  T("nd-episode-one-title","Text","Names the episode: chapter one of the season.",[],`const Text(\n  'Chapter One: The Vanishing',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-                  T("nd-episode-one-desc","Text","A one-line summary of what happens in the episode, so the viewer can pick where to start.",[],`const Text(\n  'A boy vanishes on his way home, and the town starts asking questions.',\n  maxLines: 2,\n  style: TextStyle(fontSize: 12),\n)`),
-                  T("nd-episode-one-time","Text","Shows the episode's runtime, so the viewer knows the commitment before pressing play.",[],`const Text(\n  '49m',\n  style: TextStyle(fontSize: 11),\n)`)
-                ]),
-                T("nd-episode-one-download","IconButton","Downloads just this episode for offline watching.",[],`IconButton(\n  onPressed: downloadEpisode,\n  icon: const Icon(Icons.download),\n)`)
-              ])
-            ]),
+                  T("nd-episode-one-title","Text","Names the episode: chapter one of the season.",[],`const Text(\n  'Chapter One: The Vanishing of Will Byers',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Chapter One: The Vanishing of Will Byers' in bold."),
+                  T("nd-episode-one-desc","Text","A one-line summary of what happens in the episode, so the viewer can pick where to start.",[],`const Text(\n  'A boy vanishes on his way home, and the town starts asking questions.',\n  maxLines: 2,\n  style: TextStyle(fontSize: 12),\n)`, "Shows 'A boy vanishes on his way home, and the town…'."),
+                  T("nd-episode-one-time","Text","Shows the episode's runtime, so the viewer knows the commitment before pressing play.",[],`const Text(\n  '49m',\n  style: TextStyle(fontSize: 11),\n)`, "Shows '49m'.")
+                ], undefined, "Stacks 'Chapter One: The Vanishing…', 'A boy vanishes on his way…' and '49m' vertically."),
+                T("nd-episode-one-download","IconButton","Downloads just this episode for offline watching.",[],`IconButton(\n  onPressed: downloadEpisode,\n  icon: const Icon(Icons.download),\n)`, "The download button in Netflix.")
+              ], undefined, "Places the video thumbnail, a column and the download button side by side.")
+            ], undefined, "Groups the video thumbnail, a column and the download button on one card."),
             T("nd-episode-two","Card","A second episode repeats the same card layout, proving every episode follows one pattern.",[
               T("nd-episode-two-row","Row","Thumbnail left, text in the middle, download right, exactly like the first episode.",[
-                T("nd-episode-two-thumb","Image","A different still marks this as a different episode.",[],`Image.network(\n  episode.thumbnailUrl,\n  width: 110,\n  fit: BoxFit.cover,\n)`),
+                T("nd-episode-two-thumb","Image","A different still marks this as a different episode.",[],`Image.network(\n  episode.thumbnailUrl,\n  width: 110,\n  fit: BoxFit.cover,\n)`, "A still from the episode."),
                 T("nd-episode-two-col","Column","Title above description above runtime, in the same order as the first episode.",[
-                  T("nd-episode-two-title","Text","Names the second episode of the season.",[],`const Text(\n  'Chapter Two: The Weirdo',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-                  T("nd-episode-two-desc","Text","The second episode's summary, showing the story continues from the first.",[],`const Text(\n  'A strange girl with a shaved head appears at the diner.',\n  maxLines: 2,\n  style: TextStyle(fontSize: 12),\n)`),
-                  T("nd-episode-two-time","Text","The second episode's runtime, in the same quiet style.",[],`const Text(\n  '55m',\n  style: TextStyle(fontSize: 11),\n)`)
-                ]),
-                T("nd-episode-two-download","IconButton","Downloads the second episode on its own.",[],`IconButton(\n  onPressed: downloadEpisode,\n  icon: const Icon(Icons.download),\n)`)
-              ])
-            ])
-          ]),
+                  T("nd-episode-two-title","Text","Names the second episode of the season.",[],`const Text(\n  'Chapter Two: The Weirdo',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Chapter Two: The Weirdo' in bold."),
+                  T("nd-episode-two-desc","Text","The second episode's summary, showing the story continues from the first.",[],`const Text(\n  'A strange girl with a shaved head appears at the diner.',\n  maxLines: 2,\n  style: TextStyle(fontSize: 12),\n)`, "Shows 'A strange girl with a shaved head appears at…'."),
+                  T("nd-episode-two-time","Text","The second episode's runtime, in the same quiet style.",[],`const Text(\n  '55m',\n  style: TextStyle(fontSize: 11),\n)`, "Shows '55m'.")
+                ], undefined, "Stacks 'Chapter Two: The Weirdo', 'A strange girl with a…' and '55m' vertically."),
+                T("nd-episode-two-download","IconButton","Downloads the second episode on its own.",[],`IconButton(\n  onPressed: downloadEpisode,\n  icon: const Icon(Icons.download),\n)`, "The download button in Netflix.")
+              ], undefined, "Places the video thumbnail, 'Chapter Two: The Weirdo' and 'A strange girl with a…' and the download button side by side.")
+            ], undefined, "Groups the video thumbnail, 'Chapter Two: The Weirdo' and 'A strange girl with a…' and the download button on one card.")
+          ], undefined, "Stacks a card vertically."),
           T("nd-trailers-page","Column","The Trailers page shows the title's official trailer as a playable thumbnail with its title below.",[
             T("nd-trailer-thumb","Stack","The trailer thumbnail layers the play button over the trailer art, so it reads as a video before it is tapped.",[
-              T("nd-trailer-image","Image","The trailer's poster frame is what the viewer recognises and taps to watch it.",[],`Image.network(\n  trailer.thumbnailUrl,\n  fit: BoxFit.cover,\n)`),
-              T("nd-trailer-play","Icon","The play triangle centred on the thumbnail signals that tapping starts the trailer.",[],`const Icon(Icons.play_circle_fill, color: Colors.white, size: 48)`)
-            ]),
-            T("nd-trailer-title","Text","Names the trailer under its thumbnail.",[],`const Text(\n  'Official Trailer',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-          ]),
+              T("nd-trailer-image","Image","The trailer's poster frame is what the viewer recognises and taps to watch it.",[],`Image.network(\n  trailer.thumbnailUrl,\n  fit: BoxFit.cover,\n)`, "A still from the episode."),
+              T("nd-trailer-play","Icon","The play triangle centred on the thumbnail signals that tapping starts the trailer.",[],`const Icon(Icons.play_circle_fill, color: Colors.white, size: 48)`, "Shows the play circle fill icon in Netflix.")
+            ], undefined, "Layers the video thumbnail and the play circle fill icon in one box."),
+            T("nd-trailer-title","Text","Names the trailer under its thumbnail.",[],`const Text(\n  'Official Trailer',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Official Trailer' in bold.")
+          ], undefined, "Stacks a stack and 'Official Trailer' vertically."),
           T("nd-more-page","Column","The More Like This page lists similar titles as compact cards, so the viewer can jump to the next watch without going back to home.",[
             T("nd-more-one","Card","One similar title is grouped on a card surface, so its poster and name read as one recommendation.",[
               T("nd-more-one-row","Row","The poster sits left and the title right, the compact pattern for recommendations.",[
-                T("nd-more-one-poster","Image","The similar title's poster is what the viewer recognises.",[],`Image.network(\n  show.posterUrl,\n  width: 64,\n  fit: BoxFit.cover,\n)`),
-                T("nd-more-one-name","Text","Names the first similar title.",[],`const Text(\n  'Dark',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-              ])
-            ]),
+                T("nd-more-one-poster","Image","The similar title's poster is what the viewer recognises.",[],`Image.network(\n  show.posterUrl,\n  width: 64,\n  fit: BoxFit.cover,\n)`, "The poster photo."),
+                T("nd-more-one-name","Text","Names the first similar title.",[],`const Text(\n  'Dark',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Dark' in bold.")
+              ], undefined, "Places a network photo and 'Dark' side by side.")
+            ], undefined, "Groups a network photo and 'Dark' on one card."),
             T("nd-more-two","Card","A second recommendation repeats the same card layout, showing the list continues.",[
               T("nd-more-two-row","Row","Poster left, title right, exactly like the first recommendation.",[
-                T("nd-more-two-poster","Image","A different poster marks this as a different recommendation.",[],`Image.network(\n  show.posterUrl,\n  width: 64,\n  fit: BoxFit.cover,\n)`),
-                T("nd-more-two-name","Text","Names the second similar title.",[],`const Text(\n  'Wednesday',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-              ])
-            ])
-          ])
+                T("nd-more-two-poster","Image","A different poster marks this as a different recommendation.",[],`Image.network(\n  show.posterUrl,\n  width: 64,\n  fit: BoxFit.cover,\n)`, "The poster photo."),
+                T("nd-more-two-name","Text","Names the second similar title.",[],`const Text(\n  'Wednesday',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Wednesday' in bold.")
+              ], undefined, "Places a network photo and 'Wednesday' side by side.")
+            ], undefined, "Groups a network photo and 'Wednesday' on one card.")
+          ], undefined, "Stacks a card vertically.")
         ],`TabBarView(\n  children: const [\n    EpisodesPage(),\n    TrailersPage(),\n    MoreLikeThisPage(),\n  ],\n)`,"The swipeable pages a TabBar switches between, such as Episodes, Trailers, and More Like This.")
-      ])
+      ], undefined, "Stacks a stack, tabs and swipeable pages vertically.")
     ],`const SingleChildScrollView(\n  child: TitleDetailBody(),\n)`,"Makes one tall child scrollable, so a long detail page fits on any screen.")
-  ],`Scaffold(\n  appBar: const TitleDetailAppBar(),\n  body: const TitleDetailBody(),\n)`)
-],`MaterialApp(\n  theme: ThemeData.dark().copyWith(\n    scaffoldBackgroundColor: const Color(0xFF141414),\n  ),\n  home: const NetflixTitleDetail(),\n)`);
+  ],`Scaffold(\n  appBar: const TitleDetailAppBar(),\n  body: const TitleDetailBody(),\n)`, "Frames this screen: a top bar and scrollable content.")
+],`MaterialApp(\n  theme: ThemeData.dark().copyWith(\n    scaffoldBackgroundColor: const Color(0xFF141414),\n  ),\n  home: const NetflixTitleDetail(),\n)`, "The app shell for the Title detail screen.");
 
 TEARDOWNS["amazon-product"].root = T("ap-material","MaterialApp","The product detail screen inherits one shared Amazon theme and navigation context, and it also owns the '/gallery' route so the product image can fly to the full-screen gallery.",[
-  T("ap-scaffold","Scaffold","Scaffold is the frame of the product page: the AppBar stays on top with back, search and cart, the product details scroll in the body, and the Add to Cart / Buy Now bar stays docked at the bottom. Without it each part would need its own positioning; with it Flutter knows exactly which slot each piece belongs to.",[
+  T("ap-scaffold","Scaffold","The AppBar stays on top with back, search and cart, the product details scroll in the body, and the Add to Cart / Buy Now bar stays docked at the bottom.",[
     T("ap-appbar","AppBar","AppBar works here as the product header: back in the leading slot, the search field as the title, and the cart with its count badge in the actions. Because it is an AppBar it also gets the dark Amazon header surface for free.",[
-      T("ap-back","IconButton","Returns to the search results or home feed.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back, color: Colors.white),\n)`),
+      T("ap-back","IconButton","Returns to the search results or home feed.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back, color: Colors.white),\n)`, "The back button in Amazon."),
       T("ap-search-field","TextField","Shoppers can jump straight from a product to searching for something else without going back.",[
-        T("ap-search-icon","Icon","A magnifier marks this field as a search box before anything is typed.",[],`const Icon(Icons.search, color: Color(0xFF767676))`),
-        T("ap-search-hint","Text","The hint tells shoppers what they can search for.",[],`const Text('Search Amazon.in', style: TextStyle(color: Color(0xFF767676)))`)
-      ],`TextField(\n  decoration: const InputDecoration(\n    hintText: 'Search Amazon.in',\n    prefixIcon: Icon(Icons.search),\n    filled: true,\n    fillColor: Colors.white,\n    border: OutlineInputBorder(borderSide: BorderSide.none),\n  ),\n)`),
+        T("ap-search-icon","Icon","A magnifier marks this field as a search box before anything is typed.",[],`const Icon(Icons.search, color: Color(0xFF767676))`, "Shows the search icon in Amazon."),
+        T("ap-search-hint","Text","The hint tells shoppers what they can search for.",[],`const Text('Search Amazon.in', style: TextStyle(color: Color(0xFF767676)))`, "Shows 'Search Amazon.in'.")
+      ],`TextField(\n  decoration: const InputDecoration(\n    hintText: 'Search Amazon.in',\n    prefixIcon: Icon(Icons.search),\n    filled: true,\n    fillColor: Colors.white,\n    border: OutlineInputBorder(borderSide: BorderSide.none),\n  ),\n)`, "A text field for 'Search Amazon.in'."),
       T("ap-cart-stack","Stack","The cart icon and its count badge are layered in the same spot.",[
-        T("ap-cart-badge","Badge","Badge is the small count label that sits on top of the cart icon: it shows '3' because three items are already in the cart, so shoppers can see the cart state at a glance without opening it. The badge needs no layout of its own — it simply decorates its child, the cart button, with a label anchored to its top-right corner.",[
-          T("ap-cart","IconButton","Opens the cart to review items before checkout.",[],`IconButton(\n  onPressed: openCart,\n  icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),\n)`),
-          T("ap-cart-count","Text","Shows how many items are already in the cart.",[],`const Text(\n  '3',\n  style: TextStyle(color: Color(0xFF131921), fontSize: 11, fontWeight: FontWeight.w800),\n)`)
+        T("ap-cart-badge","Badge","It shows '3' because three items are already in the cart, so shoppers can see the cart state at a glance without opening it. The badge needs no layout of its own — it decorates the cart button with a label at its top-right corner.",[
+          T("ap-cart","IconButton","Opens the cart to review items before checkout.",[],`IconButton(\n  onPressed: openCart,\n  icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),\n)`, "The cart button in Amazon."),
+          T("ap-cart-count","Text","Shows how many items are already in the cart.",[],`const Text(\n  '3',\n  style: TextStyle(color: Color(0xFF131921), fontSize: 11, fontWeight: FontWeight.w800),\n)`, "Shows '3' in bold.")
         ],`Badge(\n  label: const Text('3'),\n  child: IconButton(\n    onPressed: openCart,\n    icon: const Icon(Icons.shopping_cart_outlined),\n  ),\n)`,"Shows a small count label anchored to another widget.")
-      ])
-    ],`AppBar(\n  backgroundColor: const Color(0xFF131921),\n  leading: const BackButton(color: Colors.white),\n  title: const SearchField(),\n  actions: [CartBadgeButton()],\n)`),
-    T("ap-body","SingleChildScrollView","The product page is taller than the screen — image, title, price, options, delivery and the about list — so one scrollable child holds all of it. A ListView would work too, but there is exactly one child (the content Column), which is what SingleChildScrollView is for.",[
+      ], undefined, "Layers a count badge in one box.")
+    ],`AppBar(\n  backgroundColor: const Color(0xFF131921),\n  leading: const BackButton(color: Colors.white),\n  title: const SearchField(),\n  actions: [CartBadgeButton()],\n)`, "The top bar on the Product detail screen."),
+    T("ap-body","SingleChildScrollView","The page is taller than the screen — image, title, price, options, delivery, about list — so one scrollable child holds all of it. A ListView would work too, but there is exactly one child, which is what SingleChildScrollView is for.",[
       T("ap-content","Column","Product image, thumbnails and the info block are stacked in reading order.",[
-        T("ap-hero","Hero","Hero is the shared-element transition that makes the product image fly: the image on this detail page and the image on the full-screen gallery share the tag 'product-image', so when the shopper taps the photo, Flutter animates the same image growing from this small box into the full-screen gallery instead of cutting to a new screen. That flight only works because both screens exist in this one teardown entry — the gallery below is the Hero's destination, not a separate app.",[
-          T("ap-hero-image","Image","Shows the main product photo; tapping it opens the full-screen gallery.",[],`Image.asset(\n  'assets/earbuds_main.png',\n  fit: BoxFit.cover,\n)`)
+        T("ap-hero","Hero","Hero is the shared-element transition that makes the product image fly: the detail page and the '/gallery' route share the tag 'product-image', so tapping the photo grows the same image into the full-screen gallery.",[
+          T("ap-hero-image","Image","Shows the main product photo; tapping it opens the full-screen gallery.",[],`Image.asset(\n  'assets/earbuds_main.png',\n  fit: BoxFit.cover,\n)`, "Shows the earbuds main image.")
         ],`Hero(\n  tag: 'product-image',\n  child: Image.asset('assets/earbuds_main.png', fit: BoxFit.cover),\n)`,"Flies one widget between two screens as a shared-element transition."),
         T("ap-thumbs-row","Row","The three alternate product photos sit side by side under the main image.",[
-          T("ap-thumb-1","Image","First alternate photo: the earbuds in their charging case.",[],`Image.asset('assets/earbuds_case.png', fit: BoxFit.cover)`),
-          T("ap-thumb-2","Image","Second alternate photo: a single earbud close-up.",[],`Image.asset('assets/earbuds_single.png', fit: BoxFit.cover)`),
-          T("ap-thumb-3","Image","Third alternate photo: the earbuds worn, showing fit.",[],`Image.asset('assets/earbuds_worn.png', fit: BoxFit.cover)`)
-        ]),
+          T("ap-thumb-1","Image","First alternate photo: the earbuds in their charging case.",[],`Image.asset('assets/earbuds_case.png', fit: BoxFit.cover)`, "Shows the earbuds case image."),
+          T("ap-thumb-2","Image","Second alternate photo: a single earbud close-up.",[],`Image.asset('assets/earbuds_single.png', fit: BoxFit.cover)`, "Shows the earbuds single image."),
+          T("ap-thumb-3","Image","Third alternate photo: the earbuds worn, showing fit.",[],`Image.asset('assets/earbuds_worn.png', fit: BoxFit.cover)`, "Shows the earbuds worn image.")
+        ], undefined, "Places the earbuds case image, the earbuds single image and the earbuds worn image side by side."),
         T("ap-info-padding","Padding","The whole info block gets one consistent inset from the screen edges.",[
           T("ap-info-column","Column","Title, rating, price, options and delivery details are stacked in the order a shopper reads them.",[
-            T("ap-title","Text","Shows the full product name, brand and model.",[],`const Text(\n  'Wireless Earbuds Pro — Bluetooth 5.3, ANC, 30H Playtime',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`),
+            T("ap-title","Text","Shows the full product name, brand and model.",[],`const Text(\n  'Wireless Earbuds Pro — Bluetooth 5.3, ANC, 30H Playtime',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`, "Shows 'Wireless Earbuds Pro — Bluetooth 5.3, ANC, 30H…' in bold."),
             T("ap-rating-row","Row","Stars and the rating count share one line under the title.",[
-              T("ap-stars","Text","Shows the average star rating at a glance.",[],`const Text(\n  '★★★★☆ 4.5',\n  style: TextStyle(color: Color(0xFFDE7921), fontSize: 13),\n)`),
-              T("ap-rating-count","Text","Shows how many shoppers rated the product, so the stars carry weight.",[],`const Text(\n  '12,438 ratings',\n  style: TextStyle(color: Color(0xFF007185), fontSize: 12),\n)`)
-            ]),
+              T("ap-stars","Text","Shows the average star rating at a glance.",[],`const Text(\n  '★★★★☆ 4.5',\n  style: TextStyle(color: Color(0xFFDE7921), fontSize: 13),\n)`, "Shows '★★★★☆ 4.5'."),
+              T("ap-rating-count","Text","Shows how many shoppers rated the product, so the stars carry weight.",[],`const Text(\n  '12,438 ratings',\n  style: TextStyle(color: Color(0xFF007185), fontSize: 12),\n)`, "Shows '12,438 ratings'.")
+            ], undefined, "Places '★★★★☆ 4.5' and '12,438 ratings' side by side."),
             T("ap-price-row","Row","Sale price, original price and the saving sit side by side.",[
-              T("ap-price","Text","Shows the price shoppers actually pay.",[],`const Text(\n  '₹1,499',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`),
-              T("ap-mrp","Text","Shows the original price struck through, so the saving is visible.",[],`const Text(\n  '₹2,999',\n  style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey),\n)`),
-              T("ap-discount","Text","States the discount as a percentage.",[],`const Text(\n  '50% off',\n  style: TextStyle(color: Color(0xFFCC0C39), fontWeight: FontWeight.w700),\n)`)
-            ]),
+              T("ap-price","Text","Shows the price shoppers actually pay.",[],`const Text(\n  '₹1,499',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`, "Shows '₹1,499' in bold."),
+              T("ap-mrp","Text","Shows the original price struck through, so the saving is visible.",[],`const Text(\n  '₹2,999',\n  style: TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey),\n)`, "Shows '₹2,999'."),
+              T("ap-discount","Text","States the discount as a percentage.",[],`const Text(\n  '50% off',\n  style: TextStyle(color: Color(0xFFCC0C39), fontWeight: FontWeight.w700),\n)`, "Shows '50% off' in bold.")
+            ], undefined, "Places '₹1,499', '₹2,999' and '50% off' side by side."),
             T("ap-prime-row","Row","The Prime badge and the delivery promise share one line.",[
               T("ap-prime-badge","Container","A small blue badge marks Prime-eligible products.",[
-                T("ap-prime-text","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic),\n)`)
-              ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`),
-              T("ap-delivery-text","Text","Tells shoppers the fastest free delivery date before they scroll further.",[],`const Text(\n  'FREE delivery by Tomorrow',\n  style: TextStyle(fontSize: 12),\n)`)
-            ]),
-            T("ap-divider","Divider","A thin rule separates the price block from the options below it, so the two groups read as distinct sections.",[],`const Divider(height: 24)`,"Draws a thin horizontal rule separating two sections."),
-            T("ap-colour-label","Text","Names the currently selected colour so the swatches below it mean something.",[],`const Text(\n  'Colour: Midnight Black',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`),
+                T("ap-prime-text","Text","The Prime mark itself.",[],`const Text(\n  'prime',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic),\n)`, "Shows 'prime' in bold.")
+              ],`Container(\n  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),\n  decoration: BoxDecoration(\n    color: const Color(0xFF00A8E1),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Text('prime'),\n)`, "A decorated box holding 'prime'."),
+              T("ap-delivery-text","Text","Tells shoppers the fastest free delivery date before they scroll further.",[],`const Text(\n  'FREE delivery by Tomorrow',\n  style: TextStyle(fontSize: 12),\n)`, "Shows 'FREE delivery by Tomorrow'.")
+            ], undefined, "Places 'prime' and 'FREE delivery by Tomorrow' side by side."),
+            T("ap-divider","Divider","A thin rule separates the price block from the options below it, so the two groups read as distinct sections.",[],`const Divider(height: 24)`,"A hairline rule between the price block and the options below it."),
+            T("ap-colour-label","Text","Names the currently selected colour so the swatches below it mean something.",[],`const Text(\n  'Colour: Midnight Black',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Shows 'Colour: Midnight Black'."),
             T("ap-colour-row","Row","The three colour choices sit side by side; tapping one swaps the product photo.",[
-              T("ap-swatch-1","Container","The selected colour: a filled black circle with an orange ring marking it as chosen.",[],`Container(\n  width: 28,\n  height: 28,\n  decoration: BoxDecoration(\n    color: const Color(0xFF1A1A1A),\n    shape: BoxShape.circle,\n    border: Border.all(color: Color(0xFFFF9900), width: 2),\n  ),\n)`),
-              T("ap-swatch-2","Container","Second colour choice: pearl white.",[],`Container(\n  width: 28,\n  height: 28,\n  decoration: const BoxDecoration(\n    color: Color(0xFFF2F2F2),\n    shape: BoxShape.circle,\n    border: Border.fromBorderSide(BorderSide(color: Colors.grey)),\n  ),\n)`),
-              T("ap-swatch-3","Container","Third colour choice: ocean blue.",[],`Container(\n  width: 28,\n  height: 28,\n  decoration: const BoxDecoration(\n    color: Color(0xFF3B6EA5),\n    shape: BoxShape.circle,\n  ),\n)`)
-            ]),
+              T("ap-swatch-1","Container","The selected colour: a filled black circle with an orange ring marking it as chosen.",[],`Container(\n  width: 28,\n  height: 28,\n  decoration: BoxDecoration(\n    color: const Color(0xFF1A1A1A),\n    shape: BoxShape.circle,\n    border: Border.all(color: Color(0xFFFF9900), width: 2),\n  ),\n)`, "A decorated box for this section."),
+              T("ap-swatch-2","Container","Second colour choice: pearl white.",[],`Container(\n  width: 28,\n  height: 28,\n  decoration: const BoxDecoration(\n    color: Color(0xFFF2F2F2),\n    shape: BoxShape.circle,\n    border: Border.fromBorderSide(BorderSide(color: Colors.grey)),\n  ),\n)`, "A grey box."),
+              T("ap-swatch-3","Container","Third colour choice: ocean blue.",[],`Container(\n  width: 28,\n  height: 28,\n  decoration: const BoxDecoration(\n    color: Color(0xFF3B6EA5),\n    shape: BoxShape.circle,\n  ),\n)`, "A decorated box for this section.")
+            ], undefined, "Places a box side by side."),
             T("ap-qty-row","Row","The quantity label and its picker share one line.",[
-              T("ap-qty-label","Text","Labels the quantity picker.",[],`const Text('Quantity:', style: TextStyle(fontWeight: FontWeight.w600))`),
-              T("ap-qty-dropdown","DropdownButton","Taught in depth in Settings — Appearance; here it is the compact quantity picker. It shows the current value ('1') and opens a small menu of 1–5 when tapped, which is exactly the DropdownButton use case: one choice from a short list, taking almost no screen space until it is opened.",[
-                T("ap-qty-value","Text","Shows the currently selected quantity.",[],`const Text('1')`)
+              T("ap-qty-label","Text","Labels the quantity picker.",[],`const Text('Quantity:', style: TextStyle(fontWeight: FontWeight.w600))`, "Shows 'Quantity:'."),
+              T("ap-qty-dropdown","DropdownButton","The compact quantity picker — taught in depth in Settings — Appearance. It shows the current value ('1') and opens a small menu of 1–5 when tapped.",[
+                T("ap-qty-value","Text","Shows the currently selected quantity.",[],`const Text('1')`, "Shows '1'.")
               ],`DropdownButton<int>(\n  value: 1,\n  items: [1, 2, 3, 4, 5].map((q) => DropdownMenuItem(value: q, child: Text('$q'))).toList(),\n  onChanged: (q) => setState(() => quantity = q ?? 1),\n)`,"Shows the current choice and opens a compact menu to pick another.")
-            ]),
-            T("ap-highlights-wrap","Wrap","Taught in depth in Netflix — Title detail; here it lays out the feature chips. The four highlights do not fit on one line, so Wrap flows the extra chips onto a second line automatically — a Row would overflow instead.",[
+            ], undefined, "Places 'Quantity:' and a dropdown side by side."),
+            T("ap-highlights-wrap","Wrap","Taught in depth in Netflix — Title detail; here it lays out the feature chips. The four highlights don't fit on one line, so Wrap flows the extras onto a second line — a Row would overflow instead.",[
               T("ap-chip-1","Chip","Names one headline feature as a small labelled pill.",[
-                T("ap-chip-text-1","Text","Names the Bluetooth version.",[],`const Text('Bluetooth 5.3')`)
+                T("ap-chip-text-1","Text","Names the Bluetooth version.",[],`const Text('Bluetooth 5.3')`, "Shows 'Bluetooth 5.3'.")
               ],`const Chip(label: Text('Bluetooth 5.3'))`,"Shows a compact, tappable label for one filter or category."),
               T("ap-chip-2","Chip","Names the battery life as a headline feature.",[
-                T("ap-chip-text-2","Text","Names the total playtime.",[],`const Text('30h battery')`)
+                T("ap-chip-text-2","Text","Names the total playtime.",[],`const Text('30h battery')`, "Shows '30h battery'.")
               ],`const Chip(label: Text('30h battery'))`,"Shows a compact, tappable label for one filter or category."),
               T("ap-chip-3","Chip","Names the water resistance as a headline feature.",[
-                T("ap-chip-text-3","Text","Names the water-resistance rating.",[],`const Text('IPX5 water resistant')`)
+                T("ap-chip-text-3","Text","Names the water-resistance rating.",[],`const Text('IPX5 water resistant')`, "Shows 'IPX5 water resistant'.")
               ],`const Chip(label: Text('IPX5 water resistant'))`,"Shows a compact, tappable label for one filter or category."),
               T("ap-chip-4","Chip","Names the noise cancellation as a headline feature.",[
-                T("ap-chip-text-4","Text","Names the noise-cancellation feature.",[],`const Text('Active noise cancellation')`)
+                T("ap-chip-text-4","Text","Names the noise-cancellation feature.",[],`const Text('Active noise cancellation')`, "Shows 'Active noise cancellation'.")
               ],`const Chip(label: Text('Active noise cancellation'))`,"Shows a compact, tappable label for one filter or category.")
             ],`Wrap(\n  spacing: 6,\n  runSpacing: 6,\n  children: const [Chip(label: Text('Bluetooth 5.3')), Chip(label: Text('30h battery')), Chip(label: Text('IPX5 water resistant')), Chip(label: Text('Active noise cancellation'))],\n)`),
             T("ap-delivery-box","Container","A bordered box groups the delivery and stock facts so they read as one block.",[
               T("ap-delivery-column","Column","Delivery date, delivery detail and stock status are stacked inside the box.",[
-                T("ap-delivery-title","Text","Labels the delivery block.",[],`const Text('Delivery', style: TextStyle(fontWeight: FontWeight.w700))`),
-                T("ap-delivery-detail","Text","Gives the exact free-delivery date and the order-by time.",[],`const Text('FREE delivery Tomorrow, 9 Nov. Order within 4 hrs 32 mins.')`),
-                T("ap-stock","Text","Reassures shoppers the item is in stock and names the seller.",[],`const Text(\n  'In stock — sold by Cloudtail India',\n  style: TextStyle(color: Color(0xFF067D62)),\n)`)
-              ])
-            ],`Container(\n  padding: const EdgeInsets.all(12),\n  decoration: BoxDecoration(\n    border: Border.all(color: Color(0xFFE3E6E6)),\n    borderRadius: BorderRadius.circular(8),\n  ),\n  child: const DeliveryInfo(),\n)`),
-            T("ap-about-title","Text","Introduces the bullet list of what the product does.",[],`const Text('About this item', style: TextStyle(fontWeight: FontWeight.w700))`),
+                T("ap-delivery-title","Text","Labels the delivery block.",[],`const Text('Delivery', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'Delivery' in bold."),
+                T("ap-delivery-detail","Text","Gives the exact free-delivery date and the order-by time.",[],`const Text('FREE delivery Tomorrow, 12 Nov. Order within 4 hrs 32 mins.')`, "Shows 'FREE delivery Tomorrow, 12 Nov. Order within 4…'."),
+                T("ap-stock","Text","Reassures shoppers the item is in stock and names the seller.",[],`const Text(\n  'In stock — sold by Clicktech Retail',\n  style: TextStyle(color: Color(0xFF067D62)),\n)`, "Shows 'In stock — sold by Clicktech Retail'.")
+              ], undefined, "Stacks 'Delivery', 'FREE delivery Tomorrow, 12…' and 'In stock — sold by…' vertically.")
+            ],`Container(\n  padding: const EdgeInsets.all(12),\n  decoration: BoxDecoration(\n    border: Border.all(color: Color(0xFFE3E6E6)),\n    borderRadius: BorderRadius.circular(8),\n  ),\n  child: const DeliveryInfo(),\n)`, "A decorated box holding 'Delivery' and 'FREE delivery Tomorrow, 12…'."),
+            T("ap-about-title","Text","Introduces the bullet list of what the product does.",[],`const Text('About this item', style: TextStyle(fontWeight: FontWeight.w700))`, "Shows 'About this item' in bold."),
             T("ap-about-list","Column","The three key facts about the earbuds are stacked as short lines.",[
-              T("ap-about-1","Text","First key fact: active noise cancellation.",[],`const Text('• Active noise cancellation blocks up to 98% of ambient noise.')`),
-              T("ap-about-2","Text","Second key fact: battery life.",[],`const Text('• 30 hours total playtime with the charging case; 10-min charge gives 3 hours.')`),
-              T("ap-about-3","Text","Third key fact: microphones for calls.",[],`const Text('• 4-mic array with ENC for clear calls, even outdoors.')`)
-            ])
-          ])
-        ],`Padding(\n  padding: const EdgeInsets.all(12),\n  child: const ProductInfo(),\n)`)
-      ])
-    ],`SingleChildScrollView(\n  child: const ProductContent(),\n)`),
+              T("ap-about-1","Text","First key fact: active noise cancellation.",[],`const Text('• Active noise cancellation blocks up to 98% of ambient noise.')`, "Shows '• Active noise cancellation blocks up to 98% of…'."),
+              T("ap-about-2","Text","Second key fact: battery life.",[],`const Text('• 30 hours total playtime with the charging case; 10-min charge gives 3 hours.')`, "Shows '• 30 hours total playtime with the charging…'."),
+              T("ap-about-3","Text","Third key fact: microphones for calls.",[],`const Text('• 4-mic array with ENC for clear calls, even outdoors.')`, "Shows '• 4-mic array with ENC for clear calls, even…'.")
+            ], undefined, "Stacks '• Active noise cancellation…', '• 30 hours total playtime…' and '• 4-mic array with ENC for…' vertically.")
+          ], undefined, "Stacks 'Wireless Earbuds Pro —…', '★★★★☆ 4.5' and '12,438 ratings' and '₹1,499' and '₹2,999' vertically.")
+        ],`Padding(\n  padding: const EdgeInsets.all(12),\n  child: const ProductInfo(),\n)`, "Pads a column with 12px on every side.")
+      ], undefined, "Stacks a flying image, the earbuds case image and the earbuds single image and a column vertically.")
+    ],`SingleChildScrollView(\n  child: const ProductContent(),\n)`, "Makes a column scrollable."),
     T("ap-buybar","Container","The buy bar is docked at the bottom of the Scaffold, outside the scrolling body, so Add to Cart and Buy Now are always one tap away no matter how far the shopper has scrolled.",[
       T("ap-buy-row","Row","The two purchase actions share the bottom bar equally.",[
         T("ap-add-cart","ElevatedButton","Adds one unit of the product to the cart and shows the cart count badge going up.",[
-          T("ap-add-cart-text","Text","Labels the add-to-cart action.",[],`const Text('Add to Cart')`)
+          T("ap-add-cart-text","Text","Labels the add-to-cart action.",[],`const Text('Add to Cart')`, "Shows 'Add to Cart'.")
         ],`ElevatedButton(\n  onPressed: addToCart,\n  style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFFFD814)),\n  child: const Text('Add to Cart'),\n)`,"Shows a primary action with a filled background and elevation."),
         T("ap-buy-now","ElevatedButton","Skips the cart and goes straight to checkout with this product.",[
-          T("ap-buy-now-text","Text","Labels the buy-now action.",[],`const Text('Buy Now')`)
+          T("ap-buy-now-text","Text","Labels the buy-now action.",[],`const Text('Buy Now')`, "Shows 'Buy Now'.")
         ],`ElevatedButton(\n  onPressed: buyNow,\n  style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFFFA41C)),\n  child: const Text('Buy Now'),\n)`,"Shows a primary action with a filled background and elevation.")
-      ])
-    ],`Container(\n  padding: const EdgeInsets.fromLTRB(12, 10, 12, 14),\n  decoration: const BoxDecoration(\n    border: Border(top: BorderSide(color: Color(0xFFE3E6E6))),\n  ),\n  child: const BuyBar(),\n)`)
-  ],`Scaffold(\n  appBar: const ProductAppBar(),\n  body: const SingleChildScrollView(child: ProductContent()),\n  bottomNavigationBar: const BuyBar(),\n)`),
-  T("ap-gallery","Scaffold","The full-screen gallery is the Hero's destination screen: it shows the same product image large, with a close action and a photo counter. It lives in this same teardown entry because a Hero needs two screens to demonstrate — without the gallery, the Hero on the detail page would be a claim, not a demo.",[
+      ], undefined, "Places a filled button side by side.")
+    ],`Container(\n  padding: const EdgeInsets.fromLTRB(12, 10, 12, 14),\n  decoration: const BoxDecoration(\n    border: Border(top: BorderSide(color: Color(0xFFE3E6E6))),\n  ),\n  child: const BuyBar(),\n)`, "A decorated box holding a filled button.")
+  ],`Scaffold(\n  appBar: const ProductAppBar(),\n  body: const SingleChildScrollView(child: ProductContent()),\n  bottomNavigationBar: const BuyBar(),\n)`, "Frames this screen: a top bar and scrollable content."),
+  T("ap-gallery","Scaffold","It shows the same product image large, with a close action and a photo counter. A Hero needs two screens to demonstrate — without the gallery, the Hero on the detail page would be a claim, not a demo.",[
     T("ap-gallery-appbar","AppBar","The gallery header holds close, the photo position and share in one dark bar.",[
-      T("ap-gallery-close","IconButton","Closes the gallery and flies the image back to the detail page.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.close, color: Colors.white),\n)`),
-      T("ap-gallery-title","Text","Shows which photo of the set is on screen.",[],`const Text(\n  '1 of 4',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),\n)`),
-      T("ap-gallery-share","IconButton","Shares the product photo or link.",[],`IconButton(\n  onPressed: shareProduct,\n  icon: const Icon(Icons.share_outlined, color: Colors.white),\n)`)
-    ],`AppBar(\n  backgroundColor: Colors.black,\n  leading: const CloseButton(color: Colors.white),\n  title: const Text('1 of 4'),\n  actions: [ShareButton()],\n)`),
-    T("ap-gallery-body","Stack","The large photo and the photo counter are layered in the same box.",[
-      T("ap-gallery-hero","Hero","The other end of the shared-element transition: this Hero carries the same tag 'product-image' as the detail page, so Flutter knows the two images are the same widget flying between screens. Tapping the detail photo grows this image to full screen; closing shrinks it back.",[
-        T("ap-gallery-image","Image","Shows the product photo at full-screen size.",[],`Image.asset(\n  'assets/earbuds_main.png',\n  fit: BoxFit.contain,\n)`)
-      ],`Hero(\n  tag: 'product-image',\n  child: Image.asset('assets/earbuds_main.png', fit: BoxFit.contain),\n)`,"Flies one widget between two screens as a shared-element transition."),
-      T("ap-gallery-counter","Positioned","Taught in depth in Amazon — Home; here it pins the '1 / 4' counter to the bottom centre of the gallery, floating over the photo.",[
-        T("ap-gallery-counter-text","Text","Shows the current photo number out of four.",[],`const Text(\n  '1 / 4',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),\n)`)
-      ],`Positioned(\n  bottom: 24,\n  left: 0,\n  right: 0,\n  child: const Center(child: Text('1 / 4')),\n)`,"Positions a child relative to the edges of its Stack.")
-    ])
-  ],`Scaffold(\n  backgroundColor: Colors.black,\n  appBar: const GalleryAppBar(),\n  body: const GalleryBody(),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF9900)),\n  home: const ProductDetailPage(),\n  routes: {'/gallery': (_) => const ProductGalleryPage()},\n)`);
+      T("ap-gallery-close","IconButton","Closes the gallery and flies the image back to the detail page.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.close, color: Colors.white),\n)`, "The close button in Amazon."),
+      T("ap-gallery-title","Text","Shows which photo of the set is on screen.",[],`const Text(\n  '1 of 4',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),\n)`, "Shows '1 of 4'."),
+      T("ap-gallery-share","IconButton","Shares the product photo or link.",[],`IconButton(\n  onPressed: shareProduct,\n  icon: const Icon(Icons.share_outlined, color: Colors.white),\n)`, "The share button in Amazon.")
+    ],`AppBar(\n  backgroundColor: Colors.black,\n  leading: const CloseButton(color: Colors.white),\n  title: const Text('1 of 4'),\n  actions: [ShareButton()],\n)`, "The top bar: '1 of 4' with 2 actions."),
+    T("ap-gallery-body","Stack","The large photo fills the gallery body.",[
+      T("ap-gallery-hero","Hero","This Hero carries the same tag 'product-image' as the detail page, so Flutter knows the two images are one widget flying between screens. Tapping the detail photo grows it to full screen; closing shrinks it back.",[
+        T("ap-gallery-image","Image","Shows the product photo at full-screen size.",[],`Image.asset(\n  'assets/earbuds_main.png',\n  fit: BoxFit.contain,\n)`, "Shows the earbuds main image.")
+      ],`Hero(\n  tag: 'product-image',\n  child: Image.asset('assets/earbuds_main.png', fit: BoxFit.contain),\n)`,"Flies one widget between two screens as a shared-element transition.")
+    ], undefined, "Layers a flying image in one box.")
+  ],`Scaffold(\n  backgroundColor: Colors.black,\n  appBar: const GalleryAppBar(),\n  body: const GalleryBody(),\n)`, "Frames this screen: a top bar and a stack.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF9900)),\n  home: const ProductDetailPage(),\n  routes: {'/gallery': (_) => const ProductGalleryPage()},\n)`, "The app shell for the Product detail screen.");
 
 TEARDOWNS["instagram-reels"].root = T("ir-material","MaterialApp","The Reels screen inherits one shared Instagram theme and navigation context.",[
-  T("ir-scaffold","Scaffold","Scaffold is the frame of the Reels screen: the full-screen vertical feed fills the body and the BottomNavigationBar stays docked below it. The top bar floats over the feed instead of being an AppBar, because Reels is an immersive full-screen view with no fixed header.",[
+  T("ir-scaffold","Scaffold","The full-screen vertical feed fills the body and the BottomNavigationBar stays docked below it. The top bar floats over the feed instead of being an AppBar, because Reels has no fixed header.",[
     T("ir-body","Stack","The vertical feed and the floating top bar are layered in the same box: the PageView fills the screen and the Reels title with its camera action sits on top of it.",[
-      T("ir-reels","PageView","PageView is the vertical swipe between reels: each reel is one full-screen page, and swiping up moves to the next reel while swiping down goes back. This is the vertical case — the direction is what makes it different from a horizontal PageView like a photo carousel — so scrollDirection is Axis.vertical and every page is exactly one screen tall, which is why the feed feels like flipping through videos rather than scrolling a list.",[
+      T("ir-reels","PageView","Each reel is one full-screen page: swipe up for the next reel, down to go back. The direction is vertical — scrollDirection is Axis.vertical and every page is exactly one screen tall.",[
         T("ir-reel-1","Stack","One reel page layers four things in the same full-screen box: the video, the double-tap heart overlay, the action rail on the right, and the caption block at the bottom.",[
-          T("ir-video-1","Image","Shows the first reel's video frame — a gradient poster standing in for the playing video.",[],`Image.asset('assets/reel_flutter.png', fit: BoxFit.cover)`),
-          T("ir-heart-1","AnimatedOpacity","AnimatedOpacity is the double-tap heart: when the reel is double-tapped, the heart's opacity animates from 0.0 to 1.0 over 300ms so the big heart pops in, then fades back out. A plain Opacity widget could only show or hide it instantly; AnimatedOpacity interpolates the fade, which is what makes the pop feel alive instead of blinking.",[
-            T("ir-heart-icon-1","Icon","The big white heart that pops in the middle of the reel on a double-tap.",[],`const Icon(Icons.favorite, size: 84, color: Colors.white)`)
+          T("ir-video-1","Image","Shows the first reel's video frame — a gradient poster standing in for the playing video.",[],`Image.asset('assets/reel_flutter.png', fit: BoxFit.cover)`, "Shows the reel flutter image."),
+          T("ir-heart-1","AnimatedOpacity","When the reel is double-tapped, the heart's opacity animates from 0.0 to 1.0 over 300ms so the big heart pops in, then fades back out. A plain Opacity widget could only show or hide it instantly.",[
+            T("ir-heart-icon-1","Icon","The big white heart that pops in the middle of the reel on a double-tap.",[],`const Icon(Icons.favorite, size: 84, color: Colors.white)`, "Shows the heart icon in Instagram.")
           ],`AnimatedOpacity(\n  opacity: _liked ? 1.0 : 0.0,\n  duration: const Duration(milliseconds: 300),\n  child: const Icon(Icons.favorite, size: 84, color: Colors.white),\n)`,"Fades a child in or out when its opacity changes."),
           T("ir-rail-1","Column","Like, comment, share and the music disc are stacked down the right edge of the reel.",[
-            T("ir-like-1","IconButton","Likes the reel; the count below it goes up by one.",[],`IconButton(\n  onPressed: likeReel,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`),
-            T("ir-like-count-1","Text","Shows how many likes the reel has.",[],`const Text('128K', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-comment-1","IconButton","Opens the comments sheet for this reel.",[],`IconButton(\n  onPressed: openComments,\n  icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),\n)`),
-            T("ir-comment-count-1","Text","Shows how many comments the reel has.",[],`const Text('2,431', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-share-1","IconButton","Shares the reel to a chat or another app.",[],`IconButton(\n  onPressed: shareReel,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`),
-            T("ir-share-count-1","Text","Shows how many times the reel has been shared.",[],`const Text('8,204', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-disc-1","CircleAvatar","The spinning music disc: tapping it opens the audio page for the reel's sound.",[],`const CircleAvatar(\n  radius: 13,\n  backgroundColor: Colors.black54,\n  child: Icon(Icons.music_note, size: 14, color: Colors.white),\n)`)
-          ]),
+            T("ir-like-1","IconButton","Likes the reel; the count below it goes up by one.",[],`IconButton(\n  onPressed: likeReel,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`, "The heart button in Instagram."),
+            T("ir-like-count-1","Text","Shows how many likes the reel has.",[],`const Text('128K', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '128K'."),
+            T("ir-comment-1","IconButton","Opens the comments sheet for this reel.",[],`IconButton(\n  onPressed: openComments,\n  icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),\n)`, "The chat bubble outline button in Instagram."),
+            T("ir-comment-count-1","Text","Shows how many comments the reel has.",[],`const Text('2,431', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '2,431'."),
+            T("ir-share-1","IconButton","Shares the reel to a chat or another app.",[],`IconButton(\n  onPressed: shareReel,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`, "The send button in Instagram."),
+            T("ir-share-count-1","Text","Shows how many times the reel has been shared.",[],`const Text('8,204', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '8,204'."),
+            T("ir-disc-1","CircleAvatar","The spinning music disc: tapping it opens the audio page for the reel's sound.",[],`const CircleAvatar(\n  radius: 13,\n  backgroundColor: Colors.black54,\n  child: Icon(Icons.music_note, size: 14, color: Colors.white),\n)`, "A circular avatar.")
+          ], undefined, "Stacks the heart button, '128K' and the chat bubble outline button vertically."),
           T("ir-caption-1","Column","The creator row, caption and audio row sit at the bottom-left of the reel, over the video.",[
             T("ir-user-row-1","Row","Avatar, username and Follow share the creator line.",[
-              T("ir-user-avatar-1","CircleAvatar","The creator's profile picture.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF1A73E8),\n  child: Text('FF', style: TextStyle(fontSize: 10, color: Colors.white)),\n)`),
-              T("ir-username-1","Text","Shows the reel creator's handle.",[],`const Text(\n  'flutterforward',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
+              T("ir-user-avatar-1","CircleAvatar","The creator's profile picture.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF1A73E8),\n  child: Text('FF', style: TextStyle(fontSize: 10, color: Colors.white)),\n)`, "A circular avatar showing 'FF'."),
+              T("ir-username-1","Text","Shows the reel creator's handle.",[],`const Text(\n  'flutterforward',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'flutterforward' in bold."),
               T("ir-follow-1","OutlinedButton","Follows the creator without leaving the reel.",[
-                T("ir-follow-text-1","Text","Labels the follow action.",[],`const Text('Follow', style: TextStyle(color: Colors.white))`)
-              ],`OutlinedButton(\n  onPressed: followCreator,\n  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white)),\n  child: const Text('Follow'),\n)`,"Shows a secondary action with a visible outline.")
-            ]),
-            T("ir-caption-text-1","Text","The reel's caption, truncated to two lines with more on tap.",[],`const Text(\n  'Build your first Flutter app in a day — full tutorial in bio.',\n  maxLines: 2,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`),
+                T("ir-follow-text-1","Text","Labels the follow action.",[],`const Text('Follow', style: TextStyle(color: Colors.white))`, "Shows 'Follow'.")
+              ],`OutlinedButton(\n  onPressed: followCreator,\n  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white)),\n  child: const Text('Follow'),\n)`,"An outlined 'Follow' button.")
+            ], undefined, "Places a circular avatar, 'flutterforward' and an outlined button side by side."),
+            T("ir-caption-text-1","Text","The reel's caption, truncated to two lines with more on tap.",[],`const Text(\n  'Build your first Flutter app in a day — full tutorial in bio.',\n  maxLines: 2,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`, "Shows 'Build your first Flutter app in a day — full…'."),
             T("ir-audio-row-1","Row","The music note and the audio name share one line under the caption.",[
-              T("ir-audio-icon-1","Icon","A music note marks this row as the reel's audio.",[],`const Icon(Icons.music_note, size: 14, color: Colors.white)`),
-              T("ir-audio-text-1","Text","Names the audio track so viewers can find it.",[],`const Text(\n  'flutterforward • Original audio',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`)
-            ])
-          ])
-        ]),
+              T("ir-audio-icon-1","Icon","A music note marks this row as the reel's audio.",[],`const Icon(Icons.music_note, size: 14, color: Colors.white)`, "Shows the music note icon in Instagram."),
+              T("ir-audio-text-1","Text","Names the audio track so viewers can find it.",[],`const Text(\n  'flutterforward • Original audio',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`, "Shows 'flutterforward • Original audio'.")
+            ], undefined, "Places the music note icon and 'flutterforward • Original…' side by side.")
+          ], undefined, "Stacks a circular avatar and 'flutterforward' and 'Build your first Flutter…' vertically.")
+        ], undefined, "Layers the reel flutter image, a fading widget and the heart button and '128K' in one box."),
         T("ir-reel-2","Stack","The second reel page: same layered structure as the first — video, heart overlay, action rail and caption — with different content.",[
-          T("ir-video-2","Image","Shows the second reel's video frame.",[],`Image.asset('assets/reel_dart.png', fit: BoxFit.cover)`),
+          T("ir-video-2","Image","Shows the second reel's video frame.",[],`Image.asset('assets/reel_dart.png', fit: BoxFit.cover)`, "Shows the reel dart image."),
           T("ir-heart-2","AnimatedOpacity","The double-tap heart for the second reel: it fades in when this reel is double-tapped and out again, exactly like the first reel's heart.",[
-            T("ir-heart-icon-2","Icon","The big white heart that pops in the middle of the second reel on a double-tap.",[],`const Icon(Icons.favorite, size: 84, color: Colors.white)`)
+            T("ir-heart-icon-2","Icon","The big white heart that pops in the middle of the second reel on a double-tap.",[],`const Icon(Icons.favorite, size: 84, color: Colors.white)`, "Shows the heart icon in Instagram.")
           ],`AnimatedOpacity(\n  opacity: _liked ? 1.0 : 0.0,\n  duration: const Duration(milliseconds: 300),\n  child: const Icon(Icons.favorite, size: 84, color: Colors.white),\n)`,"Fades a child in or out when its opacity changes."),
           T("ir-rail-2","Column","Like, comment, share and the music disc for the second reel.",[
-            T("ir-like-2","IconButton","Likes the second reel.",[],`IconButton(\n  onPressed: likeReel,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`),
-            T("ir-like-count-2","Text","Shows how many likes the second reel has.",[],`const Text('86K', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-comment-2","IconButton","Opens the comments sheet for the second reel.",[],`IconButton(\n  onPressed: openComments,\n  icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),\n)`),
-            T("ir-comment-count-2","Text","Shows how many comments the second reel has.",[],`const Text('1,102', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-share-2","IconButton","Shares the second reel.",[],`IconButton(\n  onPressed: shareReel,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`),
-            T("ir-share-count-2","Text","Shows how many times the second reel has been shared.",[],`const Text('3,917', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-disc-2","CircleAvatar","The spinning music disc for the second reel's sound.",[],`const CircleAvatar(\n  radius: 13,\n  backgroundColor: Colors.black54,\n  child: Icon(Icons.music_note, size: 14, color: Colors.white),\n)`)
-          ]),
+            T("ir-like-2","IconButton","Likes the second reel.",[],`IconButton(\n  onPressed: likeReel,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`, "The heart button in Instagram."),
+            T("ir-like-count-2","Text","Shows how many likes the second reel has.",[],`const Text('86K', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '86K'."),
+            T("ir-comment-2","IconButton","Opens the comments sheet for the second reel.",[],`IconButton(\n  onPressed: openComments,\n  icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),\n)`, "The chat bubble outline button in Instagram."),
+            T("ir-comment-count-2","Text","Shows how many comments the second reel has.",[],`const Text('1,102', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '1,102'."),
+            T("ir-share-2","IconButton","Shares the second reel.",[],`IconButton(\n  onPressed: shareReel,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`, "The send button in Instagram."),
+            T("ir-share-count-2","Text","Shows how many times the second reel has been shared.",[],`const Text('3,917', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '3,917'."),
+            T("ir-disc-2","CircleAvatar","The spinning music disc for the second reel's sound.",[],`const CircleAvatar(\n  radius: 13,\n  backgroundColor: Colors.black54,\n  child: Icon(Icons.music_note, size: 14, color: Colors.white),\n)`, "A circular avatar.")
+          ], undefined, "Stacks the heart button, '86K' and the chat bubble outline button vertically."),
           T("ir-caption-2","Column","The creator row, caption and audio row for the second reel.",[
             T("ir-user-row-2","Row","Avatar, username and Follow for the second reel's creator.",[
-              T("ir-user-avatar-2","CircleAvatar","The second creator's profile picture.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF0F9D58),\n  child: Text('CD', style: TextStyle(fontSize: 10, color: Colors.white)),\n)`),
-              T("ir-username-2","Text","Shows the second reel creator's handle.",[],`const Text(\n  'codewithdheeraj',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
+              T("ir-user-avatar-2","CircleAvatar","The second creator's profile picture.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF0F9D58),\n  child: Text('CD', style: TextStyle(fontSize: 10, color: Colors.white)),\n)`, "A circular avatar showing 'CD'."),
+              T("ir-username-2","Text","Shows the second reel creator's handle.",[],`const Text(\n  'codewithdheeraj',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'codewithdheeraj' in bold."),
               T("ir-follow-2","OutlinedButton","Follows the second creator without leaving the reel.",[
-                T("ir-follow-text-2","Text","Labels the follow action.",[],`const Text('Follow', style: TextStyle(color: Colors.white))`)
-              ],`OutlinedButton(\n  onPressed: followCreator,\n  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white)),\n  child: const Text('Follow'),\n)`,"Shows a secondary action with a visible outline.")
-            ]),
-            T("ir-caption-text-2","Text","The second reel's caption.",[],`const Text(\n  'Dart null safety in 60 seconds — save this for later.',\n  maxLines: 2,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`),
+                T("ir-follow-text-2","Text","Labels the follow action.",[],`const Text('Follow', style: TextStyle(color: Colors.white))`, "Shows 'Follow'.")
+              ],`OutlinedButton(\n  onPressed: followCreator,\n  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white)),\n  child: const Text('Follow'),\n)`,"An outlined 'Follow' button.")
+            ], undefined, "Places a circular avatar, 'codewithdheeraj' and an outlined button side by side."),
+            T("ir-caption-text-2","Text","The second reel's caption.",[],`const Text(\n  'Dart null safety in 60 seconds — save this for later.',\n  maxLines: 2,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`, "Shows 'Dart null safety in 60 seconds — save this for…'."),
             T("ir-audio-row-2","Row","The music note and audio name for the second reel.",[
-              T("ir-audio-icon-2","Icon","A music note marks this row as the second reel's audio.",[],`const Icon(Icons.music_note, size: 14, color: Colors.white)`),
-              T("ir-audio-text-2","Text","Names the second reel's audio track.",[],`const Text(\n  'lofi beats • Trending audio',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`)
-            ])
-          ])
-        ]),
+              T("ir-audio-icon-2","Icon","A music note marks this row as the second reel's audio.",[],`const Icon(Icons.music_note, size: 14, color: Colors.white)`, "Shows the music note icon in Instagram."),
+              T("ir-audio-text-2","Text","Names the second reel's audio track.",[],`const Text(\n  'lofi beats • Trending audio',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`, "Shows 'lofi beats • Trending audio'.")
+            ], undefined, "Places the music note icon and 'lofi beats • Trending audio' side by side.")
+          ], undefined, "Stacks a circular avatar and 'codewithdheeraj' and 'Dart null safety in 60…' vertically.")
+        ], undefined, "Layers the reel dart image, a fading widget and the heart button and '86K' in one box."),
         T("ir-reel-3","Stack","The third reel page: same layered structure, different content.",[
-          T("ir-video-3","Image","Shows the third reel's video frame.",[],`Image.asset('assets/reel_ui.png', fit: BoxFit.cover)`),
+          T("ir-video-3","Image","Shows the third reel's video frame.",[],`Image.asset('assets/reel_ui.png', fit: BoxFit.cover)`, "Shows the reel ui image."),
           T("ir-heart-3","AnimatedOpacity","The double-tap heart for the third reel: it fades in when this reel is double-tapped and out again, exactly like the first reel's heart.",[
-            T("ir-heart-icon-3","Icon","The big white heart that pops in the middle of the third reel on a double-tap.",[],`const Icon(Icons.favorite, size: 84, color: Colors.white)`)
+            T("ir-heart-icon-3","Icon","The big white heart that pops in the middle of the third reel on a double-tap.",[],`const Icon(Icons.favorite, size: 84, color: Colors.white)`, "Shows the heart icon in Instagram.")
           ],`AnimatedOpacity(\n  opacity: _liked ? 1.0 : 0.0,\n  duration: const Duration(milliseconds: 300),\n  child: const Icon(Icons.favorite, size: 84, color: Colors.white),\n)`,"Fades a child in or out when its opacity changes."),
           T("ir-rail-3","Column","Like, comment, share and the music disc for the third reel.",[
-            T("ir-like-3","IconButton","Likes the third reel.",[],`IconButton(\n  onPressed: likeReel,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`),
-            T("ir-like-count-3","Text","Shows how many likes the third reel has.",[],`const Text('214K', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-comment-3","IconButton","Opens the comments sheet for the third reel.",[],`IconButton(\n  onPressed: openComments,\n  icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),\n)`),
-            T("ir-comment-count-3","Text","Shows how many comments the third reel has.",[],`const Text('5,830', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-share-3","IconButton","Shares the third reel.",[],`IconButton(\n  onPressed: shareReel,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`),
-            T("ir-share-count-3","Text","Shows how many times the third reel has been shared.",[],`const Text('12,540', style: TextStyle(color: Colors.white, fontSize: 11))`),
-            T("ir-disc-3","CircleAvatar","The spinning music disc for the third reel's sound.",[],`const CircleAvatar(\n  radius: 13,\n  backgroundColor: Colors.black54,\n  child: Icon(Icons.music_note, size: 14, color: Colors.white),\n)`)
-          ]),
+            T("ir-like-3","IconButton","Likes the third reel.",[],`IconButton(\n  onPressed: likeReel,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`, "The heart button in Instagram."),
+            T("ir-like-count-3","Text","Shows how many likes the third reel has.",[],`const Text('214K', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '214K'."),
+            T("ir-comment-3","IconButton","Opens the comments sheet for the third reel.",[],`IconButton(\n  onPressed: openComments,\n  icon: const Icon(Icons.chat_bubble_outline, color: Colors.white),\n)`, "The chat bubble outline button in Instagram."),
+            T("ir-comment-count-3","Text","Shows how many comments the third reel has.",[],`const Text('5,830', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '5,830'."),
+            T("ir-share-3","IconButton","Shares the third reel.",[],`IconButton(\n  onPressed: shareReel,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`, "The send button in Instagram."),
+            T("ir-share-count-3","Text","Shows how many times the third reel has been shared.",[],`const Text('12,540', style: TextStyle(color: Colors.white, fontSize: 11))`, "Shows '12,540'."),
+            T("ir-disc-3","CircleAvatar","The spinning music disc for the third reel's sound.",[],`const CircleAvatar(\n  radius: 13,\n  backgroundColor: Colors.black54,\n  child: Icon(Icons.music_note, size: 14, color: Colors.white),\n)`, "A circular avatar.")
+          ], undefined, "Stacks the heart button, '214K' and the chat bubble outline button vertically."),
           T("ir-caption-3","Column","The creator row, caption and audio row for the third reel.",[
             T("ir-user-row-3","Row","Avatar, username and Follow for the third reel's creator.",[
-              T("ir-user-avatar-3","CircleAvatar","The third creator's profile picture.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF7B1FA2),\n  child: Text('UX', style: TextStyle(fontSize: 10, color: Colors.white)),\n)`),
-              T("ir-username-3","Text","Shows the third reel creator's handle.",[],`const Text(\n  'uidesigndaily',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
+              T("ir-user-avatar-3","CircleAvatar","The third creator's profile picture.",[],`const CircleAvatar(\n  radius: 14,\n  backgroundColor: Color(0xFF7B1FA2),\n  child: Text('UX', style: TextStyle(fontSize: 10, color: Colors.white)),\n)`, "A circular avatar showing 'UX'."),
+              T("ir-username-3","Text","Shows the third reel creator's handle.",[],`const Text(\n  'uidesigndaily',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'uidesigndaily' in bold."),
               T("ir-follow-3","OutlinedButton","Follows the third creator without leaving the reel.",[
-                T("ir-follow-text-3","Text","Labels the follow action.",[],`const Text('Follow', style: TextStyle(color: Colors.white))`)
-              ],`OutlinedButton(\n  onPressed: followCreator,\n  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white)),\n  child: const Text('Follow'),\n)`,"Shows a secondary action with a visible outline.")
-            ]),
-            T("ir-caption-text-3","Text","The third reel's caption.",[],`const Text(\n  '5 layout mistakes every Flutter beginner makes.',\n  maxLines: 2,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`),
+                T("ir-follow-text-3","Text","Labels the follow action.",[],`const Text('Follow', style: TextStyle(color: Colors.white))`, "Shows 'Follow'.")
+              ],`OutlinedButton(\n  onPressed: followCreator,\n  style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.white)),\n  child: const Text('Follow'),\n)`,"An outlined 'Follow' button.")
+            ], undefined, "Places a circular avatar, 'uidesigndaily' and an outlined button side by side."),
+            T("ir-caption-text-3","Text","The third reel's caption.",[],`const Text(\n  '5 layout mistakes every Flutter beginner makes.',\n  maxLines: 2,\n  overflow: TextOverflow.ellipsis,\n  style: TextStyle(color: Colors.white),\n)`, "Shows '5 layout mistakes every Flutter beginner makes.'."),
             T("ir-audio-row-3","Row","The music note and audio name for the third reel.",[
-              T("ir-audio-icon-3","Icon","A music note marks this row as the third reel's audio.",[],`const Icon(Icons.music_note, size: 14, color: Colors.white)`),
-              T("ir-audio-text-3","Text","Names the third reel's audio track.",[],`const Text(\n  'uidesigndaily • Original audio',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`)
-            ])
-          ])
-        ])
+              T("ir-audio-icon-3","Icon","A music note marks this row as the third reel's audio.",[],`const Icon(Icons.music_note, size: 14, color: Colors.white)`, "Shows the music note icon in Instagram."),
+              T("ir-audio-text-3","Text","Names the third reel's audio track.",[],`const Text(\n  'uidesigndaily • Original audio',\n  style: TextStyle(color: Colors.white, fontSize: 12),\n)`, "Shows 'uidesigndaily • Original audio'.")
+            ], undefined, "Places the music note icon and 'uidesigndaily • Original…' side by side.")
+          ], undefined, "Stacks a circular avatar and 'uidesigndaily' and '5 layout mistakes every…' vertically.")
+        ], undefined, "Layers the reel ui image, a fading widget and the heart button and '214K' in one box.")
       ],`PageView(\n  scrollDirection: Axis.vertical,\n  children: const [ReelPage(), ReelPage(), ReelPage()],\n)`),
       T("ir-top-positioned","Positioned","Pins the floating top bar to the top of the screen, over the playing reel.",[
         T("ir-topbar","Row","The Reels title and the camera action share the floating top line.",[
-          T("ir-top-title","Text","Labels the feed as Reels so viewers know where they are.",[],`const Text(\n  'Reels',\n  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),\n)`),
-          T("ir-top-camera","IconButton","Opens the camera to record a new reel.",[],`IconButton(\n  onPressed: openCamera,\n  icon: const Icon(Icons.camera_alt_outlined, color: Colors.white),\n)`)
-        ])
+          T("ir-top-title","Text","Labels the feed as Reels so viewers know where they are.",[],`const Text(\n  'Reels',\n  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),\n)`, "Shows 'Reels' in bold."),
+          T("ir-top-camera","IconButton","Opens the camera to record a new reel.",[],`IconButton(\n  onPressed: openCamera,\n  icon: const Icon(Icons.camera_alt_outlined, color: Colors.white),\n)`, "The camera button in Instagram.")
+        ], undefined, "Places 'Reels' and the camera button side by side.")
       ],`Positioned(\n  top: 0,\n  left: 0,\n  right: 0,\n  child: const ReelsTopBar(),\n)`,"Positions a child relative to the edges of its Stack.")
-    ]),
+    ], undefined, "Layers a swipeable page and a positioned widget in one box."),
     T("ir-bottom","BottomNavigationBar","BottomNavigationBar keeps the five primary Instagram destinations one tap away, with Reels highlighted as the active tab. It stays fixed while the reel feed swipes above it.",[
-      T("ir-nav-home","Icon","Represents the Home destination.",[],`const Icon(Icons.home_outlined, color: Colors.white)`),
-      T("ir-nav-search","Icon","Represents Search and Explore.",[],`const Icon(Icons.search, color: Colors.white)`),
-      T("ir-nav-create","Icon","Represents content creation.",[],`const Icon(Icons.add_box_outlined, color: Colors.white)`),
-      T("ir-nav-reels","Icon","Represents the active Reels destination.",[],`const Icon(Icons.smart_display, color: Colors.white)`),
-      T("ir-nav-profile","CircleAvatar","Represents the active profile destination.",[],`const CircleAvatar(radius: 11, backgroundColor: Color(0xFF1A73E8))`)
-    ],`BottomNavigationBar(\n  currentIndex: 3,\n  type: BottomNavigationBarType.fixed,\n  backgroundColor: Colors.black,\n  items: reelsNavigationItems,\n)`)
-  ],`Scaffold(\n  body: const ReelsFeed(),\n  bottomNavigationBar: const ReelsBottomNav(),\n)`)
-],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const ReelsScreen(),\n)`);
+      T("ir-nav-home","Icon","Represents the Home destination.",[],`const Icon(Icons.home_outlined, color: Colors.white)`, "Shows the home icon in Instagram."),
+      T("ir-nav-search","Icon","Represents Search and Explore.",[],`const Icon(Icons.search, color: Colors.white)`, "Shows the search icon in Instagram."),
+      T("ir-nav-create","Icon","Represents content creation.",[],`const Icon(Icons.add_box_outlined, color: Colors.white)`, "Shows the add icon in Instagram."),
+      T("ir-nav-reels","Icon","Represents the active Reels destination.",[],`const Icon(Icons.smart_display, color: Colors.white)`, "Shows the video icon in Instagram."),
+      T("ir-nav-profile","CircleAvatar","Represents the active profile destination.",[],`const CircleAvatar(radius: 11, backgroundColor: Color(0xFF1A73E8))`, "A circular avatar.")
+    ],`BottomNavigationBar(\n  currentIndex: 3,\n  type: BottomNavigationBarType.fixed,\n  backgroundColor: Colors.black,\n  items: reelsNavigationItems,\n)`, "The bottom tabs for this screen.")
+  ],`Scaffold(\n  body: const ReelsFeed(),\n  bottomNavigationBar: const ReelsBottomNav(),\n)`, "Frames this screen: a stack and a bottom bar.")
+],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const ReelsScreen(),\n)`, "The app shell for the Reels screen.");
 
 TEARDOWNS["amazon-checkout"].root = T("ac-material","MaterialApp","The Amazon checkout screen inherits one shared theme and navigation context.",[
   T("ac-scaffold","Scaffold","The app bar, the scrolling checkout content, and the place-order button share one stable page frame.",[
     T("ac-appbar","AppBar","The dark Amazon bar stays pinned above the checkout, so the back action and the Checkout title are always visible while the steps scroll underneath.",[
-      T("ac-back","IconButton","Returns to the cart without placing the order.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back, color: Colors.white),\n  onPressed: () => Navigator.pop(context),\n)`),
-      T("ac-title","Text","It labels the screen so the shopper knows this is checkout, not the cart.",[],`const Text(\n  'Checkout',\n  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),\n)`)
-    ],`AppBar(\n  backgroundColor: const Color(0xFF131921),\n  leading: const BackButton(color: Colors.white),\n  title: const Text('Checkout', style: TextStyle(color: Colors.white)),\n)`),
+      T("ac-back","IconButton","Returns to the cart without placing the order.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back, color: Colors.white),\n  onPressed: () => Navigator.pop(context),\n)`, "The back button in Amazon."),
+      T("ac-title","Text","It labels the screen so the shopper knows this is checkout, not the cart.",[],`const Text(\n  'Checkout',\n  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),\n)`, "Shows 'Checkout'.")
+    ],`AppBar(\n  backgroundColor: const Color(0xFF131921),\n  leading: const BackButton(color: Colors.white),\n  title: const Text('Checkout', style: TextStyle(color: Colors.white)),\n)`, "The top bar: 'Checkout' with 1 action."),
     T("ac-body","ListView","Address, payment, review, the order items, and the price summary scroll as one checkout page, so the shopper can move through the steps without leaving the screen.",[
-      T("ac-stepper","Stepper","Stepper turns a long checkout into numbered steps — Address, Payment, Review — so the shopper always knows where they are and what is left. Each Step holds its own content, and the Stepper tracks which step is complete, which is active, and which is still ahead. Amazon uses it because a single giant form would overwhelm; steps let the shopper finish one decision at a time and go back to fix one without losing the rest.",[
+      T("ac-stepper","Stepper","It turns a long checkout into numbered steps — Address, Payment, Review — so the shopper always knows where they are and what is left. Each Step holds its own content.",[
         T("ac-step-address","Step","The first step is already done: the delivery address was picked on the cart screen, so it shows as complete with a check instead of asking again.",[
-          T("ac-step-address-title","Text","Names the first step of the checkout.",[],`const Text('Delivery address')`),
-          T("ac-step-address-detail","Text","Shows the saved address so the shopper can spot a wrong one before paying.",[],`const Text(\n  'Dheeraj Kumar · MG Road, Jaipur 302001',\n  style: TextStyle(color: Colors.grey),\n)`)
+          T("ac-step-address-title","Text","Names the first step of the checkout.",[],`const Text('Delivery address')`, "Shows 'Delivery address'."),
+          T("ac-step-address-detail","Text","Shows the saved address so the shopper can spot a wrong one before paying.",[],`const Text(\n  'Dheeraj Kumar · MG Road, Jaipur 302001',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Dheeraj Kumar · MG Road, Jaipur 302001'.")
         ],`Step(\n  title: const Text('Delivery address'),\n  content: const Text('Dheeraj Kumar, MG Road, Jaipur 302001'),\n  state: StepState.complete,\n)`,"One step inside a Stepper: a title, content, and a state (complete, active, or upcoming)."),
         T("ac-step-payment","Step","This is the active step: the shopper is choosing how to pay right now, so its content is open while the review step below stays collapsed.",[
-          T("ac-step-payment-title","Text","Names the step where the shopper picks a payment method.",[],`const Text('Payment method')`),
+          T("ac-step-payment-title","Text","Names the step where the shopper picks a payment method.",[],`const Text('Payment method')`, "Shows 'Payment method'."),
           T("ac-step-payment-options","Column","The three payment choices are stacked vertically inside the step, so each gets a full-width row that is easy to tap.",[
             T("ac-pay-upi-row","Row","One payment option: the Radio and its label share a row.",[
-              T("ac-pay-upi","Radio","Radio is taught in depth in Settings — Appearance, where it picks the app theme. Here it does the same job for money: each payment method is one Radio in a single group, so picking UPI un-picks the card and cash on delivery automatically — the group guarantees exactly one payment method is chosen.",[],`Radio<String>(\n  value: 'upi',\n  groupValue: paymentMethod,\n  onChanged: selectPayment,\n)`,"One option in a mutually-exclusive group. Taught in depth in Settings — Appearance; here it picks one payment method."),
-              T("ac-pay-upi-label","Text","Names the UPI option and shows which UPI id will be charged.",[],`const Text('UPI · dheeraj@okhdfc')`)
-            ]),
+              T("ac-pay-upi","Radio","Here it does the same job for money: each payment method is one Radio in a single group, so picking UPI un-picks the card and cash on delivery automatically.",[],`Radio<String>(\n  value: 'upi',\n  groupValue: paymentMethod,\n  onChanged: selectPayment,\n)`,"One option in a mutually-exclusive group. Taught in depth in Settings — Appearance; here it picks one payment method."),
+              T("ac-pay-upi-label","Text","Names the UPI option and shows which UPI id will be charged.",[],`const Text('UPI · dheeraj@okhdfc')`, "Shows 'UPI · dheeraj@okhdfc'.")
+            ], undefined, "Places a radio option and 'UPI · dheeraj@okhdfc' side by side."),
             T("ac-pay-card-row","Row","One payment option: the Radio and its label share a row.",[
-              T("ac-pay-card","Radio","Radio is taught in depth in Settings — Appearance, where it picks the app theme. Here it is the card option in the same payment group: selecting it clears the UPI choice, because only one Radio in a group can be selected at a time.",[],`Radio<String>(\n  value: 'card',\n  groupValue: paymentMethod,\n  onChanged: selectPayment,\n)`,"One option in a mutually-exclusive group. Taught in depth in Settings — Appearance; here it picks one payment method."),
-              T("ac-pay-card-label","Text","Names the saved card option, showing only its last four digits.",[],`const Text('Card · HDFC •••• 4242')`)
-            ]),
+              T("ac-pay-card","Radio","Here it is the card option in the same payment group: selecting it clears the UPI choice, because only one Radio in a group can be selected at a time.",[],`Radio<String>(\n  value: 'card',\n  groupValue: paymentMethod,\n  onChanged: selectPayment,\n)`,"One option in a mutually-exclusive group. Taught in depth in Settings — Appearance; here it picks one payment method."),
+              T("ac-pay-card-label","Text","Names the saved card option, showing only its last four digits.",[],`const Text('Card · HDFC •••• 4242')`, "Shows 'Card · HDFC •••• 4242'.")
+            ], undefined, "Places a radio option and 'Card · HDFC •••• 4242' side by side."),
             T("ac-pay-cod-row","Row","One payment option: the Radio and its label share a row.",[
-              T("ac-pay-cod","Radio","Radio is taught in depth in Settings — Appearance, where it picks the app theme. Here it is the cash-on-delivery option in the same payment group: picking it means no online payment happens at all.",[],`Radio<String>(\n  value: 'cod',\n  groupValue: paymentMethod,\n  onChanged: selectPayment,\n)`,"One option in a mutually-exclusive group. Taught in depth in Settings — Appearance; here it picks one payment method."),
-              T("ac-pay-cod-label","Text","Names the pay-in-cash option.",[],`const Text('Cash on delivery')`)
-            ])
-          ])
+              T("ac-pay-cod","Radio","Here it is the cash-on-delivery option in the same payment group: picking it means no online payment happens at all.",[],`Radio<String>(\n  value: 'cod',\n  groupValue: paymentMethod,\n  onChanged: selectPayment,\n)`,"One option in a mutually-exclusive group. Taught in depth in Settings — Appearance; here it picks one payment method."),
+              T("ac-pay-cod-label","Text","Names the pay-in-cash option.",[],`const Text('Cash on delivery')`, "Shows 'Cash on delivery'.")
+            ], undefined, "Places a radio option and 'Cash on delivery' side by side.")
+          ], undefined, "Stacks a radio option and 'UPI · dheeraj@okhdfc' and a radio option and 'Card · HDFC •••• 4242' vertically.")
         ],`Step(\n  title: const Text('Payment method'),\n  content: const PaymentOptions(),\n  isActive: true,\n)`,"One step inside a Stepper: a title, content, and a state (complete, active, or upcoming)."),
         T("ac-step-review","Step","The last step stays collapsed until payment is chosen: it will show the final order summary for one last check before the order is placed.",[
-          T("ac-step-review-title","Text","Names the final step of the checkout.",[],`const Text('Review items')`),
-          T("ac-step-review-detail","Text","Previews what the review step will confirm: how many items and when they arrive.",[],`const Text(\n  '2 items · arrives Thu, 12 Nov',\n  style: TextStyle(color: Colors.grey),\n)`)
+          T("ac-step-review-title","Text","Names the final step of the checkout.",[],`const Text('Review items')`, "Shows 'Review items'."),
+          T("ac-step-review-detail","Text","Previews what the review step will confirm: how many items and when they arrive.",[],`const Text(\n  '2 items · arrives Thu, 12 Nov',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows '2 items · arrives Thu, 12 Nov'.")
         ],`Step(\n  title: const Text('Review items'),\n  content: const Text('2 items · arrives Thu, 12 Nov'),\n)`,"One step inside a Stepper: a title, content, and a state (complete, active, or upcoming).")
       ],`Stepper(\n  currentStep: 1,\n  steps: const [\n    Step(\n      title: Text('Delivery address'),\n      content: Text('Dheeraj Kumar, MG Road, Jaipur 302001'),\n      state: StepState.complete,\n    ),\n    Step(\n      title: Text('Payment method'),\n      content: PaymentOptions(),\n      isActive: true,\n    ),\n    Step(\n      title: Text('Review items'),\n      content: Text('2 items · arrives Thu, 12 Nov'),\n    ),\n  ],\n  onStepContinue: goToNextStep,\n)`,"A numbered multi-step flow: one step at a time, with a clear sense of progress."),
-      T("ac-cart-header","Text","Introduces the items being bought, below the steps.",[],`const Text(\n  'Your order',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`),
+      T("ac-cart-header","Text","Introduces the items being bought, below the steps.",[],`const Text(\n  'Your order',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`, "Shows 'Your order' in bold."),
       T("ac-item-1","Card","One item reads as a single card: its photo, name, seller, and price stay grouped so the shopper can check each item before paying.",[
         T("ac-item-1-row","Row","Photo on the left, details on the right, in one horizontal row.",[
-          T("ac-item-1-image","Image","Shows the product photo so the shopper can confirm it is the right item.",[],`Image.asset(\n  'assets/earbuds_pro.png',\n  width: 64,\n  height: 64,\n  fit: BoxFit.cover,\n)`),
+          T("ac-item-1-image","Image","Shows the product photo so the shopper can confirm it is the right item.",[],`Image.asset(\n  'assets/earbuds_pro.png',\n  width: 64,\n  height: 64,\n  fit: BoxFit.cover,\n)`, "Shows the earbuds pro image."),
           T("ac-item-1-col","Column","Name, seller, and price are stacked beside the photo.",[
-            T("ac-item-1-name","Text","Shows the product name.",[],`const Text(\n  'Wireless Earbuds Pro',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("ac-item-1-meta","Text","Shows the colour and who is selling it.",[],`const Text(\n  'Black · Sold by Cloudtail',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`),
+            T("ac-item-1-name","Text","Shows the product name.",[],`const Text(\n  'Wireless Earbuds Pro',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Wireless Earbuds Pro' in bold."),
+            T("ac-item-1-meta","Text","Shows the colour and who is selling it.",[],`const Text(\n  'Black · Sold by Clicktech Retail',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Shows 'Black · Sold by Clicktech Retail'."),
             T("ac-item-1-price-row","Row","Price and quantity sit side by side under the name.",[
-              T("ac-item-1-price","Text","Shows what this item costs.",[],`const Text(\n  '₹1,499',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`),
-              T("ac-item-1-qty","Text","Shows how many of this item are in the order.",[],`const Text(\n  'Qty: 1',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`)
-            ])
-          ])
-        ])
-      ]),
+              T("ac-item-1-price","Text","Shows what this item costs.",[],`const Text(\n  '₹1,499',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹1,499' in bold."),
+              T("ac-item-1-qty","Text","Shows how many of this item are in the order.",[],`const Text(\n  'Qty: 1',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Shows 'Qty: 1'.")
+            ], undefined, "Places '₹1,499' and 'Qty: 1' side by side.")
+          ], undefined, "Stacks 'Wireless Earbuds Pro', 'Black · Sold by Clicktech…' and '₹1,499' and 'Qty: 1' vertically.")
+        ], undefined, "Places the earbuds pro image and 'Wireless Earbuds Pro' and 'Black · Sold by Clicktech…' side by side.")
+      ], undefined, "Groups the earbuds pro image and 'Wireless Earbuds Pro' and 'Black · Sold by Clicktech…' on one card."),
       T("ac-item-2","Card","The second item gets its own card, identical in shape to the first, so the order reads as a list of equal items.",[
         T("ac-item-2-row","Row","Photo on the left, details on the right, in one horizontal row.",[
-          T("ac-item-2-image","Image","Shows the product photo so the shopper can confirm it is the right item.",[],`Image.asset(\n  'assets/backpack_32l.png',\n  width: 64,\n  height: 64,\n  fit: BoxFit.cover,\n)`),
+          T("ac-item-2-image","Image","Shows the product photo so the shopper can confirm it is the right item.",[],`Image.asset(\n  'assets/backpack_32l.png',\n  width: 64,\n  height: 64,\n  fit: BoxFit.cover,\n)`, "Shows the backpack 32l image."),
           T("ac-item-2-col","Column","Name, seller, and price are stacked beside the photo.",[
-            T("ac-item-2-name","Text","Shows the product name.",[],`const Text(\n  'Travel Backpack 32L',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("ac-item-2-meta","Text","Shows the colour and who is selling it.",[],`const Text(\n  'Grey · Sold by Appario',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`),
+            T("ac-item-2-name","Text","Shows the product name.",[],`const Text(\n  'Travel Backpack 32L',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Travel Backpack 32L' in bold."),
+            T("ac-item-2-meta","Text","Shows the colour and who is selling it.",[],`const Text(\n  'Grey · Sold by Cocoblu Retail',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Shows 'Grey · Sold by Cocoblu Retail'."),
             T("ac-item-2-price-row","Row","Price and quantity sit side by side under the name.",[
-              T("ac-item-2-price","Text","Shows what this item costs.",[],`const Text(\n  '₹899',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`),
-              T("ac-item-2-qty","Text","Shows how many of this item are in the order.",[],`const Text(\n  'Qty: 1',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`)
-            ])
-          ])
-        ])
-      ]),
+              T("ac-item-2-price","Text","Shows what this item costs.",[],`const Text(\n  '₹899',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹899' in bold."),
+              T("ac-item-2-qty","Text","Shows how many of this item are in the order.",[],`const Text(\n  'Qty: 1',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Shows 'Qty: 1'.")
+            ], undefined, "Places '₹899' and 'Qty: 1' side by side.")
+          ], undefined, "Stacks 'Travel Backpack 32L', 'Grey · Sold by Cocoblu…' and '₹899' and 'Qty: 1' vertically.")
+        ], undefined, "Places the backpack 32l image and 'Travel Backpack 32L' and 'Grey · Sold by Cocoblu…' side by side.")
+      ], undefined, "Groups the backpack 32l image and 'Travel Backpack 32L' and 'Grey · Sold by Cocoblu…' on one card."),
       T("ac-gift-row","Row","The gift tick box and its label share one row under the items.",[
-        T("ac-gift-checkbox","Checkbox","Checkbox is taught in depth in Tasks — Task list, where it marks a task complete. Here it is a single independent choice: ticking it marks this order as a gift, without affecting anything else on the screen.",[],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => isGift = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it marks the order as a gift."),
-        T("ac-gift-label","Text","Labels the gift option.",[],`const Text('This order is a gift')`)
-      ]),
+        T("ac-gift-checkbox","Checkbox","A single independent choice: ticking it marks this order as a gift, without affecting anything else on the screen.",[],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => isGift = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it marks the order as a gift."),
+        T("ac-gift-label","Text","Labels the gift option.",[],`const Text('This order is a gift')`, "Shows 'This order is a gift'.")
+      ], undefined, "Places a tick box and 'This order is a gift' side by side."),
       T("ac-summary-card","Card","The price breakdown sits on its own raised card so the final total is unmissable before the order button.",[
         T("ac-summary-col","Column","Subtotal, delivery, divider, and total are stacked in reading order.",[
           T("ac-summary-subtotal-row","Row","Label on the left, amount on the right.",[
-            T("ac-summary-subtotal-label","Text","Labels the items subtotal.",[],`const Text('Subtotal')`),
-            T("ac-summary-subtotal-value","Text","Shows the items total before delivery.",[],`const Text(\n  '₹2,398',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`)
-          ]),
+            T("ac-summary-subtotal-label","Text","Labels the items subtotal.",[],`const Text('Subtotal')`, "Shows 'Subtotal'."),
+            T("ac-summary-subtotal-value","Text","Shows the items total before delivery.",[],`const Text(\n  '₹2,398',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Shows '₹2,398'.")
+          ], undefined, "Places 'Subtotal' and '₹2,398' side by side."),
           T("ac-summary-delivery-row","Row","Label on the left, amount on the right.",[
-            T("ac-summary-delivery-label","Text","Labels the delivery charge.",[],`const Text('Delivery')`),
-            T("ac-summary-delivery-value","Text","Shows delivery is free for this order.",[],`const Text(\n  'FREE',\n  style: TextStyle(color: Color(0xFF067D62), fontWeight: FontWeight.w600),\n)`)
-          ]),
-          T("ac-summary-divider","Divider","Separates the charges above from the final total below.",[],`const Divider(height: 1)`,"A thin horizontal line."),
+            T("ac-summary-delivery-label","Text","Labels the delivery charge.",[],`const Text('Delivery')`, "Shows 'Delivery'."),
+            T("ac-summary-delivery-value","Text","Shows delivery is free for this order.",[],`const Text(\n  'FREE',\n  style: TextStyle(color: Color(0xFF067D62), fontWeight: FontWeight.w600),\n)`, "Shows 'FREE'.")
+          ], undefined, "Places 'Delivery' and 'FREE' side by side."),
+          T("ac-summary-divider","Divider","Separates the charges above from the final total below.",[],`const Divider(height: 1)`,"A hairline rule between the charges and the final total."),
           T("ac-summary-total-row","Row","Label on the left, amount on the right, both bold.",[
-            T("ac-summary-total-label","Text","Labels the final amount to pay.",[],`const Text(\n  'Order total',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`),
-            T("ac-summary-total-value","Text","Shows the final amount to pay.",[],`const Text(\n  '₹2,398',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`)
-          ])
-        ])
-      ]),
+            T("ac-summary-total-label","Text","Labels the final amount to pay.",[],`const Text(\n  'Order total',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows 'Order total' in bold."),
+            T("ac-summary-total-value","Text","Shows the final amount to pay.",[],`const Text(\n  '₹2,398',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '₹2,398' in bold.")
+          ], undefined, "Places 'Order total' and '₹2,398' side by side.")
+        ], undefined, "Stacks 'Subtotal' and '₹2,398', 'Delivery' and 'FREE' and a divider vertically.")
+      ], undefined, "Groups 'Subtotal' and '₹2,398', 'Delivery' and 'FREE' and a divider on one card."),
       T("ac-place-order","ElevatedButton","The one primary action of the whole screen: it places the order with the chosen address and payment method. It is the only filled button on the page, so the eye lands on it last and the finger knows where to go.",[
-        T("ac-place-order-label","Text","Labels the order action.",[],`const Text('Place order')`)
+        T("ac-place-order-label","Text","Labels the order action.",[],`const Text('Place order')`, "Shows 'Place order'.")
       ],`ElevatedButton(\n  onPressed: placeOrder,\n  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFFD814)),\n  child: const Text('Place order'),\n)`,"Shows a primary action with a filled background and elevation."),
       T("ac-secure-row","Row","The lock icon and the security note share one reassuring line under the button.",[
-        T("ac-secure-icon","Icon","The lock marks the checkout as secure before the shopper pays.",[],`const Icon(Icons.lock, color: Color(0xFF067D62), size: 16)`),
-        T("ac-secure-text","Text","Reassures the shopper that payment details are encrypted.",[],`const Text(\n  'Secure checkout · 256-bit SSL encryption',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`)
-      ])
-    ])
-  ])
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF9900)),\n  home: const CheckoutScreen(),\n)`);
+        T("ac-secure-icon","Icon","The lock marks the checkout as secure before the shopper pays.",[],`const Icon(Icons.lock, color: Color(0xFF067D62), size: 16)`, "Shows the lock icon in Amazon."),
+        T("ac-secure-text","Text","Reassures the shopper that payment details are encrypted.",[],`const Text(\n  'Secure checkout · 256-bit SSL encryption',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Shows 'Secure checkout · 256-bit SSL encryption'.")
+      ], undefined, "Places the lock icon and 'Secure checkout · 256-bit…' side by side.")
+    ], undefined, "A scrolling list of 8 items.")
+  ], undefined, "Frames this screen: a top bar and a scrolling list.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF9900)),\n  home: const CheckoutScreen(),\n)`, "The app shell for the Cart & Checkout screen.");
 
-TEARDOWNS["settings-appearance"].root = T("sa-scaffold","Scaffold","Scaffold is the frame of the page: it holds the Appearance app bar on top and the scrolling option groups in its body. Without it, the header and the groups would be separate widgets with nothing keeping them aligned.",[
+TEARDOWNS["settings-appearance"].root = T("sa-material","MaterialApp","The Appearance screen runs under one shared Material theme and navigation context.",[
+  T("sa-scaffold","Scaffold","Scaffold is the frame of the page: it holds the Appearance app bar on top and the scrolling option groups in its body. Without it, the header and the groups would be separate widgets with nothing keeping them aligned.",[
   T("sa-appbar","AppBar","AppBar builds the top bar and pins it above the scrolling content, so the title and back action stay visible while the option groups scroll underneath. It tells the user where they are and offers one-tap exit back to the settings list.",[
     T("sa-back","IconButton","The back chevron pops this route off the navigation stack.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back),\n  onPressed: () => Navigator.pop(context),\n)`, "A tappable icon that runs an action."),
-    T("sa-title","Text","It labels the screen so the user knows these are the appearance settings.",[],`const Text(\n  'Appearance',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen.")
+    T("sa-title","Text","It labels the screen so the user knows these are the appearance settings.",[],`const Text(\n  'Appearance',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),\n)`,"Shows 'Appearance'.")
   ],`AppBar(\n  leading: const BackButton(),\n  title: const Text('Appearance'),\n)`, "Builds the top bar with a title and a leading back action."),
   T("sa-body","ListView","ListView lays the theme group, the language group, the text-size group, and the preview out in one scrollable vertical list, so every appearance option is reachable on a small screen while the app bar stays put.",[
-    T("sa-theme-header","Text","The small-caps group label scans like a native settings section.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('THEME', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sa-theme-header","Text","The small-caps group label scans like a native settings section.",[],`const Text('THEME', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'THEME'."),
     T("sa-theme-group","Container","It groups the three theme rows into one rounded section, so the mutually-exclusive choice reads as a single question with three answers.",[
       T("sa-theme-col","Column","The theme rows and their dividers are stacked inside the group.",[
         T("sa-theme-light-row","Row","One theme option: the Radio and its two-line label share a row.",[
-          T("sa-radio-light","Radio","Radio is the widget for a choice where only one answer can win. The three theme options share one groupValue — themeMode — so selecting Dark automatically clears Light and System default; Flutter enforces the mutual exclusion, the screen never has to. That is why a settings screen uses Radio instead of three separate Switches, which could all be on at once and contradict each other.",[],`Radio<ThemeMode>(\n  value: ThemeMode.light,\n  groupValue: themeMode,\n  onChanged: selectTheme,\n)`,"One option in a mutually-exclusive group — only one Radio in the group can be selected."),
-          T("sa-radio-light-label","Text","Names the light theme option.",[],`const Text(\n  'Light',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sa-radio-light-sub","Text","Explains what the light theme looks like.",[],`const Text(\n  'Bright background, dark text',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
-        ]),
-        T("sa-div1","Divider","It separates the theme rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A thin horizontal line."),
+          T("sa-radio-light","Radio","The three theme options share one groupValue — themeMode — so selecting Dark clears Light and System default. Settings use Radio instead of three Switches, which could all be on at once.",[],`Radio<ThemeMode>(\n  value: ThemeMode.light,\n  groupValue: themeMode,\n  onChanged: selectTheme,\n)`,"One option in a mutually-exclusive group — only one Radio in the group can be selected."),
+          T("sa-radio-light-label","Text","Names the light theme option.",[],`const Text(\n  'Light',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Light'."),
+          T("sa-radio-light-sub","Text","Explains what the light theme looks like.",[],`const Text(\n  'Bright background, dark text',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Bright background, dark text'.")
+        ], undefined, "Places a radio option, 'Light' and 'Bright background, dark text' side by side."),
+        T("sa-div1","Divider","It separates the theme rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A hairline rule between the theme rows in this group."),
         T("sa-theme-dark-row","Row","One theme option: the Radio and its two-line label share a row.",[
-          T("sa-radio-dark","Radio","The dark option in the same theme group: it shares the groupValue with Light and System default, so selecting it clears the other two. Radio is the right control here because the app can only ever be in one theme at a time.",[],`Radio<ThemeMode>(\n  value: ThemeMode.dark,\n  groupValue: themeMode,\n  onChanged: selectTheme,\n)`,"One option in a mutually-exclusive group — only one Radio in the group can be selected."),
-          T("sa-radio-dark-label","Text","Names the dark theme option.",[],`const Text(\n  'Dark',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sa-radio-dark-sub","Text","Explains what the dark theme looks like.",[],`const Text(\n  'Dark background, light text',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
-        ]),
-        T("sa-div2","Divider","It separates the theme rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A thin horizontal line."),
+          T("sa-radio-dark","Radio","The dark option in the same theme group: it shares the groupValue with Light and System default, so selecting it clears the other two.",[],`Radio<ThemeMode>(\n  value: ThemeMode.dark,\n  groupValue: themeMode,\n  onChanged: selectTheme,\n)`,"One option in a mutually-exclusive group — only one Radio in the group can be selected."),
+          T("sa-radio-dark-label","Text","Names the dark theme option.",[],`const Text(\n  'Dark',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Dark'."),
+          T("sa-radio-dark-sub","Text","Explains what the dark theme looks like.",[],`const Text(\n  'Dark background, light text',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Dark background, light text'.")
+        ], undefined, "Places a radio option, 'Dark' and 'Dark background, light text' side by side."),
+        T("sa-div2","Divider","It separates the theme rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A hairline rule between the theme rows in this group."),
         T("sa-theme-system-row","Row","One theme option: the Radio and its two-line label share a row.",[
           T("sa-radio-system","Radio","The system option in the same theme group: it hands the choice to the phone, so the app follows light or dark automatically. It is still one Radio in the group — choosing it clears Light and Dark.",[],`Radio<ThemeMode>(\n  value: ThemeMode.system,\n  groupValue: themeMode,\n  onChanged: selectTheme,\n)`,"One option in a mutually-exclusive group — only one Radio in the group can be selected."),
-          T("sa-radio-system-label","Text","Names the system-default theme option.",[],`const Text(\n  'System default',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sa-radio-system-sub","Text","Explains that the phone decides the theme.",[],`const Text(\n  'Follows your phone\\'s theme',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
-        ])
-      ])
+          T("sa-radio-system-label","Text","Names the system-default theme option.",[],`const Text(\n  'System default',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'System default'."),
+          T("sa-radio-system-sub","Text","Explains that the phone decides the theme.",[],`const Text(\n  'Follows your phone\\'s theme',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Follows your phone's theme'.")
+        ], undefined, "Places a radio option, 'System default' and 'Follows your phone's theme' side by side.")
+      ], undefined, "Stacks a radio option and 'Light', a divider and a radio option and 'Dark' vertically.")
     ],`Container(\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(16),\n  ),\n  child: const Column(\n    children: [LightThemeRow(), Divider(), DarkThemeRow(), Divider(), SystemThemeRow()],\n  ),\n)`, "A box that can hold padding, color, and decoration."),
-    T("sa-lang-header","Text","The group label separates the language picker from the theme rows.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('LANGUAGE', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sa-lang-header","Text","The group label separates the language picker from the theme rows.",[],`const Text('LANGUAGE', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'LANGUAGE'."),
     T("sa-lang-group","Container","It wraps the language row in the same rounded section style as the theme group.",[
       T("sa-lang-row","Row","Icon, label column, and the dropdown share one row: the label explains the setting, the dropdown shows the current language.",[
         T("sa-lang-icon","Icon","The globe marks this as the locale setting.",[],`const Icon(Icons.language_outlined, color: Color(0xFF5B5BD6))`, "Draws a Material icon glyph."),
         T("sa-lang-label-col","Column","It puts the label above the explanation.",[
-          T("sa-lang-label","Text","Names the language setting.",[],`const Text(\n  'App language',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sa-lang-sub","Text","Explains what the language choice changes.",[],`const Text(\n  'Language for menus and buttons',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
-        ]),
-        T("sa-lang-dropdown","DropdownButton","DropdownButton keeps a long list of choices behind one compact button, so the language picker costs a single row instead of a whole screen. Tapping it opens a menu of every language; picking one closes the menu and updates the button's value. It fits settings screens because the current choice stays visible at all times while the alternatives stay one tap away.",[
-          T("sa-lang-opt-en","Text","The English option in the language menu; it is the current choice.",[],`const Text('English')`, "Renders a styled string on screen."),
-          T("sa-lang-opt-hi","Text","The Hindi option in the language menu.",[],`const Text('हिन्दी')`, "Renders a styled string on screen."),
-          T("sa-lang-opt-es","Text","The Spanish option in the language menu.",[],`const Text('Español')`, "Renders a styled string on screen.")
+          T("sa-lang-label","Text","Names the language setting.",[],`const Text(\n  'App language',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'App language'."),
+          T("sa-lang-sub","Text","Explains what the language choice changes.",[],`const Text(\n  'Language for menus and buttons',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Language for menus and buttons'.")
+        ], undefined, "Stacks 'App language' and 'Language for menus and…' vertically."),
+        T("sa-lang-dropdown","DropdownButton","It keeps a long list of choices behind one compact button, so the language picker costs a single row instead of a whole screen. Tapping it opens a menu of every language; picking one closes the menu and updates the value.",[
+          T("sa-lang-opt-en","Text","The English option in the language menu; it is the current choice.",[],`const Text('English')`,"Shows 'English'."),
+          T("sa-lang-opt-hi","Text","The Hindi option in the language menu.",[],`const Text('हिन्दी')`,"Shows 'हिन्दी'."),
+          T("sa-lang-opt-es","Text","The Spanish option in the language menu.",[],`const Text('Español')`,"Shows 'Español'.")
         ],`DropdownButton<String>(\n  value: 'en',\n  items: const [\n    DropdownMenuItem(value: 'en', child: Text('English')),\n    DropdownMenuItem(value: 'hi', child: Text('हिन्दी')),\n    DropdownMenuItem(value: 'es', child: Text('Español')),\n  ],\n  onChanged: selectLanguage,\n)`,"A compact button that opens a menu to pick one value from a list.")
-      ])
+      ], undefined, "Places the language icon, 'App language' and 'Language for menus and…' and a dropdown side by side.")
     ],`Container(\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(16),\n  ),\n  child: const LanguageRow(),\n)`, "A box that can hold padding, color, and decoration."),
-    T("sa-textsize-header","Text","The group label separates the text-size row from the language row.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('TEXT SIZE', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sa-textsize-header","Text","The group label separates the text-size row from the language row.",[],`const Text('TEXT SIZE', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'TEXT SIZE'."),
     T("sa-textsize-group","Container","It wraps the text-size row in the same rounded section style.",[
       T("sa-textsize-row","Row","Icon, label column, and the current size share one row.",[
         T("sa-textsize-icon","Icon","The text icon marks this as the readability setting.",[],`const Icon(Icons.text_fields_outlined, color: Color(0xFF5B5BD6))`, "Draws a Material icon glyph."),
         T("sa-textsize-col","Column","It puts the label above the explanation.",[
-          T("sa-textsize-label","Text","Names the text-size setting.",[],`const Text(\n  'Text size',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sa-textsize-sub","Text","Explains why a bigger size helps.",[],`const Text(\n  'Larger text is easier to read',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
-        ]),
-        T("sa-textsize-value","Text","Shows the current text size without opening the picker.",[],`const Text(\n  'Medium',\n  style: TextStyle(color: Colors.grey),\n)`, "Renders a styled string on screen.")
-      ])
+          T("sa-textsize-label","Text","Names the text-size setting.",[],`const Text(\n  'Text size',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Text size'."),
+          T("sa-textsize-sub","Text","Explains why a bigger size helps.",[],`const Text(\n  'Larger text is easier to read',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Larger text is easier to read'.")
+        ], undefined, "Stacks 'Text size' and 'Larger text is easier to…' vertically."),
+        T("sa-textsize-value","Text","Shows the current text size without opening the picker.",[],`const Text(\n  'Medium',\n  style: TextStyle(color: Colors.grey),\n)`,"Shows 'Medium'.")
+      ], undefined, "Places the text size icon, 'Text size' and 'Larger text is easier to…' and 'Medium' side by side.")
     ],`Container(\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(16),\n  ),\n  child: const TextSizeRow(),\n)`, "A box that can hold padding, color, and decoration."),
-    T("sa-preview-header","Text","The group label introduces the live preview of the chosen theme.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('PREVIEW', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sa-preview-header","Text","The group label introduces the live preview of the chosen theme.",[],`const Text('PREVIEW', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'PREVIEW'."),
     T("sa-preview-card","Card","The preview sits on its own raised card so the user can see the theme choice applied to real text before leaving the screen.",[
       T("sa-preview-col","Column","Sample heading sits above sample body text.",[
-        T("sa-preview-title","Text","A sample heading, styled exactly as headings appear in the app.",[],`const Text(\n  'Sample heading',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`, "Renders a styled string on screen."),
-        T("sa-preview-body","Text","Sample body text, so the user can judge readability with the current choices.",[],`const Text(\n  'This is how headings and body text look with your choices.',\n  style: TextStyle(fontSize: 13, color: Colors.grey),\n)`, "Renders a styled string on screen.")
-      ])
-    ]),
-    T("sa-note","Text","A short reassurance under the preview: nothing needs saving.",[],`const Padding(\n  padding: EdgeInsets.only(top: 16),\n  child: Text(\n    'Theme and language apply immediately across the app.',\n    style: TextStyle(fontSize: 12, color: Colors.grey),\n  ),\n)`, "Renders a styled string on screen.")
-  ])
-],`Scaffold(\n  appBar: AppBar(title: const Text('Appearance')),\n  body: const AppearanceBody(),\n)`, "Gives the appearance page its frame: app bar on top, scrollable body below.");
+        T("sa-preview-title","Text","A sample heading, styled exactly as headings appear in the app.",[],`const Text(\n  'Sample heading',\n  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),\n)`,"Shows 'Sample heading' in bold."),
+        T("sa-preview-body","Text","Sample body text, so the user can judge readability with the current choices.",[],`const Text(\n  'This is how headings and body text look with your choices.',\n  style: TextStyle(fontSize: 13, color: Colors.grey),\n)`,"Shows 'This is how headings and body text look with…'.")
+      ], undefined, "Stacks 'Sample heading' and 'This is how headings and…' vertically.")
+    ], undefined, "Groups 'Sample heading' and 'This is how headings and…' on one card."),
+    T("sa-note","Text","A short reassurance under the preview: nothing needs saving.",[],`const Text(\n  'Theme and language apply immediately across the app.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Theme and language apply immediately across the…'.")
+  ], undefined, "A scrolling list of 9 items.")
+],`Scaffold(\n  appBar: AppBar(title: const Text('Appearance')),\n  body: const AppearanceBody(),\n)`, "Gives the appearance page its frame: app bar on top, scrollable body below."),
+],`MaterialApp(\n  home: const AppearanceSettingsPage(),\n)`, "The app shell for the Appearance screen.");
 
-TEARDOWNS["settings-notifications"].root = T("sn-scaffold","Scaffold","Scaffold is the frame of the page: it holds the Notifications app bar on top and the scrolling option groups in its body. Without it, the header and the groups would be separate widgets with nothing keeping them aligned.",[
+TEARDOWNS["settings-notifications"].root = T("sn-material","MaterialApp","The Notifications screen runs under one shared Material theme and navigation context.",[
+  T("sn-scaffold","Scaffold","Scaffold is the frame of the page: it holds the Notifications app bar on top and the scrolling option groups in its body. Without it, header and groups would be separate, unaligned widgets.",[
   T("sn-appbar","AppBar","AppBar builds the top bar and pins it above the scrolling content, so the title and back action stay visible while the option groups scroll underneath. It tells the user where they are and offers one-tap exit back to the settings list.",[
     T("sn-back","IconButton","The back chevron pops this route off the navigation stack.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back),\n  onPressed: () => Navigator.pop(context),\n)`, "A tappable icon that runs an action."),
-    T("sn-title","Text","It labels the screen so the user knows these are the notification settings.",[],`const Text(\n  'Notifications',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen.")
+    T("sn-title","Text","It labels the screen so the user knows these are the notification settings.",[],`const Text(\n  'Notifications',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),\n)`,"Shows 'Notifications'.")
   ],`AppBar(\n  leading: const BackButton(),\n  title: const Text('Notifications'),\n)`, "Builds the top bar with a title and a leading back action."),
   T("sn-body","ListView","ListView lays the master toggles, the notification categories, and the quiet-hours group out in one scrollable vertical list, so every notification choice is reachable on a small screen while the app bar stays put.",[
-    T("sn-master-header","Text","The small-caps group label scans like a native settings section.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('NOTIFICATIONS', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sn-master-header","Text","The small-caps group label scans like a native settings section.",[],`const Text('NOTIFICATIONS', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'NOTIFICATIONS'."),
     T("sn-master-group","Container","It groups the four master toggles into one rounded section, so the on/off choices read as one question: which kinds of alerts may reach the user at all.",[
       T("sn-master-col","Column","The toggle rows and their dividers are stacked inside the group.",[
-        T("sn-master","SwitchListTile","SwitchListTile is a ListTile with a Switch built in, so a whole settings row — title, subtitle, and toggle — is one widget instead of three wired together. The row's value is a single bool, so tapping anywhere on the row flips the setting and the Switch animates to match. Notification settings are rows of independent on/off choices, which is exactly the shape SwitchListTile is built for.",[
-          T("sn-master-title","Text","Names the master notification switch.",[],`const Text(\n  'Allow notifications',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-master-sub","Text","Explains what turning it off does.",[],`const Text(\n  'Turn off to silence all alerts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen."),
-          T("sn-master-switch","Switch","Switch is taught in depth in Settings — App settings, where it flips preferences in place. Here the Switch is not a standalone widget — it is the toggle built into the Allow notifications SwitchListTile row, so the row and its toggle are one tappable unit.",[],`Switch(\n  value: true,\n  onChanged: (value) => setState(() => allowNotifications = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
+        T("sn-master","SwitchListTile","A ListTile with a Switch built in, so a whole settings row — title, subtitle, toggle — is one widget instead of three wired together. Tapping anywhere on the row flips the setting.",[
+          T("sn-master-title","Text","Names the master notification switch.",[],`const Text(\n  'Allow notifications',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Allow notifications'."),
+          T("sn-master-sub","Text","Explains what turning it off does.",[],`const Text(\n  'Turn off to silence all alerts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Turn off to silence all alerts'."),
+          T("sn-master-switch","Switch","The toggle built into the Allow notifications SwitchListTile row, so the row and its toggle are one tappable unit.",[],`Switch(\n  value: true,\n  onChanged: (value) => setState(() => allowNotifications = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
         ],`SwitchListTile(\n  title: const Text('Allow notifications'),\n  subtitle: const Text('Turn off to silence all alerts'),\n  value: true,\n  onChanged: toggleNotifications,\n)`,"A full settings row with a Switch built in: title, subtitle, and toggle in one widget."),
-        T("sn-div1","Divider","It separates the toggle rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 16)`,"A thin horizontal line."),
+        T("sn-div1","Divider","It separates the toggle rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 16)`,"A hairline rule between the toggle rows in this group."),
         T("sn-sounds","SwitchListTile","Sounds is its own SwitchListTile row because it is an independent choice: alerts can be silent but still shown, or loud but hidden — the row's single bool keeps that decision separate from the master switch.",[
-          T("sn-sounds-title","Text","Names the sounds toggle.",[],`const Text(\n  'Sounds',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-sounds-sub","Text","Explains what the sounds toggle does.",[],`const Text(\n  'Play a tone for new alerts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen."),
-          T("sn-sounds-switch","Switch","Switch is taught in depth in Settings — App settings. Here it is the toggle built into the Sounds SwitchListTile row.",[],`Switch(\n  value: true,\n  onChanged: (value) => setState(() => sounds = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
+          T("sn-sounds-title","Text","Names the sounds toggle.",[],`const Text(\n  'Sounds',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Sounds'."),
+          T("sn-sounds-sub","Text","Explains what the sounds toggle does.",[],`const Text(\n  'Play a tone for new alerts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Play a tone for new alerts'."),
+          T("sn-sounds-switch","Switch","The toggle built into the Sounds SwitchListTile row, so the row and its toggle are one tappable unit.",[],`Switch(\n  value: true,\n  onChanged: (value) => setState(() => sounds = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
         ],`SwitchListTile(\n  title: const Text('Sounds'),\n  subtitle: const Text('Play a tone for new alerts'),\n  value: true,\n  onChanged: toggleSounds,\n)`,"A full settings row with a Switch built in: title, subtitle, and toggle in one widget."),
-        T("sn-div2","Divider","It separates the toggle rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 16)`,"A thin horizontal line."),
+        T("sn-div2","Divider","It separates the toggle rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 16)`,"A hairline rule between the toggle rows in this group."),
         T("sn-vibrate","SwitchListTile","Vibrate is its own SwitchListTile row because some users want a silent buzz instead of a tone — the row's bool is independent of the Sounds row, so tone and vibration can be mixed freely.",[
-          T("sn-vibrate-title","Text","Names the vibration toggle.",[],`const Text(\n  'Vibrate',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-vibrate-sub","Text","Explains what the vibration toggle does.",[],`const Text(\n  'Vibrate for new alerts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen."),
-          T("sn-vibrate-switch","Switch","Switch is taught in depth in Settings — App settings. Here it is the toggle built into the Vibrate SwitchListTile row.",[],`Switch(\n  value: false,\n  onChanged: (value) => setState(() => vibrate = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
+          T("sn-vibrate-title","Text","Names the vibration toggle.",[],`const Text(\n  'Vibrate',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Vibrate'."),
+          T("sn-vibrate-sub","Text","Explains what the vibration toggle does.",[],`const Text(\n  'Vibrate for new alerts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Vibrate for new alerts'."),
+          T("sn-vibrate-switch","Switch","The toggle built into the Vibrate SwitchListTile row, so the row and its toggle are one tappable unit.",[],`Switch(\n  value: false,\n  onChanged: (value) => setState(() => vibrate = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
         ],`SwitchListTile(\n  title: const Text('Vibrate'),\n  subtitle: const Text('Vibrate for new alerts'),\n  value: false,\n  onChanged: toggleVibrate,\n)`,"A full settings row with a Switch built in: title, subtitle, and toggle in one widget."),
-        T("sn-div3","Divider","It separates the toggle rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 16)`,"A thin horizontal line."),
+        T("sn-div3","Divider","It separates the toggle rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 16)`,"A hairline rule between the toggle rows in this group."),
         T("sn-badges","SwitchListTile","Badges is its own SwitchListTile row because the count dot on the app icon is a separate decision from sound and vibration — the user may want to see unread counts without hearing anything.",[
-          T("sn-badges-title","Text","Names the app-icon badges toggle.",[],`const Text(\n  'App icon badges',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-badges-sub","Text","Explains what the badges toggle does.",[],`const Text(\n  'Show a count on the app icon',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen."),
-          T("sn-badges-switch","Switch","Switch is taught in depth in Settings — App settings. Here it is the toggle built into the App icon badges SwitchListTile row.",[],`Switch(\n  value: true,\n  onChanged: (value) => setState(() => badges = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
+          T("sn-badges-title","Text","Names the app-icon badges toggle.",[],`const Text(\n  'App icon badges',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'App icon badges'."),
+          T("sn-badges-sub","Text","Explains what the badges toggle does.",[],`const Text(\n  'Show a count on the app icon',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Show a count on the app icon'."),
+          T("sn-badges-switch","Switch","The toggle built into the App icon badges SwitchListTile row, so the row and its toggle are one tappable unit.",[],`Switch(\n  value: true,\n  onChanged: (value) => setState(() => badges = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
         ],`SwitchListTile(\n  title: const Text('App icon badges'),\n  subtitle: const Text('Show a count on the app icon'),\n  value: true,\n  onChanged: toggleBadges,\n)`,"A full settings row with a Switch built in: title, subtitle, and toggle in one widget.")
-      ])
+      ], undefined, "Stacks a switch list tile and a divider vertically.")
     ],`Container(\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(16),\n  ),\n  child: const Column(\n    children: [AllowNotificationsTile(), Divider(), SoundsTile(), Divider(), VibrateTile(), Divider(), BadgesTile()],\n  ),\n)`, "A box that can hold padding, color, and decoration."),
-    T("sn-cat-header","Text","The group label separates the notification categories from the master toggles.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('CATEGORIES', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sn-cat-header","Text","The group label separates the notification categories from the master toggles.",[],`const Text('CATEGORIES', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'CATEGORIES'."),
     T("sn-cat-group","Container","It groups the four category rows into one rounded section, so the categories read as one question with four independent answers.",[
       T("sn-cat-col","Column","The category rows and their dividers are stacked inside the group.",[
-        T("sn-cat-messages","CheckboxListTile","CheckboxListTile is a ListTile with a Checkbox built in: title, subtitle, and tick box in one widget. Each notification category is an independent yes/no — messages can be on while promotions are off — so a Checkbox, not a Radio, is the right control. Tapping anywhere on the row toggles the box, giving the whole row a generous tap target.",[
-          T("sn-cat-messages-check","Checkbox","Checkbox is taught in depth in Tasks — Task list, where it marks a task complete. Here it is the tick box built into the Messages CheckboxListTile row, so this one category of notifications can be switched on or off independently of the others.",[],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => messages = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
-          T("sn-cat-messages-title","Text","Names the messages category.",[],`const Text(\n  'Messages',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-cat-messages-sub","Text","Explains what the messages category covers.",[],`const Text(\n  'Chats and mentions',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
+        T("sn-cat-messages","CheckboxListTile","A ListTile with a Checkbox built in: title, subtitle, and tick box in one widget. Each category is an independent yes/no — messages on, promotions off — so a Checkbox, not a Radio, is right.",[
+          T("sn-cat-messages-check","Checkbox","The tick box built into the Messages CheckboxListTile row, so this one category of notifications can be switched on or off independently of the others.",[],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => messages = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
+          T("sn-cat-messages-title","Text","Names the messages category.",[],`const Text(\n  'Messages',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Messages'."),
+          T("sn-cat-messages-sub","Text","Explains what the messages category covers.",[],`const Text(\n  'Chats and mentions',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Chats and mentions'.")
         ],`CheckboxListTile(\n  title: const Text('Messages'),\n  subtitle: const Text('Chats and mentions'),\n  value: true,\n  onChanged: toggleMessages,\n)`,"A full settings row with a Checkbox built in: title, subtitle, and tick box in one widget."),
-        T("sn-div4","Divider","It separates the category rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A thin horizontal line."),
+        T("sn-div4","Divider","It separates the category rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A hairline rule between the category rows in this group."),
         T("sn-cat-updates","CheckboxListTile","Updates is its own CheckboxListTile row because release news is a separate category from messages: the user may want chat alerts but not product announcements, and each row's Checkbox decides alone.",[
-          T("sn-cat-updates-check","Checkbox","Checkbox is taught in depth in Tasks — Task list. Here it is the tick box built into the Updates CheckboxListTile row.",[],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => updates = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
-          T("sn-cat-updates-title","Text","Names the updates category.",[],`const Text(\n  'Updates',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-cat-updates-sub","Text","Explains what the updates category covers.",[],`const Text(\n  'New features and releases',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
+          T("sn-cat-updates-check","Checkbox","The tick box built into the Updates CheckboxListTile row, so this category can be switched on or off independently.",[],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => updates = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
+          T("sn-cat-updates-title","Text","Names the updates category.",[],`const Text(\n  'Updates',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Updates'."),
+          T("sn-cat-updates-sub","Text","Explains what the updates category covers.",[],`const Text(\n  'New features and releases',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'New features and releases'.")
         ],`CheckboxListTile(\n  title: const Text('Updates'),\n  subtitle: const Text('New features and releases'),\n  value: true,\n  onChanged: toggleUpdates,\n)`,"A full settings row with a Checkbox built in: title, subtitle, and tick box in one widget."),
-        T("sn-div5","Divider","It separates the category rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A thin horizontal line."),
+        T("sn-div5","Divider","It separates the category rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A hairline rule between the category rows in this group."),
         T("sn-cat-promos","CheckboxListTile","Offers is its own CheckboxListTile row because marketing alerts are the category users most often silence: its Checkbox is off by default, while Messages and Updates stay on.",[
-          T("sn-cat-promos-check","Checkbox","Checkbox is taught in depth in Tasks — Task list. Here it is the tick box built into the Offers & promotions CheckboxListTile row.",[],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => promos = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
-          T("sn-cat-promos-title","Text","Names the offers category.",[],`const Text(\n  'Offers & promotions',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-cat-promos-sub","Text","Explains what the offers category covers.",[],`const Text(\n  'Deals and discounts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
+          T("sn-cat-promos-check","Checkbox","The tick box built into the Offers & promotions CheckboxListTile row, so this category can be switched on or off independently.",[],`Checkbox(\n  value: false,\n  onChanged: (value) => setState(() => promos = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
+          T("sn-cat-promos-title","Text","Names the offers category.",[],`const Text(\n  'Offers & promotions',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Offers & promotions'."),
+          T("sn-cat-promos-sub","Text","Explains what the offers category covers.",[],`const Text(\n  'Deals and discounts',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Deals and discounts'.")
         ],`CheckboxListTile(\n  title: const Text('Offers & promotions'),\n  subtitle: const Text('Deals and discounts'),\n  value: false,\n  onChanged: togglePromos,\n)`,"A full settings row with a Checkbox built in: title, subtitle, and tick box in one widget."),
-        T("sn-div6","Divider","It separates the category rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A thin horizontal line."),
+        T("sn-div6","Divider","It separates the category rows inside the group so each option reads on its own.",[],`const Divider(height: 1, indent: 56)`,"A hairline rule between the category rows in this group."),
         T("sn-cat-reminders","CheckboxListTile","Reminders is its own CheckboxListTile row because task and event alerts are time-sensitive: the user may want them even while promotions are off, and the row's Checkbox keeps that choice independent.",[
-          T("sn-cat-reminders-check","Checkbox","Checkbox is taught in depth in Tasks — Task list. Here it is the tick box built into the Reminders CheckboxListTile row.",[],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => reminders = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
-          T("sn-cat-reminders-title","Text","Names the reminders category.",[],`const Text(\n  'Reminders',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-          T("sn-cat-reminders-sub","Text","Explains what the reminders category covers.",[],`const Text(\n  'Tasks and events',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen.")
+          T("sn-cat-reminders-check","Checkbox","The tick box built into the Reminders CheckboxListTile row, so this category can be switched on or off independently.",[],`Checkbox(\n  value: true,\n  onChanged: (value) => setState(() => reminders = value!),\n)`,"A square tick box. Taught in depth in Tasks — Task list; here it is the tick box inside a CheckboxListTile row."),
+          T("sn-cat-reminders-title","Text","Names the reminders category.",[],`const Text(\n  'Reminders',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Reminders'."),
+          T("sn-cat-reminders-sub","Text","Explains what the reminders category covers.",[],`const Text(\n  'Tasks and events',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Tasks and events'.")
         ],`CheckboxListTile(\n  title: const Text('Reminders'),\n  subtitle: const Text('Tasks and events'),\n  value: true,\n  onChanged: toggleReminders,\n)`,"A full settings row with a Checkbox built in: title, subtitle, and tick box in one widget.")
-      ])
+      ], undefined, "Stacks a checkbox list tile and a divider vertically.")
     ],`Container(\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(16),\n  ),\n  child: const Column(\n    children: [MessagesTile(), Divider(), UpdatesTile(), Divider(), PromosTile(), Divider(), RemindersTile()],\n  ),\n)`, "A box that can hold padding, color, and decoration."),
-    T("sn-quiet-header","Text","The group label separates the quiet-hours row from the categories.",[],`const Padding(\n  padding: EdgeInsets.only(top: 20, bottom: 8),\n  child: Text('DO NOT DISTURB', style: TextStyle(fontSize: 12, color: Colors.grey)),\n)`, "Renders a styled string on screen."),
+    T("sn-quiet-header","Text","The group label separates the quiet-hours row from the categories.",[],`const Text('DO NOT DISTURB', style: TextStyle(fontSize: 12, color: Colors.grey))`,"Shows 'DO NOT DISTURB'."),
     T("sn-quiet-group","Container","It wraps the single quiet-hours row in the same rounded section style.",[
       T("sn-quiet-tile","SwitchListTile","Quiet hours is a SwitchListTile row because it is one more independent on/off choice: when it is on, every category above is silenced between 10 PM and 7 AM, and the subtitle shows the schedule at a glance.",[
-        T("sn-quiet-tile-title","Text","Names the scheduled quiet-hours setting.",[],`const Text(\n  'Scheduled quiet hours',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`, "Renders a styled string on screen."),
-        T("sn-quiet-tile-sub","Text","Shows the hours when alerts are silenced.",[],`const Text(\n  '10:00 PM – 7:00 AM',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Renders a styled string on screen."),
-        T("sn-quiet-tile-switch","Switch","Switch is taught in depth in Settings — App settings. Here it is the toggle built into the Scheduled quiet hours SwitchListTile row.",[],`Switch(\n  value: false,\n  onChanged: (value) => setState(() => quietHours = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
+        T("sn-quiet-tile-title","Text","Names the scheduled quiet-hours setting.",[],`const Text(\n  'Scheduled quiet hours',\n  style: TextStyle(fontWeight: FontWeight.w600),\n)`,"Shows 'Scheduled quiet hours'."),
+        T("sn-quiet-tile-sub","Text","Shows the hours when alerts are silenced.",[],`const Text(\n  '10:00 PM – 7:00 AM',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows '10:00 PM – 7:00 AM'."),
+        T("sn-quiet-tile-switch","Switch","The toggle built into the Scheduled quiet hours SwitchListTile row, so the row and its toggle are one tappable unit.",[],`Switch(\n  value: false,\n  onChanged: (value) => setState(() => quietHours = value),\n)`,"A Material on/off toggle. Taught in depth in Settings — App settings; here it is the toggle inside a SwitchListTile row.")
       ],`SwitchListTile(\n  title: const Text('Scheduled quiet hours'),\n  subtitle: const Text('10:00 PM – 7:00 AM'),\n  value: false,\n  onChanged: toggleQuietHours,\n)`,"A full settings row with a Switch built in: title, subtitle, and toggle in one widget.")
     ],`Container(\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(16),\n  ),\n  child: const QuietHoursTile(),\n)`, "A box that can hold padding, color, and decoration."),
-    T("sn-note","Text","A short explainer under the groups: categories decide which alerts exist at all.",[],`const Padding(\n  padding: EdgeInsets.only(top: 16),\n  child: Text(\n    'Categories control which kinds of alerts can reach you.',\n    style: TextStyle(fontSize: 12, color: Colors.grey),\n  ),\n)`, "Renders a styled string on screen.")
-  ])
-],`Scaffold(\n  appBar: AppBar(title: const Text('Notifications')),\n  body: const NotificationsBody(),\n)`, "Gives the notifications page its frame: app bar on top, scrollable body below.");
+    T("sn-note","Text","A short explainer under the groups: categories decide which alerts exist at all.",[],`const Text(\n  'Categories control which kinds of alerts can reach you.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`,"Shows 'Categories control which kinds of alerts can…'.")
+  ], undefined, "A scrolling list of 7 items.")
+],`Scaffold(\n  appBar: AppBar(title: const Text('Notifications')),\n  body: const NotificationsBody(),\n)`, "Gives the notifications page its frame: app bar on top, scrollable body below."),
+],`MaterialApp(\n  home: const NotificationsSettingsPage(),\n)`, "The app shell for the Notifications screen.");
 
-TEARDOWNS["swiggy-menu"].root = T("sm-material","MaterialApp","MaterialApp sits at the root and hands the menu screen one theme, one set of Material defaults, and one Navigator. That is why the Swiggy orange, the text styles, and the move back to the home screen all behave exactly as they do on the Swiggy home screen.",[
+TEARDOWNS["swiggy-menu"].root = T("sm-material","MaterialApp","It hands the menu screen one theme, one set of Material defaults, and one Navigator — so the Swiggy orange, the text styles, and the move back home behave exactly as on the home screen.",[
   T("sm-scaffold","Scaffold","Scaffold is the frame of the page: it holds the scrolling menu in its body and pins the View Cart bar to the bottom edge. Without it the menu list and the cart bar would be separate widgets with nothing keeping them aligned.",[
-    T("sm-scroll","CustomScrollView","CustomScrollView coordinates the collapsing restaurant header, the offer banner, the sticky section tabs, and the three dish lists under one scroll position. The whole menu scrolls as a single page instead of nested scrollers fighting each other.",[
-      T("sm-appbar","SliverAppBar","SliverAppBar is an app bar that lives inside the scroll view, so the restaurant header scrolls with the menu instead of floating above it. It stays pinned here so the restaurant name, rating, and favourite action remain reachable while the dishes scroll underneath.",[
+    T("sm-scroll","CustomScrollView","Like Instagram's profile screen, it coordinates the collapsing header, the offer banner, the sticky tabs, and the three dish lists under one scroll position.",[
+      T("sm-appbar","SliverAppBar","Like the Instagram profile header, it lives inside the scroll view, so the restaurant header scrolls with the menu. It stays pinned, so the name, rating, and favourite action remain reachable while the dishes scroll.",[
         T("sm-head-padding","Padding","The header row receives a consistent inset from the screen edges.",[
           T("sm-head-row","Row","Back, restaurant identity, and favourite share one header line.",[
-            T("sm-back","IconButton","The back chevron returns to the restaurant list. It pops this route off the navigation stack.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back),\n  onPressed: () => Navigator.pop(context),\n)`),
+            T("sm-back","IconButton","The back chevron returns to the restaurant list. It pops this route off the navigation stack.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back),\n  onPressed: () => Navigator.pop(context),\n)`, "The back button in Swiggy."),
             T("sm-head-col","Column","The restaurant name sits above its rating and delivery line.",[
-              T("sm-rest-name","Text","Shows the restaurant name at the top of the menu. It is the first thing the user reads on this screen.",[],`const Text(\n  'Spice Kitchen',\n  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),\n)`),
-              T("sm-rest-meta","Text","Shows the rating, delivery time, and price for two in one quiet line. It sets expectations before the user reads any dish.",[],`const Text(\n  '4.5 ★ · 25–30 min · ₹350 for two',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`)
-            ]),
-            T("sm-fav","IconButton","The heart saves this restaurant to favourites. It is an icon button because the action needs no label.",[],`IconButton(\n  icon: const Icon(Icons.favorite_border),\n  onPressed: toggleFavourite,\n)`)
-          ])
-        ])
-      ],`SliverAppBar(\n  pinned: true,\n  title: const RestaurantHeader(),\n  actions: [\n    IconButton(icon: const Icon(Icons.favorite_border), onPressed: toggleFavourite),\n  ],\n)`,"Taught in depth in Instagram — Profile; here it is the restaurant header that collapses as the menu scrolls."),
-      T("sm-offer-adapter","SliverToBoxAdapter","The offer banner is an ordinary box widget, so it needs an adapter to sit inside the sliver list. It places the promotion between the header and the section tabs.",[
+              T("sm-rest-name","Text","Shows the restaurant name at the top of the menu. It is the first thing the user reads on this screen.",[],`const Text(\n  'Spice Kitchen',\n  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),\n)`, "Shows 'Spice Kitchen' in bold."),
+              T("sm-rest-meta","Text","Shows the rating, delivery time, and price for two in one quiet line. It sets expectations before the user reads any dish.",[],`const Text(\n  '4.5 ★ · 25–30 min · ₹350 for two',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n)`, "Shows '4.5 ★ · 25–30 min · ₹350 for two'.")
+            ], undefined, "Stacks 'Spice Kitchen' and '4.5 ★ · 25–30 min · ₹350…' vertically."),
+            T("sm-fav","IconButton","The heart saves this restaurant to favourites. It is an icon button because the action needs no label.",[],`IconButton(\n  icon: const Icon(Icons.favorite_border),\n  onPressed: toggleFavourite,\n)`, "The heart button in Swiggy.")
+          ], undefined, "Places the back button, 'Spice Kitchen' and '4.5 ★ · 25–30 min · ₹350…' and the heart button side by side.")
+        ], undefined, "Adds space around a row.")
+      ],`SliverAppBar(\n  pinned: true,\n  title: const RestaurantHeader(),\n  actions: [\n    IconButton(icon: const Icon(Icons.favorite_border), onPressed: toggleFavourite),\n  ],\n)`,"The restaurant header that collapses as the menu scrolls."),
+      T("sm-offer-adapter","SliverToBoxAdapter","The offer banner is an ordinary box widget, so it needs an adapter to sit in the scrolling list. It places the promotion between the header and the section tabs.",[
         T("sm-offer","Card","Card lifts the promotion onto its own Material surface with rounded corners and a solid brand colour. The discount reads as one distinct offer instead of plain text on the page.",[
           T("sm-offer-padding","Padding","Offer text stays clear of the card edge.",[
             T("sm-offer-col","Column","Discount and qualification details are stacked.",[
-              T("sm-offer-title","Text","Shows the promotion's strongest value in bold. It is what the eye lands on first.",[],`const Text(\n  '40% OFF up to ₹120',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`),
-              T("sm-offer-sub","Text","Explains when the discount applies. It keeps the headline honest by stating the condition.",[],`const Text(\n  'Use code WELCOME on orders above ₹199',\n  style: TextStyle(fontSize: 12),\n)`)
-            ])
-          ])
+              T("sm-offer-title","Text","Shows the promotion's strongest value in bold. It is what the eye lands on first.",[],`const Text(\n  '40% OFF up to ₹120',\n  style: TextStyle(fontWeight: FontWeight.w800),\n)`, "Shows '40% OFF up to ₹120' in bold."),
+              T("sm-offer-sub","Text","Explains when the discount applies. It keeps the headline honest by stating the condition.",[],`const Text(\n  'Use code WELCOME on orders above ₹199',\n  style: TextStyle(fontSize: 12),\n)`, "Shows 'Use code WELCOME on orders above ₹199'.")
+            ], undefined, "Stacks '40% OFF up to ₹120' and 'Use code WELCOME on orders…' vertically.")
+          ], undefined, "Adds space around '40% OFF up to ₹120' and 'Use code WELCOME on orders…'.")
         ],`Card(\n  color: const Color(0xFFFC8019),\n  child: const Padding(\n    padding: EdgeInsets.all(16),\n    child: OfferCopy(),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it carries the restaurant's own promotion instead of a home-screen offer.")
-      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the offer banner into the sliver sequence."),
-      T("sm-tabs-header","SliverPersistentHeader","SliverPersistentHeader keeps the section tabs pinned at the top once they scroll into view. The user can jump between Recommended, Bestsellers, and Combos without scrolling back to the top.",[
+      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the offer banner into the scrolling list."),
+      T("sm-tabs-header","SliverPersistentHeader","It keeps the section tabs pinned at the top once they scroll into view. The user can jump between Recommended, Bestsellers, and Combos without scrolling back to the top.",[
         T("sm-tabs-row","Row","The three section tabs sit on one horizontal line. Tapping one scrolls the menu to that section.",[
           T("sm-tab-rec","Chip","The selected 'Recommended' tab shows the recommended dishes, and its filled style marks it as the active section.",[],`const Chip(label: Text('Recommended'))`,"Taught in depth in YouTube — Home feed; here it jumps to the Recommended section of the menu."),
           T("sm-tab-best","Chip","Tapping 'Bestsellers' jumps to the dishes other customers order most, so the user reaches proven dishes without scrolling.",[],`const Chip(label: Text('Bestsellers'))`,"Taught in depth in YouTube — Home feed; here it jumps to the Bestsellers section of the menu."),
           T("sm-tab-combo","Chip","Tapping 'Combos' jumps to the value meals, which is how the menu groups multi-dish deals in one place.",[],`const Chip(label: Text('Combos'))`,"Taught in depth in YouTube — Home feed; here it jumps to the Combos section of the menu.")
-        ])
+        ], undefined, "Places a chip side by side.")
       ],`SliverPersistentHeader(\n  pinned: true,\n  delegate: MenuTabsHeader(\n    child: const MenuTabsRow(),\n  ),\n)`,"Taught in depth in Instagram — Profile; here it pins the menu section tabs while the dishes scroll underneath."),
-      T("sm-sec1-adapter","SliverToBoxAdapter","The section title is an ordinary Text widget, so it needs an adapter to sit between the two sliver lists. It marks where the Recommended dishes begin.",[
-        T("sm-sec1-title","Text","Heads the Recommended section so the menu reads as clear groups. It tells the user these dishes are the restaurant's picks.",[],`const Text(\n  'Recommended',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),\n)`)
-      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the Recommended section title into the sliver sequence."),
-      T("sm-list1","SliverList","SliverList is the lazily built list inside a CustomScrollView: each dish row is built only when it scrolls into view, so a menu with a hundred dishes costs no more than the few on screen. It belongs here — not a ListView — because the dishes must share one scroll position with the collapsing header and the sticky tabs above them; a ListView inside would create a second, nested scroller. Each menu section gets its own SliverList, so a section title can sit between them.",[
+      T("sm-sec1-adapter","SliverToBoxAdapter","The section title is an ordinary Text widget, so it needs an adapter to sit between the two dish lists. It marks where the Recommended dishes begin.",[
+        T("sm-sec1-title","Text","Heads the Recommended section so the menu reads as clear groups. It tells the user these dishes are the restaurant's picks.",[],`const Text(\n  'Recommended',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),\n)`, "Shows 'Recommended' in bold.")
+      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the Recommended section title into the scrolling list."),
+      T("sm-list1","SliverList","Each dish row is built only when it scrolls into view, so a hundred-dish menu costs no more than the few on screen. It must share one scroll position with the header and tabs above — which a nested ListView could not do.",[
         T("sm-d1-row","Row","The veg badge, the dish text, and the ADD button share one horizontal line, with the text taking only the space it needs and the button pinned to the right edge.",[
           T("sm-d1-veg","Container","A small bordered square marks the dish as vegetarian. The border and dot together are Swiggy's veg badge.",[
-            T("sm-d1-veg-icon","Icon","A small filled dot inside the square completes the veg mark. Green means vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.green)`)
-          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.green, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.green),\n)`),
-          T("sm-d1-flex","Flexible","Flexible is like Expanded, but with a loose fit: the dish text takes only the space it needs, up to what is available, instead of being forced to fill every remaining pixel. That matters in this row because the ADD button must keep its own natural width — with Expanded the text column would claim all the space and the button would still sit at the edge, but Flexible states the real intent: the text sizes to its content and the button is never squeezed. It also lets long dish names wrap inside the space that is left, instead of overflowing the row.",[
+            T("sm-d1-veg-icon","Icon","A small filled dot inside the square completes the veg mark. Green means vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.green)`, "Shows the circle icon in Swiggy.")
+          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.green, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.green),\n)`, "A decorated box holding the circle icon."),
+          T("sm-d1-flex","Flexible","Like Expanded, but with a loose fit: the dish text takes only the space it needs, instead of being forced to fill every remaining pixel. That keeps the ADD button at its natural width.",[
             T("sm-d1-col","Column","Name, description, and price stack inside the flexible text area.",[
-              T("sm-d1-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Paneer Butter Masala',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sm-d1-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Creamy tomato gravy with soft paneer cubes, served with butter.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`),
-              T("sm-d1-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹249',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-            ])
-          ],undefined,"A flexible box that takes only the space its child needs, up to the space available — unlike Expanded, which forces its child to fill all remaining space."),
+              T("sm-d1-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Paneer Butter Masala',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Paneer Butter Masala' in bold."),
+              T("sm-d1-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Creamy tomato gravy with soft paneer cubes, served with butter.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`, "Shows 'Creamy tomato gravy with soft paneer cubes,…'."),
+              T("sm-d1-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹249',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows '₹249' in bold.")
+            ], undefined, "Stacks 'Paneer Butter Masala', 'Creamy tomato gravy with…' and '₹249' vertically.")
+          ],undefined,"A flexible box: takes only the space its child needs, up to what is available."),
           T("sm-d1-add","OutlinedButton","The outlined ADD button adds one portion to the cart. Its outline style marks it as a secondary action that can be tapped repeatedly.",[
-            T("sm-d1-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`)
+            T("sm-d1-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`, "Shows 'ADD'.")
           ],`OutlinedButton(\n  onPressed: () => addToCart(dish),\n  child: const Text('ADD'),\n)`,"Taught in depth in Instagram — Profile; here it is the ADD button that puts one portion of the dish in the cart.")
-        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.veg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`),
+        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.veg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`, "Places the circle icon, a flexible box and an outlined button side by side."),
         T("sm-d2-row","Row","The veg badge, the dish text, and the ADD button share one horizontal line, with the text taking only the space it needs and the button pinned to the right edge.",[
           T("sm-d2-veg","Container","A small bordered square marks the dish as non-vegetarian. The brown border and dot are Swiggy's non-veg badge.",[
-            T("sm-d2-veg-icon","Icon","A small filled dot inside the square completes the non-veg mark. Brown means non-vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.brown)`)
-          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.brown, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.brown),\n)`),
+            T("sm-d2-veg-icon","Icon","A small filled dot inside the square completes the non-veg mark. Brown means non-vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.brown)`, "Shows the circle icon in Swiggy.")
+          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.brown, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.brown),\n)`, "A decorated box holding the circle icon."),
           T("sm-d2-flex","Flexible","Same Flexible as the first dish row: the text takes only the space it needs, so the ADD button keeps its natural width and long dish names wrap instead of overflowing.",[
             T("sm-d2-col","Column","Name, description, and price stack inside the flexible text area.",[
-              T("sm-d2-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Chicken Biryani',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sm-d2-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Fragrant basmati rice layered with spiced chicken, served with raita.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`),
-              T("sm-d2-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹299',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-            ])
+              T("sm-d2-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Chicken Biryani',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Chicken Biryani' in bold."),
+              T("sm-d2-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Fragrant basmati rice layered with spiced chicken, served with raita.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`, "Shows 'Fragrant basmati rice layered with spiced…'."),
+              T("sm-d2-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹299',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows '₹299' in bold.")
+            ], undefined, "Stacks 'Chicken Biryani', 'Fragrant basmati rice…' and '₹299' vertically.")
           ],undefined,"Same Flexible as the first dish row; here it sizes the biryani text to its content while the ADD button keeps its own width."),
           T("sm-d2-add","OutlinedButton","The outlined ADD button adds one portion to the cart. Its outline style marks it as a secondary action that can be tapped repeatedly.",[
-            T("sm-d2-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`)
+            T("sm-d2-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`, "Shows 'ADD'.")
           ],`OutlinedButton(\n  onPressed: () => addToCart(dish),\n  child: const Text('ADD'),\n)`,"Taught in depth in Instagram — Profile; here it is the ADD button that puts one portion of the dish in the cart.")
-        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.nonVeg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`)
-      ],`SliverList(\n  delegate: SliverChildBuilderDelegate(\n    (context, index) => DishRow(menu.recommended[index]),\n    childCount: 2,\n  ),\n)`,"A lazily built list of dish rows inside the CustomScrollView — each row is built only when it scrolls into view, and all sections share one scroll position."),
-      T("sm-sec2-adapter","SliverToBoxAdapter","The section title is an ordinary Text widget, so it needs an adapter to sit between the two sliver lists. It marks where the Bestsellers begin.",[
-        T("sm-sec2-title","Text","Heads the Bestsellers section so the menu reads as clear groups. It tells the user these dishes are ordered most often.",[],`const Text(\n  'Bestsellers',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),\n)`)
-      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the Bestsellers section title into the sliver sequence."),
-      T("sm-list2","SliverList","A second SliverList builds the Bestsellers section lazily, under the same scroll position as the Recommended list above it. Splitting the menu into one SliverList per section is what lets a plain section title sit between the two lists.",[
+        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.nonVeg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`, "Places the circle icon, a flexible box and an outlined button side by side.")
+      ],`SliverList(\n  delegate: SliverChildBuilderDelegate(\n    (context, index) => DishRow(menu.recommended[index]),\n    childCount: 2,\n  ),\n)`,"A lazily built list of dish rows sharing one scroll position."),
+      T("sm-sec2-adapter","SliverToBoxAdapter","The section title is an ordinary Text widget, so it needs an adapter to sit between the two dish lists. It marks where the Bestsellers begin.",[
+        T("sm-sec2-title","Text","Heads the Bestsellers section so the menu reads as clear groups. It tells the user these dishes are ordered most often.",[],`const Text(\n  'Bestsellers',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),\n)`, "Shows 'Bestsellers' in bold.")
+      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the Bestsellers section title into the scrolling list."),
+      T("sm-list2","SliverList","It builds the Bestsellers dishes lazily, under the same scroll position as the Recommended list above it. One list per section is what lets a plain section title sit between them.",[
         T("sm-d3-row","Row","The veg badge, the dish text, and the ADD button share one horizontal line, with the text taking only the space it needs and the button pinned to the right edge.",[
           T("sm-d3-veg","Container","A small bordered square marks the dish as vegetarian. The border and dot together are Swiggy's veg badge.",[
-            T("sm-d3-veg-icon","Icon","A small filled dot inside the square completes the veg mark. Green means vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.green)`)
-          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.green, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.green),\n)`),
+            T("sm-d3-veg-icon","Icon","A small filled dot inside the square completes the veg mark. Green means vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.green)`, "Shows the circle icon in Swiggy.")
+          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.green, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.green),\n)`, "A decorated box holding the circle icon."),
           T("sm-d3-flex","Flexible","Same Flexible as the first dish row: the text takes only the space it needs, so the ADD button keeps its natural width and long dish names wrap instead of overflowing.",[
             T("sm-d3-col","Column","Name, description, and price stack inside the flexible text area.",[
-              T("sm-d3-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Masala Dosa',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sm-d3-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Crisp dosa with spiced potato filling, coconut chutney and sambar.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`),
-              T("sm-d3-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹149',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-            ])
+              T("sm-d3-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Masala Dosa',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Masala Dosa' in bold."),
+              T("sm-d3-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Crisp dosa with spiced potato filling, coconut chutney and sambar.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`, "Shows 'Crisp dosa with spiced potato filling, coconut…'."),
+              T("sm-d3-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹149',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows '₹149' in bold.")
+            ], undefined, "Stacks 'Masala Dosa', 'Crisp dosa with spiced…' and '₹149' vertically.")
           ],undefined,"Same Flexible as the first dish row; here it sizes the dosa text to its content while the ADD button keeps its own width."),
           T("sm-d3-add","OutlinedButton","The outlined ADD button adds one portion to the cart. Its outline style marks it as a secondary action that can be tapped repeatedly.",[
-            T("sm-d3-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`)
+            T("sm-d3-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`, "Shows 'ADD'.")
           ],`OutlinedButton(\n  onPressed: () => addToCart(dish),\n  child: const Text('ADD'),\n)`,"Taught in depth in Instagram — Profile; here it is the ADD button that puts one portion of the dish in the cart.")
-        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.veg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`),
+        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.veg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`, "Places the circle icon, a flexible box and an outlined button side by side."),
         T("sm-d4-row","Row","The veg badge, the dish text, and the ADD button share one horizontal line, with the text taking only the space it needs and the button pinned to the right edge.",[
           T("sm-d4-veg","Container","A small bordered square marks the dish as non-vegetarian. The brown border and dot are Swiggy's non-veg badge.",[
-            T("sm-d4-veg-icon","Icon","A small filled dot inside the square completes the non-veg mark. Brown means non-vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.brown)`)
-          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.brown, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.brown),\n)`),
-          T("sm-d4-flex","Flexible","Same Flexible as the first dish row: the text takes only the space it needs, so the ADD button keeps its natural width and long dish names wrap instead of overflowing.",[
+            T("sm-d4-veg-icon","Icon","A small filled dot inside the square completes the non-veg mark. Brown means non-vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.brown)`, "Shows the circle icon in Swiggy.")
+          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.brown, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.brown),\n)`, "A decorated box holding the circle icon."),
+          T("sm-d4-flex","Flexible","Same Flexible as the first dish row: the text takes only the space it needs, so the ADD button keeps its natural width.",[
             T("sm-d4-col","Column","Name, description, and price stack inside the flexible text area.",[
-              T("sm-d4-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Butter Chicken',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sm-d4-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Tandoori chicken folded into a rich tomato-butter gravy.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`),
-              T("sm-d4-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹329',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-            ])
+              T("sm-d4-name","Text","Shows the dish name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Butter Chicken',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Butter Chicken' in bold."),
+              T("sm-d4-desc","Text","Describes the dish in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Tandoori chicken folded into a rich tomato-butter gravy.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`, "Shows 'Tandoori chicken folded into a rich…'."),
+              T("sm-d4-price","Text","Shows the price of one portion. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹329',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows '₹329' in bold.")
+            ], undefined, "Stacks 'Butter Chicken', 'Tandoori chicken folded…' and '₹329' vertically.")
           ],undefined,"Same Flexible as the first dish row; here it sizes the butter chicken text to its content while the ADD button keeps its own width."),
           T("sm-d4-add","OutlinedButton","The outlined ADD button adds one portion to the cart. Its outline style marks it as a secondary action that can be tapped repeatedly.",[
-            T("sm-d4-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`)
+            T("sm-d4-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`, "Shows 'ADD'.")
           ],`OutlinedButton(\n  onPressed: () => addToCart(dish),\n  child: const Text('ADD'),\n)`,"Taught in depth in Instagram — Profile; here it is the ADD button that puts one portion of the dish in the cart.")
-        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.nonVeg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`)
-      ],`SliverList(\n  delegate: SliverChildBuilderDelegate(\n    (context, index) => DishRow(menu.bestsellers[index]),\n    childCount: 2,\n  ),\n)`,"Same SliverList as the Recommended section; here it lazily builds the Bestsellers dishes under the same scroll position."),
-      T("sm-sec3-adapter","SliverToBoxAdapter","The section title is an ordinary Text widget, so it needs an adapter to sit between the two sliver lists. It marks where the Combos begin.",[
-        T("sm-sec3-title","Text","Heads the Combos section so the menu reads as clear groups. It tells the user these are multi-dish value meals.",[],`const Text(\n  'Combos',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),\n)`)
-      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the Combos section title into the sliver sequence."),
-      T("sm-list3","SliverList","A third SliverList builds the Combos section lazily, under the same scroll position as the two lists above it. Splitting the menu into one SliverList per section is what lets a plain section title sit between the lists.",[
+        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.nonVeg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`, "Places the circle icon, a flexible box and an outlined button side by side.")
+      ],`SliverList(\n  delegate: SliverChildBuilderDelegate(\n    (context, index) => DishRow(menu.bestsellers[index]),\n    childCount: 2,\n  ),\n)`,"The Bestsellers dishes, lazily built under the same scroll position."),
+      T("sm-sec3-adapter","SliverToBoxAdapter","The section title is an ordinary Text widget, so it needs an adapter to sit between the two dish lists. It marks where the Combos begin.",[
+        T("sm-sec3-title","Text","Heads the Combos section so the menu reads as clear groups. It tells the user these are multi-dish value meals.",[],`const Text(\n  'Combos',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),\n)`, "Shows 'Combos' in bold.")
+      ],undefined,"Taught in depth in Instagram — Profile; here it adapts the Combos section title into the scrolling list."),
+      T("sm-list3","SliverList","It builds the Combos dishes lazily, under the same scroll position as the two lists above it. One list per section is what lets a plain section title sit between them.",[
         T("sm-d5-row","Row","The veg badge, the dish text, and the ADD button share one horizontal line, with the text taking only the space it needs and the button pinned to the right edge.",[
           T("sm-d5-veg","Container","A small bordered square marks the combo as vegetarian. The border and dot together are Swiggy's veg badge.",[
-            T("sm-d5-veg-icon","Icon","A small filled dot inside the square completes the veg mark. Green means vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.green)`)
-          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.green, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.green),\n)`),
+            T("sm-d5-veg-icon","Icon","A small filled dot inside the square completes the veg mark. Green means vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.green)`, "Shows the circle icon in Swiggy.")
+          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.green, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.green),\n)`, "A decorated box holding the circle icon."),
           T("sm-d5-flex","Flexible","Same Flexible as the first dish row: the text takes only the space it needs, so the ADD button keeps its natural width and long combo names wrap instead of overflowing.",[
             T("sm-d5-col","Column","Name, description, and price stack inside the flexible text area.",[
-              T("sm-d5-name","Text","Shows the combo name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Veg Family Combo',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sm-d5-desc","Text","Describes the combo in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  '2 paneer curries, 4 butter naans, jeera rice and 2 desserts.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`),
-              T("sm-d5-price","Text","Shows the price of the whole combo. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹599',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-            ])
+              T("sm-d5-name","Text","Shows the combo name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Veg Family Combo',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Veg Family Combo' in bold."),
+              T("sm-d5-desc","Text","Describes the combo in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  '2 paneer curries, 4 butter naans, jeera rice and 2 desserts.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`, "Shows '2 paneer curries, 4 butter naans, jeera rice…'."),
+              T("sm-d5-price","Text","Shows the price of the whole combo. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹599',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows '₹599' in bold.")
+            ], undefined, "Stacks 'Veg Family Combo', '2 paneer curries, 4 butter…' and '₹599' vertically.")
           ],undefined,"Same Flexible as the first dish row; here it sizes the combo text to its content while the ADD button keeps its own width."),
           T("sm-d5-add","OutlinedButton","The outlined ADD button adds one combo to the cart. Its outline style marks it as a secondary action that can be tapped repeatedly.",[
-            T("sm-d5-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`)
+            T("sm-d5-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`, "Shows 'ADD'.")
           ],`OutlinedButton(\n  onPressed: () => addToCart(dish),\n  child: const Text('ADD'),\n)`,"Taught in depth in Instagram — Profile; here it is the ADD button that puts one combo in the cart.")
-        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.veg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`),
+        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.veg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`, "Places the circle icon, a flexible box and an outlined button side by side."),
         T("sm-d6-row","Row","The veg badge, the dish text, and the ADD button share one horizontal line, with the text taking only the space it needs and the button pinned to the right edge.",[
           T("sm-d6-veg","Container","A small bordered square marks the combo as non-vegetarian. The brown border and dot are Swiggy's non-veg badge.",[
-            T("sm-d6-veg-icon","Icon","A small filled dot inside the square completes the non-veg mark. Brown means non-vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.brown)`)
-          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.brown, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.brown),\n)`),
+            T("sm-d6-veg-icon","Icon","A small filled dot inside the square completes the non-veg mark. Brown means non-vegetarian.",[],`const Icon(Icons.circle, size: 8, color: Colors.brown)`, "Shows the circle icon in Swiggy.")
+          ],`Container(\n  width: 16,\n  height: 16,\n  decoration: BoxDecoration(\n    border: Border.all(color: Colors.brown, width: 1.5),\n    borderRadius: BorderRadius.circular(3),\n  ),\n  child: const Icon(Icons.circle, size: 8, color: Colors.brown),\n)`, "A decorated box holding the circle icon."),
           T("sm-d6-flex","Flexible","Same Flexible as the first dish row: the text takes only the space it needs, so the ADD button keeps its natural width and long combo names wrap instead of overflowing.",[
             T("sm-d6-col","Column","Name, description, and price stack inside the flexible text area.",[
-              T("sm-d6-name","Text","Shows the combo name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Non-Veg Feast Combo',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-              T("sm-d6-desc","Text","Describes the combo in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Chicken biryani, butter chicken, 2 naans and gulab jamun.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`),
-              T("sm-d6-price","Text","Shows the price of the whole combo. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹649',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`)
-            ])
+              T("sm-d6-name","Text","Shows the combo name in bold. It is the first thing the eye reads in the row.",[],`const Text(\n  'Non-Veg Feast Combo',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Non-Veg Feast Combo' in bold."),
+              T("sm-d6-desc","Text","Describes the combo in one short line so the user can decide without opening it. It wraps to two lines at most.",[],`const Text(\n  'Chicken biryani, butter chicken, 2 naans and gulab jamun.',\n  style: TextStyle(fontSize: 12, color: Colors.grey),\n  maxLines: 2,\n)`, "Shows 'Chicken biryani, butter chicken, 2 naans and…'."),
+              T("sm-d6-price","Text","Shows the price of the whole combo. It sits under the description so name, detail, and price read top to bottom.",[],`const Text(\n  '₹649',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows '₹649' in bold.")
+            ], undefined, "Stacks 'Non-Veg Feast Combo', 'Chicken biryani, butter…' and '₹649' vertically.")
           ],undefined,"Same Flexible as the first dish row; here it sizes the combo text to its content while the ADD button keeps its own width."),
           T("sm-d6-add","OutlinedButton","The outlined ADD button adds one combo to the cart. Its outline style marks it as a secondary action that can be tapped repeatedly.",[
-            T("sm-d6-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`)
+            T("sm-d6-add-label","Text","Labels the add action. 'ADD' is short enough to fit the small button.",[],`const Text('ADD')`, "Shows 'ADD'.")
           ],`OutlinedButton(\n  onPressed: () => addToCart(dish),\n  child: const Text('ADD'),\n)`,"Taught in depth in Instagram — Profile; here it is the ADD button that puts one combo in the cart.")
-        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.nonVeg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`)
-      ],`SliverList(\n  delegate: SliverChildBuilderDelegate(\n    (context, index) => DishRow(menu.combos[index]),\n    childCount: 2,\n  ),\n)`,"Same SliverList as the Recommended section; here it lazily builds the Combos dishes under the same scroll position.")
-    ],`CustomScrollView(\n  slivers: [\n    SliverAppBar(pinned: true, title: RestaurantHeader()),\n    OfferBanner(),\n    MenuTabsHeader(),\n    SectionTitle('Recommended'),\n    DishList(menu.recommended),\n    SectionTitle('Bestsellers'),\n    DishList(menu.bestsellers),\n    SectionTitle('Combos'),\n    DishList(menu.combos),\n  ],\n)`,"Taught in depth in Instagram — Profile; here it coordinates the menu's slivers under one scroll position."),
+        ],`Row(\n  mainAxisAlignment: MainAxisAlignment.spaceBetween,\n  crossAxisAlignment: CrossAxisAlignment.start,\n  children: [\n    const VegBadge.nonVeg(),\n    Flexible(child: DishText()),\n    OutlinedButton(onPressed: addDish, child: const Text('ADD')),\n  ],\n)`, "Places the circle icon, a flexible box and an outlined button side by side.")
+      ],`SliverList(\n  delegate: SliverChildBuilderDelegate(\n    (context, index) => DishRow(menu.combos[index]),\n    childCount: 2,\n  ),\n)`,"The Combos dishes, lazily built under the same scroll position.")
+    ],`CustomScrollView(\n  slivers: [\n    SliverAppBar(pinned: true, title: RestaurantHeader()),\n    OfferBanner(),\n    MenuTabsHeader(),\n    SectionTitle('Recommended'),\n    DishList(menu.recommended),\n    SectionTitle('Bestsellers'),\n    DishList(menu.bestsellers),\n    SectionTitle('Combos'),\n    DishList(menu.combos),\n  ],\n)`,"It coordinates the menu's sections under one scroll position."),
     T("sm-cartbar","Container","A solid orange bar pins the cart summary above the bottom edge, so the user always sees what is in the cart while browsing the menu. It is a Container because it needs a brand background colour and padding in one box.",[
       T("sm-cart-row","Row","Item count, total, and the View Cart action share one line inside the cart bar.",[
-        T("sm-cart-count","Text","Shows how many items are in the cart. It updates every time an ADD button is tapped.",[],`const Text(\n  '2 items',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
-        T("sm-cart-total","Text","Shows the cart total next to the item count. It is the number the user checks before opening the cart.",[],`const Text(\n  '₹498',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
+        T("sm-cart-count","Text","Shows how many items are in the cart. It updates every time an ADD button is tapped.",[],`const Text(\n  '2 items',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows '2 items' in bold."),
+        T("sm-cart-total","Text","Shows the cart total next to the item count. It is the number the user checks before opening the cart.",[],`const Text(\n  '₹548',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows '₹548' in bold."),
         T("sm-cart-view","TextButton","Opens the cart screen to review and place the order. It is a text button because it sits on the coloured bar.",[
-          T("sm-cart-view-label","Text","Labels the cart action. 'View Cart' with an arrow promises the checkout flow.",[],`const Text(\n  'View Cart →',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`)
+          T("sm-cart-view-label","Text","Labels the cart action. 'View Cart' with an arrow promises the checkout flow.",[],`const Text(\n  'View Cart →',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'View Cart →' in bold.")
         ],`TextButton(\n  onPressed: openCart,\n  child: const Text('View Cart →'),\n)`,"Taught in depth in Login — Sign in; here it opens the cart from the orange cart bar.")
-      ])
-    ],`Container(\n  color: const Color(0xFFFC8019),\n  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),\n  child: const CartSummaryRow(),\n)`)
-  ],`Scaffold(\n  body: const RestaurantMenuBody(),\n  bottomNavigationBar: const CartBar(),\n)`)
-],`MaterialApp(\n  home: const RestaurantMenuScreen(),\n)`);
+      ], undefined, "Places '2 items', '₹548' and a text button side by side.")
+    ],`Container(\n  color: const Color(0xFFFC8019),\n  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),\n  child: const CartSummaryRow(),\n)`, "A decorated box holding '2 items' and '₹548'.")
+  ],`Scaffold(\n  body: const RestaurantMenuBody(),\n  bottomNavigationBar: const CartBar(),\n)`, "Frames this screen: a scrolling list.")
+],`MaterialApp(\n  home: const RestaurantMenuScreen(),\n)`, "The app shell for the Restaurant menu screen.");
 
 TEARDOWNS["youtube-search"].root = T("ys-material","MaterialApp","MaterialApp sits at the top of the app and gives every screen one theme, one navigation stack, and one Material look. The search screen inherits the same red accent and text styles as the home feed.",[
   T("ys-scaffold","Scaffold","Scaffold frames a single screen, so the search bar, the suggestion list, and the bottom navigation stay in one stable layout. The search field stays on top while the suggestions scroll underneath.",[
     T("ys-body","Column","The search row sits above the suggestion list, which takes the rest of the screen. The column keeps the field fixed while the list scrolls.",[
       T("ys-search-row","Row","Back, the search field, and voice search share one horizontal line at the top of the screen, exactly as the real YouTube search bar is laid out.",[
-        T("ys-back","IconButton","The back arrow returns to the home feed. It pops this route off the navigation stack.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back),\n  onPressed: () => Navigator.pop(context),\n)`),
+        T("ys-back","IconButton","The back arrow returns to the home feed. It pops this route off the navigation stack.",[],`IconButton(\n  icon: const Icon(Icons.arrow_back),\n  onPressed: () => Navigator.pop(context),\n)`, "The back button in YouTube."),
         T("ys-searchbar-expanded","Expanded","The search field takes all the width left between the back arrow and the microphone. Without it the field would size to its hint text and leave a gap.",[
-          T("ys-searchbar","SearchBar","SearchBar is the Material 3 search field: one widget that owns the search input, its leading search icon, its hint text, and the callbacks that drive suggestions. That is the difference from the plain TextField search boxes already covered in Amazon, Gmail, and Swiggy — a TextField is only an input with a decoration, so those screens hand-build everything around it, while SearchBar is built for search: typing in it fires onChanged, and the app rebuilds the suggestion list below from that query. The suggestion rows themselves are a separate ListView, not part of SearchBar — SearchBar supplies the query, the list shows the matches.",[],`SearchBar(\n  controller: _searchController,\n  hintText: 'Search YouTube',\n  leading: const Icon(Icons.search),\n  onChanged: showSuggestions,\n  onSubmitted: runSearch,\n)`,"A Material 3 search field with a leading icon, hint text, and callbacks that drive a suggestions list — distinct from a plain TextField search box.")
-        ]),
-        T("ys-mic","IconButton","The microphone starts voice search without typing. It sits beside the field so it is reachable on every search.",[],`IconButton(\n  icon: const Icon(Icons.mic),\n  onPressed: startVoiceSearch,\n)`)
-      ]),
+          T("ys-searchbar","SearchBar","One widget owning the input, leading icon, hint text, and the callbacks that drive suggestions. Typing fires onChanged and the app rebuilds the list below; the rows are a separate ListView, not part of SearchBar.",[],`SearchBar(\n  controller: _searchController,\n  hintText: 'Search YouTube',\n  leading: const Icon(Icons.search),\n  onChanged: showSuggestions,\n  onSubmitted: runSearch,\n)`,"A Material 3 search field with callbacks for suggestions.")
+        ], undefined, "Lets a search field take the remaining space."),
+        T("ys-mic","IconButton","The microphone starts voice search without typing. It sits beside the field so it is reachable on every search.",[],`IconButton(\n  icon: const Icon(Icons.mic),\n  onPressed: startVoiceSearch,\n)`, "The microphone button in YouTube.")
+      ], undefined, "Places the back button, a search field and the microphone button side by side."),
       T("ys-suggest-list","ListView","ListView builds the suggestion and recent rows lazily and scrolls them as one column, so only the rows on screen are built at any moment. The list rebuilds from the SearchBar query as the user types.",[
         T("ys-sug1-row","Row","One suggestion reads as a single tappable row: the search icon, the query text, and the fill arrow share one line.",[
-          T("ys-sug1-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`),
+          T("ys-sug1-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`, "Shows the search icon in YouTube."),
           T("ys-sug1-expanded","Expanded","The query text takes all the width left between the icon and the fill arrow.",[
-            T("ys-sug1-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('flutter tutorial for beginners')`)
-          ]),
-          T("ys-sug1-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('flutter tutorial for beginners'),\n)`)
-        ]),
+            T("ys-sug1-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('flutter tutorial for beginners')`, "Shows 'flutter tutorial for beginners'.")
+          ], undefined, "Lets 'flutter tutorial for…' take the remaining space."),
+          T("ys-sug1-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('flutter tutorial for beginners'),\n)`, "The north west button in YouTube.")
+        ], undefined, "Places the search icon, 'flutter tutorial for…' and the north west button side by side."),
         T("ys-sug2-row","Row","One suggestion reads as a single tappable row: the search icon, the query text, and the fill arrow share one line.",[
-          T("ys-sug2-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`),
+          T("ys-sug2-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`, "Shows the search icon in YouTube."),
           T("ys-sug2-expanded","Expanded","The query text takes all the width left between the icon and the fill arrow.",[
-            T("ys-sug2-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('flutter state management')`)
-          ]),
-          T("ys-sug2-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('flutter state management'),\n)`)
-        ]),
+            T("ys-sug2-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('flutter state management')`, "Shows 'flutter state management'.")
+          ], undefined, "Lets 'flutter state management' take the remaining space."),
+          T("ys-sug2-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('flutter state management'),\n)`, "The north west button in YouTube.")
+        ], undefined, "Places the search icon, 'flutter state management' and the north west button side by side."),
         T("ys-sug3-row","Row","One suggestion reads as a single tappable row: the search icon, the query text, and the fill arrow share one line.",[
-          T("ys-sug3-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`),
+          T("ys-sug3-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`, "Shows the search icon in YouTube."),
           T("ys-sug3-expanded","Expanded","The query text takes all the width left between the icon and the fill arrow.",[
-            T("ys-sug3-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('dart null safety')`)
-          ]),
-          T("ys-sug3-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('dart null safety'),\n)`)
-        ]),
+            T("ys-sug3-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('dart null safety')`, "Shows 'dart null safety'.")
+          ], undefined, "Lets 'dart null safety' take the remaining space."),
+          T("ys-sug3-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('dart null safety'),\n)`, "The north west button in YouTube.")
+        ], undefined, "Places the search icon, 'dart null safety' and the north west button side by side."),
         T("ys-sug4-row","Row","One suggestion reads as a single tappable row: the search icon, the query text, and the fill arrow share one line.",[
-          T("ys-sug4-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`),
+          T("ys-sug4-icon","Icon","A small magnifier marks the row as a search suggestion rather than a history entry.",[],`const Icon(Icons.search, size: 18)`, "Shows the search icon in YouTube."),
           T("ys-sug4-expanded","Expanded","The query text takes all the width left between the icon and the fill arrow.",[
-            T("ys-sug4-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('build a flutter app')`)
-          ]),
-          T("ys-sug4-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('build a flutter app'),\n)`)
-        ]),
-        T("ys-recent-header","Text","Heads the recent searches so suggestions and history read as two groups. It appears once the suggestion list ends.",[],`const Text(\n  'Recent searches',\n  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),\n)`),
+            T("ys-sug4-text","Text","Shows the suggested query. Tapping it runs that search immediately.",[],`const Text('build a flutter app')`, "Shows 'build a flutter app'.")
+          ], undefined, "Lets 'build a flutter app' take the remaining space."),
+          T("ys-sug4-fill","IconButton","The arrow fills the search field with this suggestion so the user can edit it before searching.",[],`IconButton(\n  icon: const Icon(Icons.north_west),\n  onPressed: () => fillQuery('build a flutter app'),\n)`, "The north west button in YouTube.")
+        ], undefined, "Places the search icon, 'build a flutter app' and the north west button side by side."),
+        T("ys-recent-header","Text","Heads the recent searches so suggestions and history read as two groups. It appears once the suggestion list ends.",[],`const Text(\n  'Recent searches',\n  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),\n)`, "Shows 'Recent searches' in bold."),
         T("ys-rec1-row","Row","One recent search reads as a single tappable row: the history icon, the past query, and a clear button share one line.",[
-          T("ys-rec1-icon","Icon","A clock-rotate icon marks the row as a past search rather than a fresh suggestion.",[],`const Icon(Icons.history, size: 18)`),
+          T("ys-rec1-icon","Icon","A clock-rotate icon marks the row as a past search rather than a fresh suggestion.",[],`const Icon(Icons.history, size: 18)`, "Shows the history icon in YouTube."),
           T("ys-rec1-expanded","Expanded","The past query takes all the width left between the icon and the clear button.",[
-            T("ys-rec1-text","Text","Shows the past query. Tapping it runs that search again.",[],`const Text('flutter animations')`)
-          ]),
-          T("ys-rec1-clear","IconButton","The close button removes this query from recent searches without running it.",[],`IconButton(\n  icon: const Icon(Icons.close),\n  onPressed: () => removeRecent('flutter animations'),\n)`)
-        ]),
+            T("ys-rec1-text","Text","Shows the past query. Tapping it runs that search again.",[],`const Text('flutter animations')`, "Shows 'flutter animations'.")
+          ], undefined, "Lets 'flutter animations' take the remaining space."),
+          T("ys-rec1-clear","IconButton","The close button removes this query from recent searches without running it.",[],`IconButton(\n  icon: const Icon(Icons.close),\n  onPressed: () => removeRecent('flutter animations'),\n)`, "The close button in YouTube.")
+        ], undefined, "Places the history icon, 'flutter animations' and the close button side by side."),
         T("ys-rec2-row","Row","One recent search reads as a single tappable row: the history icon, the past query, and a clear button share one line.",[
-          T("ys-rec2-icon","Icon","A clock-rotate icon marks the row as a past search rather than a fresh suggestion.",[],`const Icon(Icons.history, size: 18)`),
+          T("ys-rec2-icon","Icon","A clock-rotate icon marks the row as a past search rather than a fresh suggestion.",[],`const Icon(Icons.history, size: 18)`, "Shows the history icon in YouTube."),
           T("ys-rec2-expanded","Expanded","The past query takes all the width left between the icon and the clear button.",[
-            T("ys-rec2-text","Text","Shows the past query. Tapping it runs that search again.",[],`const Text('riverpod vs bloc')`)
-          ]),
-          T("ys-rec2-clear","IconButton","The close button removes this query from recent searches without running it.",[],`IconButton(\n  icon: const Icon(Icons.close),\n  onPressed: () => removeRecent('riverpod vs bloc'),\n)`)
-        ]),
+            T("ys-rec2-text","Text","Shows the past query. Tapping it runs that search again.",[],`const Text('riverpod vs bloc')`, "Shows 'riverpod vs bloc'.")
+          ], undefined, "Lets 'riverpod vs bloc' take the remaining space."),
+          T("ys-rec2-clear","IconButton","The close button removes this query from recent searches without running it.",[],`IconButton(\n  icon: const Icon(Icons.close),\n  onPressed: () => removeRecent('riverpod vs bloc'),\n)`, "The close button in YouTube.")
+        ], undefined, "Places the history icon, 'riverpod vs bloc' and the close button side by side."),
         T("ys-rec3-row","Row","One recent search reads as a single tappable row: the history icon, the past query, and a clear button share one line.",[
-          T("ys-rec3-icon","Icon","A clock-rotate icon marks the row as a past search rather than a fresh suggestion.",[],`const Icon(Icons.history, size: 18)`),
+          T("ys-rec3-icon","Icon","A clock-rotate icon marks the row as a past search rather than a fresh suggestion.",[],`const Icon(Icons.history, size: 18)`, "Shows the history icon in YouTube."),
           T("ys-rec3-expanded","Expanded","The past query takes all the width left between the icon and the clear button.",[
-            T("ys-rec3-text","Text","Shows the past query. Tapping it runs that search again.",[],`const Text('youtube clone flutter')`)
-          ]),
-          T("ys-rec3-clear","IconButton","The close button removes this query from recent searches without running it.",[],`IconButton(\n  icon: const Icon(Icons.close),\n  onPressed: () => removeRecent('youtube clone flutter'),\n)`)
-        ])
-      ])
-    ]),
+            T("ys-rec3-text","Text","Shows the past query. Tapping it runs that search again.",[],`const Text('youtube clone flutter')`, "Shows 'youtube clone flutter'.")
+          ], undefined, "Lets 'youtube clone flutter' take the remaining space."),
+          T("ys-rec3-clear","IconButton","The close button removes this query from recent searches without running it.",[],`IconButton(\n  icon: const Icon(Icons.close),\n  onPressed: () => removeRecent('youtube clone flutter'),\n)`, "The close button in YouTube.")
+        ], undefined, "Places the history icon, 'youtube clone flutter' and the close button side by side.")
+      ], undefined, "A scrolling list of 8 items.")
+    ], undefined, "Stacks the back button and a search field and a scrolling list vertically."),
     T("ys-bottom","BottomNavigationBar","The bottom bar keeps the app's five main destinations one thumb-tap away, which is why it never scrolls away with the suggestions.",[
       T("ys-nav-home","BottomNavigationBarItem","Home is the first destination, so its icon and label take the user back to the feed.",[],`const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home')`,"Taught in depth in YouTube — Home feed; here it is the Home destination of the search screen's bottom bar."),
       T("ys-nav-shorts","BottomNavigationBarItem","Shorts opens vertical short-form video, a separate feed from the home list, so it gets its own destination.",[],`const BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Shorts')`,"Taught in depth in YouTube — Home feed; here it is the Shorts destination of the search screen's bottom bar."),
       T("ys-nav-create","BottomNavigationBarItem","The plus in the middle is the create action, placed centrally because uploading is a primary action, not a hidden one.",[],`const BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: '')`,"Taught in depth in YouTube — Home feed; here it is the Create destination of the search screen's bottom bar."),
       T("ys-nav-subs","BottomNavigationBarItem","Subscriptions shows only channels the user follows, so it is a personal feed rather than the algorithmic home feed.",[],`const BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subscriptions')`,"Taught in depth in YouTube — Home feed; here it is the Subscriptions destination of the search screen's bottom bar."),
       T("ys-nav-you","BottomNavigationBarItem","You opens the user's own library, history, and profile, grouping everything personal under one destination.",[],`const BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'You')`,"Taught in depth in YouTube — Home feed; here it is the You destination of the search screen's bottom bar.")
-    ],`BottomNavigationBar(\n  currentIndex: 0,\n  selectedItemColor: const Color(0xFFFF0000),\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Shorts'),\n    BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: ''),\n    BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subscriptions'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'You'),\n  ],\n)`)
-  ],`Scaffold(\n  body: const SearchBody(),\n  bottomNavigationBar: const YouTubeBottomNav(),\n)`)
-],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF0000)),\n  home: const YouTubeSearch(),\n)`);
+    ],`BottomNavigationBar(\n  currentIndex: 0,\n  selectedItemColor: const Color(0xFFFF0000),\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Shorts'),\n    BottomNavigationBarItem(icon: Icon(Icons.add_circle_outline), label: ''),\n    BottomNavigationBarItem(icon: Icon(Icons.subscriptions_outlined), label: 'Subscriptions'),\n    BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'You'),\n  ],\n)`, "The bottom tabs: Home, Shorts, Subscriptions, You.")
+  ],`Scaffold(\n  body: const SearchBody(),\n  bottomNavigationBar: const YouTubeBottomNav(),\n)`, "Frames this screen: scrolling content and a bottom bar.")
+],`MaterialApp(\n  theme: ThemeData(colorSchemeSeed: const Color(0xFFFF0000)),\n  home: const YouTubeSearch(),\n)`, "The app shell for the Search screen.");
 
 TEARDOWNS["spotify-search"].root = T("ss-material","MaterialApp","One Material theme and navigation context covers the whole Spotify search screen. The search screen inherits the same green accent and text styles as the home screen.",[
   T("ss-scaffold","Scaffold","The search bar, the Music/Podcasts switch, the browse grid, and the bottom navigation share one stable screen frame. The field and the switch stay fixed while the category grid scrolls.",[
     T("ss-appbar","AppBar","The title and the profile avatar stay visible at the top while the browse grid scrolls below.",[
-      T("ss-appbar-title","Text","Labels the screen so the user knows this is search, not the home feed.",[],`const Text(\n  'Search',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`),
-      T("ss-avatar","CircleAvatar","The signed-in user's photo is clipped into a small circle, which is the compact identity pattern used across the app.",[],`const CircleAvatar(radius: 14, child: Text('DK'))`)
-    ],`AppBar(\n  title: const Text('Search'),\n  actions: const [CircleAvatar(radius: 14, child: Text('DK'))],\n)`),
+      T("ss-appbar-title","Text","Labels the screen so the user knows this is search, not the home feed.",[],`const Text(\n  'Search',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`, "Shows 'Search' in bold."),
+      T("ss-avatar","CircleAvatar","The signed-in user's photo is clipped into a small circle, which is the compact identity pattern used across the app.",[],`const CircleAvatar(radius: 14, child: Text('DK'))`, "A circular avatar showing 'DK'.")
+    ],`AppBar(\n  title: const Text('Search'),\n  actions: const [CircleAvatar(radius: 14, child: Text('DK'))],\n)`, "The top bar: 'Search'."),
     T("ss-body","Column","The search field, the segmented switch, and the browse grid follow from top to bottom, with the grid taking the rest of the screen.",[
-      T("ss-search-field","TextField","The search field is a plain TextField here, not a SearchBar: Spotify's search box is a simple filled input with a hint and a search icon, and the browse grid below does the suggesting. It collects the query and filters the browse categories as the user types.",[],`TextField(\n  onChanged: filterBrowse,\n  decoration: const InputDecoration(\n    hintText: 'What do you want to listen to?',\n    prefixIcon: Icon(Icons.search),\n    filled: true,\n    border: OutlineInputBorder(\n      borderRadius: BorderRadius.circular(8),\n      borderSide: BorderSide.none,\n    ),\n  ),\n)`),
-      T("ss-search-gap","SizedBox","Separates the search field from the Music/Podcasts switch.",[],`const SizedBox(height: 12)`),
-      T("ss-segments","SegmentedButton","SegmentedButton is the Material 3 segmented control: one widget that offers a small set of mutually exclusive choices — here Music or Podcasts — with exactly one segment selected at a time. It is the right widget when there are only two or three options and the choice must stay visible on screen, unlike a DropdownButton that hides the options until tapped or a TabBar that switches whole pages. The selected value lives in a Set, and onSelectionChanged hands back the new set, so switching segments rebuilds the browse grid below between music categories and podcast categories.",[
+      T("ss-search-field","TextField","A plain TextField, not a SearchBar: a simple filled input with a hint and a search icon. It collects the query and filters the browse categories as the user types; the browse grid below does the suggesting.",[],`TextField(\n  onChanged: filterBrowse,\n  decoration: const InputDecoration(\n    hintText: 'What do you want to listen to?',\n    prefixIcon: Icon(Icons.search),\n    filled: true,\n    border: OutlineInputBorder(\n      borderRadius: BorderRadius.circular(8),\n      borderSide: BorderSide.none,\n    ),\n  ),\n)`, "A text field for 'What do you want to listen to?'."),
+      T("ss-search-gap","SizedBox","Separates the search field from the Music/Podcasts switch.",[],`const SizedBox(height: 12)`, "A 12px-tall gap."),
+      T("ss-segments","SegmentedButton","One widget offering a few mutually exclusive choices, with exactly one selected at a time — right when the options must stay visible, unlike a DropdownButton. The choice lives in a Set handed back by onSelectionChanged.",[
         T("ss-seg-music","SegmentedButtonSegment","The Music segment shows the music browse categories when selected. It is the default selection on this screen.",[],`const SegmentedButtonSegment(value: 'music', label: Text('Music'))`,"One option inside a SegmentedButton — its value and label."),
         T("ss-seg-podcasts","SegmentedButtonSegment","The Podcasts segment swaps the browse grid to podcast categories when selected. It stays unfilled until tapped.",[],`const SegmentedButtonSegment(value: 'podcasts', label: Text('Podcasts'))`,"One option inside a SegmentedButton — its value and label.")
-      ],`SegmentedButton<String>(\n  segments: const [\n    SegmentedButtonSegment(value: 'music', label: Text('Music')),\n    SegmentedButtonSegment(value: 'podcasts', label: Text('Podcasts')),\n  ],\n  selected: {'music'},\n  onSelectionChanged: (selection) => setState(() => _browse = selection.first),\n)`,"A Material 3 segmented control that picks exactly one option from a small set — here Music or Podcasts — with the selected segment filled."),
-      T("ss-seg-gap","SizedBox","Separates the segmented switch from the browse heading.",[],`const SizedBox(height: 16)`),
-      T("ss-browse-title","Text","Heads the browse section so the category grid reads as one group. It tells the user these tiles are starting points, not results.",[],`const Text(\n  'Browse all',\n  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),\n)`),
+      ],`SegmentedButton<String>(\n  segments: const [\n    SegmentedButtonSegment(value: 'music', label: Text('Music')),\n    SegmentedButtonSegment(value: 'podcasts', label: Text('Podcasts')),\n  ],\n  selected: {'music'},\n  onSelectionChanged: (selection) => setState(() => _browse = selection.first),\n)`,"A segmented control picking one option — here Music or Podcasts."),
+      T("ss-seg-gap","SizedBox","Separates the segmented switch from the browse heading.",[],`const SizedBox(height: 16)`, "A 16px-tall gap."),
+      T("ss-browse-title","Text","Heads the browse section so the category grid reads as one group. It tells the user these tiles are starting points, not results.",[],`const Text(\n  'Browse all',\n  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),\n)`, "Shows 'Browse all' in bold."),
       T("ss-grid-expanded","Expanded","The browse grid takes every pixel not used by the search field and the switch, so the categories fill the screen.",[
         T("ss-grid","GridView","Six browse categories are packed into a two-column grid so the most useful starting points are visible without scrolling far. The grid scrolls if the categories grow beyond the screen.",[
           T("ss-card-music","Card","One browse tile reads as a single tappable card: a coloured tile with its category name on it.",[
             T("ss-card-music-col","Column","The category name sits on the coloured tile.",[
-              T("ss-card-music-title","Text","Names the browse category. 'Music' opens the music categories.",[],`const Text(\n  'Music',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`)
-            ])
+              T("ss-card-music-title","Text","Names the browse category. 'Music' opens the music categories.",[],`const Text(\n  'Music',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`, "Shows 'Music' in bold.")
+            ], undefined, "Stacks 'Music' vertically.")
           ],`Card(\n  color: const Color(0xFFE13300),\n  child: const Padding(\n    padding: EdgeInsets.all(12),\n    child: Text('Music'),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it is one coloured browse tile in the search grid."),
           T("ss-card-podcasts","Card","One browse tile reads as a single tappable card: a coloured tile with its category name on it.",[
             T("ss-card-podcasts-col","Column","The category name sits on the coloured tile.",[
-              T("ss-card-podcasts-title","Text","Names the browse category. 'Podcasts' opens the podcast categories.",[],`const Text(\n  'Podcasts',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`)
-            ])
+              T("ss-card-podcasts-title","Text","Names the browse category. 'Podcasts' opens the podcast categories.",[],`const Text(\n  'Podcasts',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`, "Shows 'Podcasts' in bold.")
+            ], undefined, "Stacks 'Podcasts' vertically.")
           ],`Card(\n  color: const Color(0xFF1E3264),\n  child: const Padding(\n    padding: EdgeInsets.all(12),\n    child: Text('Podcasts'),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it is one coloured browse tile in the search grid."),
           T("ss-card-live","Card","One browse tile reads as a single tappable card: a coloured tile with its category name on it.",[
             T("ss-card-live-col","Column","The category name sits on the coloured tile.",[
-              T("ss-card-live-title","Text","Names the browse category. 'Live Events' opens concerts near the user.",[],`const Text(\n  'Live Events',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`)
-            ])
+              T("ss-card-live-title","Text","Names the browse category. 'Live Events' opens concerts near the user.",[],`const Text(\n  'Live Events',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`, "Shows 'Live Events' in bold.")
+            ], undefined, "Stacks 'Live Events' vertically.")
           ],`Card(\n  color: const Color(0xFF8D67AB),\n  child: const Padding(\n    padding: EdgeInsets.all(12),\n    child: Text('Live Events'),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it is one coloured browse tile in the search grid."),
           T("ss-card-made","Card","One browse tile reads as a single tappable card: a coloured tile with its category name on it.",[
             T("ss-card-made-col","Column","The category name sits on the coloured tile.",[
-              T("ss-card-made-title","Text","Names the browse category. 'Made For You' opens the personalised mixes.",[],`const Text(\n  'Made For You',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`)
-            ])
+              T("ss-card-made-title","Text","Names the browse category. 'Made For You' opens the personalised mixes.",[],`const Text(\n  'Made For You',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`, "Shows 'Made For You' in bold.")
+            ], undefined, "Stacks 'Made For You' vertically.")
           ],`Card(\n  color: const Color(0xFF1E6F5C),\n  child: const Padding(\n    padding: EdgeInsets.all(12),\n    child: Text('Made For You'),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it is one coloured browse tile in the search grid."),
           T("ss-card-charts","Card","One browse tile reads as a single tappable card: a coloured tile with its category name on it.",[
             T("ss-card-charts-col","Column","The category name sits on the coloured tile.",[
-              T("ss-card-charts-title","Text","Names the browse category. 'Charts' opens the most-played songs.",[],`const Text(\n  'Charts',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`)
-            ])
+              T("ss-card-charts-title","Text","Names the browse category. 'Charts' opens the most-played songs.",[],`const Text(\n  'Charts',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`, "Shows 'Charts' in bold.")
+            ], undefined, "Stacks 'Charts' vertically.")
           ],`Card(\n  color: const Color(0xFFBA5D07),\n  child: const Padding(\n    padding: EdgeInsets.all(12),\n    child: Text('Charts'),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it is one coloured browse tile in the search grid."),
           T("ss-card-new","Card","One browse tile reads as a single tappable card: a coloured tile with its category name on it.",[
             T("ss-card-new-col","Column","The category name sits on the coloured tile.",[
-              T("ss-card-new-title","Text","Names the browse category. 'New Releases' opens this week's new music.",[],`const Text(\n  'New Releases',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`)
-            ])
+              T("ss-card-new-title","Text","Names the browse category. 'New Releases' opens this week's new music.",[],`const Text(\n  'New Releases',\n  style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white),\n)`, "Shows 'New Releases' in bold.")
+            ], undefined, "Stacks 'New Releases' vertically.")
           ],`Card(\n  color: const Color(0xFF0D73EC),\n  child: const Padding(\n    padding: EdgeInsets.all(12),\n    child: Text('New Releases'),\n  ),\n)`,"Taught in depth in Swiggy — Home; here it is one coloured browse tile in the search grid.")
         ],`GridView.count(\n  crossAxisCount: 2,\n  mainAxisSpacing: 12,\n  crossAxisSpacing: 12,\n  childAspectRatio: 1.8,\n  children: const [\n    BrowseCard('Music'),\n    BrowseCard('Podcasts'),\n    BrowseCard('Live Events'),\n    BrowseCard('Made For You'),\n    BrowseCard('Charts'),\n    BrowseCard('New Releases'),\n  ],\n)`,"Taught in depth in Spotify — Home; here it lays the six browse categories out in two columns.")
-      ])
-    ]),
+      ], undefined, "Lets a grid take the remaining space.")
+    ], undefined, "Stacks a text field, a gap and a segmented control vertically."),
     T("ss-bottom","BottomNavigationBar","Home, Search, and Your Library stay reachable from every screen. Search is the selected destination here.",[
       T("ss-nav-home","BottomNavigationBarItem","Takes the user back to the home feed.",[],`const BottomNavigationBarItem(\n  icon: Icon(Icons.home),\n  label: 'Home',\n)`,"Taught in depth in Spotify — Home; here it is the Home destination of the search screen's bottom bar."),
       T("ss-nav-search","BottomNavigationBarItem","Opens search for songs, artists, and playlists. It is the selected destination on this screen.",[],`const BottomNavigationBarItem(\n  icon: Icon(Icons.search),\n  label: 'Search',\n)`,"Taught in depth in Spotify — Home; here it is the selected Search destination of the search screen's bottom bar."),
       T("ss-nav-library","BottomNavigationBarItem","Opens the user's saved playlists and albums.",[],`const BottomNavigationBarItem(\n  icon: Icon(Icons.library_music_outlined),\n  label: 'Your Library',\n)`,"Taught in depth in Spotify — Home; here it is the Your Library destination of the search screen's bottom bar.")
-    ],`BottomNavigationBar(\n  currentIndex: 1,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),\n    BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), label: 'Your Library'),\n  ],\n)`)
-  ],`Scaffold(\n  appBar: const SearchAppBar(),\n  body: const SearchBody(),\n  bottomNavigationBar: const SearchBottomNav(),\n)`)
-],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const SpotifySearch(),\n)`);
+    ],`BottomNavigationBar(\n  currentIndex: 1,\n  items: const [\n    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),\n    BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),\n    BottomNavigationBarItem(icon: Icon(Icons.library_music_outlined), label: 'Your Library'),\n  ],\n)`, "The bottom tabs: Home, Search, Your Library.")
+  ],`Scaffold(\n  appBar: const SearchAppBar(),\n  body: const SearchBody(),\n  bottomNavigationBar: const SearchBottomNav(),\n)`, "Frames this screen: a top bar, scrolling content and a bottom bar.")
+],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const SpotifySearch(),\n)`, "The app shell for the Search screen.");
 
-TEARDOWNS["whatsapp-status"].root = T("ws-material","MaterialApp","MaterialApp builds the whole status-viewer experience from one place: it holds the WhatsApp-green theme, the text styles and the navigation stack, so the full-screen viewer inherits the same colours and routing as the chat list it opens from instead of defining them itself.",[
-  T("ws-scaffold","Scaffold","Scaffold is the frame of the viewer: it holds the full-screen status image in its body and gives the overlay rows (progress, sender, reply) one stable surface to sit on. Without it the image and the overlays would be separate widgets with nothing keeping them aligned to the screen edges.",[
-    T("ws-stack","Stack","Stack layers the three parts of the viewer in one box: the swipeable status pages at the back, the progress and sender rows on top, and the reply field at the bottom. The overlays float over the image instead of pushing it down, which is exactly how a full-screen viewer works.",[
-      T("ws-viewer","PageView","PageView is taught in depth in Instagram — Reels (S6), where vertical swiping moves between reels. Here it does the same job horizontally: each swipe moves to the next person's status, so the viewer needs no back buttons and no list to pick from.",[
+TEARDOWNS["whatsapp-status"].root = T("ws-material","MaterialApp","It holds the WhatsApp-green theme, the text styles and the navigation stack, so the full-screen viewer inherits the same colours and routing as the chat list it opens from.",[
+  T("ws-scaffold","Scaffold","It holds the full-screen status image in its body and gives the overlay rows (progress, sender, reply) one stable surface to sit on.",[
+    T("ws-stack","Stack","It layers the viewer's three parts in one box: the swipeable status pages at the back, the progress and sender rows on top, and the reply field at the bottom.",[
+      T("ws-viewer","PageView","Like Instagram Reels, but horizontal: each swipe moves to the next person's status, so the viewer needs no back buttons and no list to pick from.",[
         T("ws-page-1","Stack","One status page layers its photo and its caption in the same full-screen box.",[
-          T("ws-hero","Hero","Hero is taught in depth in Amazon — Product detail (S5), where a product image flies into a full-screen gallery. Here it does the same job locally: the small status thumbnail from the chat list grows into this full-screen photo, so the viewer feels like a continuation of the list instead of a new screen.",[
-            T("ws-page1-image","Image","Shows the first status photo filling the whole screen.",[],`Image.asset(\n  'assets/status/alex_beach.png',\n  fit: BoxFit.cover,\n)`)
+          T("ws-hero","Hero","Here it does the same job locally: the small status thumbnail from the chat list grows into this full-screen photo, so the viewer feels like a continuation of the list instead of a new screen.",[
+            T("ws-page1-image","Image","Shows the first status photo filling the whole screen.",[],`Image.asset(\n  'assets/status/alex_beach.png',\n  fit: BoxFit.cover,\n)`, "Shows the alex beach image.")
           ],`Hero(\n  tag: 'status-alex',\n  child: Image.asset('assets/status/alex_beach.png', fit: BoxFit.cover),\n)`,"Flies one widget between two screens in a shared-element transition."),
-          T("ws-page1-caption","Text","Shows the caption Alex wrote under this status photo.",[],`const Text(\n  'Beach day with the Flutter crew',\n  style: TextStyle(color: Colors.white, fontSize: 14),\n)`)
-        ]),
+          T("ws-page1-caption","Text","Shows the caption Alex wrote under this status photo.",[],`const Text(\n  'Beach day with the Flutter crew',\n  style: TextStyle(color: Colors.white, fontSize: 14),\n)`, "Shows 'Beach day with the Flutter crew'.")
+        ], undefined, "Layers a flying image and 'Beach day with the Flutter…' in one box."),
         T("ws-page-2","Stack","The second status page layers its photo and caption in the same full-screen box.",[
-          T("ws-page2-image","Image","Shows the second status photo filling the whole screen.",[],`Image.asset(\n  'assets/status/alex_code.png',\n  fit: BoxFit.cover,\n)`),
-          T("ws-page2-caption","Text","Shows the caption under the second status photo.",[],`const Text(\n  'Shipping the widget tree lesson tonight',\n  style: TextStyle(color: Colors.white, fontSize: 14),\n)`)
-        ]),
+          T("ws-page2-image","Image","Shows the second status photo filling the whole screen.",[],`Image.asset(\n  'assets/status/alex_code.png',\n  fit: BoxFit.cover,\n)`, "Shows the alex code image."),
+          T("ws-page2-caption","Text","Shows the caption under the second status photo.",[],`const Text(\n  'Shipping the widget tree lesson tonight',\n  style: TextStyle(color: Colors.white, fontSize: 14),\n)`, "Shows 'Shipping the widget tree lesson tonight'.")
+        ], undefined, "Layers the alex code image and 'Shipping the widget tree…' in one box."),
         T("ws-page-3","Stack","The third status page layers its photo and caption in the same full-screen box.",[
-          T("ws-page3-image","Image","Shows the third status photo filling the whole screen.",[],`Image.asset(\n  'assets/status/alex_food.png',\n  fit: BoxFit.cover,\n)`),
-          T("ws-page3-caption","Text","Shows the caption under the third status photo.",[],`const Text(\n  'Dinner after the session',\n  style: TextStyle(color: Colors.white, fontSize: 14),\n)`)
-        ])
+          T("ws-page3-image","Image","Shows the third status photo filling the whole screen.",[],`Image.asset(\n  'assets/status/alex_food.png',\n  fit: BoxFit.cover,\n)`, "Shows the alex food image."),
+          T("ws-page3-caption","Text","Shows the caption under the third status photo.",[],`const Text(\n  'Dinner after the session',\n  style: TextStyle(color: Colors.white, fontSize: 14),\n)`, "Shows 'Dinner after the session'.")
+        ], undefined, "Layers the alex food image and 'Dinner after the session' in one box.")
       ],`PageView.builder(\n  itemCount: statuses.length,\n  itemBuilder: (_, index) => StatusPage(statuses[index]),\n)`,"Builds swipeable full pages; each child is one page the user swipes through."),
       T("ws-top","Column","The progress segments and the sender row sit together at the top of the viewer, above the photo.",[
         T("ws-progress","Row","Three segments show how far through Alex's statuses the viewer is: the first is full, the second is half full, the third is empty.",[
-          T("ws-seg-1","Container","A filled segment marks a status that has already been viewed.",[],`Container(\n  height: 3,\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`),
-          T("ws-seg-2","Container","A half-filled segment marks the status on screen right now.",[],`Container(\n  height: 3,\n  decoration: BoxDecoration(\n    color: Colors.white54,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`),
-          T("ws-seg-3","Container","An empty segment marks a status that has not been viewed yet.",[],`Container(\n  height: 3,\n  decoration: BoxDecoration(\n    color: Colors.white30,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`)
-        ]),
+          T("ws-seg-1","Container","A filled segment marks a status that has already been viewed.",[],`Container(\n  height: 3,\n  decoration: BoxDecoration(\n    color: Colors.white,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`, "A white box."),
+          T("ws-seg-2","Container","A half-filled segment marks the status on screen right now.",[],`Container(\n  height: 3,\n  decoration: BoxDecoration(\n    color: Colors.white54,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`, "A white54 box."),
+          T("ws-seg-3","Container","An empty segment marks a status that has not been viewed yet.",[],`Container(\n  height: 3,\n  decoration: BoxDecoration(\n    color: Colors.white30,\n    borderRadius: BorderRadius.circular(2),\n  ),\n)`, "A white30 box.")
+        ], undefined, "Places a box side by side."),
         T("ws-sender","Row","The sender's avatar, name and time share one line under the progress segments.",[
-          T("ws-sender-avatar","CircleAvatar","Shows whose status this is at a glance.",[],`const CircleAvatar(radius: 16, child: Text('A'))`),
-          T("ws-sender-name","Text","Names the person whose status is on screen.",[],`const Text(\n  'Alex',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
-          T("ws-sender-time","Text","Shows how long ago this status was posted.",[],`const Text(\n  '2h ago',\n  style: TextStyle(color: Colors.white70, fontSize: 12),\n)`),
-          T("ws-close","IconButton","Closes the viewer and returns to the status list.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.close, color: Colors.white),\n)`)
-        ])
-      ]),
-      T("ws-reply","Row","The reply field and its two actions sit in one row pinned to the bottom of the viewer.",[
+          T("ws-sender-avatar","CircleAvatar","Shows whose status this is at a glance.",[],`const CircleAvatar(radius: 16, child: Text('A'))`, "A circular avatar showing 'A'."),
+          T("ws-sender-name","Text","Names the person whose status is on screen.",[],`const Text(\n  'Alex',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'Alex' in bold."),
+          T("ws-sender-time","Text","Shows how long ago this status was posted.",[],`const Text(\n  '2h ago',\n  style: TextStyle(color: Colors.white70, fontSize: 12),\n)`, "Shows '2h ago'."),
+          T("ws-close","IconButton","Closes the viewer and returns to the status list.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.close, color: Colors.white),\n)`, "The close button in WhatsApp.")
+        ], undefined, "Places a circular avatar, 'Alex' and '2h ago' side by side.")
+      ], undefined, "Stacks a box and a circular avatar and 'Alex' vertically."),
+      T("ws-reply","Row","The reply field and its one action — the heart — sit in one row pinned to the bottom of the viewer.",[
         T("ws-reply-field","TextField","Lets the viewer type a reply to this status without leaving it.",[
-          T("ws-reply-hint","Text","Shows the 'Reply' hint until the viewer starts typing.",[],`const Text('Reply', style: TextStyle(color: Colors.white70))`)
-        ],`TextField(\n  decoration: InputDecoration(\n    hintText: 'Reply',\n    border: OutlineInputBorder(borderRadius: BorderRadius.circular(24)),\n  ),\n)`),
-        T("ws-reply-heart","IconButton","Likes the status with one tap.",[],`IconButton(\n  onPressed: likeStatus,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`),
-        T("ws-reply-send","IconButton","Sends the typed reply to Alex.",[],`IconButton(\n  onPressed: sendReply,\n  icon: const Icon(Icons.send, color: Colors.white),\n)`)
-      ])
-    ])
-  ],`Scaffold(\n  body: const StatusViewer(),\n)`)
-],`MaterialApp(\n  home: const StatusViewerScreen(),\n)`);
+          T("ws-reply-hint","Text","Shows the 'Reply' hint until the viewer starts typing.",[],`const Text('Reply', style: TextStyle(color: Colors.white70))`, "Shows 'Reply'.")
+        ],`TextField(\n  decoration: InputDecoration(\n    hintText: 'Reply',\n    border: OutlineInputBorder(borderRadius: BorderRadius.circular(24)),\n  ),\n)`, "A text field for 'Reply'."),
+        T("ws-reply-heart","IconButton","Likes the status with one tap.",[],`IconButton(\n  onPressed: likeStatus,\n  icon: const Icon(Icons.favorite_border, color: Colors.white),\n)`, "The heart button in WhatsApp.")
+      ], undefined, "Places a text field and the heart button side by side.")
+    ], undefined, "Layers a swipeable page, a box and a circular avatar and 'Alex' and a text field and the heart button in one box.")
+  ],`Scaffold(\n  body: const StatusViewer(),\n)`, "Frames this screen: a stack.")
+],`MaterialApp(\n  home: const StatusViewerScreen(),\n)`, "The app shell for the Status viewer screen.");
 
 TEARDOWNS["spotify-playlist"].root = T("spl-material","MaterialApp","One dark Material theme and navigation context covers the whole Spotify playlist screen.",[
   T("spl-scaffold","Scaffold","The app bar, playlist header, and reorderable song list share one stable screen frame.",[
     T("spl-appbar","AppBar","The back action, playlist title, and overflow menu stay visible at the top while the song list scrolls below.",[
-      T("spl-back","IconButton","Returns to Your Library without losing the playlist.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back),\n)`),
-      T("spl-appbar-title","Text","Names the playlist at the top of the screen.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),\n)`),
-      T("spl-more","IconButton","Opens playlist options such as share, edit, and download.",[],`IconButton(\n  onPressed: openPlaylistMenu,\n  icon: const Icon(Icons.more_vert),\n)`)
-    ],`AppBar(\n  title: const Text('Liked Songs'),\n  actions: [PlaylistMenuButton()],\n)`),
+      T("spl-back","IconButton","Returns to Your Library without losing the playlist.",[],`IconButton(\n  onPressed: () => Navigator.pop(context),\n  icon: const Icon(Icons.arrow_back),\n)`, "The back button in Spotify."),
+      T("spl-appbar-title","Text","Names the playlist at the top of the screen.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),\n)`, "Shows 'Liked Songs' in bold."),
+      T("spl-more","IconButton","Opens playlist options such as share, edit, and download.",[],`IconButton(\n  onPressed: openPlaylistMenu,\n  icon: const Icon(Icons.more_vert),\n)`, "The more options button in Spotify.")
+    ],`AppBar(\n  title: const Text('Liked Songs'),\n  actions: [PlaylistMenuButton()],\n)`, "The top bar: 'Liked Songs' with 2 actions."),
     T("spl-body","Column","The playlist header sits above the song list, which takes the rest of the screen.",[
       T("spl-header","Row","The large cover art and the playlist details share the header line.",[
         T("spl-cover","ClipRRect","Rounds the corners of the large playlist cover.",[
-          T("spl-cover-art","Image","Shows the playlist cover art at the top of the screen.",[],`Image.asset(\n  'assets/covers/liked_songs.png',\n  width: 120,\n  height: 120,\n  fit: BoxFit.cover,\n)`)
-        ]),
+          T("spl-cover-art","Image","Shows the playlist cover art at the top of the screen.",[],`Image.asset(\n  'assets/covers/liked_songs.png',\n  width: 120,\n  height: 120,\n  fit: BoxFit.cover,\n)`, "Shows the liked songs image.")
+        ], undefined, "Rounds the corners of the liked songs image."),
         T("spl-header-info","Column","The playlist title sits above its owner and song count.",[
-          T("spl-playlist-title","Text","Names the playlist in large type.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`),
-          T("spl-playlist-meta","Text","Shows who made the playlist and how many songs it holds.",[],`const Text(\n  'Dheeraj Kumar · 4 songs',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-        ])
-      ]),
+          T("spl-playlist-title","Text","Names the playlist in large type.",[],`const Text(\n  'Liked Songs',\n  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),\n)`, "Shows 'Liked Songs' in bold."),
+          T("spl-playlist-meta","Text","Shows who made the playlist and how many songs it holds.",[],`const Text(\n  'Dheeraj Kumar · 4 songs',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows 'Dheeraj Kumar · 4 songs'.")
+        ], undefined, "Stacks 'Liked Songs' and 'Dheeraj Kumar · 4 songs' vertically.")
+      ], undefined, "Places the liked songs image and 'Liked Songs' and 'Dheeraj Kumar · 4 songs' side by side."),
       T("spl-actions","Row","The play button and the shuffle toggle share one action row under the header.",[
         T("spl-play-btn","ElevatedButton","Starts playing the playlist from the top.",[
-          T("spl-play-label","Text","Labels the primary play action.",[],`const Text('Play')`)
+          T("spl-play-label","Text","Labels the primary play action.",[],`const Text('Play')`, "Shows 'Play'.")
         ],`ElevatedButton.icon(\n  onPressed: playPlaylist,\n  icon: const Icon(Icons.play_arrow),\n  label: const Text('Play'),\n)`,"A filled button for the primary action on the screen."),
-        T("spl-shuffle-btn","IconButton","Toggles shuffle so the songs play in a random order.",[],`IconButton(\n  onPressed: toggleShuffle,\n  icon: const Icon(Icons.shuffle, color: Color(0xFF1DB954)),\n)`)
-      ]),
-      T("spl-list","ReorderableListView","ReorderableListView is the widget that makes a playlist feel like a playlist: the user presses a song's drag handle and slides it up or down, and the list reorders itself with an animation. A plain ListView can only scroll — it cannot let the user change the order, which is the whole point of curating a playlist. Each song row needs a unique key so Flutter knows which song moved where.",[
+        T("spl-shuffle-btn","IconButton","Toggles shuffle so the songs play in a random order.",[],`IconButton(\n  onPressed: toggleShuffle,\n  icon: const Icon(Icons.shuffle, color: Color(0xFF1DB954)),\n)`, "The shuffle button in Spotify.")
+      ], undefined, "Places a filled button and the shuffle button side by side."),
+      T("spl-list","ReorderableListView","The user presses a song's drag handle and slides it up or down, and the list reorders itself with an animation. A plain ListView can only scroll — it cannot change the order.",[
         T("spl-song-1","Row","One song row: drag handle, cover, title and artist, and duration.",[
-          T("spl-song1-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`),
-          T("spl-song1-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/blinding_lights.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`),
+          T("spl-song1-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Spotify."),
+          T("spl-song1-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/blinding_lights.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`, "Shows the blinding lights image."),
           T("spl-song1-info","Column","The song title sits above the artist name.",[
-            T("spl-song1-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'Blinding Lights',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("spl-song1-artist","Text","Names the artist under the title.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-          ]),
-          T("spl-song1-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '3:20',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-        ]),
+            T("spl-song1-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'Blinding Lights',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Blinding Lights' in bold."),
+            T("spl-song1-artist","Text","Names the artist under the title.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows 'The Weeknd'.")
+          ], undefined, "Stacks 'Blinding Lights' and 'The Weeknd' vertically."),
+          T("spl-song1-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '3:20',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows '3:20'.")
+        ], undefined, "Places the drag handle icon, the blinding lights image and 'Blinding Lights' and 'The Weeknd' side by side."),
         T("spl-song-2","Row","One song row: drag handle, cover, title and artist, and duration.",[
-          T("spl-song2-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`),
-          T("spl-song2-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/after_hours.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`),
+          T("spl-song2-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Spotify."),
+          T("spl-song2-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/after_hours.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`, "Shows the after hours image."),
           T("spl-song2-info","Column","The song title sits above the artist name.",[
-            T("spl-song2-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'After Hours',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("spl-song2-artist","Text","Names the artist under the title.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-          ]),
-          T("spl-song2-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '6:01',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-        ]),
+            T("spl-song2-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'After Hours',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'After Hours' in bold."),
+            T("spl-song2-artist","Text","Names the artist under the title.",[],`const Text(\n  'The Weeknd',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows 'The Weeknd'.")
+          ], undefined, "Stacks 'After Hours' and 'The Weeknd' vertically."),
+          T("spl-song2-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '6:01',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows '6:01'.")
+        ], undefined, "Places the drag handle icon, the after hours image and 'After Hours' and 'The Weeknd' side by side."),
         T("spl-song-3","Row","One song row: drag handle, cover, title and artist, and duration.",[
-          T("spl-song3-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`),
-          T("spl-song3-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/future_nostalgia.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`),
+          T("spl-song3-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Spotify."),
+          T("spl-song3-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/future_nostalgia.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`, "Shows the future nostalgia image."),
           T("spl-song3-info","Column","The song title sits above the artist name.",[
-            T("spl-song3-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'Levitating',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("spl-song3-artist","Text","Names the artist under the title.",[],`const Text(\n  'Dua Lipa',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-          ]),
-          T("spl-song3-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '3:23',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-        ]),
+            T("spl-song3-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'Levitating',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Levitating' in bold."),
+            T("spl-song3-artist","Text","Names the artist under the title.",[],`const Text(\n  'Dua Lipa',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows 'Dua Lipa'.")
+          ], undefined, "Stacks 'Levitating' and 'Dua Lipa' vertically."),
+          T("spl-song3-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '3:23',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows '3:23'.")
+        ], undefined, "Places the drag handle icon, the future nostalgia image and 'Levitating' and 'Dua Lipa' side by side."),
         T("spl-song-4","Row","One song row: drag handle, cover, title and artist, and duration.",[
-          T("spl-song4-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`),
-          T("spl-song4-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/divide.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`),
+          T("spl-song4-drag","Icon","The drag handle — press and hold it to lift the song out of the list.",[],`const Icon(Icons.drag_handle, color: Colors.grey)`, "Shows the drag handle icon in Spotify."),
+          T("spl-song4-art","Image","Shows the song's cover art at the left of the row.",[],`Image.asset(\n  'assets/covers/divide.png',\n  width: 44,\n  height: 44,\n  fit: BoxFit.cover,\n)`, "Shows the divide image."),
           T("spl-song4-info","Column","The song title sits above the artist name.",[
-            T("spl-song4-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'Shape of You',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`),
-            T("spl-song4-artist","Text","Names the artist under the title.",[],`const Text(\n  'Ed Sheeran',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-          ]),
-          T("spl-song4-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '3:53',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`)
-        ])
+            T("spl-song4-title","Text","Names the song in the playlist row, so the list can be scanned by title.",[],`const Text(\n  'Shape of You',\n  style: TextStyle(fontWeight: FontWeight.w700),\n)`, "Shows 'Shape of You' in bold."),
+            T("spl-song4-artist","Text","Names the artist under the title.",[],`const Text(\n  'Ed Sheeran',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows 'Ed Sheeran'.")
+          ], undefined, "Stacks 'Shape of You' and 'Ed Sheeran' vertically."),
+          T("spl-song4-time","Text","Shows the song length at the trailing edge.",[],`const Text(\n  '3:53',\n  style: TextStyle(color: Colors.grey, fontSize: 12),\n)`, "Shows '3:53'.")
+        ], undefined, "Places the drag handle icon, the divide image and 'Shape of You' and 'Ed Sheeran' side by side.")
       ],`ReorderableListView.builder(\n  itemCount: songs.length,\n  itemBuilder: (_, index) => SongRow(\n    key: ValueKey(songs[index].id),\n    song: songs[index],\n  ),\n  onReorder: (oldIndex, newIndex) => reorderSong(oldIndex, newIndex),\n)`,"Builds a list whose items the user drags to reorder; each child needs a unique key.")
-    ])
-  ],`Scaffold(\n  appBar: const PlaylistAppBar(),\n  body: const PlaylistBody(),\n)`)
-],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const PlaylistScreen(),\n)`);
+    ], undefined, "Stacks a row, a filled button and the shuffle button and a reorderable list view vertically.")
+  ],`Scaffold(\n  appBar: const PlaylistAppBar(),\n  body: const PlaylistBody(),\n)`, "Frames this screen: a top bar and scrolling content.")
+],`MaterialApp(\n  theme: ThemeData.dark(),\n  home: const PlaylistScreen(),\n)`, "The app shell for the Playlist screen.");
 
 TEARDOWNS["login-signup"].root = T("ls-material","MaterialApp","MaterialApp sits at the root and hands the sign-up screen one theme, one set of Material defaults, and one Navigator. That is why the brand blue, the text styles, and the move back to sign-in all behave consistently here.",[
-  T("ls-theme","Theme","A focused auth palette supplies brand color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF02569B)),\n  child: const SignUpScreen(),\n)`),
+  T("ls-theme","Theme","A focused auth palette supplies brand color and typography.",[],`Theme(\n  data: ThemeData(colorSchemeSeed: const Color(0xFF02569B)),\n  child: const SignUpScreen(),\n)`, "Applies this theme to a sign up screen."),
   T("ls-scaffold","Scaffold","Scaffold is the frame of the page: it holds the centred sign-up form in its body and gives the screen one stable background. Without it the form would have no page frame to sit in.",[
     T("ls-safe","SafeArea","Form content stays clear of notches, the status bar, and system gestures.",[
       T("ls-scroll","SingleChildScrollView","The form scrolls when the keyboard shrinks the visible area.",[
@@ -4318,101 +4667,101 @@ TEARDOWNS["login-signup"].root = T("ls-material","MaterialApp","MaterialApp sits
               T("ls-col","Column","Logo, fields, terms, and actions follow from top to bottom.",[
                 T("ls-header","Column","Brand mark, title, and subtitle form the sign-up header.",[
                   T("ls-logo-ring","Container","A gradient ring gives the brand mark its badge shape.",[
-                    T("ls-logo","Text","Shows the app monogram inside the badge.",[],`const Text(\n  'FF',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`)
-                  ],`Container(\n  width: 64,\n  height: 64,\n  decoration: const BoxDecoration(\n    borderRadius: BorderRadius.all(Radius.circular(22)),\n    gradient: LinearGradient(colors: [Color(0xFF02569B), Color(0xFF13B9FD)]),\n  ),\n  child: const Center(child: Text('FF')),\n)`),
-                  T("ls-title","Text","Invites the new user to create an account.",[],`const Text(\n  'Create account',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`),
-                  T("ls-subtitle","Text","Explains what signing up unlocks.",[],`const Text(\n  'Join FlutterForward to start learning',\n  style: TextStyle(color: Colors.grey),\n)`)
-                ]),
-                T("ls-name-field","TextFormField","TextFormField is taught in depth in Gmail — Compose (S1), where validated To, Subject, and Body fields gate sending. Here it does the same job locally: it collects the display name and refuses an empty one, showing 'Enter your name' until something is typed.",[
-                  T("ls-name-icon","Icon","Hints that this field expects a person's name.",[],`const Icon(Icons.person_outlined)`),
-                  T("ls-name-decoration","InputDecoration","Labels, hints, and borders describe the name field's state.",[],`const InputDecoration(\n  labelText: 'Full name',\n  hintText: 'Dheeraj Kumar',\n  prefixIcon: Icon(Icons.person_outlined),\n  border: OutlineInputBorder(),\n)`)
+                    T("ls-logo","Text","Shows the app monogram inside the badge.",[],`const Text(\n  'FF',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),\n)`, "Shows 'FF' in bold.")
+                  ],`Container(\n  width: 64,\n  height: 64,\n  decoration: const BoxDecoration(\n    borderRadius: BorderRadius.all(Radius.circular(22)),\n    gradient: LinearGradient(colors: [Color(0xFF02569B), Color(0xFF13B9FD)]),\n  ),\n  child: const Center(child: Text('FF')),\n)`, "A decorated box holding 'FF'."),
+                  T("ls-title","Text","Invites the new user to create an account.",[],`const Text(\n  'Create account',\n  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),\n)`, "Shows 'Create account' in bold."),
+                  T("ls-subtitle","Text","Explains what signing up unlocks.",[],`const Text(\n  'Join FlutterForward to start learning',\n  style: TextStyle(color: Colors.grey),\n)`, "Shows 'Join FlutterForward to start learning'.")
+                ], undefined, "Stacks 'FF', 'Create account' and 'Join FlutterForward to…' vertically."),
+                T("ls-name-field","TextFormField","Like Gmail's compose fields: it collects the display name and refuses an empty one, showing 'Enter your name' until something is typed.",[
+                  T("ls-name-icon","Icon","Hints that this field expects a person's name.",[],`const Icon(Icons.person_outlined)`, "Shows the person icon in Login."),
+                  T("ls-name-decoration","InputDecoration","Labels, hints, and borders describe the name field's state.",[],`const InputDecoration(\n  labelText: 'Full name',\n  hintText: 'Dheeraj Kumar',\n  prefixIcon: Icon(Icons.person_outlined),\n  border: OutlineInputBorder(),\n)`, "Styles the input: hint 'Dheeraj Kumar'.")
                 ],`TextFormField(\n  controller: _nameController,\n  decoration: const InputDecoration(\n    labelText: 'Full name',\n    prefixIcon: Icon(Icons.person_outlined),\n    border: OutlineInputBorder(),\n  ),\n  validator: (value) => value!.isEmpty ? 'Enter your name' : null,\n)`,"A text field with validation, used inside a Form."),
-                T("ls-field-gap","SizedBox","Keeps a steady rhythm between the fields.",[],`const SizedBox(height: 12)`),
+                T("ls-field-gap","SizedBox","Keeps a steady rhythm between the fields.",[],`const SizedBox(height: 12)`, "A 12px-tall gap."),
                 T("ls-email-field","TextFormField","TextFormField is taught in depth in Gmail — Compose (S1). Here it collects the account email and refuses one without '@', showing 'Enter a valid email' until the address looks right.",[
-                  T("ls-email-icon","Icon","Hints that this field expects an email address.",[],`const Icon(Icons.mail_outlined)`),
-                  T("ls-email-decoration","InputDecoration","Labels, hints, and borders describe the email field's state.",[],`const InputDecoration(\n  labelText: 'Email',\n  hintText: 'you@example.com',\n  prefixIcon: Icon(Icons.mail_outlined),\n  border: OutlineInputBorder(),\n)`)
+                  T("ls-email-icon","Icon","Hints that this field expects an email address.",[],`const Icon(Icons.mail_outlined)`, "Shows the mail icon in Login."),
+                  T("ls-email-decoration","InputDecoration","Labels, hints, and borders describe the email field's state.",[],`const InputDecoration(\n  labelText: 'Email',\n  hintText: 'you@example.com',\n  prefixIcon: Icon(Icons.mail_outlined),\n  border: OutlineInputBorder(),\n)`, "Styles the input: hint 'you@example.com'.")
                 ],`TextFormField(\n  controller: _emailController,\n  keyboardType: TextInputType.emailAddress,\n  decoration: const InputDecoration(\n    labelText: 'Email',\n    prefixIcon: Icon(Icons.mail_outlined),\n    border: OutlineInputBorder(),\n  ),\n  validator: (value) => value!.contains('@') ? null : 'Enter a valid email',\n)`,"A text field with validation, used inside a Form."),
-                T("ls-field-gap-2","SizedBox","Keeps a steady rhythm between the fields.",[],`const SizedBox(height: 12)`),
+                T("ls-field-gap-2","SizedBox","Keeps a steady rhythm between the fields.",[],`const SizedBox(height: 12)`, "A 12px-tall gap."),
                 T("ls-pass-field","TextFormField","TextFormField is taught in depth in Gmail — Compose (S1). Here it collects the password without showing it, and refuses one shorter than 6 characters, showing 'Minimum 6 characters' until it is long enough.",[
-                  T("ls-pass-icon","Icon","Hints that this field expects a secret.",[],`const Icon(Icons.lock_outlined)`),
-                  T("ls-pass-decoration","InputDecoration","Labels the password field and reserves the suffix slot.",[],`const InputDecoration(\n  labelText: 'Password',\n  prefixIcon: Icon(Icons.lock_outlined),\n  border: OutlineInputBorder(),\n)`),
-                  T("ls-eye","IconButton","Toggles password visibility without leaving the field.",[],`IconButton(\n  onPressed: _toggleObscure,\n  icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),\n)`)
+                  T("ls-pass-icon","Icon","Hints that this field expects a secret.",[],`const Icon(Icons.lock_outlined)`, "Shows the lock icon in Login."),
+                  T("ls-pass-decoration","InputDecoration","Labels the password field and reserves the suffix slot.",[],`const InputDecoration(\n  labelText: 'Password',\n  prefixIcon: Icon(Icons.lock_outlined),\n  border: OutlineInputBorder(),\n)`, "Styles the input: hint, icons and border."),
+                  T("ls-eye","IconButton","Toggles password visibility without leaving the field.",[],`IconButton(\n  onPressed: _toggleObscure,\n  icon: Icon(_obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined),\n)`, "The visibility button in Login.")
                 ],`TextFormField(\n  controller: _passwordController,\n  obscureText: _obscure,\n  decoration: InputDecoration(\n    labelText: 'Password',\n    prefixIcon: const Icon(Icons.lock_outlined),\n    suffixIcon: IconButton(\n      onPressed: _toggleObscure,\n      icon: const Icon(Icons.visibility_outlined),\n    ),\n    border: const OutlineInputBorder(),\n  ),\n  validator: (value) => value!.length >= 6 ? null : 'Minimum 6 characters',\n)`,"A text field with validation, used inside a Form."),
-                T("ls-field-gap-3","SizedBox","Breathing room before the terms row.",[],`const SizedBox(height: 14)`),
+                T("ls-field-gap-3","SizedBox","Breathing room before the terms row.",[],`const SizedBox(height: 14)`, "A 14px-tall gap."),
                 T("ls-terms-row","Row","The checkbox and its label share one line, so the whole row reads as one agreement.",[
-                  T("ls-terms-check","Checkbox","Checkbox is taught in depth in Tasks (N3), where tapping a row's box completes the task. Here it does the same job locally: it holds the one true/false choice the form needs — whether the user agrees to the terms — and Create account stays disabled until it is ticked.",[],`Checkbox(\n  value: _agreedToTerms,\n  onChanged: (value) => setState(() => _agreedToTerms = value!),\n)`,"A square tick box that holds a true/false choice."),
-                  T("ls-terms-text","Text","States the agreement the checkbox confirms.",[],`const Text('I agree to the Terms and Privacy Policy')`)
-                ]),
-                T("ls-btn-gap","SizedBox","Separates the form from its primary action.",[],`const SizedBox(height: 16)`),
+                  T("ls-terms-check","Checkbox","Here it holds the one true/false choice the form needs — whether the user agrees to the terms — and Create account stays disabled until it is ticked.",[],`Checkbox(\n  value: _agreedToTerms,\n  onChanged: (value) => setState(() => _agreedToTerms = value!),\n)`,"A square tick box that holds a true/false choice."),
+                  T("ls-terms-text","Text","States the agreement the checkbox confirms.",[],`const Text('I agree to the Terms and Privacy Policy')`, "Shows 'I agree to the Terms and Privacy Policy'.")
+                ], undefined, "Places a tick box and 'I agree to the Terms and…' side by side."),
+                T("ls-btn-gap","SizedBox","Separates the form from its primary action.",[],`const SizedBox(height: 16)`, "A 16px-tall gap."),
                 T("ls-create-btn","ElevatedButton","Submits the form and creates the account.",[
-                  T("ls-create-label","Text","Labels the primary create action.",[],`const Text('Create account')`)
+                  T("ls-create-label","Text","Labels the primary create action.",[],`const Text('Create account')`, "Shows 'Create account'.")
                 ],`ElevatedButton(\n  onPressed: () {\n    if (_formKey.currentState!.validate() && _agreedToTerms) _signUp();\n  },\n  child: const Text('Create account'),\n)`,"A filled button for the primary action on the screen."),
                 T("ls-login-row","Row","The prompt and its link share one centered line.",[
-                  T("ls-login-text","Text","Invites existing users without a link style.",[],`const Text('Already have an account?')`),
+                  T("ls-login-text","Text","Invites existing users without a link style.",[],`const Text('Already have an account?')`, "Shows 'Already have an account?'."),
                   T("ls-login-link","GestureDetector","Makes the 'Log in' text tappable.",[
-                    T("ls-login-link-text","Text","Routes existing users back to sign-in.",[],`const Text(\n  'Log in',\n  style: TextStyle(color: Color(0xFF02569B), fontWeight: FontWeight.w700),\n)`)
-                  ],`GestureDetector(\n  onTap: _goToSignIn,\n  child: const Text(\n    'Log in',\n    style: TextStyle(color: Color(0xFF02569B)),\n  ),\n)`)
-                ])
-              ])
+                    T("ls-login-link-text","Text","Routes existing users back to sign-in.",[],`const Text(\n  'Log in',\n  style: TextStyle(color: Color(0xFF02569B), fontWeight: FontWeight.w700),\n)`, "Shows 'Log in' in bold.")
+                  ],`GestureDetector(\n  onTap: _goToSignIn,\n  child: const Text(\n    'Log in',\n    style: TextStyle(color: Color(0xFF02569B)),\n  ),\n)`, "Makes 'Log in' tappable.")
+                ], undefined, "Places 'Already have an account?' and a tappable area side by side.")
+              ], undefined, "Stacks 'FF' and 'Create account', a text field and a gap vertically.")
             ],`Form(\n  key: _formKey,\n  child: const SignUpFields(),\n)`, "Groups fields so they can be validated together.")
-          ],`const Padding(\n  padding: EdgeInsets.symmetric(horizontal: 22),\n  child: SignUpForm(),\n)`)
-        ],`const Center(child: SignUpCard())`)
-      ],`const SingleChildScrollView(child: SignUpCard())`)
-    ],`const SafeArea(child: SignUpBody())`)
-  ],`Scaffold(\n  body: const SafeArea(child: SignUpBody()),\n)`)
-],`MaterialApp(\n  home: const SignUpScreen(),\n)`);
+          ],`const Padding(\n  padding: EdgeInsets.symmetric(horizontal: 22),\n  child: SignUpForm(),\n)`, "Pads a form with 22px on the sides.")
+        ],`const Center(child: SignUpCard())`, "Centres a form.")
+      ],`const SingleChildScrollView(child: SignUpCard())`, "Makes a form scrollable.")
+    ],`const SafeArea(child: SignUpBody())`, "Keeps scrollable content clear of notches and gestures.")
+  ],`Scaffold(\n  body: const SafeArea(child: SignUpBody()),\n)`, "Frames this screen: safe-area padding.")
+],`MaterialApp(\n  home: const SignUpScreen(),\n)`, "The app shell for the Sign up screen.");
 
 TEARDOWNS["gmail-drawer"].root = T("gd-material","MaterialApp","The whole Gmail drawer experience runs under one Material theme and navigation context.",[
   T("gd-scaffold","Scaffold","Scaffold is the frame that owns the drawer: it holds the dimmed inbox in its body and slides the drawer in from the left edge on top of it. The drawer is a Scaffold slot, not a page of its own, which is why opening it never leaves the inbox.",[
-    T("gd-drawer","Drawer","Drawer is the slide-in side menu that Gmail opens from the hamburger: it groups the account header, the inbox labels and folders, and settings into one panel that covers the left of the screen while the inbox stays dimmed behind it. It closes with a swipe or a tap outside, so it never needs its own back button. This is the canonical Drawer — no other existing app has one.",[
+    T("gd-drawer","Drawer","It groups the account header, inbox labels and folders, and settings into one panel covering the left of the screen, the inbox dimmed behind it. It closes with a swipe or a tap outside.",[
       T("gd-drawer-col","Column","The account header sits above the scrolling label list inside the drawer.",[
         T("gd-header","Container","A coloured header block gives the account its own space at the top of the drawer.",[
           T("gd-header-row","Row","The account avatar and the name-and-email column share the header line.",[
-            T("gd-header-avatar","CircleAvatar","Shows who is signed in at the top of the drawer.",[],`const CircleAvatar(\n  radius: 20,\n  backgroundColor: Color(0xFF5B5BD6),\n  child: Text('D'),\n)`),
+            T("gd-header-avatar","CircleAvatar","Shows who is signed in at the top of the drawer.",[],`const CircleAvatar(\n  radius: 20,\n  backgroundColor: Color(0xFF5B5BD6),\n  child: Text('D'),\n)`, "A circular avatar showing 'D'."),
             T("gd-header-info","Column","The account name sits above its email address.",[
-              T("gd-header-name","Text","Shows the signed-in account name.",[],`const Text(\n  'Dheeraj Kumar',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`),
-              T("gd-header-email","Text","Shows the signed-in email address.",[],`const Text(\n  'dheeraj@example.com',\n  style: TextStyle(color: Colors.white70, fontSize: 12),\n)`)
-            ])
-          ])
-        ]),
+              T("gd-header-name","Text","Shows the signed-in account name.",[],`const Text(\n  'Dheeraj Kumar',\n  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),\n)`, "Shows 'Dheeraj Kumar' in bold."),
+              T("gd-header-email","Text","Shows the signed-in email address.",[],`const Text(\n  'dheeraj@example.com',\n  style: TextStyle(color: Colors.white70, fontSize: 12),\n)`, "Shows 'dheeraj@example.com'.")
+            ], undefined, "Stacks 'Dheeraj Kumar' and 'dheeraj@example.com' vertically.")
+          ], undefined, "Places a circular avatar and 'Dheeraj Kumar' and 'dheeraj@example.com' side by side.")
+        ], undefined, "A decorated box holding a row."),
         T("gd-menu","ListView","The drawer rows scroll as one list, so every label and folder stays reachable even on a short screen.",[
           T("gd-row-all","ListTile","One drawer row: every mailbox in one place.",[
-            T("gd-row-all-icon","Icon","Marks the all-mailboxes row.",[],`const Icon(Icons.all_inbox)`),
-            T("gd-row-all-label","Text","Names the all-inboxes destination.",[],`const Text('All inboxes')`)
+            T("gd-row-all-icon","Icon","Marks the all-mailboxes row.",[],`const Icon(Icons.all_inbox)`, "Shows the all inbox icon in Gmail."),
+            T("gd-row-all-label","Text","Names the all-inboxes destination.",[],`const Text('All inboxes')`, "Shows 'All inboxes'.")
           ],`ListTile(\n  leading: const Icon(Icons.all_inbox),\n  title: const Text('All inboxes'),\n  onTap: showAllInboxes,\n)`,"Groups a leading icon and a label into one tappable row."),
           T("gd-row-primary","ListTile","One drawer row: the main inbox category.",[
-            T("gd-row-primary-icon","Icon","Marks the Primary inbox row.",[],`const Icon(Icons.inbox)`),
-            T("gd-row-primary-label","Text","Names the Primary inbox.",[],`const Text('Primary')`)
+            T("gd-row-primary-icon","Icon","Marks the Primary inbox row.",[],`const Icon(Icons.inbox)`, "Shows the inbox icon in Gmail."),
+            T("gd-row-primary-label","Text","Names the Primary inbox.",[],`const Text('Primary')`, "Shows 'Primary'.")
           ],`ListTile(\n  leading: const Icon(Icons.inbox),\n  title: const Text('Primary'),\n  onTap: showPrimary,\n)`,"Groups a leading icon and a label into one tappable row."),
           T("gd-row-starred","ListTile","One drawer row: mail the user starred for later.",[
-            T("gd-row-starred-icon","Icon","Marks the Starred row.",[],`const Icon(Icons.star_border)`),
-            T("gd-row-starred-label","Text","Names the Starred folder.",[],`const Text('Starred')`)
+            T("gd-row-starred-icon","Icon","Marks the Starred row.",[],`const Icon(Icons.star_border)`, "Shows the star border icon in Gmail."),
+            T("gd-row-starred-label","Text","Names the Starred folder.",[],`const Text('Starred')`, "Shows 'Starred'.")
           ],`ListTile(\n  leading: const Icon(Icons.star_border),\n  title: const Text('Starred'),\n  onTap: showStarred,\n)`,"Groups a leading icon and a label into one tappable row."),
           T("gd-row-sent","ListTile","One drawer row: mail the user has sent.",[
-            T("gd-row-sent-icon","Icon","Marks the Sent row with a paper-plane icon, so sent mail is recognised at a glance.",[],`const Icon(Icons.send_outlined)`),
-            T("gd-row-sent-label","Text","Names the Sent folder.",[],`const Text('Sent')`)
+            T("gd-row-sent-icon","Icon","Marks the Sent row with a paper-plane icon, so sent mail is recognised at a glance.",[],`const Icon(Icons.send_outlined)`, "Shows the send icon in Gmail."),
+            T("gd-row-sent-label","Text","Names the Sent folder.",[],`const Text('Sent')`, "Shows 'Sent'.")
           ],`ListTile(\n  leading: const Icon(Icons.send_outlined),\n  title: const Text('Sent'),\n  onTap: showSent,\n)`,"Groups a leading icon and a label into one tappable row."),
           T("gd-row-drafts","ListTile","One drawer row: unfinished mail waiting to be sent.",[
-            T("gd-row-drafts-icon","Icon","Marks the Drafts row.",[],`const Icon(Icons.drafts_outlined)`),
-            T("gd-row-drafts-label","Text","Names the Drafts folder.",[],`const Text('Drafts')`)
+            T("gd-row-drafts-icon","Icon","Marks the Drafts row.",[],`const Icon(Icons.drafts_outlined)`, "Shows the drafts icon in Gmail."),
+            T("gd-row-drafts-label","Text","Names the Drafts folder.",[],`const Text('Drafts')`, "Shows 'Drafts'.")
           ],`ListTile(\n  leading: const Icon(Icons.drafts_outlined),\n  title: const Text('Drafts'),\n  onTap: showDrafts,\n)`,"Groups a leading icon and a label into one tappable row."),
-          T("gd-divider","Divider","A thin rule separates the folders from settings.",[],`const Divider()`,"A thin horizontal rule."),
+          T("gd-divider","Divider","A thin rule separates the folders from settings.",[],`const Divider()`,"A hairline rule between the folders and settings."),
           T("gd-row-settings","ListTile","One drawer row: the settings destination at the bottom of the menu.",[
-            T("gd-row-settings-icon","Icon","Marks the Settings row.",[],`const Icon(Icons.settings_outlined)`),
-            T("gd-row-settings-label","Text","Names the Settings destination.",[],`const Text('Settings')`)
+            T("gd-row-settings-icon","Icon","Marks the Settings row.",[],`const Icon(Icons.settings_outlined)`, "Shows the settings icon in Gmail."),
+            T("gd-row-settings-label","Text","Names the Settings destination.",[],`const Text('Settings')`, "Shows 'Settings'.")
           ],`ListTile(\n  leading: const Icon(Icons.settings_outlined),\n  title: const Text('Settings'),\n  onTap: openSettings,\n)`,"Groups a leading icon and a label into one tappable row.")
-        ])
-      ])
+        ], undefined, "A scrolling list of 7 items.")
+      ], undefined, "Stacks a row and a scrolling list vertically.")
     ],`Drawer(\n  child: Column(\n    children: [\n      const DrawerHeader(child: AccountHeader()),\n      const DrawerMenu(),\n    ],\n  ),\n)`,"Slides in from the side with navigation destinations; closes with a swipe or a tap outside."),
     T("gd-body","Stack","The dimmed inbox sits behind the drawer in one layered box, so the drawer can slide over it without the inbox scrolling away.",[
       T("gd-inbox","Column","Two faded inbox lines show the inbox waiting behind the drawer.",[
-        T("gd-inbox-line-1","Text","A faded preview of the first mail behind the drawer.",[],`const Text('FlutterForward — Your 40-lesson Flutter course')`),
-        T("gd-inbox-line-2","Text","A faded preview of the second mail behind the drawer.",[],`const Text('RTU Kota — Exam timetable: V Sem main exams')`)
-      ]),
-      T("gd-inbox-dim","Container","A dark translucent layer dims the inbox while the drawer is open, so the drawer reads as the active surface.",[],`Container(color: Colors.black54)`)
-    ])
-  ],`Scaffold(\n  drawer: const GmailDrawer(),\n  body: const InboxBody(),\n)`)
-],`MaterialApp(\n  home: const GmailInbox(),\n)`);
+        T("gd-inbox-line-1","Text","A faded preview of the first mail behind the drawer.",[],`const Text('FlutterForward — Your 40-lesson Flutter course')`, "Shows 'FlutterForward — Your 40-lesson Flutter course'."),
+        T("gd-inbox-line-2","Text","A faded preview of the second mail behind the drawer.",[],`const Text('RTU Kota — Exam timetable: V Sem main exams')`, "Shows 'RTU Kota — Exam timetable: V Sem main exams'.")
+      ], undefined, "Stacks 'FlutterForward — Your…' and 'RTU Kota — Exam timetable:…' vertically."),
+      T("gd-inbox-dim","Container","A dark translucent layer dims the inbox while the drawer is open, so the drawer reads as the active surface.",[],`Container(color: Colors.black54)`, "A black54 box.")
+    ], undefined, "Layers a column and a box in one box.")
+  ],`Scaffold(\n  drawer: const GmailDrawer(),\n  body: const InboxBody(),\n)`, "Frames this screen: a side menu and a stack.")
+],`MaterialApp(\n  home: const GmailInbox(),\n)`, "The app shell for the Navigation drawer screen.");
 
 
 /*
@@ -4439,24 +4788,25 @@ const TD_ICON = {
 };
 function tdStatus(dark) { return `<div class="app-status${dark?' dark':''}" aria-hidden="true"><span>9:41</span><span class="app-status-icons"><span>▮▮▮</span><i></i></span></div>`; }
 function tdPhoneWhatsApp() {
-  return `${tdStatus(true)}<div class="wa-screen td-region" data-node="wa-scaffold" data-widget="Scaffold"><header class="wa-bar td-region" data-node="wa-appbar" data-widget="AppBar"><span class="wa-back td-region" data-node="wa-back" data-widget="IconButton">‹</span><span class="wa-title-row td-region" data-node="wa-title-row" data-widget="Row"><span class="wa-avatar td-region" data-node="wa-avatar" data-widget="CircleAvatar">A</span><span class="wa-person td-region" data-node="wa-title" data-widget="Column"><b class="td-region" data-node="wa-name" data-widget="Text">Alex</b><span class="td-region" data-node="wa-online" data-widget="Text">online</span></span></span><span class="wa-actions"><span class="td-region" data-node="wa-video" data-widget="IconButton">${TD_ICON.video}</span><span class="td-region" data-node="wa-call" data-widget="IconButton">${TD_ICON.call}</span><b class="td-region" data-node="wa-menu" data-widget="PopupMenuButton" style="font-size:17px;letter-spacing:2px">⋮</b></span></header><main class="wa-chat td-region" data-node="wa-list" data-widget="ListView"><div class="wa-day-align td-region" data-node="wa-day-align" data-widget="Center"><div class="wa-day td-region" data-node="wa-day-box" data-widget="Container"><span class="td-region" data-node="wa-day-text" data-widget="Text">TODAY</span></div></div><div class="wa-encrypt td-region" data-node="wa-encrypt" data-widget="Container"><span class="td-region" data-node="wa-encrypt-text" data-widget="Text">Messages are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them.</span></div><div class="wa-message-row td-region" data-node="wa-incoming" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-text" data-widget="Text">Are you joining the Flutter session?<span class="wa-time">9:38</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-text" data-widget="Text">Yes — just finished the widget tree.<span class="wa-time">9:39 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-reply" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-reply-bubble" data-widget="Container"><span class="td-region" data-node="wa-reply-text" data-widget="Text">Perfect. See you there!<span class="wa-time">9:40</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-2" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-2-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-2-text" data-widget="Text">By the way, it is at 4 pm.<span class="wa-time">9:41 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-2" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-2-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-2-text" data-widget="Text">Noted — I will bring my laptop.<span class="wa-time">9:42</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-3" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-3-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-3-text" data-widget="Text">We will build the profile screen together.<span class="wa-time">9:43 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-3" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-3-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-3-text" data-widget="Text">Sounds good. See you then!<span class="wa-time">9:44</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-4" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-4-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-4-text" data-widget="Text">Do not forget the widget tree notes.<span class="wa-time">9:45 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-4" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-4-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-4-text" data-widget="Text">Already saved them. See you at 4!<span class="wa-time">9:46</span></span></div></div></main><footer class="wa-composer-wrap td-region" data-node="wa-composer" data-widget="Row"><div class="wa-composer td-region" data-node="wa-field" data-widget="TextField">${TD_ICON.smile}<span>Message</span><span style="margin-left:auto;display:flex;gap:10px;align-items:center">${TD_ICON.clip}${TD_ICON.camera}</span></div><div class="wa-send td-region" data-node="wa-send" data-widget="IconButton">${TD_ICON.send}</div></footer>` + `<div class="wa-dialog-scrim td-region" data-node="wa-dialog" data-widget="AlertDialog">` +
+  return `${tdStatus(true)}<div class="wa-screen td-region" data-node="wa-scaffold" data-widget="Scaffold"><header class="wa-bar td-region" data-node="wa-appbar" data-widget="AppBar"><span class="wa-back td-region" data-node="wa-back" data-widget="IconButton">‹</span><span class="wa-title-row td-region" data-node="wa-title-row" data-widget="Row"><span class="wa-avatar td-region" data-node="wa-avatar" data-widget="CircleAvatar">A</span><span class="wa-person td-region" data-node="wa-title" data-widget="Column"><b class="td-region" data-node="wa-name" data-widget="Text">Alex</b><span class="td-region" data-node="wa-online" data-widget="Text">online</span></span></span><span class="wa-actions"><span class="td-region" data-node="wa-video" data-widget="IconButton">${TD_ICON.video}</span><span class="td-region" data-node="wa-call" data-widget="IconButton">${TD_ICON.call}</span><b class="td-region" data-node="wa-menu" data-widget="PopupMenuButton" style="font-size:17px;letter-spacing:2px">⋮</b></span></header><main class="wa-chat td-region" data-node="wa-list" data-widget="ListView"><div class="wa-day-align td-region" data-node="wa-day-align" data-widget="Center"><div class="wa-day td-region" data-node="wa-day-box" data-widget="Container"><span class="td-region" data-node="wa-day-text" data-widget="Text">TODAY</span></div></div><div class="wa-encrypt td-region" data-node="wa-encrypt" data-widget="Container"><span class="td-region" data-node="wa-encrypt-text" data-widget="Text">Messages are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them.</span></div><div class="wa-message-row td-region" data-node="wa-incoming" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-text" data-widget="Text">Are you joining the Flutter session?<span class="wa-time td-region" data-node="wa-in-time" data-widget="Text">9:38</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-text" data-widget="Text">Yes — just finished the widget tree.<span class="wa-time">9:39 <span class="wa-ticks td-region" data-node="wa-ticks" data-widget="Stack"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-reply" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-reply-bubble" data-widget="Container"><span class="td-region" data-node="wa-reply-text" data-widget="Text">Perfect. See you there!<span class="wa-time">9:40</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-2" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-2-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-2-text" data-widget="Text">By the way, it is at 4 pm.<span class="wa-time">9:41 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-2" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-2-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-2-text" data-widget="Text">Noted — I will bring my laptop.<span class="wa-time">9:42</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-3" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-3-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-3-text" data-widget="Text">We will build the profile screen together.<span class="wa-time">9:43 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-3" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-3-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-3-text" data-widget="Text">Sounds good. See you then!<span class="wa-time">9:44</span></span></div></div><div class="wa-message-row mine td-region" data-node="wa-outgoing-4" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-outgoing-4-bubble" data-widget="Container"><span class="td-region" data-node="wa-outgoing-4-text" data-widget="Text">Do not forget the widget tree notes.<span class="wa-time">9:45 <span class="wa-ticks"></span></span></span></div></div><div class="wa-message-row td-region" data-node="wa-incoming-4" data-widget="Align"><div class="wa-bubble td-region" data-node="wa-incoming-4-bubble" data-widget="Container"><span class="td-region" data-node="wa-incoming-4-text" data-widget="Text">Already saved them. See you at 4!<span class="wa-time">9:46</span></span></div></div></main><footer class="wa-composer-wrap td-region" data-node="wa-composer" data-widget="Row"><div class="wa-composer td-region" data-node="wa-field" data-widget="TextField">${TD_ICON.smile}<span>Message</span><span style="margin-left:auto;display:flex;gap:10px;align-items:center">${TD_ICON.clip}${TD_ICON.camera}</span></div><div class="wa-send td-region" data-node="wa-send" data-widget="IconButton">${TD_ICON.send}</div></footer>` + (teardownState.waDialogDismissed ? `` : `<div class="wa-dialog-scrim td-region" data-node="wa-dialog" data-widget="AlertDialog">` +
 `<div class="wa-dialog-box">` +
-`<b class="td-region" data-node="wa-dialog-title" data-widget="Text">Delete message?</b>` +
-`<span class="td-region" data-node="wa-dialog-content" data-widget="Text">Delete for everyone? This message will be removed for everyone in this chat.</span>` +
+`<b class="td-region" data-node="wa-dialog-title" data-widget="Text">Delete this message?</b>` +
+`<span class="td-region" data-node="wa-dialog-content" data-widget="Text">This message will be deleted for everyone in this chat.</span>` +
 `<div class="wa-dialog-actions td-region" data-node="wa-dialog-actions" data-widget="Row">` +
 `<span class="wa-dialog-cancel td-region" data-node="wa-dialog-cancel" data-widget="TextButton">Cancel</span>` +
+`<span class="wa-dialog-delete-me td-region" data-node="wa-dialog-delete-me" data-widget="TextButton">Delete for me</span>` +
 `<span class="wa-dialog-delete td-region" data-node="wa-dialog-delete" data-widget="TextButton">Delete for everyone</span></div>` +
-`</div></div>` + `</div>`;
+`</div></div>`) + `</div>`;
 }
 function tdPhoneInstagram() {
   const photos = ["#7b8b9c","#b78363","#4e6d64","#a88767","#6d7e98","#986f78","#556c7e","#8f8068","#66765d","#9c7b8b","#7a9c6d","#8a7a9c","#c08a5e","#5e8a9c","#a05e6d","#6d8a7a","#b09c5e","#7e6d8a"];
   const stat=(id,value,label)=>`<span class="ig-stat td-region" data-node="ig-${id}-stat" data-widget="Column"><b class="td-region" data-node="ig-${id}-value" data-widget="Text">${value}</b><span class="td-region" data-node="ig-${id}-label" data-widget="Text">${label}</span></span>`;
-  return `${tdStatus(false)}<div class="ig-screen td-region" data-node="ig-scaffold" data-widget="Scaffold"><main class="ig-scroll td-region" data-node="ig-scroll" data-widget="CustomScrollView"><header class="ig-bar td-region" data-node="ig-sliver" data-widget="SliverAppBar"><b class="td-region" data-node="ig-title" data-widget="Text">flutterforward⌄</b><span class="td-region" data-node="ig-create" data-widget="IconButton">${TD_ICON.plus}</span><span class="td-region" data-node="ig-menu" data-widget="IconButton" style="font-size:20px">☰</span></header><section class="ig-profile td-region" data-node="ig-profile-padding" data-widget="Padding"><div class="td-region" data-node="ig-profile" data-widget="Column"><div class="ig-top td-region" data-node="ig-top" data-widget="Row"><div class="ig-ring td-region" data-node="ig-avatar" data-widget="CircleAvatar"><div class="ig-avatar">FF</div></div><div class="td-region" data-node="ig-stats-expanded" data-widget="Expanded"><div class="ig-stats td-region" data-node="ig-stats" data-widget="Row">${stat('posts','24','posts')}${stat('followers','1,248','followers')}${stat('following','186','following')}</div></div></div><div class="ig-bio td-region" data-node="ig-bio-column" data-widget="Column"><b class="td-region" data-node="ig-bio-name" data-widget="Text">FlutterForward</b><span class="td-region" data-node="ig-bio-copy" data-widget="Text">Learn Flutter through practical screens.</span><span class="td-region" data-node="ig-bio-link" data-widget="Text" style="color:#00376b">flutter.dev</span></div><div class="ig-actions td-region" data-node="ig-actions" data-widget="Row"><span class="td-region" data-node="ig-edit" data-widget="Expanded"><span class="td-region" data-node="ig-edit-button" data-widget="OutlinedButton">Edit profile</span></span><span class="td-region" data-node="ig-share" data-widget="Expanded"><span class="td-region" data-node="ig-share-button" data-widget="OutlinedButton">Share profile</span></span><span class="td-region" data-node="ig-person-add" data-widget="IconButton">＋</span></div><div class="ig-highlights td-region" data-node="ig-highlights" data-widget="Row"><span class="ig-story td-region" data-node="ig-story-1" data-widget="CircleAvatar"><i>Fl</i></span><span class="ig-story td-region" data-node="ig-story-2" data-widget="CircleAvatar"><i>Wi</i></span><span class="ig-story td-region" data-node="ig-story-3" data-widget="CircleAvatar"><i>Da</i></span></div></div></section><div class="td-region" data-node="ig-tabs-header" data-widget="SliverPersistentHeader"><div class="ig-tabs td-region" data-node="ig-tabs" data-widget="TabBar"><span class="ig-tab td-region" data-node="ig-grid-tab" data-widget="Tab">${TD_ICON.grid}</span><span class="ig-tab td-region" data-node="ig-reels-tab" data-widget="Tab">${TD_ICON.reels}</span><span class="ig-tab td-region" data-node="ig-tagged-tab" data-widget="Tab">${TD_ICON.person}</span></div></div><div class="ig-grid td-region" data-node="ig-grid" data-widget="SliverGrid">${photos.map((p,i)=>`<div class="ig-photo td-region" data-node="ig-photo" data-widget="Image" style="--photo:${p};--rot:${i%2?'-10deg':'8deg'}"></div>`).join('')}</div></main><nav class="ig-bottom td-region" data-node="ig-bottom" data-widget="BottomNavigationBar"><span class="td-region" data-node="ig-home-item" data-widget="Icon">${TD_ICON.home}</span><span class="td-region" data-node="ig-search-item" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="ig-create-item" data-widget="Icon">${TD_ICON.plus}</span><span class="td-region" data-node="ig-reels-item" data-widget="Icon">${TD_ICON.reels}</span><span class="mini-avatar td-region" data-node="ig-profile-item" data-widget="CircleAvatar">FF</span></nav></div>`;
+  return `${tdStatus(false)}<div class="ig-screen td-region" data-node="ig-scaffold" data-widget="Scaffold"><main class="ig-scroll td-region" data-node="ig-scroll" data-widget="CustomScrollView"><header class="ig-bar td-region" data-node="ig-sliver" data-widget="SliverAppBar"><b class="td-region" data-node="ig-title" data-widget="Text">flutterforward⌄</b><span class="td-region" data-node="ig-create" data-widget="IconButton">${TD_ICON.plus}</span><span class="td-region" data-node="ig-menu" data-widget="IconButton" style="font-size:20px">☰</span></header><section class="ig-profile td-region" data-node="ig-profile-padding" data-widget="Padding"><div class="td-region" data-node="ig-profile" data-widget="Column"><div class="ig-top td-region" data-node="ig-top" data-widget="Row"><div class="ig-ring td-region" data-node="ig-avatar" data-widget="Container"><div class="ig-avatar td-region" data-node="ig-avatar-circle" data-widget="CircleAvatar">FF</div></div><div class="td-region" data-node="ig-stats-expanded" data-widget="Expanded"><div class="ig-stats td-region" data-node="ig-stats" data-widget="Row">${stat('posts','24','posts')}${stat('followers','1,248','followers')}${stat('following','186','following')}</div></div></div><div class="ig-bio td-region" data-node="ig-bio-column" data-widget="Column"><b class="td-region" data-node="ig-bio-name" data-widget="Text">FlutterForward</b><span class="td-region" data-node="ig-bio-copy" data-widget="Text">Learn Flutter through practical screens.</span><span class="td-region" data-node="ig-bio-link" data-widget="Text" style="color:#00376b">flutter.dev</span></div><div class="ig-actions td-region" data-node="ig-actions" data-widget="Row"><span class="td-region" data-node="ig-edit" data-widget="Expanded"><span class="td-region" data-node="ig-edit-button" data-widget="OutlinedButton">Edit profile</span></span><span class="td-region" data-node="ig-share" data-widget="Expanded"><span class="td-region" data-node="ig-share-button" data-widget="OutlinedButton">Share profile</span></span><span class="td-region" data-node="ig-person-add" data-widget="IconButton">＋</span></div><div class="ig-highlights td-region" data-node="ig-highlights" data-widget="Row"><span class="ig-story td-region" data-node="ig-story-1-col" data-widget="Column"><span class="td-region" data-node="ig-story-1" data-widget="CircleAvatar"><i>F</i></span><span class="ig-story-label td-region" data-node="ig-story-1-label" data-widget="Text">Flutter</span></span><span class="ig-story td-region" data-node="ig-story-2-col" data-widget="Column"><span class="td-region" data-node="ig-story-2" data-widget="CircleAvatar"><i>W</i></span><span class="ig-story-label td-region" data-node="ig-story-2-label" data-widget="Text">Widgets</span></span><span class="ig-story td-region" data-node="ig-story-3-col" data-widget="Column"><span class="td-region" data-node="ig-story-3" data-widget="CircleAvatar"><i>D</i></span><span class="ig-story-label td-region" data-node="ig-story-3-label" data-widget="Text">Dart</span></span></div></div></section><div class="td-region" data-node="ig-tabs-header" data-widget="SliverPersistentHeader"><div class="ig-tabs td-region" data-node="ig-tabs" data-widget="TabBar"><span class="ig-tab td-region" data-node="ig-grid-tab" data-widget="Tab">${TD_ICON.grid}</span><span class="ig-tab td-region" data-node="ig-reels-tab" data-widget="Tab">${TD_ICON.reels}</span><span class="ig-tab td-region" data-node="ig-tagged-tab" data-widget="Tab">${TD_ICON.person}</span></div></div><div class="ig-grid td-region" data-node="ig-grid" data-widget="SliverGrid">${photos.map((p,i)=>`<div class="ig-photo td-region" data-node="ig-photo-${i+1}" data-widget="Image" style="--photo:${p};--rot:${i%2?'-10deg':'8deg'}"></div>`).join('')}</div></main><nav class="ig-bottom td-region" data-node="ig-bottom" data-widget="BottomNavigationBar"><span class="td-region" data-node="ig-home-item" data-widget="Icon">${TD_ICON.home}</span><span class="td-region" data-node="ig-search-item" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="ig-create-item" data-widget="Icon">${TD_ICON.plus}</span><span class="td-region" data-node="ig-reels-item" data-widget="Icon">${TD_ICON.reels}</span><span class="mini-avatar td-region" data-node="ig-profile-item" data-widget="CircleAvatar">FF</span></nav></div>`;
 }
 function tdPhoneSwiggy() {
-  const category=(name,color)=>`<span class="sw-category td-region" data-node="sw-category-item" data-widget="Column"><i class="sw-food td-region" data-node="sw-category-image" data-widget="CircleAvatar" style="--food:${color}">${name}</i><span class="td-region" data-node="sw-category-label" data-widget="Text">${name}</span></span>`;
-  const restaurant=(name,meta,color)=>`<article class="sw-card td-region" data-node="sw-card-one" data-widget="Card"><div class="td-region" data-node="sw-card-column" data-widget="Column"><div class="sw-card-pic td-region" data-node="sw-card-image" data-widget="Image" style="--food:${color}"></div><div class="sw-card-body td-region" data-node="sw-card-detail-padding" data-widget="Padding"><span class="td-region" data-node="sw-card-details" data-widget="Column"><b class="td-region" data-node="sw-card-name" data-widget="Text">${name}</b><span class="td-region" data-node="sw-card-meta" data-widget="Text">${meta}</span></span></div></div></article>`;
-  return `${tdStatus(false)}<div class="sw-screen td-region" data-node="sw-scaffold" data-widget="Scaffold"><main class="sw-scroll td-region" data-node="sw-scroll-view" data-widget="CustomScrollView">` + `<div class="sw-refresh td-region" data-node="sw-refresh" data-widget="RefreshIndicator"><span class="sw-refresh-spinner">⟳</span></div>` + `<header class="sw-head td-region" data-node="sw-appbar" data-widget="SliverAppBar"><div class="sw-location td-region" data-node="sw-location-row" data-widget="Row"><span class="td-region" data-node="sw-pin" data-widget="Icon">${TD_ICON.pin}</span><span class="sw-location-copy td-region" data-node="sw-location" data-widget="Column"><b class="td-region" data-node="sw-home-text" data-widget="Text">Home⌄</b><span class="td-region" data-node="sw-address-text" data-widget="Text">MG Road, Bengaluru</span></span><span class="sw-profile td-region" data-node="sw-profile-avatar" data-widget="CircleAvatar">DK</span></div><div class="sw-search td-region" data-node="sw-search" data-widget="TextField"><span>Search for dishes and restaurants</span><span style="margin-left:auto">${TD_ICON.search}</span></div></header><section class="sw-section"><h3 class="td-region" data-node="sw-category-title" data-widget="Text">What's on your mind?</h3><div class="sw-categories td-region" data-node="sw-categories" data-widget="ListView">${category('Biryani','#f4d4a5')}${category('Pizza','#f0c48d')}${category('Dosa','#ead39e')}${category('Rolls','#f2b3a0')}</div><div class="sw-offer td-region" data-node="sw-offer" data-widget="Card"><span class="td-region" data-node="sw-offer-copy" data-widget="Column"><b class="td-region" data-node="sw-offer-title" data-widget="Text">40% OFF</b><span class="td-region" data-node="sw-offer-detail" data-widget="Text">On your first order - use WELCOME</span></span></div></section><section class="sw-section"><h3 class="td-region" data-node="sw-restaurants-title" data-widget="Text">Top restaurants near you</h3><p class="sw-sub td-region" data-node="sw-restaurants-subtitle" data-widget="Text">Fast delivery and great ratings</p><div class="sw-restaurants td-region" data-node="sw-restaurants" data-widget="ListView">${restaurant('Spice Kitchen','4.5 · 25–30 min','#c87a4c')}${restaurant('South Bowl','4.3 · 20–25 min','#d6a56f')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-2" data-widget="ListView">${restaurant('Burger Barn','4.6 · 15–20 min','#b5654a')}${restaurant('Taco Town','4.2 · 20–25 min','#c99a4a')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-3" data-widget="ListView">${restaurant('Pizza Place','4.4 · 30–35 min','#c98a4a')}${restaurant('Dessert Den','4.7 · 15–20 min','#b07a8a')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-4" data-widget="ListView">${restaurant('Noodle House','4.5 · 20–25 min','#7a9c6d')}${restaurant('Salad Stop','4.3 · 10–15 min','#8a9c5e')}</div></section></main><nav class="sw-bottom td-region" data-node="sw-bottom" data-widget="BottomNavigationBar"><span class="sw-nav td-region" data-node="sw-food-nav" data-widget="Icon">${TD_ICON.home}<span>Food</span></span><span class="sw-nav td-region" data-node="sw-search-nav" data-widget="Icon">${TD_ICON.search}<span>Search</span></span><span class="sw-nav td-region" data-node="sw-cart-nav" data-widget="Icon">${TD_ICON.bag}<span>Cart</span></span><span class="sw-nav td-region" data-node="sw-account-nav" data-widget="Icon">${TD_ICON.person}<span>Account</span></span></nav></div>`;
+  const category=(id,name,color)=>`<span class="sw-category td-region" data-node="sw-category-${id}" data-widget="Column"><i class="sw-food td-region" data-node="sw-category-image-${id}" data-widget="CircleAvatar" style="--food:${color}"></i><span class="td-region" data-node="sw-category-label-${id}" data-widget="Text">${name}</span></span>`;
+  const restaurant=(id,name,meta,color)=>`<article class="sw-card td-region" data-node="sw-card-${id}" data-widget="Card"><div class="td-region" data-node="sw-card-column-${id}" data-widget="Column"><div class="sw-card-pic td-region" data-node="sw-card-image-clip-${id}" data-widget="ClipRRect" style="--food:${color}"><div class="td-region" data-node="sw-card-image-${id}" data-widget="Image" style="height:100%"></div></div><div class="sw-card-body td-region" data-node="sw-card-detail-padding-${id}" data-widget="Padding"><span class="td-region" data-node="sw-card-details-${id}" data-widget="Column"><b class="td-region" data-node="sw-card-name-${id}" data-widget="Text">${name}</b><span class="td-region" data-node="sw-card-meta-${id}" data-widget="Text">${meta}</span></span></div></div></article>`;
+  return `${tdStatus(false)}<div class="sw-screen td-region" data-node="sw-scaffold" data-widget="Scaffold"><main class="sw-scroll td-region" data-node="sw-scroll-view" data-widget="CustomScrollView">` + `<div class="sw-refresh td-region" data-node="sw-refresh" data-widget="RefreshIndicator"><span class="sw-refresh-spinner">⟳</span></div>` + `<header class="sw-head td-region" data-node="sw-appbar" data-widget="SliverAppBar"><div class="sw-location td-region" data-node="sw-location-row" data-widget="Row"><span class="td-region" data-node="sw-pin" data-widget="Icon">${TD_ICON.pin}</span><span class="sw-location-copy td-region" data-node="sw-location" data-widget="Column"><b class="td-region" data-node="sw-home-text" data-widget="Text">Home⌄</b><span class="td-region" data-node="sw-address-text" data-widget="Text">MG Road, Bengaluru</span></span><span class="sw-profile td-region" data-node="sw-profile-avatar" data-widget="CircleAvatar">DK</span></div><div class="sw-search td-region" data-node="sw-search" data-widget="TextField"><span>Search for dishes and restaurants</span><span style="margin-left:auto">${TD_ICON.search}</span></div></header><section class="sw-section"><h3 class="td-region" data-node="sw-category-title" data-widget="Text">What's on your mind?</h3><div class="sw-categories td-region" data-node="sw-categories" data-widget="ListView">${category(1,'Biryani','#f4d4a5')}${category(2,'Pizza','#f0c48d')}${category(3,'Dosa','#ead39e')}${category(4,'Rolls','#f2b3a0')}</div><div class="sw-offer td-region" data-node="sw-offer" data-widget="Card"><span class="td-region" data-node="sw-offer-copy" data-widget="Column"><b class="td-region" data-node="sw-offer-title" data-widget="Text">40% OFF</b><span class="td-region" data-node="sw-offer-detail" data-widget="Text">On your first order - use WELCOME</span></span></div></section><section class="sw-section"><h3 class="td-region" data-node="sw-restaurants-title" data-widget="Text">Top restaurants near you</h3><p class="sw-sub td-region" data-node="sw-restaurants-subtitle" data-widget="Text">Fast delivery and great ratings</p><div class="sw-restaurants td-region" data-node="sw-restaurants" data-widget="ListView">${restaurant(1,'Spice Kitchen','4.5 · 25–30 min','#c87a4c')}${restaurant(2,'South Bowl','4.3 · 20–25 min','#d6a56f')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-2" data-widget="ListView">${restaurant(3,'Burger Barn','4.6 · 15–20 min','#b5654a')}${restaurant(4,'Taco Town','4.2 · 20–25 min','#c99a4a')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-3" data-widget="ListView">${restaurant(5,'Pizza Place','4.4 · 30–35 min','#c98a4a')}${restaurant(6,'Dessert Den','4.7 · 15–20 min','#b07a8a')}</div><div class="sw-restaurants td-region" data-node="sw-restaurants-4" data-widget="ListView">${restaurant(7,'Noodle House','4.5 · 20–25 min','#7a9c6d')}${restaurant(8,'Salad Stop','4.3 · 10–15 min','#8a9c5e')}</div></section></main><nav class="sw-bottom td-region" data-node="sw-bottom" data-widget="BottomNavigationBar"><span class="sw-nav td-region" data-node="sw-food-nav" data-widget="Icon">${TD_ICON.home}<span>Food</span></span><span class="sw-nav td-region" data-node="sw-search-nav" data-widget="Icon">${TD_ICON.search}<span>Search</span></span><span class="sw-nav td-region" data-node="sw-cart-nav" data-widget="Icon">${TD_ICON.bag}<span>Cart</span></span><span class="sw-nav td-region" data-node="sw-account-nav" data-widget="Icon">${TD_ICON.person}<span>Account</span></span></nav></div>`;
 }
 function tdPhoneSettings() {
   const ic = (p) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -4478,7 +4828,7 @@ function tdPhoneSettings() {
   const chev = (id) => `<span class="st-chev td-region" data-node="${id}-chev" data-widget="Icon">›</span>`;
   const sw = (id, on) => `<span class="st-switch${on ? " on" : ""} td-region" data-node="${id}-switch" data-widget="Switch"><i></i></span>`;
   const div = (id) => `<div class="st-div td-region" data-node="${id}" data-widget="Divider"></div>`;
-  return `<div class="st-screen td-region" data-node="st-scaffold" data-widget="Scaffold">` +
+  return `${tdStatus(false)}<div class="st-screen td-region" data-node="st-scaffold" data-widget="Scaffold">` +
   `<header class="st-bar td-region" data-node="st-appbar" data-widget="AppBar">` +
     `<span class="st-back td-region" data-node="st-back" data-widget="IconButton">‹</span>` +
     `<b class="td-region" data-node="st-appbar-title" data-widget="Text">Settings</b>` +
@@ -4558,10 +4908,10 @@ function tdPhoneSpotify() {
   const gear = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.2 3h-4l-.4 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.7h4l.4-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.1-.4.1-.8.1-1.2Z"/></svg>';
   const speaker = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>';
   const library = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4v16M9 4v16M14 5v14l5-1V4l-5 1Z"/></svg>';
-  const quick = (art, label, grad) => `<div class="sp-quick-card td-region" data-node="sp-card-one" data-widget="Card"><div class="sp-card-row td-region" data-node="sp-card-row" data-widget="Row"><span class="sp-card-art td-region" data-node="sp-card-art" data-widget="Image" style="background:${grad}">${art}</span><span class="td-region" data-node="sp-card-label" data-widget="Text">${label}</span></div></div>`;
-  const recent = (art, name, artist, grad) => `<div class="sp-recent-card td-region" data-node="sp-recent-card" data-widget="Card"><div class="sp-recent-col td-region" data-node="sp-recent-col" data-widget="Column"><span class="sp-recent-art td-region" data-node="sp-recent-art" data-widget="Image" style="background:${grad}">${art}</span><b class="td-region" data-node="sp-recent-name" data-widget="Text">${name}</b><span class="td-region" data-node="sp-recent-artist" data-widget="Text">${artist}</span></div></div>`;
-  const made = (art, name, desc, grad) => `<div class="sp-made-card td-region" data-node="sp-made-card" data-widget="Card"><div class="sp-made-col td-region" data-node="sp-made-col" data-widget="Column"><span class="sp-made-art td-region" data-node="sp-made-art" data-widget="Image" style="background:${grad}">${art}</span><b class="td-region" data-node="sp-made-name" data-widget="Text">${name}</b><span class="td-region" data-node="sp-made-desc" data-widget="Text">${desc}</span></div></div>`;
-  return `${tdStatus(true)}<div class="sp-screen td-region" data-node="sp-scaffold" data-widget="Scaffold"><header class="sp-top td-region" data-node="sp-appbar" data-widget="AppBar"><b class="td-region" data-node="sp-greeting" data-widget="Text">Good evening</b><span class="sp-top-actions"><span class="td-region" data-node="sp-bell" data-widget="IconButton">${bell}</span><span class="td-region" data-node="sp-history" data-widget="IconButton">${history}</span><span class="td-region" data-node="sp-settings" data-widget="IconButton">${gear}</span></span></header><main class="sp-scroll td-region" data-node="sp-feed" data-widget="ListView"><div class="sp-chips td-region" data-node="sp-chips" data-widget="Row"><span class="sp-chip on td-region" data-node="sp-chip-all" data-widget="FilterChip">All</span><span class="sp-chip td-region" data-node="sp-chip-music" data-widget="FilterChip">Music</span><span class="sp-chip td-region" data-node="sp-chip-podcasts" data-widget="FilterChip">Podcasts</span></div><div class="sp-quick td-region" data-node="sp-quick-grid" data-widget="GridView">${quick('♥','Liked Songs','linear-gradient(135deg,#4b2bb3,#8d67d8)')}${quick('1','Daily Mix 1','linear-gradient(135deg,#b3541e,#e08a3c)')}${quick('✦','Discover Weekly','linear-gradient(135deg,#1e6f5c,#3cae8b)')}${quick('☾','Chill Hits','linear-gradient(135deg,#274b8f,#5b8fd6)')}${quick('50','Top 50 – Global','linear-gradient(135deg,#8f2440,#d65b7a)')}${quick('↗','Release Radar','linear-gradient(135deg,#5c5c5c,#9a9a9a)')}</div><h3 class="td-region" data-node="sp-recent-title" data-widget="Text">Recently played</h3><div class="sp-recent td-region" data-node="sp-recent-grid" data-widget="GridView">${recent('AH','After Hours','The Weeknd','linear-gradient(135deg,#c0392b,#e74c3c)')}${recent('FL','Future Nostalgia','Dua Lipa','linear-gradient(135deg,#8e44ad,#c07be0)')}${recent('÷','Divide','Ed Sheeran','linear-gradient(135deg,#2471a3,#5dade2)')}${recent('★','Starboy','The Weeknd','linear-gradient(135deg,#1a1a2e,#3d3d6b)')}</div><h3 class="td-region" data-node="sp-made-title" data-widget="Text">Made for you</h3><div class="sp-made td-region" data-node="sp-made-list" data-widget="ListView">${made('1','Daily Mix 1','The Weeknd, Dua Lipa and more','linear-gradient(135deg,#b3541e,#e08a3c)')}${made('2','Daily Mix 2','Ed Sheeran, Coldplay and more','linear-gradient(135deg,#1e6f5c,#3cae8b)')}${made('✦','Discover Weekly','Your weekly mixtape of fresh music','linear-gradient(135deg,#274b8f,#5b8fd6)')}${made('↻','On Repeat','Songs you can\u2019t get enough of','linear-gradient(135deg,#8f2440,#d65b7a)')}</div></main><div class="sp-player td-region" data-node="sp-player" data-widget="Container"><div class="sp-player-col td-region" data-node="sp-player-col" data-widget="Column"><div class="sp-player-row td-region" data-node="sp-player-row" data-widget="Row"><span class="sp-player-art td-region" data-node="sp-player-art" data-widget="ClipRRect"><span class="td-region" data-node="sp-player-img" data-widget="Image" style="background:linear-gradient(135deg,#c0392b,#e74c3c)">BL</span></span><span class="sp-player-info td-region" data-node="sp-player-info" data-widget="Column"><b class="td-region" data-node="sp-player-title" data-widget="Text">Blinding Lights</b><span class="td-region" data-node="sp-player-artist" data-widget="Text">The Weeknd</span></span><span class="td-region" data-node="sp-player-devices" data-widget="IconButton">${speaker}</span><span class="sp-play td-region" data-node="sp-player-play" data-widget="IconButton">❚❚</span></div><div class="sp-progress td-region" data-node="sp-player-progress" data-widget="LinearProgressIndicator"><i></i></div></div></div><nav class="sp-bottom td-region" data-node="sp-bottom" data-widget="BottomNavigationBar"><span class="sp-nav on td-region" data-node="sp-nav-home" data-widget="BottomNavigationBarItem">${TD_ICON.home}<span>Home</span></span><span class="sp-nav td-region" data-node="sp-nav-search" data-widget="BottomNavigationBarItem">${TD_ICON.search}<span>Search</span></span><span class="sp-nav td-region" data-node="sp-nav-library" data-widget="BottomNavigationBarItem">${library}<span>Your Library</span></span></nav></div>`;
+  const quick = (id, art, label, grad) => `<div class="sp-quick-card td-region" data-node="sp-card-${id}" data-widget="Card"><div class="sp-card-row td-region" data-node="sp-card-row-${id}" data-widget="Row"><span class="sp-card-art td-region" data-node="sp-card-art-${id}" data-widget="Image" style="background:${grad}">${art}</span><span class="td-region" data-node="sp-card-label-${id}" data-widget="Text">${label}</span></div></div>`;
+  const recent = (id, art, name, artist, grad) => `<div class="sp-recent-card td-region" data-node="sp-recent-card-${id}" data-widget="Card"><div class="sp-recent-col td-region" data-node="sp-recent-col-${id}" data-widget="Column"><span class="sp-recent-art td-region" data-node="sp-recent-art-${id}" data-widget="Image" style="background:${grad}">${art}</span><b class="td-region" data-node="sp-recent-name-${id}" data-widget="Text">${name}</b><span class="td-region" data-node="sp-recent-artist-${id}" data-widget="Text">${artist}</span></div></div>`;
+  const made = (id, art, name, desc, grad) => `<div class="sp-made-card td-region" data-node="sp-made-card-${id}" data-widget="Card"><div class="sp-made-col td-region" data-node="sp-made-col-${id}" data-widget="Column"><span class="sp-made-art td-region" data-node="sp-made-art-${id}" data-widget="Image" style="background:${grad}">${art}</span><b class="td-region" data-node="sp-made-name-${id}" data-widget="Text">${name}</b><span class="td-region" data-node="sp-made-desc-${id}" data-widget="Text">${desc}</span></div></div>`;
+  return `${tdStatus(true)}<div class="sp-screen td-region" data-node="sp-scaffold" data-widget="Scaffold"><header class="sp-top td-region" data-node="sp-appbar" data-widget="AppBar"><b class="td-region" data-node="sp-greeting" data-widget="Text">Good evening</b><span class="sp-top-actions"><span class="td-region" data-node="sp-bell" data-widget="IconButton">${bell}</span><span class="td-region" data-node="sp-history" data-widget="IconButton">${history}</span><span class="td-region" data-node="sp-settings" data-widget="IconButton">${gear}</span></span></header><main class="sp-scroll td-region" data-node="sp-feed" data-widget="ListView"><div class="sp-chips td-region" data-node="sp-chips" data-widget="Row"><span class="sp-chip on td-region" data-node="sp-chip-all" data-widget="FilterChip">All</span><span class="sp-chip td-region" data-node="sp-chip-music" data-widget="FilterChip">Music</span><span class="sp-chip td-region" data-node="sp-chip-podcasts" data-widget="FilterChip">Podcasts</span></div><div class="sp-quick td-region" data-node="sp-quick-grid" data-widget="GridView">${quick(1,'♥','Liked Songs','linear-gradient(135deg,#4b2bb3,#8d67d8)')}${quick(2,'1','Daily Mix 1','linear-gradient(135deg,#b3541e,#e08a3c)')}${quick(3,'✦','Discover Weekly','linear-gradient(135deg,#1e6f5c,#3cae8b)')}${quick(4,'☾','Chill Hits','linear-gradient(135deg,#274b8f,#5b8fd6)')}${quick(5,'50','Top 50 – Global','linear-gradient(135deg,#8f2440,#d65b7a)')}${quick(6,'↗','Release Radar','linear-gradient(135deg,#5c5c5c,#9a9a9a)')}</div><h3 class="td-region" data-node="sp-recent-title" data-widget="Text">Recently played</h3><div class="sp-recent td-region" data-node="sp-recent-grid" data-widget="GridView">${recent(1,'AH','After Hours','The Weeknd','linear-gradient(135deg,#c0392b,#e74c3c)')}${recent(2,'FL','Future Nostalgia','Dua Lipa','linear-gradient(135deg,#8e44ad,#c07be0)')}${recent(3,'÷','Divide','Ed Sheeran','linear-gradient(135deg,#2471a3,#5dade2)')}${recent(4,'★','Starboy','The Weeknd','linear-gradient(135deg,#1a1a2e,#3d3d6b)')}</div><h3 class="td-region" data-node="sp-made-title" data-widget="Text">Made for you</h3><div class="sp-made td-region" data-node="sp-made-list" data-widget="ListView">${made(1,'1','Daily Mix 1','The Weeknd, Dua Lipa and more','linear-gradient(135deg,#b3541e,#e08a3c)')}${made(2,'2','Daily Mix 2','Ed Sheeran, Coldplay and more','linear-gradient(135deg,#1e6f5c,#3cae8b)')}${made(3,'✦','Discover Weekly','Your weekly mixtape of fresh music','linear-gradient(135deg,#274b8f,#5b8fd6)')}${made(4,'↻','On Repeat','Songs you can\u2019t get enough of','linear-gradient(135deg,#8f2440,#d65b7a)')}</div></main><div class="sp-player td-region" data-node="sp-player" data-widget="Container"><div class="sp-player-col td-region" data-node="sp-player-col" data-widget="Column"><div class="sp-player-row td-region" data-node="sp-player-row" data-widget="Row"><span class="sp-player-art td-region" data-node="sp-player-art" data-widget="ClipRRect"><span class="td-region" data-node="sp-player-img" data-widget="Image" style="background:linear-gradient(135deg,#c0392b,#e74c3c)">BL</span></span><span class="sp-player-info td-region" data-node="sp-player-info" data-widget="Column"><b class="td-region" data-node="sp-player-title" data-widget="Text">Blinding Lights</b><span class="td-region" data-node="sp-player-artist" data-widget="Text">The Weeknd</span></span><span class="td-region" data-node="sp-player-devices" data-widget="IconButton">${speaker}</span><span class="sp-play td-region" data-node="sp-player-play" data-widget="IconButton">❚❚</span></div><div class="sp-progress td-region" data-node="sp-player-progress" data-widget="LinearProgressIndicator"><i></i></div></div></div><nav class="sp-bottom td-region" data-node="sp-bottom" data-widget="BottomNavigationBar"><span class="sp-nav on td-region" data-node="sp-nav-home" data-widget="BottomNavigationBarItem">${TD_ICON.home}<span>Home</span></span><span class="sp-nav td-region" data-node="sp-nav-search" data-widget="BottomNavigationBarItem">${TD_ICON.search}<span>Search</span></span><span class="sp-nav td-region" data-node="sp-nav-library" data-widget="BottomNavigationBarItem">${library}<span>Your Library</span></span></nav></div>`;
 }
 function tdPhoneAmazon() {
   const mic = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
@@ -4569,8 +4919,8 @@ function tdPhoneAmazon() {
   const cart = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M3 4h2l2.5 11h10L20 8H7"/></svg>';
   const menu = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
   const chip = (id, label, active) => `<span class="am-chip${active ? " active" : ""} td-region" data-node="am-chip-${id}" data-widget="Chip"><span class="td-region" data-node="am-chip-${id}-text" data-widget="Text">${label}</span></span>`;
-  const product = (name, stars, price, mrp, color) => `<article class="am-card td-region" data-node="am-product-card" data-widget="Card"><div class="td-region" data-node="am-product-column" data-widget="Column"><div class="am-pic td-region" data-node="am-product-image-clip" data-widget="ClipRRect"><div class="am-pic-in td-region" data-node="am-product-image" data-widget="Image" style="--prod:${color}"></div></div><div class="am-pbody td-region" data-node="am-product-padding" data-widget="Padding"><div class="td-region" data-node="am-product-details" data-widget="Column"><b class="td-region" data-node="am-product-title" data-widget="Text">${name}</b><span class="am-stars td-region" data-node="am-product-stars" data-widget="Row"><span class="td-region" data-node="am-product-rating" data-widget="Text">${stars}</span></span><span class="am-price-row td-region" data-node="am-product-price-row" data-widget="Row"><b class="td-region" data-node="am-product-price" data-widget="Text">${price}</b><span class="td-region" data-node="am-product-mrp" data-widget="Text">${mrp}</span></span><span class="am-prime td-region" data-node="am-prime-badge" data-widget="Container"><b class="td-region" data-node="am-prime-text" data-widget="Text">✓prime</b></span></div></div></div></article>`;
-  return `${tdStatus(false)}<div class="am-screen td-region" data-node="am-scaffold" data-widget="Scaffold"><header class="am-bar td-region" data-node="am-appbar" data-widget="AppBar"><div class="am-search-row td-region" data-node="am-search-row" data-widget="Row"><div class="am-search-expanded td-region" data-node="am-search-expanded" data-widget="Expanded"><div class="am-search td-region" data-node="am-search-field" data-widget="TextField"><span class="td-region" data-node="am-search-icon" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="am-search-hint" data-widget="Text">Search Amazon.in</span><span class="td-region" data-node="am-mic" data-widget="IconButton">${mic}</span><span class="td-region" data-node="am-camera" data-widget="IconButton">${camera}</span></div></div><span class="am-cart-stack td-region" data-node="am-cart-stack" data-widget="Stack"><span class="td-region" data-node="am-cart" data-widget="IconButton">${cart}</span><span class="am-badge td-region" data-node="am-cart-badge" data-widget="Positioned"><b class="td-region" data-node="am-cart-count" data-widget="Text">2</b></span></span></div></header><main class="am-scroll td-region" data-node="am-body" data-widget="ListView"><div class="am-location td-region" data-node="am-location-row" data-widget="Row"><span class="td-region" data-node="am-location-icon" data-widget="Icon">${TD_ICON.pin}</span><span class="td-region" data-node="am-location-text" data-widget="Text">Deliver to Dheeraj - Jaipur 302001</span><span class="td-region" data-node="am-location-chevron" data-widget="Icon">⌄</span></div><div class="am-chips td-region" data-node="am-chips" data-widget="ListView">${chip("deals", "Deals", true)}${chip("prime", "Prime", false)}${chip("electronics", "Electronics", false)}${chip("fashion", "Fashion", false)}${chip("grocery", "Grocery", false)}</div><div class="am-hero td-region" data-node="am-hero" data-widget="Card"><div class="am-hero-stack td-region" data-node="am-hero-stack" data-widget="Stack"><div class="am-hero-img td-region" data-node="am-hero-image" data-widget="Image"></div><div class="am-hero-copy td-region" data-node="am-hero-copy" data-widget="Column"><span class="td-region" data-node="am-hero-kicker" data-widget="Text">DEAL OF THE DAY</span><b class="td-region" data-node="am-hero-title" data-widget="Text">Up to 70% off | Headphones</b><span class="am-cta td-region" data-node="am-hero-cta" data-widget="ElevatedButton"><span class="td-region" data-node="am-hero-cta-text" data-widget="Text">Shop now</span></span></div></div></div><h3 class="am-section-title td-region" data-node="am-section-title" data-widget="Text">Best deals for you</h3><div class="am-grid td-region" data-node="am-grid" data-widget="GridView">${product("Wireless Earbuds Pro", "★★★★☆ 4.5", "₹1,499", "₹2,999", "linear-gradient(135deg,#3b6ea5,#7fb0d8)")}${product("Smart Watch Series 5", "★★★★★ 4.8", "₹2,799", "₹5,999", "linear-gradient(135deg,#4a4a55,#9a9aad)")}${product("Running Shoes", "★★★★☆ 4.3", "₹1,199", "₹2,499", "linear-gradient(135deg,#b34700,#f0903f)")}${product("Travel Backpack 32L", "★★★★☆ 4.6", "₹899", "₹1,799", "linear-gradient(135deg,#3f6b4f,#7fb08a)")}</div></main><nav class="am-bottom td-region" data-node="am-bottom" data-widget="BottomNavigationBar"><span class="am-nav td-region" data-node="am-nav-home" data-widget="Icon">${TD_ICON.home}<span>Home</span></span><span class="am-nav td-region" data-node="am-nav-account" data-widget="Icon">${TD_ICON.person}<span>Account</span></span><span class="am-nav td-region" data-node="am-nav-cart" data-widget="Icon">${cart}<span>Cart</span></span><span class="am-nav td-region" data-node="am-nav-menu" data-widget="Icon">${menu}<span>Menu</span></span></nav></div>`;
+  const product = (id, name, stars, price, mrp, color) => `<article class="am-card td-region" data-node="am-product-card-${id}" data-widget="Card"><div class="td-region" data-node="am-product-column-${id}" data-widget="Column"><div class="am-pic td-region" data-node="am-product-image-clip-${id}" data-widget="ClipRRect"><div class="am-pic-in td-region" data-node="am-product-image-${id}" data-widget="Image" style="--prod:${color}"></div></div><div class="am-pbody td-region" data-node="am-product-padding-${id}" data-widget="Padding"><div class="td-region" data-node="am-product-details-${id}" data-widget="Column"><b class="td-region" data-node="am-product-title-${id}" data-widget="Text">${name}</b><span class="am-stars td-region" data-node="am-product-stars-${id}" data-widget="Row"><span class="td-region" data-node="am-product-rating-${id}" data-widget="Text">${stars}</span></span><span class="am-price-row td-region" data-node="am-product-price-row-${id}" data-widget="Row"><b class="td-region" data-node="am-product-price-${id}" data-widget="Text">${price}</b><span class="td-region" data-node="am-product-mrp-${id}" data-widget="Text">${mrp}</span></span><span class="am-prime td-region" data-node="am-prime-badge-${id}" data-widget="Container"><b class="td-region" data-node="am-prime-text-${id}" data-widget="Text">✓prime</b></span></div></div></div></article>`;
+  return `${tdStatus(false)}<div class="am-screen td-region" data-node="am-scaffold" data-widget="Scaffold"><header class="am-bar td-region" data-node="am-appbar" data-widget="AppBar"><div class="am-search-row td-region" data-node="am-search-row" data-widget="Row"><div class="am-search-expanded td-region" data-node="am-search-expanded" data-widget="Expanded"><div class="am-search td-region" data-node="am-search-field" data-widget="TextField"><span class="td-region" data-node="am-search-icon" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="am-search-hint" data-widget="Text">Search Amazon.in</span><span class="td-region" data-node="am-mic" data-widget="IconButton">${mic}</span><span class="td-region" data-node="am-camera" data-widget="IconButton">${camera}</span></div></div><span class="am-cart-stack td-region" data-node="am-cart-stack" data-widget="Stack"><span class="td-region" data-node="am-cart" data-widget="IconButton">${cart}</span><span class="am-badge td-region" data-node="am-cart-badge" data-widget="Positioned"><b class="td-region" data-node="am-cart-count" data-widget="Text">2</b></span></span></div></header><main class="am-scroll td-region" data-node="am-body" data-widget="ListView"><div class="am-location td-region" data-node="am-location-row" data-widget="Row"><span class="td-region" data-node="am-location-icon" data-widget="Icon">${TD_ICON.pin}</span><span class="td-region" data-node="am-location-text" data-widget="Text">Deliver to Dheeraj - Jaipur 302001</span><span class="td-region" data-node="am-location-chevron" data-widget="Icon">⌄</span></div><div class="am-chips td-region" data-node="am-chips" data-widget="ListView">${chip("deals", "Deals", true)}${chip("prime", "Prime", false)}${chip("electronics", "Electronics", false)}${chip("fashion", "Fashion", false)}${chip("grocery", "Grocery", false)}</div><div class="am-hero td-region" data-node="am-hero" data-widget="Card"><div class="am-hero-stack td-region" data-node="am-hero-stack" data-widget="Stack"><div class="am-hero-img td-region" data-node="am-hero-image" data-widget="Image"></div><div class="am-hero-copy td-region" data-node="am-hero-copy" data-widget="Column"><span class="td-region" data-node="am-hero-kicker" data-widget="Text">DEAL OF THE DAY</span><b class="td-region" data-node="am-hero-title" data-widget="Text">Up to 70% off | Headphones</b><span class="am-cta td-region" data-node="am-hero-cta" data-widget="ElevatedButton"><span class="td-region" data-node="am-hero-cta-text" data-widget="Text">Shop now</span></span></div></div></div><h3 class="am-section-title td-region" data-node="am-section-title" data-widget="Text">Best deals for you</h3><div class="am-grid td-region" data-node="am-grid" data-widget="GridView">${product(1,"Wireless Earbuds Pro", "★★★★☆ 4.5", "₹1,499", "₹2,999", "linear-gradient(135deg,#3b6ea5,#7fb0d8)")}${product(2,"Smart Watch Series 5", "★★★★★ 4.8", "₹2,799", "₹5,999", "linear-gradient(135deg,#4a4a55,#9a9aad)")}${product(3,"Running Shoes", "★★★★☆ 4.3", "₹1,199", "₹2,499", "linear-gradient(135deg,#b34700,#f0903f)")}${product(4,"Travel Backpack 32L", "★★★★☆ 4.6", "₹899", "₹1,799", "linear-gradient(135deg,#3f6b4f,#7fb08a)")}</div></main><nav class="am-bottom td-region" data-node="am-bottom" data-widget="BottomNavigationBar"><span class="am-nav td-region" data-node="am-nav-home" data-widget="Icon">${TD_ICON.home}<span>Home</span></span><span class="am-nav td-region" data-node="am-nav-account" data-widget="Icon">${TD_ICON.person}<span>Account</span></span><span class="am-nav td-region" data-node="am-nav-cart" data-widget="Icon">${cart}<span>Cart</span></span><span class="am-nav td-region" data-node="am-nav-menu" data-widget="Icon">${menu}<span>Menu</span></span></nav></div>`;
 }
 function tdPhoneGmail() {
   const tile = (n, initial, color, sender, subject, snippet, time, starred, attach, unread) =>
@@ -4605,11 +4955,11 @@ tile(1, "F", "#02569b", "FlutterForward", "Your 40-lesson Flutter course is live
   `<button class="gm-fab td-region" data-node="gm-fab" data-widget="FloatingActionButton">✎&nbsp;Compose</button></div>`;
 }
 function tdPhoneNetflix() {
-  const trending = (initials, name, color) => `<div class="nf-card td-region" data-node="nf-trending-card" data-widget="Card"><div class="nf-poster td-region" data-node="nf-trending-poster" data-widget="Image" style="--poster:${color}">${initials}</div><span class="nf-card-name td-region" data-node="nf-trending-name" data-widget="Text">${name}</span></div>`;
-  const top10 = (rank, initials, color) => `<div class="nf-top10-card td-region" data-node="nf-top10-card" data-widget="Row"><b class="nf-rank td-region" data-node="nf-top10-rank" data-widget="Text">${rank}</b><div class="nf-poster nf-poster-top10 td-region" data-node="nf-top10-poster" data-widget="Image" style="--poster:${color}">${initials}</div></div>`;
-  const cont = (initials, name, time, color, pct) => `<div class="nf-cw-card td-region" data-node="nf-continue-card" data-widget="Column"><div class="nf-poster nf-poster-cw td-region" data-node="nf-continue-poster" data-widget="Image" style="--poster:${color}">${initials}</div><div class="nf-progress td-region" data-node="nf-continue-progress" data-widget="LinearProgressIndicator"><i style="width:${pct}%"></i></div><span class="nf-cw-info td-region" data-node="nf-continue-info" data-widget="Row"><span class="td-region" data-node="nf-continue-name" data-widget="Text">${name}</span><span class="td-region" data-node="nf-continue-time" data-widget="Text">${time}</span></span></div>`;
+  const trending = (id, initials, name, color) => `<div class="nf-card td-region" data-node="nf-trending-card-${id}" data-widget="Card"><div class="nf-poster td-region" data-node="nf-trending-poster-${id}" data-widget="Image" style="--poster:${color}">${initials}</div><span class="nf-card-name td-region" data-node="nf-trending-name-${id}" data-widget="Text">${name}</span></div>`;
+  const top10 = (id, rank, initials, color) => `<div class="nf-top10-card td-region" data-node="nf-top10-card-${id}" data-widget="Row"><b class="nf-rank td-region" data-node="nf-top10-rank-${id}" data-widget="Text">${rank}</b><div class="nf-poster nf-poster-top10 td-region" data-node="nf-top10-poster-${id}" data-widget="Image" style="--poster:${color}">${initials}</div></div>`;
+  const cont = (id, initials, name, time, color, pct) => `<div class="nf-cw-card td-region" data-node="nf-continue-card-${id}" data-widget="Column"><div class="nf-poster nf-poster-cw td-region" data-node="nf-continue-poster-${id}" data-widget="Image" style="--poster:${color}">${initials}</div><div class="nf-progress td-region" data-node="nf-continue-progress-${id}" data-widget="LinearProgressIndicator"><i style="width:${pct}%"></i></div><span class="nf-cw-info td-region" data-node="nf-continue-info-${id}" data-widget="Row"><span class="td-region" data-node="nf-continue-name-${id}" data-widget="Text">${name}</span><span class="td-region" data-node="nf-continue-time-${id}" data-widget="Text">${time}</span></span></div>`;
   const downloadIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></svg>';
-  return `${tdStatus(false)}<div class="nf-screen td-region" data-node="nf-scaffold" data-widget="Scaffold"><main class="nf-scroll td-region" data-node="nf-body" data-widget="ListView"><header class="nf-topbar td-region" data-node="nf-appbar" data-widget="AppBar"><b class="nf-logo td-region" data-node="nf-logo" data-widget="Text">NETFLIX</b><span class="nf-search td-region" data-node="nf-search-btn" data-widget="IconButton">${TD_ICON.search}</span><span class="nf-avatar td-region" data-node="nf-avatar" data-widget="CircleAvatar">D</span></header><section class="nf-hero td-region" data-node="nf-hero" data-widget="Stack"><div class="nf-hero-img td-region" data-node="nf-hero-image" data-widget="Image">ST</div><div class="nf-hero-shade td-region" data-node="nf-hero-gradient" data-widget="Container"></div><div class="nf-hero-copy td-region" data-node="nf-hero-content" data-widget="Column"><b class="nf-hero-title td-region" data-node="nf-hero-title" data-widget="Text">STRANGER<br>THINGS</b><span class="nf-genres td-region" data-node="nf-hero-genres" data-widget="Row"><span class="td-region" data-node="nf-genre-1" data-widget="Text">Sci-Fi</span><i>·</i><span class="td-region" data-node="nf-genre-2" data-widget="Text">Drama</span><i>·</i><span class="td-region" data-node="nf-genre-3" data-widget="Text">Thriller</span></span><div class="nf-hero-actions td-region" data-node="nf-hero-actions" data-widget="Row"><span class="nf-play td-region" data-node="nf-play" data-widget="ElevatedButton"><span class="td-region" data-node="nf-play-icon" data-widget="Icon">▶</span><span class="td-region" data-node="nf-play-label" data-widget="Text">Play</span></span><span class="nf-mylist td-region" data-node="nf-mylist" data-widget="OutlinedButton"><span class="td-region" data-node="nf-mylist-label" data-widget="Text">＋ My List</span></span></div></div></section><section class="nf-row-sec td-region" data-node="nf-trending-section" data-widget="Column"><h3 class="nf-sec-title td-region" data-node="nf-trending-title" data-widget="Text">Trending Now</h3><div class="nf-row td-region" data-node="nf-trending-row" data-widget="ListView">${trending('SG','Squid Game','#0d6e4f')}${trending('W','Wednesday','#3a3a6e')}${trending('MH','Money Heist','#8a1f1f')}${trending('TC','The Crown','#6e5a1f')}</div></section><section class="nf-row-sec td-region" data-node="nf-top10-section" data-widget="Column"><h3 class="nf-sec-title td-region" data-node="nf-top10-title" data-widget="Text">Top 10 TV Shows Today</h3><div class="nf-row td-region" data-node="nf-top10-row" data-widget="ListView">${top10('1','ST','#7a1f2b')}${top10('2','W','#2b3a6e')}${top10('3','MH','#8a2f1f')}</div></section><section class="nf-row-sec td-region" data-node="nf-continue-section" data-widget="Column"><h3 class="nf-sec-title td-region" data-node="nf-continue-title" data-widget="Text">Continue Watching</h3><div class="nf-row td-region" data-node="nf-continue-row" data-widget="ListView">${cont('BB','Breaking Bad','32m left','#1f4d2b','62')}${cont('D','Dark','18m left','#1f2b4d','35')}</div></section></main><nav class="nf-bottom td-region" data-node="nf-bottom" data-widget="BottomNavigationBar"><span class="nf-nav on td-region" data-node="nf-nav-home" data-widget="BottomNavigationBarItem">${TD_ICON.home}<span>Home</span></span><span class="nf-nav td-region" data-node="nf-nav-search" data-widget="BottomNavigationBarItem">${TD_ICON.search}<span>Search</span></span><span class="nf-nav td-region" data-node="nf-nav-coming" data-widget="BottomNavigationBarItem">${TD_ICON.video}<span>Coming Soon</span></span><span class="nf-nav td-region" data-node="nf-nav-downloads" data-widget="BottomNavigationBarItem">${downloadIcon}<span>Downloads</span></span><span class="nf-nav td-region" data-node="nf-nav-more" data-widget="BottomNavigationBarItem"><span class="nf-more">☰</span><span>More</span></span></nav></div>`;
+  return `${tdStatus(false)}<div class="nf-screen td-region" data-node="nf-scaffold" data-widget="Scaffold"><main class="nf-scroll td-region" data-node="nf-body" data-widget="ListView"><header class="nf-topbar td-region" data-node="nf-appbar" data-widget="AppBar"><b class="nf-logo td-region" data-node="nf-logo" data-widget="Text">NETFLIX</b><span class="nf-search td-region" data-node="nf-search-btn" data-widget="IconButton">${TD_ICON.search}</span><span class="nf-avatar td-region" data-node="nf-avatar" data-widget="CircleAvatar">D</span></header><section class="nf-hero td-region" data-node="nf-hero" data-widget="Stack"><div class="nf-hero-img td-region" data-node="nf-hero-image" data-widget="Image"></div><div class="nf-hero-shade td-region" data-node="nf-hero-gradient" data-widget="Container"></div><div class="nf-hero-copy td-region" data-node="nf-hero-content" data-widget="Column"><b class="nf-hero-title td-region" data-node="nf-hero-title" data-widget="Text">STRANGER<br>THINGS</b><span class="nf-genres td-region" data-node="nf-hero-genres" data-widget="Row"><span class="td-region" data-node="nf-genre-1" data-widget="Text">Sci-Fi</span><i>·</i><span class="td-region" data-node="nf-genre-2" data-widget="Text">Drama</span><i>·</i><span class="td-region" data-node="nf-genre-3" data-widget="Text">Thriller</span></span><div class="nf-hero-actions td-region" data-node="nf-hero-actions" data-widget="Row"><span class="nf-play td-region" data-node="nf-play" data-widget="ElevatedButton"><span class="td-region" data-node="nf-play-icon" data-widget="Icon">▶</span><span class="td-region" data-node="nf-play-label" data-widget="Text">Play</span></span><span class="nf-mylist td-region" data-node="nf-mylist" data-widget="OutlinedButton"><span class="td-region" data-node="nf-mylist-label" data-widget="Text">＋ My List</span></span></div></div></section><section class="nf-row-sec td-region" data-node="nf-trending-section" data-widget="Column"><h3 class="nf-sec-title td-region" data-node="nf-trending-title" data-widget="Text">Trending Now</h3><div class="nf-row td-region" data-node="nf-trending-row" data-widget="ListView">${trending(1,'SG','Squid Game','#0d6e4f')}${trending(2,'W','Wednesday','#3a3a6e')}${trending(3,'MH','Money Heist','#8a1f1f')}${trending(4,'TC','The Crown','#6e5a1f')}</div></section><section class="nf-row-sec td-region" data-node="nf-top10-section" data-widget="Column"><h3 class="nf-sec-title td-region" data-node="nf-top10-title" data-widget="Text">Top 10 TV Shows Today</h3><div class="nf-row td-region" data-node="nf-top10-row" data-widget="ListView">${top10(1,'1','ST','#7a1f2b')}${top10(2,'2','W','#2b3a6e')}${top10(3,'3','MH','#8a2f1f')}</div></section><section class="nf-row-sec td-region" data-node="nf-continue-section" data-widget="Column"><h3 class="nf-sec-title td-region" data-node="nf-continue-title" data-widget="Text">Continue Watching</h3><div class="nf-row td-region" data-node="nf-continue-row" data-widget="ListView">${cont(1,'BB','Breaking Bad','32m left','#1f4d2b','62')}${cont(2,'D','Dark','18m left','#1f2b4d','35')}</div></section></main><nav class="nf-bottom td-region" data-node="nf-bottom" data-widget="BottomNavigationBar"><span class="nf-nav on td-region" data-node="nf-nav-home" data-widget="BottomNavigationBarItem">${TD_ICON.home}<span>Home</span></span><span class="nf-nav td-region" data-node="nf-nav-search" data-widget="BottomNavigationBarItem">${TD_ICON.search}<span>Search</span></span><span class="nf-nav td-region" data-node="nf-nav-coming" data-widget="BottomNavigationBarItem">${TD_ICON.video}<span>Coming Soon</span></span><span class="nf-nav td-region" data-node="nf-nav-downloads" data-widget="BottomNavigationBarItem">${downloadIcon}<span>Downloads</span></span><span class="nf-nav td-region" data-node="nf-nav-more" data-widget="BottomNavigationBarItem"><span class="nf-more">☰</span><span>More</span></span></nav></div>`;
 }
 function tdPhoneCalculator() {
   const keys = [
@@ -4628,7 +4978,7 @@ function tdPhoneNotes() {
 }
 function tdPhoneTasks() {
   const task = (n, title, meta) => `<div class="tk-task td-region" data-node="tk-task-${n}" data-widget="Dismissible"><div class="tk-row td-region" data-node="tk-row-${n}" data-widget="Row"><span class="tk-check td-region" data-node="tk-check-${n}" data-widget="Checkbox"></span><div class="tk-task-col td-region" data-node="tk-task-${n}-col" data-widget="Column"><b class="td-region" data-node="tk-task-${n}-title" data-widget="Text">${title}</b><span class="td-region" data-node="tk-task-${n}-meta" data-widget="Text">${meta}</span></div><span class="tk-drag td-region" data-node="tk-drag-${n}" data-widget="Icon">⋮⋮</span></div></div>`;
-  return `${tdStatus(false)}<div class="tk-screen td-region" data-node="tk-scaffold" data-widget="Scaffold"><header class="tk-bar td-region" data-node="tk-appbar" data-widget="AppBar"><span class="td-region" data-node="tk-menu" data-widget="IconButton">☰</span><b class="td-region" data-node="tk-title" data-widget="Text">My Tasks</b><span class="tk-bar-actions"><span class="td-region" data-node="tk-sort" data-widget="IconButton">⇅</span><span class="td-region" data-node="tk-more" data-widget="IconButton">⋮</span></span></header><main class="tk-scroll td-region" data-node="tk-body" data-widget="Column"><div class="tk-list-wrap td-region" data-node="tk-list-expanded" data-widget="Expanded"><div class="tk-list td-region" data-node="tk-list" data-widget="ReorderableListView">${task(1, "Buy Flutter course notes", "Today • Personal")}${task(2, "Finish AoA assignment", "Tomorrow • College")}${task(3, "Call mom", "Fri • Personal")}</div></div><div class="tk-divider td-region" data-node="tk-completed-divider" data-widget="Divider"></div><span class="tk-completed-title td-region" data-node="tk-completed-title" data-widget="Text">Completed (1)</span><div class="tk-done-row td-region" data-node="tk-done-row" data-widget="Row"><span class="tk-check on td-region" data-node="tk-check-done" data-widget="Checkbox">✓</span><span class="tk-done-text td-region" data-node="tk-done-text" data-widget="Text">Submit lab record</span></div></main><div class="tk-snack td-region" data-node="tk-snackbar" data-widget="SnackBar"><span class="td-region" data-node="tk-snack-text" data-widget="Text">Task deleted</span><span class="td-region" data-node="tk-snack-undo" data-widget="TextButton">Undo</span></div><div class="tk-add td-region" data-node="tk-add-row" data-widget="Row"><span class="td-region" data-node="tk-add-field" data-widget="TextField">Add a task</span><span class="td-region" data-node="tk-add-btn" data-widget="IconButton">${TD_ICON.send}</span></div></div>`;
+  return `${tdStatus(false)}<div class="tk-screen td-region" data-node="tk-scaffold" data-widget="Scaffold"><header class="tk-bar td-region" data-node="tk-appbar" data-widget="AppBar"><span class="td-region" data-node="tk-menu" data-widget="IconButton">☰</span><b class="td-region" data-node="tk-title" data-widget="Text">My Tasks</b><span class="tk-bar-actions"><span class="td-region" data-node="tk-sort" data-widget="IconButton">⇅</span><span class="td-region" data-node="tk-more" data-widget="IconButton">⋮</span></span></header><main class="tk-scroll td-region" data-node="tk-body" data-widget="Column"><div class="tk-list-wrap td-region" data-node="tk-list-expanded" data-widget="Expanded"><div class="tk-list td-region" data-node="tk-list" data-widget="ReorderableListView">${task(1, "Buy Flutter course notes", "Today • Personal")}${task(2, "Finish AoA assignment", "Tomorrow • College")}${task(3, "Call mom", "Fri • Personal")}</div></div><div class="tk-divider td-region" data-node="tk-completed-divider" data-widget="Divider"></div><span class="tk-completed-title td-region" data-node="tk-completed-title" data-widget="Text">Completed (1)</span><div class="tk-done-row td-region" data-node="tk-done-row" data-widget="Row"><span class="tk-check on td-region" data-node="tk-check-done" data-widget="Checkbox">✓</span><span class="tk-done-text td-region" data-node="tk-done-text" data-widget="Text">Submit lab record</span></div></main><div class="tk-snack td-region" data-node="tk-snackbar" data-widget="SnackBar"><span class="td-region" data-node="tk-snack-text" data-widget="Text">Task deleted</span><span class="td-region" data-node="tk-snack-undo" data-widget="SnackBarAction">Undo</span></div><div class="tk-add td-region" data-node="tk-add-row" data-widget="Row"><span class="td-region" data-node="tk-add-field" data-widget="TextField">Add a task</span><span class="td-region" data-node="tk-add-btn" data-widget="IconButton">${TD_ICON.send}</span></div></div>`;
 }
 function tdPhoneGmailCompose() {
   const clip = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m21 12-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8L13 4.5a3.7 3.7 0 0 1 5.2 5.2l-8.2 8.2a1.8 1.8 0 0 1-2.6-2.6L14.5 8"/></svg>';
@@ -4650,7 +5000,7 @@ function tdPhoneGmailCompose() {
   `<div class="gc-divider td-region" data-node="gc-subject-divider" data-widget="Divider"></div>` +
   `<div class="gc-field body td-region" data-node="gc-body-field" data-widget="TextFormField"><div class="gc-decor plain td-region" data-node="gc-body-decoration" data-widget="InputDecoration"><span class="gc-hint">Compose email</span></div><p class="gc-draft">Hi everyone,<br><br>Sharing the Flutter notes from today's session — the widget tree is attached.</p></div>` +
   `</div></main></form>` +
-  `<div class="gc-snackbar td-region" data-node="gc-snackbar" data-widget="SnackBar"><span class="td-region" data-node="gc-snackbar-text" data-widget="Text">Message sent</span><span class="gc-undo td-region" data-node="gc-snackbar-undo" data-widget="TextButton">Undo</span></div></div>`;
+  `</div>`;
 }
 
 function tdPhoneSpotifyPlayer() {
@@ -4685,14 +5035,14 @@ function tdPhoneYouTubePlayer() {
     `<div class="yp-comment td-region" data-node="yp-comment-${word}" data-widget="Row"><span class="yp-c-avatar td-region" data-node="yp-comment-${word}-avatar" data-widget="CircleAvatar" style="--av:${color}">${initial}</span><span class="yp-c-body td-region" data-node="yp-comment-${word}-body" data-widget="Column"><b class="td-region" data-node="yp-comment-${word}-name" data-widget="Text">${name}</b><span class="td-region" data-node="yp-comment-${word}-text" data-widget="Text">${text}</span></span></div>`;
   const upnext = (word, title, meta, grad) =>
     `<article class="yp-up-card td-region" data-node="yp-upnext-card${word === "two" ? "-two" : ""}" data-widget="Card"><div class="yp-up-row td-region" data-node="yp-upnext-row${word === "two" ? "-two" : ""}" data-widget="Row"><span class="yp-up-thumb td-region" data-node="yp-upnext-thumb${word === "two" ? "-two" : ""}" data-widget="Image" style="background:${grad}">▶</span><span class="yp-up-col td-region" data-node="yp-upnext-col${word === "two" ? "-two" : ""}" data-widget="Column"><b class="td-region" data-node="yp-upnext-name${word === "two" ? "-two" : ""}" data-widget="Text">${title}</b><span class="td-region" data-node="yp-upnext-meta${word === "two" ? "-two" : ""}" data-widget="Text">${meta}</span></span></div></article>`;
-  return `${tdStatus(false)}<div class="yp-screen td-region" data-node="yp-scaffold" data-widget="Scaffold"><header class="yp-bar td-region" data-node="yp-appbar" data-widget="AppBar"><span class="yp-back td-region" data-node="yp-back" data-widget="IconButton">${TD_ICON.back}</span><span class="yp-bar-spacer"></span><span class="yp-cast td-region" data-node="yp-cast" data-widget="IconButton">${cast}</span><span class="yp-more td-region" data-node="yp-more" data-widget="IconButton">⋮</span></header><main class="yp-scroll td-region" data-node="yp-layout" data-widget="LayoutBuilder"><div class="yp-body td-region" data-node="yp-body" data-widget="Column"><div class="yp-video td-region" data-node="yp-video-area" data-widget="AspectRatio"><div class="yp-video-stack td-region" data-node="yp-video-stack" data-widget="Stack"><div class="yp-frame td-region" data-node="yp-video-frame" data-widget="Image"></div><div class="yp-buffer-wrap td-region" data-node="yp-buffer-wrap" data-widget="Center"><span class="yp-spinner td-region" data-node="yp-buffer" data-widget="CircularProgressIndicator"></span></div><div class="yp-controls td-region" data-node="yp-controls-align" data-widget="Align"><div class="yp-controls-row td-region" data-node="yp-controls-row" data-widget="Row"><span class="yp-ctl td-region" data-node="yp-play-pause" data-widget="IconButton">❚❚</span><span class="yp-ctl td-region" data-node="yp-next" data-widget="IconButton">⏭</span><span class="yp-time td-region" data-node="yp-time" data-widget="Text">4:32 / 12:48</span><span class="yp-ctl td-region" data-node="yp-fullscreen" data-widget="IconButton">⛶</span></div></div></div></div><div class="yp-seek-row td-region" data-node="yp-seek-row" data-widget="Row"><span class="yp-seek-time td-region" data-node="yp-current" data-widget="Text">4:32</span><span class="yp-seek-expanded td-region" data-node="yp-seek-expanded" data-widget="Expanded"><span class="yp-slider td-region" data-node="yp-seek" data-widget="Slider"><i style="width:36%"></i><b></b></span></span><span class="yp-seek-time td-region" data-node="yp-total" data-widget="Text">12:48</span></div><h3 class="yp-title td-region" data-node="yp-title" data-widget="Text">Build a Flutter app in 20 minutes</h3><div class="yp-channel td-region" data-node="yp-channel-row" data-widget="Row"><span class="yp-avatar td-region" data-node="yp-avatar" data-widget="CircleAvatar">FF</span><span class="yp-channel-col td-region" data-node="yp-channel-col" data-widget="Column"><b class="td-region" data-node="yp-channel-name" data-widget="Text">FlutterForward</b><span class="td-region" data-node="yp-channel-subs" data-widget="Text">1.2M subscribers</span></span><span class="yp-sub td-region" data-node="yp-subscribe" data-widget="ElevatedButton"><span class="td-region" data-node="yp-subscribe-label" data-widget="Text">Subscribe</span></span></div><div class="yp-actions td-region" data-node="yp-actions-row" data-widget="Row"><span class="yp-act td-region" data-node="yp-like" data-widget="IconButton">👍</span><span class="yp-like-count td-region" data-node="yp-like-count" data-widget="Text">12K</span><span class="yp-tip-wrap td-region" data-node="yp-share-tip" data-widget="Tooltip"><span class="yp-tip-bubble">Share</span><span class="td-region" data-node="yp-share" data-widget="IconButton">${share}</span></span><span class="yp-act td-region" data-node="yp-download" data-widget="IconButton">${download}</span><span class="yp-act td-region" data-node="yp-save" data-widget="IconButton">🔖</span></div><section class="yp-sheet td-region" data-node="yp-comments-sheet" data-widget="BottomSheet"><div class="yp-sheet-col td-region" data-node="yp-sheet-col" data-widget="Column"><span class="yp-handle td-region" data-node="yp-sheet-handle" data-widget="Container"></span><div class="yp-sheet-header td-region" data-node="yp-sheet-header" data-widget="Row"><b class="td-region" data-node="yp-sheet-title" data-widget="Text">Comments • 1.2K</b><span class="yp-close td-region" data-node="yp-sheet-close" data-widget="IconButton">✕</span></div>${comment("one", "A", "#1a73e8", "@aarav.codes", "The diagrams in this one finally made state click for me.")}${comment("two", "P", "#0f9d58", "@priya.builds", "Watching this twice — once to learn, once to build along.")}</div></section><h3 class="yp-up-title td-region" data-node="yp-upnext-title" data-widget="Text">Up next</h3><div class="yp-up-list td-region" data-node="yp-upnext-list" data-widget="ListView">${upnext("one", "Dart null safety, explained simply", "Code with Dheeraj • 845K views • 1 week ago", "linear-gradient(135deg,#0f9d58,#00acc1)")}${upnext("two", "Flutter widgets every beginner must know", "FlutterForward • 2.1M views • 2 weeks ago", "linear-gradient(135deg,#1a73e8,#7b1fa2)")}</div></div></main></div>`;
+  return `${tdStatus(false)}<div class="yp-screen td-region" data-node="yp-scaffold" data-widget="Scaffold"><header class="yp-bar td-region" data-node="yp-appbar" data-widget="AppBar"><span class="yp-back td-region" data-node="yp-back" data-widget="IconButton">${TD_ICON.back}</span><span class="yp-bar-spacer"></span><span class="yp-cast td-region" data-node="yp-cast" data-widget="IconButton">${cast}</span><span class="yp-more td-region" data-node="yp-more" data-widget="IconButton">⋮</span></header><main class="yp-scroll td-region" data-node="yp-layout" data-widget="LayoutBuilder"><div class="yp-body td-region" data-node="yp-body" data-widget="Column"><div class="yp-video td-region" data-node="yp-video-area" data-widget="AspectRatio"><div class="yp-video-stack td-region" data-node="yp-video-stack" data-widget="Stack"><div class="yp-frame td-region" data-node="yp-video-frame" data-widget="Image"></div><div class="yp-controls td-region" data-node="yp-controls-align" data-widget="Align"><div class="yp-controls-row td-region" data-node="yp-controls-row" data-widget="Row"><span class="yp-ctl td-region" data-node="yp-play-pause" data-widget="IconButton">❚❚</span><span class="yp-ctl td-region" data-node="yp-next" data-widget="IconButton">⏭</span><span class="yp-time td-region" data-node="yp-time" data-widget="Text">4:32 / 12:48</span><span class="yp-ctl td-region" data-node="yp-fullscreen" data-widget="IconButton">⛶</span></div></div></div></div><div class="yp-seek-row td-region" data-node="yp-seek-row" data-widget="Row"><span class="yp-seek-expanded td-region" data-node="yp-seek-expanded" data-widget="Expanded"><span class="yp-slider td-region" data-node="yp-seek" data-widget="Slider"><i style="width:36%"></i><b></b></span></span></div><h3 class="yp-title td-region" data-node="yp-title" data-widget="Text">Build a Flutter app in 20 minutes</h3><div class="yp-channel td-region" data-node="yp-channel-row" data-widget="Row"><span class="yp-avatar td-region" data-node="yp-avatar" data-widget="CircleAvatar">FF</span><span class="yp-channel-col td-region" data-node="yp-channel-col" data-widget="Column"><b class="td-region" data-node="yp-channel-name" data-widget="Text">FlutterForward</b><span class="td-region" data-node="yp-channel-subs" data-widget="Text">1.2M subscribers</span></span><span class="yp-sub td-region" data-node="yp-subscribe" data-widget="ElevatedButton"><span class="td-region" data-node="yp-subscribe-label" data-widget="Text">Subscribe</span></span></div><div class="yp-actions td-region" data-node="yp-actions-row" data-widget="Row"><span class="yp-act td-region" data-node="yp-like" data-widget="IconButton">👍</span><span class="yp-like-count td-region" data-node="yp-like-count" data-widget="Text">12K</span><span class="yp-act td-region" data-node="yp-dislike" data-widget="IconButton">👎</span><span class="yp-tip-wrap td-region" data-node="yp-share-tip" data-widget="Tooltip"><span class="yp-tip-bubble">Share</span><span class="td-region" data-node="yp-share" data-widget="IconButton">${share}</span></span><span class="yp-act td-region" data-node="yp-download" data-widget="IconButton">${download}</span><span class="yp-act td-region" data-node="yp-save" data-widget="IconButton">🔖</span></div><section class="yp-sheet td-region" data-node="yp-comments-sheet" data-widget="BottomSheet"><div class="yp-sheet-col td-region" data-node="yp-sheet-col" data-widget="Column"><span class="yp-handle td-region" data-node="yp-sheet-handle" data-widget="Container"></span><div class="yp-sheet-header td-region" data-node="yp-sheet-header" data-widget="Row"><b class="td-region" data-node="yp-sheet-title" data-widget="Text">Comments • 1.2K</b><span class="yp-close td-region" data-node="yp-sheet-close" data-widget="IconButton">✕</span></div>${comment("one", "A", "#1a73e8", "@aarav.codes", "The diagrams in this one finally made state click for me.")}${comment("two", "P", "#0f9d58", "@priya.builds", "Watching this twice — once to learn, once to build along.")}</div></section><h3 class="yp-up-title td-region" data-node="yp-upnext-title" data-widget="Text">Up next</h3><div class="yp-up-list td-region" data-node="yp-upnext-list" data-widget="ListView">${upnext("one", "Dart null safety, explained simply", "Code with Dheeraj • 845K views • 1 week ago", "linear-gradient(135deg,#0f9d58,#00acc1)")}${upnext("two", "Flutter widgets every beginner must know", "FlutterForward • 2.1M views • 2 weeks ago", "linear-gradient(135deg,#1a73e8,#7b1fa2)")}</div></div></main></div>`;
 }
 
 function tdPhoneNetflixDetail() {
   const downloadIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0 5-5m-5 5-5-5"/><path d="M4 20h16"/></svg>';
   const episode = (word, initials, title, desc, time, grad) =>
     `<article class="nd-ep-card td-region" data-node="nd-episode-${word}" data-widget="Card"><div class="nd-ep-row td-region" data-node="nd-episode-${word}-row" data-widget="Row"><span class="nd-ep-thumb td-region" data-node="nd-episode-${word}-thumb" data-widget="Image" style="background:${grad}">${initials}</span><span class="nd-ep-col td-region" data-node="nd-episode-${word}-col" data-widget="Column"><b class="td-region" data-node="nd-episode-${word}-title" data-widget="Text">${title}</b><span class="td-region" data-node="nd-episode-${word}-desc" data-widget="Text">${desc}</span><span class="td-region" data-node="nd-episode-${word}-time" data-widget="Text">${time}</span></span><span class="nd-ep-dl td-region" data-node="nd-episode-${word}-download" data-widget="IconButton">${downloadIcon}</span></div></article>`;
-  return `${tdStatus(false)}<div class="nd-screen td-region" data-node="nd-scaffold" data-widget="Scaffold"><header class="nd-bar td-region" data-node="nd-appbar" data-widget="AppBar"><span class="nd-back td-region" data-node="nd-back" data-widget="IconButton">${TD_ICON.back}</span><span class="nd-bar-spacer"></span><span class="nd-search td-region" data-node="nd-search" data-widget="IconButton">${TD_ICON.search}</span><span class="nd-more td-region" data-node="nd-more" data-widget="IconButton">⋮</span></header><main class="nd-scroll td-region" data-node="nd-body" data-widget="SingleChildScrollView"><div class="nd-content td-region" data-node="nd-content" data-widget="Column"><section class="nd-hero td-region" data-node="nd-backdrop-stack" data-widget="Stack"><div class="nd-backdrop td-region" data-node="nd-switcher" data-widget="AnimatedSwitcher"><span class="nd-backdrop-art td-region" data-node="nd-backdrop" data-widget="Image">ST</span></div><div class="nd-shade td-region" data-node="nd-backdrop-shade" data-widget="Container"></div><div class="nd-hero-copy td-region" data-node="nd-backdrop-content" data-widget="Column"><b class="nd-title td-region" data-node="nd-title" data-widget="Text">Stranger Things</b><span class="nd-match td-region" data-node="nd-match" data-widget="RichText"><b class="nd-match-green">98% Match</b><span>  2024  </span><span class="nd-match-dim">2 Seasons</span></span><div class="nd-chips td-region" data-node="nd-genres" data-widget="Wrap"><span class="nd-chip td-region" data-node="nd-chip-scifi" data-widget="Chip">Sci-Fi</span><span class="nd-chip td-region" data-node="nd-chip-drama" data-widget="Chip">Drama</span><span class="nd-chip td-region" data-node="nd-chip-thriller" data-widget="Chip">Thriller</span><span class="nd-chip td-region" data-node="nd-chip-horror" data-widget="Chip">Horror</span><span class="nd-chip td-region" data-node="nd-chip-mystery" data-widget="Chip">Mystery</span><span class="nd-chip td-region" data-node="nd-chip-supernatural" data-widget="Chip">Supernatural</span></div><div class="nd-actions td-region" data-node="nd-actions" data-widget="Row"><span class="nd-play td-region" data-node="nd-play" data-widget="ElevatedButton"><span class="td-region" data-node="nd-play-icon" data-widget="Icon">▶</span><span class="td-region" data-node="nd-play-label" data-widget="Text">Play</span></span><span class="nd-mylist td-region" data-node="nd-mylist" data-widget="OutlinedButton"><span class="td-region" data-node="nd-mylist-label" data-widget="Text">＋ My List</span></span><span class="nd-dl td-region" data-node="nd-download" data-widget="IconButton">${downloadIcon}</span></div></div></section><div class="nd-tabs td-region" data-node="nd-tabs" data-widget="TabBar"><span class="nd-tab on td-region" data-node="nd-tab-episodes" data-widget="Tab">Episodes</span><span class="nd-tab td-region" data-node="nd-tab-trailers" data-widget="Tab">Trailers</span><span class="nd-tab td-region" data-node="nd-tab-more" data-widget="Tab">More Like This</span></div><div class="nd-tabview td-region" data-node="nd-tabview" data-widget="TabBarView"><div class="nd-episodes td-region" data-node="nd-episodes-page" data-widget="Column">${episode("one", "S1", "Chapter One: The Vanishing", "A boy vanishes on his way home, and the town starts asking questions.", "49m", "linear-gradient(135deg,#7a1f2b,#2b0a12)")}${episode("two", "S2", "Chapter Two: The Weirdo", "A strange girl with a shaved head appears at the diner.", "55m", "linear-gradient(135deg,#1f2b4d,#0a122b)")}</div><div class="nd-page-next td-region" data-node="nd-trailers-page" data-widget="Column"><div class="nd-trailer-thumb td-region" data-node="nd-trailer-thumb" data-widget="Stack"><div class="nd-trailer-image td-region" data-node="nd-trailer-image" data-widget="Image"></div><span class="td-region" data-node="nd-trailer-play" data-widget="Icon">▶</span></div><span class="td-region" data-node="nd-trailer-title" data-widget="Text">Official Trailer</span></div><div class="nd-page-next td-region" data-node="nd-more-page" data-widget="Column"><div class="td-region" data-node="nd-more-one" data-widget="Card"><div class="td-region" data-node="nd-more-one-row" data-widget="Row"><span class="td-region" data-node="nd-more-one-poster" data-widget="Image"></span><span class="td-region" data-node="nd-more-one-name" data-widget="Text">Dark</span></div></div><div class="td-region" data-node="nd-more-two" data-widget="Card"><div class="td-region" data-node="nd-more-two-row" data-widget="Row"><span class="td-region" data-node="nd-more-two-poster" data-widget="Image"></span><span class="td-region" data-node="nd-more-two-name" data-widget="Text">Wednesday</span></div></div></div></div></div></main></div>`;
+  return `${tdStatus(false)}<div class="nd-screen td-region" data-node="nd-scaffold" data-widget="Scaffold"><header class="nd-bar td-region" data-node="nd-appbar" data-widget="AppBar"><span class="nd-back td-region" data-node="nd-back" data-widget="IconButton">${TD_ICON.back}</span><span class="nd-bar-spacer"></span><span class="nd-search td-region" data-node="nd-search" data-widget="IconButton">${TD_ICON.search}</span><span class="nd-more td-region" data-node="nd-more" data-widget="IconButton">⋮</span></header><main class="nd-scroll td-region" data-node="nd-body" data-widget="SingleChildScrollView"><div class="nd-content td-region" data-node="nd-content" data-widget="Column"><section class="nd-hero td-region" data-node="nd-backdrop-stack" data-widget="Stack"><div class="nd-backdrop td-region" data-node="nd-switcher" data-widget="AnimatedSwitcher"><span class="nd-backdrop-art td-region" data-node="nd-backdrop" data-widget="Image">ST</span></div><div class="nd-shade td-region" data-node="nd-backdrop-shade" data-widget="Container"></div><div class="nd-hero-copy td-region" data-node="nd-backdrop-content" data-widget="Column"><b class="nd-title td-region" data-node="nd-title" data-widget="Text">Stranger Things</b><span class="nd-match td-region" data-node="nd-match" data-widget="RichText"><b class="nd-match-green">98% Match</b><span>  2024  </span><span class="nd-match-dim">4 Seasons</span></span><div class="nd-chips td-region" data-node="nd-genres" data-widget="Wrap"><span class="nd-chip td-region" data-node="nd-chip-scifi" data-widget="Chip">Sci-Fi</span><span class="nd-chip td-region" data-node="nd-chip-drama" data-widget="Chip">Drama</span><span class="nd-chip td-region" data-node="nd-chip-thriller" data-widget="Chip">Thriller</span><span class="nd-chip td-region" data-node="nd-chip-horror" data-widget="Chip">Horror</span><span class="nd-chip td-region" data-node="nd-chip-mystery" data-widget="Chip">Mystery</span><span class="nd-chip td-region" data-node="nd-chip-supernatural" data-widget="Chip">Supernatural</span></div><div class="nd-actions td-region" data-node="nd-actions" data-widget="Row"><span class="nd-play td-region" data-node="nd-play" data-widget="ElevatedButton"><span class="td-region" data-node="nd-play-icon" data-widget="Icon">▶</span><span class="td-region" data-node="nd-play-label" data-widget="Text">Play</span></span><span class="nd-mylist td-region" data-node="nd-mylist" data-widget="OutlinedButton"><span class="td-region" data-node="nd-mylist-label" data-widget="Text">＋ My List</span></span><span class="nd-dl td-region" data-node="nd-download" data-widget="IconButton">${downloadIcon}</span></div></div></section><div class="nd-tabs td-region" data-node="nd-tabs" data-widget="TabBar"><span class="nd-tab${tdNetflixTab==="episodes"?" on":""} td-region" data-node="nd-tab-episodes" data-widget="Tab">Episodes</span><span class="nd-tab${tdNetflixTab==="trailers"?" on":""} td-region" data-node="nd-tab-trailers" data-widget="Tab">Trailers</span><span class="nd-tab${tdNetflixTab==="more"?" on":""} td-region" data-node="nd-tab-more" data-widget="Tab">More Like This</span></div><div class="nd-tabview td-region" data-node="nd-tabview" data-widget="TabBarView"><div class="nd-episodes${tdNetflixTab==="episodes"?"":" nd-off"} td-region" data-node="nd-episodes-page" data-widget="Column">${episode("one", "S1", "Chapter One: The Vanishing of Will Byers", "A boy vanishes on his way home, and the town starts asking questions.", "49m", "linear-gradient(135deg,#7a1f2b,#2b0a12)")}${episode("two", "S1", "Chapter Two: The Weirdo", "A strange girl with a shaved head appears at the diner.", "55m", "linear-gradient(135deg,#1f2b4d,#0a122b)")}</div><div class="nd-page-next${tdNetflixTab==="trailers"?" nd-on":""} td-region" data-node="nd-trailers-page" data-widget="Column"><div class="nd-trailer-thumb td-region" data-node="nd-trailer-thumb" data-widget="Stack"><div class="nd-trailer-image td-region" data-node="nd-trailer-image" data-widget="Image"></div><span class="td-region" data-node="nd-trailer-play" data-widget="Icon">▶</span></div><span class="td-region" data-node="nd-trailer-title" data-widget="Text">Official Trailer</span></div><div class="nd-page-next${tdNetflixTab==="more"?" nd-on":""} td-region" data-node="nd-more-page" data-widget="Column"><div class="nd-more-card td-region" data-node="nd-more-one" data-widget="Card"><div class="nd-more-row td-region" data-node="nd-more-one-row" data-widget="Row"><span class="nd-more-poster td-region" data-node="nd-more-one-poster" data-widget="Image" style="background:linear-gradient(135deg,#0a0a0a,#3d3d3d)"></span><span class="nd-more-name td-region" data-node="nd-more-one-name" data-widget="Text">Dark</span></div></div><div class="nd-more-card td-region" data-node="nd-more-two" data-widget="Card"><div class="nd-more-row td-region" data-node="nd-more-two-row" data-widget="Row"><span class="nd-more-poster td-region" data-node="nd-more-two-poster" data-widget="Image" style="background:linear-gradient(135deg,#2b1f4d,#120a2b)"></span><span class="nd-more-name td-region" data-node="nd-more-two-name" data-widget="Text">Wednesday</span></div></div></div></div></div></main></div>`;
 }
 
 function tdPhoneAmazonProduct(showGallery) {
@@ -4700,9 +5050,9 @@ function tdPhoneAmazonProduct(showGallery) {
   const share = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-3.8M8.6 13.4l6.8 3.8"/></svg>';
   const chip = (n, label) => `<span class="ap-fchip td-region" data-node="ap-chip-${n}" data-widget="Chip"><span class="td-region" data-node="ap-chip-text-${n}" data-widget="Text">${label}</span></span>`;
   if (showGallery) {
-    return `${tdStatus(false)}<div class="ap-screen ap-gallery-screen td-region" data-node="ap-gallery" data-widget="Scaffold"><header class="ap-gal-bar td-region" data-node="ap-gallery-appbar" data-widget="AppBar"><span class="ap-gal-close td-region" data-node="ap-gallery-close" data-widget="IconButton">✕</span><b class="td-region" data-node="ap-gallery-title" data-widget="Text">1 of 4</b><span class="ap-gal-share td-region" data-node="ap-gallery-share" data-widget="IconButton">${share}</span></header><div class="ap-gal-body td-region" data-node="ap-gallery-body" data-widget="Stack"><div class="ap-gal-hero td-region" data-node="ap-gallery-hero" data-widget="Hero"><div class="ap-gal-img td-region" data-node="ap-gallery-image" data-widget="Image"><span class="ap-earbuds"><i></i><i></i></span></div></div><span class="ap-gal-count td-region" data-node="ap-gallery-counter" data-widget="Positioned"><span class="td-region" data-node="ap-gallery-counter-text" data-widget="Text">1 / 4</span></span></div></div>`;
+    return `${tdStatus(false)}<div class="ap-screen ap-gallery-screen td-region" data-node="ap-gallery" data-widget="Scaffold"><header class="ap-gal-bar td-region" data-node="ap-gallery-appbar" data-widget="AppBar"><span class="ap-gal-close td-region" data-node="ap-gallery-close" data-widget="IconButton">✕</span><b class="td-region" data-node="ap-gallery-title" data-widget="Text">1 of 4</b><span class="ap-gal-share td-region" data-node="ap-gallery-share" data-widget="IconButton">${share}</span></header><div class="ap-gal-body td-region" data-node="ap-gallery-body" data-widget="Stack"><div class="ap-gal-hero td-region" data-node="ap-gallery-hero" data-widget="Hero"><div class="ap-gal-img td-region" data-node="ap-gallery-image" data-widget="Image"><span class="ap-earbuds"><i></i><i></i></span></div></div></div></div>`;
   }
-  return `${tdStatus(false)}<div class="ap-screen td-region" data-node="ap-scaffold" data-widget="Scaffold"><header class="ap-bar td-region" data-node="ap-appbar" data-widget="AppBar"><span class="ap-back td-region" data-node="ap-back" data-widget="IconButton">‹</span><div class="ap-search td-region" data-node="ap-search-field" data-widget="TextField"><span class="td-region" data-node="ap-search-icon" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="ap-search-hint" data-widget="Text">Search Amazon.in</span></div><span class="ap-cart-stack td-region" data-node="ap-cart-stack" data-widget="Stack"><span class="ap-badge td-region" data-node="ap-cart-badge" data-widget="Badge"><span class="td-region" data-node="ap-cart" data-widget="IconButton">${cart}</span><b class="td-region" data-node="ap-cart-count" data-widget="Text">3</b></span></span></header><main class="ap-scroll td-region" data-node="ap-body" data-widget="SingleChildScrollView"><div class="ap-content td-region" data-node="ap-content" data-widget="Column"><div class="ap-hero td-region" data-node="ap-hero" data-widget="Hero"><div class="ap-hero-img td-region" data-node="ap-hero-image" data-widget="Image"><span class="ap-earbuds"><i></i><i></i></span></div></div><div class="ap-thumbs td-region" data-node="ap-thumbs-row" data-widget="Row"><span class="ap-thumb on td-region" data-node="ap-thumb-1" data-widget="Image" style="--thumb:linear-gradient(135deg,#3b6ea5,#7fb0d8)"></span><span class="ap-thumb td-region" data-node="ap-thumb-2" data-widget="Image" style="--thumb:linear-gradient(135deg,#4a4a55,#9a9aad)"></span><span class="ap-thumb td-region" data-node="ap-thumb-3" data-widget="Image" style="--thumb:linear-gradient(135deg,#b34700,#f0903f)"></span></div><div class="ap-info td-region" data-node="ap-info-padding" data-widget="Padding"><div class="td-region" data-node="ap-info-column" data-widget="Column"><b class="ap-title td-region" data-node="ap-title" data-widget="Text">Wireless Earbuds Pro — Bluetooth 5.3, ANC, 30H Playtime</b><div class="ap-rating-row td-region" data-node="ap-rating-row" data-widget="Row"><span class="ap-stars td-region" data-node="ap-stars" data-widget="Text">★★★★☆ 4.5</span><span class="td-region" data-node="ap-rating-count" data-widget="Text">12,438 ratings</span></div><div class="ap-price-row td-region" data-node="ap-price-row" data-widget="Row"><b class="td-region" data-node="ap-price" data-widget="Text">₹1,499</b><span class="td-region" data-node="ap-mrp" data-widget="Text">₹2,999</span><span class="td-region" data-node="ap-discount" data-widget="Text">50% off</span></div><div class="ap-prime-row td-region" data-node="ap-prime-row" data-widget="Row"><span class="ap-prime td-region" data-node="ap-prime-badge" data-widget="Container"><b class="td-region" data-node="ap-prime-text" data-widget="Text">✓prime</b></span><span class="td-region" data-node="ap-delivery-text" data-widget="Text">FREE delivery by Tomorrow</span></div><div class="ap-divider td-region" data-node="ap-divider" data-widget="Divider"></div><span class="td-region" data-node="ap-colour-label" data-widget="Text">Colour: Midnight Black</span><div class="ap-colours td-region" data-node="ap-colour-row" data-widget="Row"><span class="ap-swatch on td-region" data-node="ap-swatch-1" data-widget="Container" style="--sw:#1a1a1a"></span><span class="ap-swatch td-region" data-node="ap-swatch-2" data-widget="Container" style="--sw:#f2f2f2"></span><span class="ap-swatch td-region" data-node="ap-swatch-3" data-widget="Container" style="--sw:#3b6ea5"></span></div><div class="ap-qty-row td-region" data-node="ap-qty-row" data-widget="Row"><span class="td-region" data-node="ap-qty-label" data-widget="Text">Quantity:</span><span class="ap-dropdown td-region" data-node="ap-qty-dropdown" data-widget="DropdownButton"><span class="td-region" data-node="ap-qty-value" data-widget="Text">1</span><span class="ap-dd-arrow">⌄</span></span></div><div class="ap-highlights td-region" data-node="ap-highlights-wrap" data-widget="Wrap">${chip(1, "Bluetooth 5.3")}${chip(2, "30h battery")}${chip(3, "IPX5 water resistant")}${chip(4, "Active noise cancellation")}</div><div class="ap-delivery-box td-region" data-node="ap-delivery-box" data-widget="Container"><div class="td-region" data-node="ap-delivery-column" data-widget="Column"><b class="td-region" data-node="ap-delivery-title" data-widget="Text">Delivery</b><span class="td-region" data-node="ap-delivery-detail" data-widget="Text">FREE delivery Tomorrow, 9 Nov. Order within 4 hrs 32 mins.</span><span class="ap-stock td-region" data-node="ap-stock" data-widget="Text">In stock — sold by Cloudtail India</span></div></div><b class="td-region" data-node="ap-about-title" data-widget="Text">About this item</b><div class="ap-about td-region" data-node="ap-about-list" data-widget="Column"><span class="td-region" data-node="ap-about-1" data-widget="Text">• Active noise cancellation blocks up to 98% of ambient noise.</span><span class="td-region" data-node="ap-about-2" data-widget="Text">• 30 hours total playtime with the charging case; 10-min charge gives 3 hours.</span><span class="td-region" data-node="ap-about-3" data-widget="Text">• 4-mic array with ENC for clear calls, even outdoors.</span></div></div></div></div></main><div class="ap-buybar td-region" data-node="ap-buybar" data-widget="Container"><div class="ap-buy-row td-region" data-node="ap-buy-row" data-widget="Row"><span class="ap-add td-region" data-node="ap-add-cart" data-widget="ElevatedButton"><span class="td-region" data-node="ap-add-cart-text" data-widget="Text">Add to Cart</span></span><span class="ap-buy td-region" data-node="ap-buy-now" data-widget="ElevatedButton"><span class="td-region" data-node="ap-buy-now-text" data-widget="Text">Buy Now</span></span></div></div></div>`;
+  return `${tdStatus(false)}<div class="ap-screen td-region" data-node="ap-scaffold" data-widget="Scaffold"><header class="ap-bar td-region" data-node="ap-appbar" data-widget="AppBar"><span class="ap-back td-region" data-node="ap-back" data-widget="IconButton">‹</span><div class="ap-search td-region" data-node="ap-search-field" data-widget="TextField"><span class="td-region" data-node="ap-search-icon" data-widget="Icon">${TD_ICON.search}</span><span class="td-region" data-node="ap-search-hint" data-widget="Text">Search Amazon.in</span></div><span class="ap-cart-stack td-region" data-node="ap-cart-stack" data-widget="Stack"><span class="ap-badge td-region" data-node="ap-cart-badge" data-widget="Badge"><span class="td-region" data-node="ap-cart" data-widget="IconButton">${cart}</span><b class="td-region" data-node="ap-cart-count" data-widget="Text">3</b></span></span></header><main class="ap-scroll td-region" data-node="ap-body" data-widget="SingleChildScrollView"><div class="ap-content td-region" data-node="ap-content" data-widget="Column"><div class="ap-hero td-region" data-node="ap-hero" data-widget="Hero"><div class="ap-hero-img td-region" data-node="ap-hero-image" data-widget="Image"><span class="ap-earbuds"><i></i><i></i></span></div></div><div class="ap-thumbs td-region" data-node="ap-thumbs-row" data-widget="Row"><span class="ap-thumb on td-region" data-node="ap-thumb-1" data-widget="Image" style="--thumb:linear-gradient(135deg,#1a1a1a,#3d3d3d)"></span><span class="ap-thumb td-region" data-node="ap-thumb-2" data-widget="Image" style="--thumb:linear-gradient(135deg,#000000,#2e2e2e)"></span><span class="ap-thumb td-region" data-node="ap-thumb-3" data-widget="Image" style="--thumb:linear-gradient(135deg,#232323,#4a4a4a)"></span></div><div class="ap-info td-region" data-node="ap-info-padding" data-widget="Padding"><div class="td-region" data-node="ap-info-column" data-widget="Column"><b class="ap-title td-region" data-node="ap-title" data-widget="Text">Wireless Earbuds Pro — Bluetooth 5.3, ANC, 30H Playtime</b><div class="ap-rating-row td-region" data-node="ap-rating-row" data-widget="Row"><span class="ap-stars td-region" data-node="ap-stars" data-widget="Text">★★★★☆ 4.5</span><span class="td-region" data-node="ap-rating-count" data-widget="Text">12,438 ratings</span></div><div class="ap-price-row td-region" data-node="ap-price-row" data-widget="Row"><b class="td-region" data-node="ap-price" data-widget="Text">₹1,499</b><span class="td-region" data-node="ap-mrp" data-widget="Text">₹2,999</span><span class="td-region" data-node="ap-discount" data-widget="Text">50% off</span></div><div class="ap-prime-row td-region" data-node="ap-prime-row" data-widget="Row"><span class="ap-prime td-region" data-node="ap-prime-badge" data-widget="Container"><b class="td-region" data-node="ap-prime-text" data-widget="Text">✓prime</b></span><span class="td-region" data-node="ap-delivery-text" data-widget="Text">FREE delivery by Tomorrow</span></div><div class="ap-divider td-region" data-node="ap-divider" data-widget="Divider"></div><span class="td-region" data-node="ap-colour-label" data-widget="Text">Colour: Midnight Black</span><div class="ap-colours td-region" data-node="ap-colour-row" data-widget="Row"><span class="ap-swatch on td-region" data-node="ap-swatch-1" data-widget="Container" style="--sw:#1a1a1a"></span><span class="ap-swatch td-region" data-node="ap-swatch-2" data-widget="Container" style="--sw:#f2f2f2"></span><span class="ap-swatch td-region" data-node="ap-swatch-3" data-widget="Container" style="--sw:#3b6ea5"></span></div><div class="ap-qty-row td-region" data-node="ap-qty-row" data-widget="Row"><span class="td-region" data-node="ap-qty-label" data-widget="Text">Quantity:</span><span class="ap-dropdown td-region" data-node="ap-qty-dropdown" data-widget="DropdownButton"><span class="td-region" data-node="ap-qty-value" data-widget="Text">1</span><span class="ap-dd-arrow">⌄</span></span></div><div class="ap-highlights td-region" data-node="ap-highlights-wrap" data-widget="Wrap">${chip(1, "Bluetooth 5.3")}${chip(2, "30h battery")}${chip(3, "IPX5 water resistant")}${chip(4, "Active noise cancellation")}</div><div class="ap-delivery-box td-region" data-node="ap-delivery-box" data-widget="Container"><div class="td-region" data-node="ap-delivery-column" data-widget="Column"><b class="td-region" data-node="ap-delivery-title" data-widget="Text">Delivery</b><span class="td-region" data-node="ap-delivery-detail" data-widget="Text">FREE delivery Tomorrow, 12 Nov. Order within 4 hrs 32 mins.</span><span class="ap-stock td-region" data-node="ap-stock" data-widget="Text">In stock — sold by Clicktech Retail</span></div></div><b class="td-region" data-node="ap-about-title" data-widget="Text">About this item</b><div class="ap-about td-region" data-node="ap-about-list" data-widget="Column"><span class="td-region" data-node="ap-about-1" data-widget="Text">• Active noise cancellation blocks up to 98% of ambient noise.</span><span class="td-region" data-node="ap-about-2" data-widget="Text">• 30 hours total playtime with the charging case; 10-min charge gives 3 hours.</span><span class="td-region" data-node="ap-about-3" data-widget="Text">• 4-mic array with ENC for clear calls, even outdoors.</span></div></div></div></div></main><div class="ap-buybar td-region" data-node="ap-buybar" data-widget="Container"><div class="ap-buy-row td-region" data-node="ap-buy-row" data-widget="Row"><span class="ap-add td-region" data-node="ap-add-cart" data-widget="ElevatedButton"><span class="td-region" data-node="ap-add-cart-text" data-widget="Text">Add to Cart</span></span><span class="ap-buy td-region" data-node="ap-buy-now" data-widget="ElevatedButton"><span class="td-region" data-node="ap-buy-now-text" data-widget="Text">Buy Now</span></span></div></div></div>`;
 }
 
 function tdPhoneInstagramReels() {
@@ -4717,7 +5067,7 @@ function tdPhoneAmazonCheckout() {
   const payRow = (id, label, on) => `<div class="ac-pay-row${on ? " on" : ""} td-region" data-node="ac-pay-${id}-row" data-widget="Row"><span class="ac-radio${on ? " on" : ""} td-region" data-node="ac-pay-${id}" data-widget="Radio"><i></i></span><span class="td-region" data-node="ac-pay-${id}-label" data-widget="Text">${label}</span></div>`;
   const item = (n, name, meta, price, color) => `<article class="ac-item td-region" data-node="ac-item-${n}" data-widget="Card"><div class="ac-item-row td-region" data-node="ac-item-${n}-row" data-widget="Row"><div class="ac-thumb td-region" data-node="ac-item-${n}-image" data-widget="Image" style="--prod:${color}"></div><div class="ac-item-col td-region" data-node="ac-item-${n}-col" data-widget="Column"><b class="td-region" data-node="ac-item-${n}-name" data-widget="Text">${name}</b><span class="td-region" data-node="ac-item-${n}-meta" data-widget="Text">${meta}</span><span class="ac-price-row td-region" data-node="ac-item-${n}-price-row" data-widget="Row"><b class="td-region" data-node="ac-item-${n}-price" data-widget="Text">${price}</b><span class="td-region" data-node="ac-item-${n}-qty" data-widget="Text">Qty: 1</span></span></div></div></article>`;
   const sumRow = (id, label, value, cls) => `<div class="ac-sum-row td-region" data-node="ac-summary-${id}-row" data-widget="Row"><span class="td-region" data-node="ac-summary-${id}-label" data-widget="Text">${label}</span><b class="td-region${cls ? " " + cls : ""}" data-node="ac-summary-${id}-value" data-widget="Text">${value}</b></div>`;
-  return `${tdStatus(false)}<div class="ac-screen td-region" data-node="ac-scaffold" data-widget="Scaffold"><header class="ac-bar td-region" data-node="ac-appbar" data-widget="AppBar"><span class="ac-back td-region" data-node="ac-back" data-widget="IconButton">‹</span><b class="td-region" data-node="ac-title" data-widget="Text">Checkout</b></header><main class="ac-scroll td-region" data-node="ac-body" data-widget="ListView"><section class="ac-stepper td-region" data-node="ac-stepper" data-widget="Stepper"><div class="ac-step done td-region" data-node="ac-step-address" data-widget="Step"><span class="ac-step-dot">✓</span><div class="ac-step-body"><b class="td-region" data-node="ac-step-address-title" data-widget="Text">Delivery address</b><span class="td-region" data-node="ac-step-address-detail" data-widget="Text">Dheeraj Kumar · MG Road, Jaipur 302001</span></div></div><div class="ac-step active td-region" data-node="ac-step-payment" data-widget="Step"><span class="ac-step-dot">2</span><div class="ac-step-body"><b class="td-region" data-node="ac-step-payment-title" data-widget="Text">Payment method</b><div class="ac-pay-options td-region" data-node="ac-step-payment-options" data-widget="Column">${payRow("upi", "UPI · dheeraj@okhdfc", true)}${payRow("card", "Card · HDFC •••• 4242", false)}${payRow("cod", "Cash on delivery", false)}</div></div></div><div class="ac-step td-region" data-node="ac-step-review" data-widget="Step"><span class="ac-step-dot">3</span><div class="ac-step-body"><b class="td-region" data-node="ac-step-review-title" data-widget="Text">Review items</b><span class="td-region" data-node="ac-step-review-detail" data-widget="Text">2 items · arrives Thu, 12 Nov</span></div></div></section><h3 class="ac-cart-header td-region" data-node="ac-cart-header" data-widget="Text">Your order</h3>${item(1, "Wireless Earbuds Pro", "Black · Sold by Cloudtail", "₹1,499", "linear-gradient(135deg,#3b6ea5,#7fb0d8)")}${item(2, "Travel Backpack 32L", "Grey · Sold by Appario", "₹899", "linear-gradient(135deg,#3f6b4f,#7fb08a)")}<div class="ac-gift td-region" data-node="ac-gift-row" data-widget="Row"><span class="ac-check td-region" data-node="ac-gift-checkbox" data-widget="Checkbox"></span><span class="td-region" data-node="ac-gift-label" data-widget="Text">This order is a gift</span></div><section class="ac-summary td-region" data-node="ac-summary-card" data-widget="Card"><div class="td-region" data-node="ac-summary-col" data-widget="Column">${sumRow("subtotal", "Subtotal", "₹2,398")}${sumRow("delivery", "Delivery", "FREE", "ac-free")}<div class="ac-sum-div td-region" data-node="ac-summary-divider" data-widget="Divider"></div>${sumRow("total", "Order total", "₹2,398")}</div></section><div class="ac-order td-region" data-node="ac-place-order" data-widget="ElevatedButton"><span class="td-region" data-node="ac-place-order-label" data-widget="Text">Place order</span></div><div class="ac-secure td-region" data-node="ac-secure-row" data-widget="Row"><span class="td-region" data-node="ac-secure-icon" data-widget="Icon">${shield}</span><span class="td-region" data-node="ac-secure-text" data-widget="Text">Secure checkout · 256-bit SSL encryption</span></div></main></div>`;
+  return `${tdStatus(false)}<div class="ac-screen td-region" data-node="ac-scaffold" data-widget="Scaffold"><header class="ac-bar td-region" data-node="ac-appbar" data-widget="AppBar"><span class="ac-back td-region" data-node="ac-back" data-widget="IconButton">‹</span><b class="td-region" data-node="ac-title" data-widget="Text">Checkout</b></header><main class="ac-scroll td-region" data-node="ac-body" data-widget="ListView"><section class="ac-stepper td-region" data-node="ac-stepper" data-widget="Stepper"><div class="ac-step done td-region" data-node="ac-step-address" data-widget="Step"><span class="ac-step-dot">✓</span><div class="ac-step-body"><b class="td-region" data-node="ac-step-address-title" data-widget="Text">Delivery address</b><span class="td-region" data-node="ac-step-address-detail" data-widget="Text">Dheeraj Kumar · MG Road, Jaipur 302001</span></div></div><div class="ac-step active td-region" data-node="ac-step-payment" data-widget="Step"><span class="ac-step-dot">2</span><div class="ac-step-body"><b class="td-region" data-node="ac-step-payment-title" data-widget="Text">Payment method</b><div class="ac-pay-options td-region" data-node="ac-step-payment-options" data-widget="Column">${payRow("upi", "UPI · dheeraj@okhdfc", true)}${payRow("card", "Card · HDFC •••• 4242", false)}${payRow("cod", "Cash on delivery", false)}</div></div></div><div class="ac-step td-region" data-node="ac-step-review" data-widget="Step"><span class="ac-step-dot">3</span><div class="ac-step-body"><b class="td-region" data-node="ac-step-review-title" data-widget="Text">Review items</b><span class="td-region" data-node="ac-step-review-detail" data-widget="Text">2 items · arrives Thu, 12 Nov</span></div></div></section><h3 class="ac-cart-header td-region" data-node="ac-cart-header" data-widget="Text">Your order</h3>${item(1, "Wireless Earbuds Pro", "Black · Sold by Clicktech Retail", "₹1,499", "linear-gradient(135deg,#1a1a1a,#3d3d3d)")}${item(2, "Travel Backpack 32L", "Grey · Sold by Cocoblu Retail", "₹899", "linear-gradient(135deg,#3f6b4f,#7fb08a)")}<div class="ac-gift td-region" data-node="ac-gift-row" data-widget="Row"><span class="ac-check td-region" data-node="ac-gift-checkbox" data-widget="Checkbox"></span><span class="td-region" data-node="ac-gift-label" data-widget="Text">This order is a gift</span></div><section class="ac-summary td-region" data-node="ac-summary-card" data-widget="Card"><div class="td-region" data-node="ac-summary-col" data-widget="Column">${sumRow("subtotal", "Subtotal", "₹2,398")}${sumRow("delivery", "Delivery", "FREE", "ac-free")}<div class="ac-sum-div td-region" data-node="ac-summary-divider" data-widget="Divider"></div>${sumRow("total", "Order total", "₹2,398")}</div></section><div class="ac-order td-region" data-node="ac-place-order" data-widget="ElevatedButton"><span class="td-region" data-node="ac-place-order-label" data-widget="Text">Place order</span></div><div class="ac-secure td-region" data-node="ac-secure-row" data-widget="Row"><span class="td-region" data-node="ac-secure-icon" data-widget="Icon">${shield}</span><span class="td-region" data-node="ac-secure-text" data-widget="Text">Secure checkout · 256-bit SSL encryption</span></div></main></div>`;
 }
 
 function tdPhoneSettingsAppearance() {
@@ -4858,7 +5208,7 @@ function tdPhoneSwiggyMenu() {
   section("sm-sec3-adapter", "sm-sec3-title", "Combos", "sm-list3",
     dish("sm-d5", "Veg Family Combo", "2 paneer curries, 4 butter naans, jeera rice and 2 desserts.", "₹599", true) +
     dish("sm-d6", "Non-Veg Feast Combo", "Chicken biryani, butter chicken, 2 naans and gulab jamun.", "₹649", false)) +
-  `</main><footer class="sm-cartbar td-region" data-node="sm-cartbar" data-widget="Container"><div class="sm-cart-row td-region" data-node="sm-cart-row" data-widget="Row"><span class="td-region" data-node="sm-cart-count" data-widget="Text">2 items</span><span class="td-region" data-node="sm-cart-total" data-widget="Text">₹498</span><span class="sm-cart-view td-region" data-node="sm-cart-view" data-widget="TextButton"><span class="td-region" data-node="sm-cart-view-label" data-widget="Text">View Cart →</span></span></div></footer></div>`;
+  `</main><footer class="sm-cartbar td-region" data-node="sm-cartbar" data-widget="Container"><div class="sm-cart-row td-region" data-node="sm-cart-row" data-widget="Row"><span class="td-region" data-node="sm-cart-count" data-widget="Text">2 items</span><span class="td-region" data-node="sm-cart-total" data-widget="Text">₹548</span><span class="sm-cart-view td-region" data-node="sm-cart-view" data-widget="TextButton"><span class="td-region" data-node="sm-cart-view-label" data-widget="Text">View Cart →</span></span></div></footer></div>`;
 }
 
 function tdPhoneYouTubeSearch() {
@@ -4931,8 +5281,7 @@ function tdPhoneWhatsAppStatus() {
   `<span class="ws-close td-region" data-node="ws-close" data-widget="IconButton">✕</span></div></div>` +
   `<div class="ws-reply td-region" data-node="ws-reply" data-widget="Row">` +
   `<span class="ws-field td-region" data-node="ws-reply-field" data-widget="TextField"><span class="td-region" data-node="ws-reply-hint" data-widget="Text">Reply</span></span>` +
-  `<span class="ws-heart td-region" data-node="ws-reply-heart" data-widget="IconButton">♡</span>` +
-  `<span class="ws-send td-region" data-node="ws-reply-send" data-widget="IconButton">${TD_ICON.send}</span></div>` +
+  `<span class="ws-heart td-region" data-node="ws-reply-heart" data-widget="IconButton">♡</span></div>` +
   `</div></div>`;
 }
 
@@ -4993,7 +5342,7 @@ function tdPhoneLoginSignup() {
   field("pass", "🔒", "Password", "••••••••", true) +
   `<div class="td-region" data-node="ls-field-gap-3" data-widget="SizedBox" style="height:14px"></div>` +
   `<div class="ls-terms td-region" data-node="ls-terms-row" data-widget="Row">` +
-  `<span class="ls-check on td-region" data-node="ls-terms-check" data-widget="Checkbox">✓</span>` +
+  `<span class="ls-check td-region" data-node="ls-terms-check" data-widget="Checkbox"></span>` +
   `<span class="td-region" data-node="ls-terms-text" data-widget="Text">I agree to the Terms and Privacy Policy</span></div>` +
   `<div class="td-region" data-node="ls-btn-gap" data-widget="SizedBox" style="height:16px"></div>` +
   `<div class="ls-create td-region" data-node="ls-create-btn" data-widget="ElevatedButton"><span class="td-region" data-node="ls-create-label" data-widget="Text">Create account</span></div>` +
@@ -5047,6 +5396,24 @@ function tdPath(key, id) {
   return path;
 }
 let tdGalleryOpen = false;
+let tdNetflixTab = "episodes"; // Netflix Title detail: active TabBarView page (Worker C fix #15)
+// Netflix Title detail tabs: switch the visible TabBarView page in place and
+// remember it, so a re-render keeps the tapped tab instead of resetting to
+// Episodes. The tab tap is intercepted in the document click delegation,
+// before the picker handler, so tapping a tab never opens the picker.
+function tdSetNetflixTab(tab) {
+  tdNetflixTab = tab;
+  var root = document.getElementById("teardowns-root"); if (!root) return;
+  root.querySelectorAll(".nd-tab[data-node]").forEach(function (el) {
+    el.classList.toggle("on", el.dataset.node === "nd-tab-" + tab);
+  });
+  var ep = root.querySelector('[data-node="nd-episodes-page"]');
+  if (ep) ep.classList.toggle("nd-off", tab !== "episodes");
+  var tr = root.querySelector('[data-node="nd-trailers-page"]');
+  if (tr) tr.classList.toggle("nd-on", tab === "trailers");
+  var mo = root.querySelector('[data-node="nd-more-page"]');
+  if (mo) mo.classList.toggle("nd-on", tab === "more");
+}
 let teardownState = { app: null, selected: null, bounds: false, sheet: null };
 function tdSelectedNode() {
   if(!teardownState.app || !teardownState.selected) return null;
@@ -5156,6 +5523,27 @@ const TD_PROP_DESCS = {
   backgroundImage: 'The image shown inside the circle.',
   data: 'The text string to display.',
   style: 'Font, size, color and weight of the text.',
+  // Widget-scoped descriptions: the same property name means different
+  // things on different widgets, so the panel looks these up first
+  // (see tdPanel: Widget.prop wins over the plain prop name).
+  'ListTile.title': "The row's main line of text.",
+  'AlertDialog.title': 'The heading shown at the top of the dialog.',
+  'AlertDialog.actions': 'The buttons shown at the bottom of the dialog, such as Cancel or Delete.',
+  'ListTile.leading': 'The widget at the start of the row, such as an avatar or icon.',
+  'SearchBar.leading': 'The search icon at the start of the field.',
+  'SwitchListTile.title': "The setting's name, shown beside its toggle.",
+  'CheckboxListTile.title': "The row's main text, shown beside its tick box.",
+  'Step.title': 'The title of this checkout step.',
+  'ElevatedButton.style': "The button's colours, shape, padding and elevation.",
+  'OutlinedButton.style': "The button's colours, shape, padding and border.",
+  'Text.color': 'The colour of the text itself.',
+  'RefreshIndicator.color': 'The colour of the refresh spinner.',
+  'LinearProgressIndicator.color': 'The colour of the progress bar.',
+  'TextField.decoration': 'Styles the input: hint text, icons, and borders.',
+  'TextFormField.decoration': 'Styles the input: hint text, icons, and borders.',
+  'BottomNavigationBarItem.icon': 'The icon shown for this tab.',
+  'FittedBox.fit': 'How the child scales to fit the available space.',
+  'Theme.data': 'The theme settings applied to everything below.',
 };
 
 function tdHighlight(code) {
@@ -5175,24 +5563,54 @@ function tdPanel() {
   const item = TEARDOWNS[teardownState.app];
   const path = tdPath(teardownState.app, node.id);
   const crumbs = path.map(p => esc(p.name)).join('<span>›</span>');
-  // Parse properties with values from code
+  // Parse properties with values from code — ONLY the widget's own
+  // top-level constructor arguments. node.code inlines the whole subtree,
+  // so a flat name: scan leaks nested children's props (a Container would
+  // show BoxDecoration's color/borderRadius as its own, a TextField
+  // InputDecoration's hintText). Track bracket depth from the first line
+  // and match name: value only at depth 1 (direct arguments of the
+  // outermost call). Structural slots that carry whole subtrees as values
+  // (child/children/body/...) are not properties either.
   var props = [];
   try {
     var codeLines = node.code.split('\n');
+    var depth = 0;
+    var STRUCT = ['child','children','builder','body','appBar','bottomNavigationBar','home','slivers','tabs','delegate'];
     for (var i = 0; i < codeLines.length; i++) {
-      var m = codeLines[i].match(/^\s*(\w+)\s*:\s*(.+?),?\s*$/);
-      if (m && ['child','children','builder'].indexOf(m[1]) === -1) {
-        var val = m[2].replace(/,$/, '').trim();
-        // Truncate long values
-        if (val.length > 40) val = val.substring(0, 37) + '...';
-        props.push({ name: m[1], value: val });
+      var line = codeLines[i];
+      if (depth === 1) {
+        var m = line.match(/^\s*(\w+)\s*:\s*(.+?),?\s*$/);
+        if (m && STRUCT.indexOf(m[1]) === -1) {
+          var val = m[2].replace(/,$/, '').trim();
+          props.push({ name: m[1], value: val });
+        }
+      }
+      // Advance depth across this line, skipping '...'/"..." strings and // comments.
+      var j = 0, inStr = null;
+      while (j < line.length) {
+        var c = line.charAt(j);
+        if (inStr) {
+          if (c === '\\') { j += 2; continue; }
+          if (c === inStr) inStr = null;
+          j++; continue;
+        }
+        if (c === "'" || c === '"') { inStr = c; j++; continue; }
+        if (c === '/' && line.charAt(j+1) === '/') break;
+        if (c === '(' || c === '[' || c === '{') depth++;
+        else if (c === ')' || c === ']' || c === '}') depth--;
+        j++;
       }
     }
   } catch(e) {}
   props = props.slice(0, 8);
   var propsHtml = props.length ? '<div class="td-fi-sec-t">Properties</div>' + props.map(function(p){
-    var d = (typeof TD_PROP_DESCS !== 'undefined' && TD_PROP_DESCS[p.name]) || '';
-    return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + esc(p.value) + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
+    var d = (typeof TD_PROP_DESCS !== 'undefined' && (TD_PROP_DESCS[node.name + '.' + p.name] || TD_PROP_DESCS[p.name])) || '';
+    // Wrap opportunities after code punctuation, so a long value with no
+    // spaces wraps at token boundaries instead of mid-word (Chrome treats
+    // e.g. "Foo(bar:" as one unbreakable run, so overflow-wrap alone still
+    // splits it). <wbr> adds no character: the value's text is unchanged.
+    var v = esc(p.value).replace(/([(\[{,.:)\]}])/g, '$1<wbr>');
+    return '<div class="td-fi-prop"><span class="td-fi-pname">• ' + esc(p.name) + ': <span class="td-val">' + v + '</span></span>' + (d ? '<span class="td-fi-pdesc">' + esc(d) + '</span>' : '') + '</div>';
   }).join('') : '';
   return `<aside class="teardown-panel" aria-live="polite">`
     + `<div class="td-sheet-peekbar" data-teardown-peekbar><span class="td-sheet-peekhint"><span class="td-sheet-handle"></span><span class="td-sheet-peekchev"></span></span><span class="td-sheet-peekrow"><span class="td-sheet-peekname">${esc(node.name)}</span><button class="td-sheet-peekclose" data-teardown-close aria-label="Close description">×</button></span></div>`
@@ -5302,7 +5720,25 @@ function tdFitLogin() {
     var ratio = (cr.bottom - 8 - pr.top) / pr.height;
     if (!(ratio > 0)) ratio = 1;
     if (ratio >= 1) { screen.style.removeProperty('--td-fit'); try { delete screen.dataset.tdFit; } catch (e) {} }
-    else { screen.style.setProperty('--td-fit', ratio.toFixed(3)); try { screen.dataset.tdFit = '1'; } catch (e) {} }
+    else {
+      screen.style.setProperty('--td-fit', ratio.toFixed(3)); try { screen.dataset.tdFit = '1'; } catch (e) {} 
+      // Second pass (2026-11-11, Worker D — audit #19): setting data-td-fit
+      // compacts the form (less pad padding, smaller title), so the pad is
+      // now shorter than pass 1 measured — re-measure the compacted layout
+      // (offsetHeight: transforms do not change it; pr2.top is the pad's
+      // current top after re-centring) and raise the scale to use the freed
+      // room instead of leaving a gap. One extra pass only: the compact
+      // state is binary, so pass 2 is stable and the next tdFitLogin call
+      // recomputes the same value.
+      try {
+        var pr2 = pad.getBoundingClientRect();
+        var h2 = pad.offsetHeight;
+        if (h2 > 0 && h2 < pr.height) {
+          var ratio2 = (cr.bottom - 8 - pr2.top) / h2;
+          if (ratio2 > ratio && ratio2 < 1) screen.style.setProperty('--td-fit', ratio2.toFixed(3));
+        }
+      } catch (e2) {}
+    }
   } catch (e) {}
 }
 
@@ -5341,10 +5777,10 @@ function tdRender() {
   // the detail height are gone. One direct call runs the stale-inline cleanup
   // (tdEnforceOneFrame) and the Login form fit (tdFitLogin).
   try { if (teardownState.app) { tdEnforceOneFrame(); tdFitLogin(); } else { tdReleaseOneFrame(); } } catch(e) {}}
-function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdGalleryOpen=false; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
+function tdOpen(key) { if(!TEARDOWNS[key])return; teardownState={app:key,selected:null,bounds:false}; tdGalleryOpen=false; tdNetflixTab="episodes"; tdRender(); window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"}); }
 function tdBack() {
   try {
-    tdGalleryOpen=false;
+    tdGalleryOpen=false; tdNetflixTab="episodes";
     teardownState={app:null,selected:null,bounds:false}; try { tdReleaseOneFrame(); } catch(e) {}
     document.body.classList.remove("td-sheet-open");
     var root = document.getElementById("teardowns-root");
@@ -5519,8 +5955,9 @@ function tdSwitchScreen(key) {
   } catch (e) {}
   window.__tdScreenSwap = true;
   try { if (typeof tdDismissPopout === "function") tdDismissPopout(); } catch (e) {}
-  tdGalleryOpen = false;
+  tdGalleryOpen = false; tdNetflixTab = "episodes";
   teardownState.app = key;
+  teardownState.waDialogDismissed = false;
   teardownState.selected = null;
   teardownState.sheet = null;
   teardownState.bounds = false;
@@ -5557,8 +5994,11 @@ function tdSyncSelection() {
   root.querySelectorAll(".td-tree-node.is-selected,.td-region.td-active").forEach(el=>el.classList.remove("is-selected","td-active"));
   const tree=root.querySelector(`[data-tree-node="${teardownState.selected||''}"]`); if(tree)tree.classList.add("is-selected");
   if(teardownState.selected){
-    const path=tdPath(teardownState.app,teardownState.selected).slice().reverse();
-    const region=path.map(node=>root.querySelector(`.td-region[data-node="${node.id}"]`)).find(Boolean);
+    // Outline ONLY the selected widget's own element. A node with no mock
+    // element (structural wrapper, spacer) gets no outline at all — the
+    // old ancestor walk outlined a different widget and mislabelled it
+    // (e.g. SizedBox lg-btn-gap outlined the whole form Column lg-col).
+    const region=root.querySelector(`.td-region[data-node="${teardownState.selected}"]`);
     if(region)region.classList.add("td-active");
   }
   const oldPanel=root.querySelector(".teardown-panel"); if(oldPanel)oldPanel.outerHTML=tdPanel();
@@ -5611,10 +6051,10 @@ tdRender = function(keepView) {
 };
 tdOpen = function(key) {
   if(!TEARDOWNS[key])return;
-  teardownState={app:key,selected:null,bounds:false,collapsed:new Set(),view:null,layout:null,animateFrom:null}; tdGalleryOpen=false;
+  teardownState={app:key,selected:null,bounds:false,collapsed:new Set(),view:null,layout:null,animateFrom:null}; tdGalleryOpen=false; tdNetflixTab="episodes";
   tdRender(false);window.scrollTo({top:0,behavior:mqMatches("(prefers-reduced-motion: reduce)")?"auto":"smooth"});
 };
-tdBack = function(){ try { if(typeof tdDismissPopout==="function") tdDismissPopout(); tdGalleryOpen=false; teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); try { tdReleaseOneFrame(); } catch(e) {} document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
+tdBack = function(){ try { if(typeof tdDismissPopout==="function") tdDismissPopout(); tdGalleryOpen=false; tdNetflixTab="episodes"; teardownState.app=null; teardownState.selected=null; teardownState.view=null; if(teardownState.collapsed) teardownState.collapsed.clear(); try { tdReleaseOneFrame(); } catch(e) {} document.body.classList.remove("td-sheet-open"); if(typeof tdRender==="function") tdRender(false); window.scrollTo({top:0,behavior:"smooth"}); } catch(e){ console.error("tdBack failed:", e); location.hash="#/teardowns"; location.reload(); } };
 tdSelect = function(id){if(!teardownState.app)return;teardownState.selected=id;if(window.innerWidth<=900)teardownState.sheet="open";tdSyncSelection();};
 function tdRealSnapshot(regionEl, boxW, boxH, allowWide) {
   if (!regionEl) return null;
@@ -5728,13 +6168,15 @@ function tdRealSnapshot(regionEl, boxW, boxH, allowWide) {
   var wide = !!allowWide && aspect > 2 && s0 < 0.7;
   var s = wide ? Math.min(300 / w, boxH / h, 1.0) * 0.95 : s0;
   if (!(s > 0) || !isFinite(s)) s = 1;
-  // Blue outline around THIS widget's own box, width compensated for the
+  // Ink outline around THIS widget's own box, width compensated for the
   // scale so it reads ~2px on screen at any zoom; offset OUTSIDE the box
   // so it never clips the widget's own content (a Text glyph starts at
   // the box edge and the old inset outline cut its first pixels). The
   // 88%/95% fit leaves room around the snapshot for the outline.
+  // Monochrome (var(--text): ink in light, near-white in dark) — no blue,
+  // like everything else on the site (2026-11-11, Worker D — audit #22).
   var ow = Math.min(12, Math.max(1, 2 / s));
-  clone.style.outline = ow + "px solid #2563eb";
+  clone.style.outline = ow + "px solid var(--text)";
   clone.style.outlineOffset = ow + "px";
   var wrap = document.createElement("div");
   wrap.className = "td-snap";
@@ -5789,7 +6231,50 @@ function tdShowPicker(stack, x, y) {
     var area = rect.width * rect.height;
     return area < phoneArea * 0.4;
   });
-  if (!filtered.length) filtered = stack.slice(0, 3); // fallback to 3 smallest
+  if (!filtered.length) {
+    // Fallback (2026-11-11, Worker D — audit #14): no small widget sits
+    // exactly under the tap — it landed in a big container's gutter or
+    // centre, so the stack is only giant ancestors. Offering those giants
+    // (incl. Scaffold at ~87% of the phone) teaches nothing. Offer the
+    // small widgets INSIDE the smallest container under the tap instead —
+    // the product cards in a grid, the keys in a keypad — smallest first,
+    // preferring ones under the 40% cap. Scaffold / MaterialApp are never
+    // offered while a smaller widget exists; they appear only as a last
+    // resort when the tap has no smaller widget anywhere under it.
+    var byArea = function(a, b){
+      var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      return (ra.width * ra.height) - (rb.width * rb.height);
+    };
+    var sortedStack = stack.slice().sort(byArea);
+    var smallest = sortedStack[0] || null;
+    var kids = [];
+    if (smallest) {
+      // Direct children first: the cards in a grid, the keys in a keypad.
+      var direct = smallest.querySelectorAll(":scope > .td-region[data-node]");
+      for (var k = 0; k < direct.length; k++) {
+        if (direct[k] !== smallest && direct[k].offsetWidth > 0 && direct[k].offsetHeight > 0) kids.push(direct[k]);
+      }
+      if (!kids.length) {
+        var desc = smallest.querySelectorAll(".td-region[data-node]");
+        for (var j = 0; j < desc.length; j++) {
+          if (desc[j] !== smallest && desc[j].offsetWidth > 0 && desc[j].offsetHeight > 0) kids.push(desc[j]);
+        }
+      }
+      kids.sort(byArea);
+    }
+    var smallKids = kids.filter(function(r){
+      var rect = r.getBoundingClientRect();
+      return (rect.width * rect.height) < phoneArea * 0.4;
+    });
+    filtered = (smallKids.length ? smallKids : kids).slice(0, 3);
+    if (!filtered.length) {
+      filtered = sortedStack.filter(function(r){
+        var w = (r.dataset && r.dataset.widget) || "";
+        return w !== "Scaffold" && w !== "MaterialApp";
+      }).slice(0, 3);
+    }
+    if (!filtered.length) filtered = sortedStack.slice(0, 3);
+  }
   // Sort by size (smallest first)
   filtered.sort(function(a, b){
     var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
@@ -6079,18 +6564,38 @@ function tdPositionLabel(){
   label.textContent = region.dataset.widget || '';
   label.hidden = false;
   var lw = label.offsetWidth, lh = label.offsetHeight;
-  var lx = (wr.left - pr.left) / scale + 8;
-  var ly = (wr.top - pr.top) / scale - lh / 2;
+  // Widget rect in phone coordinates.
+  var wx = (wr.left - pr.left) / scale, wy = (wr.top - pr.top) / scale;
+  var ww = wr.width / scale, wh = wr.height / scale;
   var minX = (sr.left - pr.left) / scale + 4;
   var maxX = (sr.right - pr.left) / scale - lw - 4;
-  if(maxX < minX){ lx = minX; } else { lx = Math.max(minX, Math.min(maxX, lx)); }
   var minY = (sr.top - pr.top) / scale + 4;
-  if(ly < minY){ ly = Math.max(minY, (wr.top - pr.top) / scale + 4); }
   var maxY = (sr.bottom - pr.top) / scale - lh - 4;
-  if(ly > maxY){ ly = Math.min(maxY, Math.max(minY, (wr.bottom - pr.top) / scale - lh - 4)); }
+  // The label sits OUTSIDE the widget's own box so it never covers the
+  // widget's text (2026-11-11, Worker D — audit #18): above the widget
+  // first; below it when there is no room above; to the side when neither
+  // fits; inside the top edge only as a last resort, for widgets that span
+  // nearly the whole screen. Clamped to the phone screen throughout.
+  var gap = 6;
+  var lx = (maxX < minX) ? minX : Math.max(minX, Math.min(maxX, wx + 8));
+  var ly;
+  if (wy - lh - gap >= minY) {
+    ly = wy - lh - gap;
+  } else if (wy + wh + gap <= maxY) {
+    ly = wy + wh + gap;
+  } else if (wx + ww + gap <= maxX) {
+    lx = wx + ww + gap;
+    ly = Math.max(minY, Math.min(maxY, wy));
+  } else if (wx - lw - gap >= minX) {
+    lx = wx - lw - gap;
+    ly = Math.max(minY, Math.min(maxY, wy));
+  } else {
+    ly = Math.max(minY, Math.min(maxY, wy + 4));
+  }
   // hard clamp: when the widget is only partly visible (scrolled), the label
   // must still sit inside the screen, never float above/below the phone
   ly = Math.max(minY, Math.min(maxY, ly));
+  lx = Math.max(minX, Math.min(maxX, lx));
   label.style.left = Math.round(lx) + 'px';
   label.style.top = Math.round(ly) + 'px';
   if(!window.__ffTdLabelListeners){
@@ -6271,6 +6776,30 @@ document.addEventListener("click", function(e){
       if (gal.dataset.node === "ap-hero-image") { e.preventDefault(); e.stopPropagation(); tdGalleryOpen = true; tdRender(); return; }
       if (gal.dataset.node === "ap-gallery-close") { e.preventDefault(); e.stopPropagation(); tdGalleryOpen = false; tdRender(); return; }
     }
+  }
+  // Netflix Title detail tabs (2026-11-11, Worker C fix #15): the three tabs
+  // switch the TabBarView page instead of opening the picker, so the code's
+  // 3-page claim stays true. Must run here, before the picker handler below.
+  if (teardownState.app === "netflix-detail") {
+    var ndTab = t.closest ? t.closest(".nd-tab[data-node]") : null;
+    if (ndTab) {
+      e.preventDefault(); e.stopPropagation();
+      var tab = ndTab.dataset.node === "nd-tab-trailers" ? "trailers" : ndTab.dataset.node === "nd-tab-more" ? "more" : "episodes";
+      if (typeof tdSetNetflixTab === "function") tdSetNetflixTab(tab);
+      return;
+    }
+  }
+  // WhatsApp AlertDialog (2026-11-11, Worker C fix #3): the dialog is a demo
+  // overlay, not a pickable widget. Its buttons and the dimmed scrim dismiss
+  // it instead of opening the picker; taps on the dialog box itself (title /
+  // body text) do nothing. Dismissal is stored in teardownState so it holds
+  // across re-renders, and tdOpen / tdSwitchScreen reset it on re-entry.
+  var waDlg = t.closest ? t.closest(".wa-dialog-scrim") : null;
+  if (waDlg && teardownState.app === "whatsapp") {
+    e.preventDefault(); e.stopPropagation();
+    var waBtn = t.closest(".wa-dialog-cancel,.wa-dialog-delete,.wa-dialog-delete-me");
+    if (waBtn || t === waDlg) { teardownState.waDialogDismissed = true; waDlg.remove(); }
+    return;
   }
   // Tapping shows picker with all widgets at that point
   var region = t.closest(".td-region[data-node]");
